@@ -1,0 +1,14 @@
+{
+  "_readme": "音源ファイルをこのフォルダに置き、使う音の欄にファイル名を書きます（例: \"bgm\": \"bgm.mp3\"）。null のままの音は、ブラウザで合成した音が鳴ります。",
+  "bgm": null,
+  "place": null,
+  "remove": null,
+  "mark": null,
+  "unmark": null,
+  "undo": null,
+  "hint": null,
+  "error": null,
+  "clear": null,
+  "new": null,
+  "tap": null
+}
