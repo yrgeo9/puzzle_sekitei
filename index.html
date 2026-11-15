@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-vA247QM5X/J1xbIDb7pwjYQEcbwJTNPOBgJzCX+CW90=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-VhNrmWiZZlLT0+lqc35B6faqZK7pkBCFhTwXtbKV3iY=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -963,9 +963,13 @@ function rakeSvg(N,seed,clue){
       tf:`rotate(${90*rot} ${N/2} ${N/2})`+(mir?` translate(${N} 0) scale(-1 1)`:''),rot};};
 
   // ---- whole-garden patterns (the bottom layer) ----
-  function lines(g,P,amp,wl,ph){
+  function lines(g,P,wv){               // parallel lines; wv(b) bends them (all by the same amount, so they never meet)
     for(let a=sp/2;a<N;a+=sp){const pts=[];
-      for(let b=-.5;b<=N+.5;b+=step)pts.push(P([b,a+amp*Math.sin(2*Math.PI*b/wl+ph)]));add(g,pts);}}
+      for(let b=-.5;b<=N+.5;b+=step)pts.push(P([b,a+wv(b)]));add(g,pts);}}
+  // a wave made of circular arcs of radius r (≤ RAKE_BEND), crest and trough by turns, each turning
+  // through ±th; the arcs meet smoothly, so the line never bends tighter or wider than r
+  const arcWave=(r,th,ph)=>{const L=2*r*Math.sin(th),c=r*Math.cos(th);
+    return b=>{const z=b+ph,k=Math.round(z/L),u=z-k*L;return (k%2?-1:1)*(Math.sqrt(r*r-u*u)-c);};};
   function corner(g,P){
     const kx=pick(N*.35,N*.72),ky=pick(N*.28,N*.65),Rc=pick(1,2.4);
     const lo=-Math.max(kx,N-ky)-.5,hi=Math.max(ky,N-kx)+.5;
@@ -1012,7 +1016,7 @@ function rakeSvg(N,seed,clue){
   const layers=[];
   const base=el('g',{});field.appendChild(base);layers.push({g:base});
   const t=R(),k=R();let across=null;        // across: direction of the bottom lines, when they have one
-  if(t<.68){const T=turn();across=T.rot%2;lines(base,T.P,k<.3?0:k<.8?pick(.05,.13):pick(.22,.38),k<.8?pick(2.2,4.5):pick(4,6.5),pick(0,6.3));}
+  if(t<.68){const T=turn();across=T.rot%2;lines(base,T.P,k<.3?()=>0:k<.8?arcWave(pick(1.8,RAKE_BEND),pick(.2,.32),pick(0,9)):arcWave(pick(2.4,RAKE_BEND),pick(.45,.6),pick(0,9)));}
   else corner(base,turn().P);
   const n=R()<.1?0:R()<.6?1:2;
   let curved=false;   // at most one curved area: two side by side leave thin slivers of ground between them
