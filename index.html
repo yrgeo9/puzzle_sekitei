@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-WrIsQcLpFpxuOFmfB0apkJcAmuDAkjRmBaOUWpxIgoE=' 'sha256-LYvCZxcxBSjeJxQdEZ08xiZpw4aaodDANldt3I9ZsSM=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-t4DBwaSNPT+FgXKuMiXBnNAK4Ss4mvS2+1qChtuL2kU=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -52,8 +52,8 @@ html,body{background:var(--paper);color:var(--ink)}
 body{margin:0;font-family:var(--body);font-size:15px;line-height:1.75;
   background-image:radial-gradient(rgba(60,50,30,.035) .6px,transparent .8px);background-size:4px 4px;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
-.wrap{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:28px 48px;align-items:start}
-@media (max-width:820px){.wrap{grid-template-columns:minmax(0,1fr)}}
+/* one column on every screen: header, then the garden, then the reference sections below it */
+.wrap{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:28px;align-items:start}
 
 /* ---- header ---- */
 header.top{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;
@@ -76,7 +76,20 @@ header.top{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justi
 /* ---- status line ---- */
 main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .status{width:100%;max-width:560px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:12.5px;color:var(--muted);letter-spacing:.06em}
-.status .no{font-family:var(--display);font-weight:700;font-size:20px;color:var(--ink);letter-spacing:.12em;margin-right:6px}
+#label{font-family:var(--display);font-weight:700;font-size:15px;color:var(--ink);letter-spacing:.12em}
+/* the puzzle number is bookkeeping: tiny and pale in the bottom-right corner */
+.seedno{grid-column:1;grid-row:3;justify-self:end;margin:5px 2px 0 0;font-size:10.5px;line-height:1;color:#bdb8ad;letter-spacing:.08em;font-variant-numeric:tabular-nums;user-select:all}
+/* shogi-style coordinates: column numbers on top (counted from the right), kanji row numbers on the right */
+.boardwrap{display:grid;grid-template-columns:minmax(0,1fr) 38px;grid-template-rows:30px auto auto;column-gap:4px;width:100%;max-width:602px}
+.coords{display:grid;font-family:var(--display);font-size:11px;color:var(--muted);line-height:1}
+.coords b{font-weight:500}
+.edge{display:flex;align-items:center;justify-content:center;gap:4px}
+.coords-top{grid-column:1;grid-row:1;padding-inline:9px}
+.coords-top .edge{flex-direction:column;justify-content:flex-end;padding-bottom:5px}
+.coords-right{grid-column:2;grid-row:2;padding-block:9px}
+.coords-right .edge{justify-content:flex-start;padding-left:4px;gap:5px}
+.coords-right .pips{flex-direction:column}
+.boardwrap .garden{grid-column:1;grid-row:2;max-width:none}
 .status .time{font-family:var(--display);font-variant-numeric:tabular-nums;font-size:17px;color:var(--ink);letter-spacing:.06em}
 
 /* ---- the garden: white gravel in a stone curb ---- */
@@ -113,14 +126,14 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .cell.clue.focus::before{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--moss)}
 .hintmsg{margin:0;min-height:1.75em;width:100%;max-width:560px;text-align:center;font-size:14px;color:var(--ink);letter-spacing:.02em}
 @keyframes hint{50%{background-color:color-mix(in srgb,var(--moss) 28%,transparent)}}
-.pip-row,.pip-col{display:flex;align-items:center;justify-content:center;gap:3px}
-.pip-row{flex-direction:column}
+.pips{display:flex;align-items:center;justify-content:center;gap:3px}
 .pip{width:6px;height:6px;border-radius:50%;border:1.2px solid var(--curb-dk);box-sizing:border-box}
 .pip.on{background:var(--stone);border-color:var(--stone)}
 .pips.over .pip{border-color:var(--err);background:var(--err)}
 
 /* ---- buttons: thin-lined, mincho lettering ---- */
-.tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%;max-width:560px}
+.tools{display:flex;flex-wrap:nowrap;gap:8px;justify-content:center;width:100%;max-width:602px}
+.tools .btn{padding-inline:12px;white-space:nowrap}
 .btn{font-family:var(--display);font-weight:500;font-size:14px;letter-spacing:.06em;border:1px solid var(--line);background:var(--panel);color:var(--ink);
   border-radius:2px;padding:9px 16px;cursor:pointer;display:inline-flex;gap:8px;align-items:center;transition:border-color .15s,background .15s}
 .btn:hover{border-color:var(--ink)}
@@ -134,7 +147,6 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .mopt{display:inline-flex;align-items:center;gap:5px;color:var(--muted);opacity:.45;transition:opacity .15s,color .15s}
 .mopt.on{color:var(--ink);opacity:1;font-weight:700}
 .msep{width:1px;height:14px;background:var(--line);margin:0 9px;flex-shrink:0}
-.btn.mode kbd{margin-left:10px}
 /* two-line button: action word + what it does */
 .btn.two{flex-direction:column;gap:1px;line-height:1.25;padding-block:6px}
 .btn.two small{font-family:var(--body);font-size:10.5px;color:var(--muted);letter-spacing:0;font-weight:400}
@@ -143,16 +155,18 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .newgarden{margin-top:14px;width:100%;justify-content:center;letter-spacing:.14em}
 aside .seg{display:flex;width:100%;box-sizing:border-box;border-bottom:1px solid var(--line)}
 aside .seg button{flex:1;padding:9px 2px;font-size:13px;margin-bottom:-1px;white-space:nowrap;letter-spacing:0}
-#gardenSec h2 + .seg{margin-top:2px}
+/* sub-headings inside 庭の種類: quiet labels, no seal mark */
+.sublabel{margin:30px 0 0;font-size:12px;color:var(--muted);letter-spacing:.14em}
+#gardenSec h2 + .sublabel{margin-top:4px}
+.segnote{margin-top:8px!important}
 #gardenSec.flash{animation:flash 1.4s ease}
 @keyframes flash{25%{background:color-mix(in srgb,var(--moss) 12%,transparent)}}
 kbd{font-family:var(--body);font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:2px;padding:0 4px}
 @media (hover:none){kbd{display:none}}
 
 /* ---- side panel ---- */
-aside{min-width:0;display:flex;flex-direction:column;gap:22px}
-aside section + section{border-top:1px solid var(--line);padding-top:20px}
-aside section:has(#introAgain){border-top:0;padding-top:0;margin-top:-8px}
+aside{min-width:0;width:100%;max-width:582px;justify-self:center;display:flex;flex-direction:column;gap:34px;margin-top:20px}
+aside section + section{border-top:1px solid var(--line);padding-top:30px}
 aside h2{font-family:var(--display);font-weight:700;font-size:17px;margin:0 0 8px;letter-spacing:.14em;display:flex;align-items:center;gap:8px}
 aside h2::before{content:"";width:5px;height:5px;background:var(--shu);flex-shrink:0}
 aside ol{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px}
@@ -169,7 +183,7 @@ aside p{margin:0}
 .records{display:grid;grid-template-columns:auto 1fr auto;gap:5px 12px;font-size:13px;font-variant-numeric:tabular-nums}
 .records span:nth-child(3n+1){font-family:var(--display);font-weight:700;letter-spacing:.08em}
 .records span:nth-child(3n){text-align:right;font-family:var(--display)}
-#introAgain{font-size:13px;padding:7px 14px}
+#introAgain{font-size:13.5px;padding:8px 18px;margin-top:10px}
 
 /* ---- veil over the garden (loading / solved) ---- */
 .veil{position:absolute;inset:0;display:grid;place-items:center;background:color-mix(in srgb,var(--paper) 72%,transparent);backdrop-filter:blur(2px);z-index:5;text-align:center;padding:16px}
@@ -178,6 +192,9 @@ aside p{margin:0}
 .veil h3{font-family:var(--display);font-weight:700;font-size:28px;margin:0;letter-spacing:.24em;padding-left:.24em}
 .veil h3::after{content:"";display:block;width:22px;height:22px;margin:12px auto 0;background:var(--shu);border-radius:2px;
   box-shadow:inset 0 0 0 2px var(--shu),inset 0 0 0 3px rgba(255,255,255,.55)}
+.veil.solid{inset:9px;background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 6px,var(--rake) 6px 7px);backdrop-filter:none}
+.vlabel{margin:0;font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.04em;white-space:nowrap}
+.startgo{padding:12px 36px;font-size:16px;letter-spacing:.3em;margin-top:4px}
 .spinner{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);border-top-color:var(--ink);animation:spin 1.1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -195,6 +212,8 @@ aside p{margin:0}
   width:min(440px,calc(100vw - 32px));max-height:calc(100% - 32px);overflow:auto;box-sizing:border-box;
   box-shadow:0 30px 60px -24px rgba(40,30,10,.4)}
 .intro::before{content:"";display:block;height:10px;background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 2px,var(--rake) 2px 3px);border-bottom:1px solid var(--line)}
+.intro-x{position:absolute;top:16px;right:10px;z-index:1}
+.intro-x:hover{color:var(--ink)}
 .intro::backdrop{background:rgba(40,36,28,.35)}
 .intro-body{padding:20px 22px 20px;display:flex;flex-direction:column;gap:12px}
 .intro-eyebrow{margin:0;font-size:11.5px;letter-spacing:.2em;color:var(--shu)}
@@ -216,9 +235,10 @@ aside p{margin:0}
 
 /* ---- phone: one screen, no page scroll; side panels become a bottom sheet ---- */
 .stage{width:100%;display:flex;flex-direction:column;align-items:center;gap:12px}
-.mnav,.sheet-head,.mob-only,.scrim,.lbl-s{display:none}
+.mnav,.sheet-head,.mob-only,.scrim{display:none}
 .tabs{display:flex;gap:2px;flex:1;min-width:0}
-.tabs button{flex:1;font-family:var(--display);font-weight:500;font-size:14px;letter-spacing:.04em;border:0;background:transparent;color:var(--muted);padding:9px 2px;border-bottom:1.5px solid transparent;cursor:pointer;white-space:nowrap}
+.tabs button{flex:1 1 auto;min-width:0;font-family:var(--display);font-weight:500;font-size:13.5px;letter-spacing:0;border:0;background:transparent;color:var(--muted);padding:9px 0;border-bottom:1.5px solid transparent;cursor:pointer;white-space:nowrap}
+.sheet-head .close{flex-shrink:0;width:36px}
 .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink);font-weight:700}
 .close{font:inherit;font-size:22px;line-height:1;border:0;background:transparent;color:var(--muted);width:40px;height:40px;cursor:pointer;border-radius:2px}
 @media (max-width:820px){
@@ -237,29 +257,37 @@ aside p{margin:0}
   .mnav .btn.em{background:var(--ink);color:var(--paper);border-radius:2px;padding:6px 10px;margin-right:4px}
   .mnav .btn.em + .btn{box-shadow:none}
   main{flex:1;min-height:0;gap:8px}
-  .status{flex-shrink:0;width:min(100cqw,100cqh - 96px)}
-  .status .no{font-size:17px}
-  /* status + board + hint message form one block, centred in the free height */
-  .stage{flex:1;min-height:0;container-type:size;justify-content:center;gap:8px}
-  .garden{width:min(100cqw,100cqh - 96px);max-width:none;padding:6px;flex-shrink:0}
-  .tools{flex-shrink:0;display:grid;grid-template-columns:1.5fr 1fr 1fr 1.15fr;gap:6px}
+  /* status + board + hint message form one block, centred in the free height.
+     --g is the garden's width: limited by the width (minus the coordinate column) and by the height
+     (minus status, hint message and the coordinate row) */
+  .stage{flex:1;min-height:0;container-type:size;justify-content:center;gap:8px;--g:min(100cqw - 42px,100cqh - 144px)}
+  .status{flex-shrink:0;width:calc(var(--g) + 42px)}
+  #label{font-size:14px}
+  .boardwrap{width:calc(var(--g) + 42px);max-width:none;flex-shrink:0}
+  .garden{padding:6px}
+  .veil.solid{inset:6px}
+  .coords-top{padding-inline:6px}
+  .coords-right{padding-block:6px}
+  .tools{flex-shrink:0;display:grid;grid-template-columns:1.25fr 1fr 1fr 1.1fr 1fr;gap:5px}
   .tools .btn{font-size:13px;padding:0 2px;min-height:46px;justify-content:center;gap:5px;white-space:nowrap;letter-spacing:.02em}
   .tools .btn.two{gap:1px}
+  .tools .btn{font-size:12.5px;letter-spacing:0}
+  .tools .btn.two small{font-size:9px;letter-spacing:-.02em}
+  .msep{margin:0 6px}
   .tools .btn.mode{gap:0}
   .msep{margin:0 8px}
-  .lbl-l{display:none}
-  .lbl-s{display:inline}
   .hintmsg{flex-shrink:0;font-size:12.5px;line-height:1.5;height:3em;overflow:hidden;display:flex;align-items:center;justify-content:center}
   .scrim{display:block;position:fixed;inset:0;background:rgba(40,36,28,.3);opacity:0;pointer-events:none;transition:opacity .2s;z-index:29}
   body.sheet-open .scrim{opacity:1;pointer-events:auto}
   aside{position:fixed;left:0;right:0;bottom:0;z-index:30;max-height:80%;overflow-y:auto;overscroll-behavior:contain;
-    background:var(--panel);border-radius:6px 6px 0 0;box-shadow:0 -10px 30px -12px rgba(40,30,10,.3);gap:18px;
+    background:var(--panel);border-radius:6px 6px 0 0;box-shadow:0 -10px 30px -12px rgba(40,30,10,.3);gap:28px;width:auto;max-width:none;margin-top:0;justify-self:stretch;
     padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));
     padding-bottom:calc(22px + env(safe-area-inset-bottom,0px));
     transform:translateY(105%);visibility:hidden}
   aside::before{content:"";position:sticky;top:0;display:block;height:6px;margin-inline:calc(-1 * max(18px,env(safe-area-inset-left,0px)));
     background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 2px,var(--rake) 2px 3px);z-index:2}
   aside section + section{border-top:0;padding-top:0}
+  .sheet-head + section{margin-top:-6px}
   body.ready aside{transition:transform .25s ease,visibility 0s linear .25s}
   body.sheet-open aside{transform:none;visibility:visible}
   body.ready.sheet-open aside{transition:transform .25s ease}
@@ -288,7 +316,6 @@ button{touch-action:manipulation}
     <div class="brand">
       <span class="seal" aria-hidden="true">石</span>
       <h1>石庭</h1>
-      <p>せきてい ― 苔の数を手がかりに、庭に石を据える</p>
     </div>
     <button class="btn em desk-only" type="button" id="gardenBtn">庭を変える</button>
     <nav class="mnav" aria-label="メニュー">
@@ -302,20 +329,26 @@ button{touch-action:manipulation}
   <main>
     <div class="stage">
       <div class="status">
-        <span><span class="no" id="no">第 ― 局</span> <span id="label"></span></span>
+        <span id="label"></span>
         <span class="time" id="time">0:00</span>
       </div>
-      <div class="garden">
-        <div class="board" id="board" role="grid" aria-label="石庭の盤面"></div>
-        <div class="veil" id="veil" hidden><div class="card" id="veilCard"></div></div>
+      <div class="boardwrap">
+        <div class="coords coords-top" id="colLabels" aria-hidden="true"></div>
+        <div class="garden">
+          <div class="board" id="board" role="grid" aria-label="石庭の盤面"></div>
+          <div class="veil" id="veil" hidden><div class="card" id="veilCard"></div></div>
+        </div>
+        <div class="coords coords-right" id="rowLabels" aria-hidden="true"></div>
+        <p class="seedno" id="no" title="問題の番号"></p>
       </div>
       <p class="hintmsg" id="hintMsg" aria-live="polite"></p>
     </div>
     <div class="tools">
-      <button class="btn mode" id="modeBtn" aria-pressed="false" title="置くものを切り替え (M)"><span class="mopt on" id="optStone"><i class="modeicon"></i>石</span><span class="msep" aria-hidden="true"></span><span class="mopt" id="optMark"><i class="modeicon ring"></i>印</span><kbd>M</kbd></button>
-      <button class="btn" id="undoBtn" title="一手戻す (Z)">戻す <kbd>Z</kbd></button>
-      <button class="btn" id="hintBtn"><span class="lbl-l">ひとつ教えて</span><span class="lbl-s">ヒント</span></button>
-      <button class="btn two" id="resetBtn" title="盤上の印をすべて消す"><span>ならす</span><small>印を全て消す</small></button>
+      <button class="btn mode" id="modeBtn" aria-pressed="false" title="置くものを切り替え"><span class="mopt on" id="optStone"><i class="modeicon"></i>石</span><span class="msep" aria-hidden="true"></span><span class="mopt" id="optMark"><i class="modeicon ring"></i>印</span></button>
+      <button class="btn" id="undoBtn" title="一手戻す (Z)">一手戻す <kbd>Z</kbd></button>
+      <button class="btn two" id="pauseBtn" title="パズルを一時停止 (P)"><span>休憩</span><small>パズルを一時停止</small></button>
+      <button class="btn two" id="hintBtn" title="次に推理できる一手を教わる"><span>教えを乞う</span><small>ヒントを貰う</small></button>
+      <button class="btn two" id="resetBtn" title="盤上の印をすべて消す"><span>砂を均す</span><small>印を全消し</small></button>
     </div>
   </main>
 
@@ -331,46 +364,59 @@ button{touch-action:manipulation}
       <button type="button" class="close" id="sheetClose" aria-label="閉じる">×</button>
     </div>
     <section data-tab="garden" id="gardenSec">
-      <h2>庭の広さ</h2>
+      <h2>庭の種類</h2>
+      <p class="sublabel">巡り方</p>
+      <div class="seg walkSeg" role="group" aria-label="巡り方">
+        <button data-walk="0" aria-pressed="true">今日の庭</button>
+        <button data-walk="1" aria-pressed="false">漫ろ歩き</button>
+      </div>
+      <p class="small" id="walkNote" style="margin-top:8px"></p>
+      <p class="sublabel">広さ</p>
       <div class="seg sizeSeg" role="group" aria-label="庭の広さ">
         <button data-size="8" aria-pressed="true">八間 ・ 石1</button>
         <button data-size="10" aria-pressed="false">十間 ・ 石2</button>
         <button data-size="12" aria-pressed="false">十二間 ・ 石2</button>
       </div>
-      <h2 style="margin-top:16px">難しさ</h2>
+      <p class="small segnote" id="sizeDesc"></p>
+      <p class="sublabel">難しさ</p>
       <div class="seg diffSeg" role="group" aria-label="難しさ">
         <button data-diff="0" aria-pressed="false">手引き多め</button>
         <button data-diff="1" aria-pressed="true">じっくり</button>
       </div>
-      <p class="small" style="margin-top:10px">広さや難しさを選ぶと、今日の庭が始まります。</p>
-      <button class="btn primary newgarden" type="button" id="newGardenBtn">別の庭をつくる</button>
-      <p class="small" style="margin-top:6px">同じ広さ・難しさで、新しい問題を作ります。</p>
+      <p class="small segnote" id="diffDesc"></p>
+      <div id="walkMore" hidden>
+        <button class="btn primary newgarden" type="button" id="newGardenBtn">別の庭へ歩く</button>
+        <p class="small" style="margin-top:6px">同じ広さ・難しさで、まだ見ていない庭を作ります。</p>
+      </div>
+    </section>
+    <section data-tab="rules">
+      <h2>はじめの説明をもう一度見る</h2>
+      <p class="small">最初に表示された、決まりと遊び方の説明を開きます。</p>
+      <button type="button" class="btn" id="introAgain">説明をひらく</button>
     </section>
     <section data-tab="rules">
       <h2>決まりごと</h2>
       <ol>
-        <li>どの行にも、どの列にも、石を<b id="kRule">1</b>つずつ置く。</li>
+        <li>どの行にも、どの列にも、石を<b id="kRule">1</b>つずつ置く。<span class="small" id="sizeNote">（八間・石1の場合）</span></li>
         <li>石どうしは縦・横・斜めのどれでも隣り合わない。</li>
         <li>苔の上の数は、まわり8マスにある石の数。苔の上には石を置けない。</li>
       </ol>
-      <p class="small" style="margin-top:8px">答えはひとつだけ。どの問題も、当てずっぽうや仮置きなしで推理だけで解けることを確かめてから出しています。「ひとつ教えて」は、次に推理できる一手とその理由を示します。</p>
+      <p class="small" style="margin-top:8px">答えはひとつだけ。どの問題も、当てずっぽうや仮置きなしで推理だけで解けることを確かめてから出しています。「教えを乞う」は、次に推理できる一手とその理由を示します。</p>
     </section>
     <section data-tab="rules">
-      <h2>手つき</h2>
+      <h2>所作</h2>
       <div class="legend">
         <div class="sw"><div class="s"></div></div><span>タップで石を置く・取る</span>
         <div class="sw"><div class="d"></div></div><span>右クリック、または「印」モードで「石なし」の印。なぞると続けて付けられます</span>
         <div class="sw c">3</div><span>石が数ぶん揃うと薄くなり、多すぎると赤くなる</span>
       </div>
-      <p class="small" style="margin-top:8px">「ならす」は盤上の印をすべて消します（石はそのまま）。「戻す」で元に戻せます。</p>
+      <p class="small" style="margin-top:8px">「砂を均す」は盤上の印をすべて消します（石はそのまま）。「一手戻す」で元に戻せます。「休憩」を押すと、盤面を隠してタイマーを止められます。</p>
       <p class="small" style="margin-top:8px">盤の右と下の小さな丸は、その行・列に置いた石の数です。</p>
+      <p class="small" style="margin-top:4px">マスの呼び方は将棋盤と同じです。上の数字が列（右から1、2…）、右の漢数字が行（上から一、二…）で、「1二」は右端の列の上から2マス目です。</p>
     </section>
     <section data-tab="records">
       <h2>記録</h2>
       <div class="records" id="records"></div>
-    </section>
-    <section data-tab="rules">
-      <button type="button" class="btn" id="introAgain">はじめの説明をもう一度見る</button>
     </section>
     <section data-tab="sound">
       <h2>音</h2>
@@ -386,6 +432,7 @@ button{touch-action:manipulation}
 </div>
 
 <dialog class="intro" id="intro" aria-labelledby="introTitle">
+  <button type="button" class="close intro-x" id="introX" aria-label="閉じる">×</button>
   <div class="intro-body">
     <p class="intro-eyebrow">はじめての方へ</p>
     <h2 id="introTitle">石庭へようこそ</h2>
@@ -404,7 +451,7 @@ button{touch-action:manipulation}
         <div><b>苔の数字は、まわり8マスの石の数</b><span>苔の上には石を置けません。</span></div>
       </li>
     </ol>
-    <p class="intro-how">タップで石を置く・取る。「石なし」とわかったマスには、印モード（パソコンなら右クリック）で印を付けておけます。迷ったら「ヒント」で、次に推理できる一手とその理由が見られます。</p>
+    <p class="intro-how">タップで石を置く・取る。「石なし」とわかったマスには、印モード（パソコンなら右クリック）で印を付けておけます。迷ったら「教えを乞う」で、次に推理できる一手とその理由が見られます。</p>
     <button class="btn primary intro-go" id="introGo" type="button" autofocus>庭に入る</button>
   </div>
 </dialog>
@@ -565,6 +612,7 @@ const Sound=(function(){
     for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);}return b;}
   function ensure(){
     if(!AC)return false;
+    if(ctx&&(ctx.state==='closed'||ctx.state==='interrupted'))teardown();
     if(!ctx){
       try{ctx=new AC();}catch(e){return false;}
       seBus=ctx.createGain();seBus.gain.value=prefs.seVol;seBus.connect(ctx.destination);
@@ -580,7 +628,7 @@ const Sound=(function(){
   }
   function decode(ab){return new Promise((res,rej)=>{const p=ctx.decodeAudioData(ab,res,rej);if(p&&p.then)p.then(res,rej);});}
   function loadFiles(){
-    for(const n of NAMES){if(n==='bgm'||!files[n])continue;
+    for(const n of NAMES){if(n==='bgm'||!files[n]||buffers[n])continue;
       fetch(files[n]).then(r=>r.ok?r.arrayBuffer():Promise.reject()).then(decode).then(b=>{buffers[n]=b;}).catch(()=>{});}
     if(files.bgm&&!bgmEl){
       const el=new Audio();el.src=files.bgm;el.loop=true;el.preload='auto';
@@ -728,10 +776,34 @@ const Sound=(function(){
   }
   // audio may only start after the player interacts with the page
   function unlock(){ensure();if(prefs.bgm)startBgm();if(ctx&&ctx.state==='running'){removeEventListener('pointerup',unlock,true);removeEventListener('keydown',unlock,true);}}
-  addEventListener('pointerup',unlock,true);addEventListener('keydown',unlock,true);
-  document.addEventListener('visibilitychange',()=>{if(!ctx)return;
-    if(document.hidden){ctx.suspend().catch(()=>{});if(bgmEl)bgmEl.pause();}
-    else{ctx.resume().catch(()=>{});if(bgmOn&&bgmEl)bgmEl.play().catch(()=>{});}});
+  function armUnlock(){addEventListener('pointerup',unlock,true);addEventListener('keydown',unlock,true);}
+
+  // ---- app lifecycle ----
+  // When the page is hidden (home-screen app sent to the background, tab switched, screen locked)
+  // every scheduled note is stopped first, so nothing piles up and bursts out on return.
+  // iOS can hand the AudioContext back "interrupted" or at another sample rate, which sounds
+  // distorted; there the context is thrown away and a fresh one is built on the next tap.
+  const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  function teardown(){
+    stopSynth();clearTimeout(stopTimer);
+    if(bgmEl){try{bgmEl.pause();}catch(e){}bgmEl=null;}
+    if(ctx){const c=ctx;ctx=null;try{c.close().catch(()=>{});}catch(e){}}
+    bgmOn=false;armUnlock();
+  }
+  function onHide(){
+    if(!ctx)return;
+    stopSynth();if(bgmEl)bgmEl.pause();
+    if(isIOS)teardown();else ctx.suspend().catch(()=>{});
+  }
+  function onShow(){
+    if(!ctx)return; // rebuilt on the next tap
+    ctx.resume().then(()=>{if(bgmOn&&!document.hidden){if(bgmEl)bgmEl.play().catch(()=>{});else startSynth();}}).catch(()=>{});
+    setTimeout(()=>{if(ctx&&ctx.state!=='running'&&!document.hidden)teardown();},600);
+  }
+  armUnlock();
+  document.addEventListener('visibilitychange',()=>{document.hidden?onHide():onShow();});
+  addEventListener('pagehide',onHide);
+  addEventListener('pageshow',e=>{if(e.persisted)onShow();});
 
   function set(k,v){
     if(k==='bgm'){prefs.bgm=!!v;v?startBgm():stopBgm();}
@@ -780,12 +852,18 @@ let tick=null,lastTs=0,firstLoad=true;
 function keyOf(N,seed,d){return 'sekitei2:'+N+':'+d+':'+seed;}
 function todaySeed(){const d=new Date();return (d.getFullYear()*372+d.getMonth()*31+d.getDate())%9000+1;}
 
+// 今日の庭: one puzzle per day (same for everyone); 漫ろ歩き: a random garden each time
+let walk=store.get('sekitei:walk')===1;
+const randomSeed=()=>Math.floor(Math.random()*9000)+1;
+const newSeed=()=>walk?randomSeed():todaySeed();
+const labelText=()=>`${SIZES[size].name} ・ ${diff?'じっくり':'手引き多め'} ・ ${walk?'漫ろ歩き':'今日の庭'}`;
 function start(N,d,seed){
   N=SIZES[N]?N:8;d=d===1?1:0;seed=int(seed,1,9999,todaySeed());
   size=N;diff=d;syncSeg();
-  const K=SIZES[N].K;$('kRule').textContent=K;
-  stopClock();
-  showVeil('<div class="spinner"></div><div class="small">砂を整えています…<br>推理だけで解けるか確かめています</div>');
+  const K=SIZES[N].K;$('kRule').textContent=K;$('sizeNote').textContent=`（${SIZES[N].name}・石${K}の場合）`;
+  stopClock();if(S)S.started=false;
+  $('time').style.visibility='hidden';
+  showVeil('<div class="spinner"></div><div class="small">砂を整えています…<br>推理だけで解けるか確かめています</div>',true);
   const saved=store.get(keyOf(N,seed,d));
   makePuzzle(N,K,seed,d===1,p=>{
     S={N,K,seed,diff:d,clue:p.clue,stone:p.stone,cells:new Array(N*N).fill(0),hist:[],time:0,hints:0,done:false};
@@ -793,16 +871,27 @@ function start(N,d,seed){
       S.cells=saved.cells.map((v,i)=>S.clue[i]>=0?0:int(v,0,2,0));
       S.time=num(saved.time,0,1e7,0);S.hints=int(saved.hints,0,1e6,0);S.done=saved.done===true;}
     store.set('sekitei2:last',{N,d,seed});setMsg('');
-    build();hideVeil();
-    if(S.done)showWin(true);else{startClock();if(!firstLoad)Sound.play('new');}
-    firstLoad=false;
+    build();
+    if(S.done){S.started=true;$('time').style.visibility='';showWin(true);}else showStart();
   });
 }
+// every garden opens behind a start card; the board and the timer appear when the player presses it
+function showStart(){
+  const resumed=S.time>0||S.cells.some(v=>v);
+  showVeil(`<p class="vlabel">${labelText()}</p>
+    <button class="btn primary startgo" id="startBtn" type="button">${resumed?'つづける':'はじめる'}</button>
+    <div class="small">${resumed?'押すと盤面とタイマーが戻ります。':'押すと盤面が現れ、タイマーが始まります。'}</div>`,true);
+  $('startBtn').onclick=()=>{S.started=true;hideVeil();$('time').style.visibility='';startClock();Sound.play('new');};
+}
 
+const KAN=['','一','二','三','四','五','六','七','八','九','十','十一','十二'];
+const colName=c=>String(S.N-c);          // 1 is the rightmost column, as on a shogi board
+const rowName=r=>KAN[r+1];               // 一 is the top row
+const cellName=i=>colName(i%S.N)+rowName((i/S.N)|0);   // e.g. 1二
 function build(){
   const {N,K}=S;const b=$('board');b.innerHTML='';
-  b.style.gridTemplateColumns=`repeat(${N},1fr) minmax(14px,.45fr)`;
-  b.style.setProperty('--cols',String(N+.45));
+  b.style.gridTemplateColumns=`repeat(${N},1fr)`;
+  b.style.setProperty('--cols',String(N));
   cellEls=[];rowPips=[];colPips=[];
   for(let r=0;r<N;r++){
     for(let c=0;c<N;c++){
@@ -816,12 +905,19 @@ function build(){
       if(c===N-1)el.classList.add('edgeR');
       b.appendChild(el);cellEls.push(el);
     }
-    const p=document.createElement('div');p.className='pips pip-row';p.innerHTML='<span class="pip"></span>'.repeat(K);b.appendChild(p);rowPips.push(p);
   }
-  for(let c=0;c<N;c++){const p=document.createElement('div');p.className='pips pip-col';p.style.height='14px';p.style.paddingTop='6px';p.innerHTML='<span class="pip"></span>'.repeat(K);b.appendChild(p);colPips.push(p);}
-  b.appendChild(document.createElement('div'));
-  $('no').textContent=`第 ${S.seed} 局`;
-  $('label').textContent=`${SIZES[N].name} ・ ${S.diff?'じっくり':'手引き多め'}${S.seed===todaySeed()?' ・ 今日の庭':''}`;
+  // edges, shogi style: above each column its number (1 = rightmost) and its stone count;
+  // right of each row its stone count and its kanji number (一 = top)
+  const ct=$('colLabels'),cr=$('rowLabels');
+  ct.style.gridTemplateColumns=`repeat(${N},1fr)`;cr.style.gridTemplateRows=`repeat(${N},1fr)`;
+  ct.innerHTML='';cr.innerHTML='';
+  const pips=()=>{const p=document.createElement('span');p.className='pips';p.innerHTML='<i class="pip"></i>'.repeat(K);return p;};
+  for(let c=0;c<N;c++){const d=document.createElement('div');d.className='edge';const n=document.createElement('b');n.textContent=colName(c);
+    const p=pips();d.append(n,p);ct.appendChild(d);colPips.push(p);}
+  for(let r=0;r<N;r++){const d=document.createElement('div');d.className='edge';const n=document.createElement('b');n.textContent=rowName(r);
+    const p=pips();d.append(p,n);cr.appendChild(d);rowPips.push(p);}
+  $('no').textContent=String(S.seed);
+  $('label').textContent=labelText();
   render();renderRecords();
 }
 
@@ -836,7 +932,7 @@ function render(){
       for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const rr=r+dr,cc=c+dc;if(rr<0||cc<0||rr>=N||cc>=N)continue;if(cells[rr*N+cc]===1)s++;}
       el.classList.toggle('bad',s>clue[i]);el.classList.toggle('done',s===clue[i]);if(s!==clue[i])allOk=false;continue;}
     el.classList.toggle('stone',cells[i]===1);el.classList.toggle('mark',cells[i]===2);el.classList.toggle('bad',bad.has(i));
-    el.setAttribute('aria-label',`${((i/N)|0)+1}行${i%N+1}列 ${cells[i]===1?'石':cells[i]===2?'印':'空き'}`);
+    el.setAttribute('aria-label',`${cellName(i)} ${cells[i]===1?'石':cells[i]===2?'印':'空き'}`);
   }
   const pip=(el,n)=>{el.classList.toggle('over',n>K);el.classList.toggle('full',n===K);[...el.children].forEach((p,k)=>p.classList.toggle('on',k<n));};
   for(let r=0;r<N;r++){pip(rowPips[r],rowC[r]);if(rowC[r]!==K)allOk=false;}
@@ -859,7 +955,7 @@ let drag=null;
 const board=$('board');
 board.addEventListener('contextmenu',e=>e.preventDefault());
 board.addEventListener('pointerdown',e=>{
-  const el=e.target.closest('.cell');if(!el||!S||S.done)return;const i=+el.dataset.i;if(S.clue[i]>=0)return;
+  const el=e.target.closest('.cell');if(!el||!S||S.done||!S.started)return;const i=+el.dataset.i;if(S.clue[i]>=0)return;
   e.preventDefault();
   const useMark=mode===1||e.button===2;const cur=S.cells[i];
   const target=useMark?(cur===2?0:2):(cur===1?0:1);
@@ -890,7 +986,7 @@ board.addEventListener('keydown',e=>{
   const el=e.target.closest('.cell');if(!el||!S)return;const i=+el.dataset.i;const N=S.N;
   const mv={ArrowUp:-N,ArrowDown:N,ArrowLeft:-1,ArrowRight:1}[e.key];
   if(mv!==undefined){e.preventDefault();let j=i+mv;if(j>=0&&j<N*N&&!(mv===1&&j%N===0)&&!(mv===-1&&i%N===0))cellEls[j].focus();return;}
-  if(S.done||S.clue[i]>=0)return;
+  if(S.done||!S.started||S.clue[i]>=0)return;
   const cur=S.cells[i];
   if(e.key===' '||e.key==='Enter'){e.preventDefault();const to=cur===1?0:1;apply([[i,to]]);cellSound(i,cur,to);}
   if(e.key==='x'||e.key==='.'){e.preventDefault();const to=cur===2?0:2;apply([[i,to]]);cellSound(i,cur,to);}
@@ -901,11 +997,20 @@ function setMode(m){mode=m;$('modeBtn').setAttribute('aria-pressed',m?'true':'fa
   $('optStone').classList.toggle('on',!m);$('optMark').classList.toggle('on',!!m);
   $('modeBtn').setAttribute('aria-label',m?'置くもの：印（押すと石に切り替え）':'置くもの：石（押すと印に切り替え）');}
 $('modeBtn').onclick=()=>{setMode(mode?0:1);Sound.play('tap');};
-function undo(){if(!S||S.done||!S.hist.length)return;S.hist.pop().forEach(([i,v])=>S.cells[i]=v);render();save();Sound.play('undo');}
+function undo(){if(!S||S.done||!S.started||!S.hist.length)return;S.hist.pop().forEach(([i,v])=>S.cells[i]=v);render();save();Sound.play('undo');}
 $('undoBtn').onclick=undo;
-// ならす: rake away every mark; stones stay where they are
-$('resetBtn').onclick=()=>{if(!S||S.done)return;const ch=[];S.cells.forEach((v,i)=>{if(v===2)ch.push([i,0]);});
-  if(ch.length){apply(ch);Sound.play('new');setMsg('印をすべて消しました。「戻す」で元に戻せます。');}
+function pauseGame(){
+  if(!S||S.done||!S.started)return;
+  S.started=false;stopClock();save();Sound.play('tap');
+  showVeil(`<p class="vlabel">休憩中</p>
+    <button class="btn primary startgo" id="resumeBtn" type="button">つづける</button>
+    <div class="small">押すと盤面とタイマーが戻ります。</div>`,true);
+  $('resumeBtn').onclick=()=>{S.started=true;hideVeil();startClock();Sound.play('tap');};
+}
+$('pauseBtn').onclick=pauseGame;
+// 砂を均す: rake away every mark; stones stay where they are
+$('resetBtn').onclick=()=>{if(!S||S.done||!S.started)return;const ch=[];S.cells.forEach((v,i)=>{if(v===2)ch.push([i,0]);});
+  if(ch.length){apply(ch);Sound.play('new');setMsg('印をすべて消しました。「一手戻す」で元に戻せます。');}
   else{Sound.play('tap');setMsg('消す印がありません。');}};
 let msgTimer=null;
 function setMsg(t){$('hintMsg').textContent=t;}
@@ -913,9 +1018,9 @@ function focusCells(list){
   cellEls.forEach(e=>e.classList.remove('focus'));list.forEach(i=>cellEls[i]&&cellEls[i].classList.add('focus'));
   clearTimeout(msgTimer);msgTimer=setTimeout(()=>cellEls.forEach(e=>e.classList.remove('focus')),2600);
 }
-function unitLabel(u){const N=S.N;
-  if(u.kind==='row')return `${u.id+1}行目`;if(u.kind==='col')return `${u.id+1}列目`;
-  return `${((u.id/N)|0)+1}行${u.id%N+1}列の苔「${S.clue[u.id]}」`;}
+function unitLabel(u){
+  if(u.kind==='row')return `${rowName(u.id)}の行`;if(u.kind==='col')return `${colName(u.id)}の列`;
+  return `${cellName(u.id)}の苔「${S.clue[u.id]}」`;}
 function unitCells(u){return u.kind==='clue'?[u.id,...u.cells]:u.cells;}
 function explain(d,v){
   const w=d.why,what=v?'石が入ります':'石は置けません';
@@ -928,7 +1033,7 @@ function explain(d,v){
 }
 function flash(i){const el=cellEls[i];el.classList.remove('hint');void el.offsetWidth;el.classList.add('hint');}
 $('hintBtn').onclick=()=>{
-  if(!S||S.done)return;const {N,K,cells,stone,clue}=S;
+  if(!S||S.done||!S.started)return;const {N,K,cells,stone,clue}=S;
   // 1) point out a mistake first
   for(let i=0;i<N*N;i++){if(clue[i]>=0)continue;
     if(cells[i]===1&&!stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);Sound.play('remove');setMsg('この石は答えと合わないので取り除きました。');return;}
@@ -942,15 +1047,29 @@ $('hintBtn').onclick=()=>{
   const w=d.why;focusCells(w.kind==='adj'?[w.i]:w.kind==='unit'?unitCells(w.u):[...unitCells(w.a),...unitCells(w.b)]);
   setMsg(explain(d,v));
 };
-$('newGardenBtn').onclick=()=>{closeSheet();start(size,diff,Math.floor(Math.random()*9000)+1);};
+$('newGardenBtn').onclick=()=>{closeSheet();start(size,diff,randomSeed());};
+function setWalk(v){walk=!!v;store.set('sekitei:walk',walk?1:0);syncSeg();}
+document.querySelectorAll('.walkSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  const v=b.dataset.walk==='1';if(v===walk&&S&&!S.done)return;Sound.play('unmark');setWalk(v);closeSheet();start(size,diff,newSeed());});
 // desktop: the garden settings live at the top of the side panel; bring them into view
 $('gardenBtn').onclick=()=>{const s=$('gardenSec');s.scrollIntoView({behavior:'smooth',block:'nearest'});
   s.classList.remove('flash');void s.offsetWidth;s.classList.add('flash');Sound.play('tap');};
-document.querySelectorAll('.sizeSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b){closeSheet();start(+b.dataset.size,diff,todaySeed());}});
-document.querySelectorAll('.diffSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b){closeSheet();start(size,+b.dataset.diff,todaySeed());}});
+// changing any 庭の種類 setting sweeps the sand: same sound as clearing a mark
+document.querySelectorAll('.sizeSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b){Sound.play('unmark');closeSheet();start(+b.dataset.size,diff,newSeed());}});
+document.querySelectorAll('.diffSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b){Sound.play('unmark');closeSheet();start(size,+b.dataset.diff,newSeed());}});
 function syncSeg(){
+  document.querySelectorAll('.walkSeg button').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.walk==='1')===walk?'true':'false'));
+  $('walkNote').textContent=walk?'気の向くままに、毎回ちがう庭を歩きます。':'日付ごとに決まる一局です。誰が遊んでも同じ庭になります。';
+  $('walkMore').hidden=!walk;
   document.querySelectorAll('.sizeSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.size===size?'true':'false'));
   document.querySelectorAll('.diffSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.diff===diff?'true':'false'));
+  $('sizeDesc').textContent={
+    8:'8×8マスの小さな庭。各行・各列に石を1つずつ置きます。はじめての方に。',
+    10:'10×10マスの庭。各行・各列に石を2つずつ置きます。',
+    12:'12×12マスの広い庭。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'}[size];
+  $('diffDesc').textContent=diff
+    ?'苔の手がかりを外せるだけ外した庭です。2つの行や苔を合わせて考える一手が必要になります。'
+    :'苔の手がかりが多めの庭です。1つの行・列・苔を見るだけで解き進められます。';
 }
 // ---- bottom sheet (phone) ----
 function setTab(t){$('sheet').dataset.tab=t;document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t?'true':'false'));$('sheet').scrollTop=0;}
@@ -978,7 +1097,8 @@ syncSound();
 const intro=$('intro');
 function openIntro(){if(intro.open)return;try{intro.showModal();}catch(e){intro.setAttribute('open','');}}
 intro.addEventListener('close',()=>store.set('sekitei:intro',1));
-$('introGo').onclick=()=>{store.set('sekitei:intro',1);if(intro.open)intro.close();else intro.removeAttribute('open');Sound.play('tap');};
+function closeIntro(){store.set('sekitei:intro',1);if(intro.open)intro.close();else intro.removeAttribute('open');Sound.play('tap');}
+$('introGo').onclick=closeIntro;$('introX').onclick=closeIntro;
 $('introAgain').onclick=()=>{closeSheet();openIntro();Sound.play('tap');};
 if(store.get('sekitei:intro')!==1)openIntro();
 document.addEventListener('keydown',e=>{
@@ -986,7 +1106,7 @@ document.addEventListener('keydown',e=>{
   if(document.body.classList.contains('sheet-open')||intro.open)return;
   if(e.target.closest('input,textarea'))return;
   if((e.key==='z'||e.key==='Z')&&!e.altKey){e.preventDefault();undo();}
-  else if(e.key==='m'||e.key==='M'){setMode(mode?0:1);}
+  else if(e.key==='p'||e.key==='P'){pauseGame();}
 });
 
 // ---- clock ----
@@ -996,14 +1116,16 @@ function startClock(){stopClock();lastTs=performance.now();$('time').textContent
 function stopClock(){if(tick)clearInterval(tick);tick=null;}
 
 // ---- veil / win ----
-function showVeil(html){$('veilCard').innerHTML=html;$('veil').hidden=false;}
-function hideVeil(){$('veil').hidden=true;}
+// solid = the garden is covered completely (loading / before start); otherwise the board shows through
+function showVeil(html,solid){$('veilCard').innerHTML=html;$('veil').classList.toggle('solid',!!solid);$('veil').hidden=false;}
+function hideVeil(){$('veil').hidden=true;$('veil').classList.remove('solid');}
 function showWin(again){
   $('time').textContent=fmt(S.time);
-  showVeil(`<h3>整いました</h3><div class="small">第 ${S.seed} 局 ・ ${SIZES[S.N].name} ・ ${fmt(S.time)}${S.hints?` ・ 教えてもらった手 ${S.hints}`:''}</div>
+  showVeil(`<h3>整いました</h3><div class="small">${SIZES[S.N].name} ・ ${S.diff?'じっくり':'手引き多め'} ・ ${fmt(S.time)}${S.hints?` ・ 教えてもらった手 ${S.hints}`:''}</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px">
-    <button class="btn" id="viewBtn">庭を眺める</button><button class="btn primary" id="nextBtn">別の庭へ</button></div>`);
-  $('nextBtn').onclick=()=>start(size,diff,Math.floor(Math.random()*9000)+1);
+    <button class="btn" id="viewBtn">庭を眺める</button><button class="btn primary" id="nextBtn">${walk?'別の庭へ歩く':'漫ろ歩きへ'}</button></div>`);
+  // today's garden has only one puzzle, so from there the next step is a walk
+  $('nextBtn').onclick=()=>{if(!walk)setWalk(true);start(size,diff,randomSeed());};
   $('viewBtn').onclick=hideVeil;
 }
 function recordWin(){
@@ -1024,7 +1146,8 @@ function renderRecords(){
 }
 
 const last=store.get('sekitei2:last');
-if(last&&typeof last==='object'&&SIZES[last.N])start(last.N,last.d,last.seed);else start(8,0,todaySeed());
+// 今日の庭 always opens today's puzzle (a new day brings a new one); 漫ろ歩き resumes the last walk
+if(last&&typeof last==='object'&&SIZES[last.N])start(last.N,last.d,walk?last.seed:todaySeed());else start(8,0,todaySeed());
 })();
 </script>
 <script>
