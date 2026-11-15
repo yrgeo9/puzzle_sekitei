@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-t4DBwaSNPT+FgXKuMiXBnNAK4Ss4mvS2+1qChtuL2kU=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-E42lm6Yu0kevAeWdm1eDupS+/tOgI7c8zUkAwCGXN5w=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -190,11 +190,25 @@ aside p{margin:0}
 .veil .card{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:24px 28px 22px;display:flex;flex-direction:column;gap:10px;align-items:center;max-width:320px;
   box-shadow:0 20px 40px -24px rgba(40,30,10,.35)}
 .veil h3{font-family:var(--display);font-weight:700;font-size:28px;margin:0;letter-spacing:.24em;padding-left:.24em}
-.veil h3::after{content:"";display:block;width:22px;height:22px;margin:12px auto 0;background:var(--shu);border-radius:2px;
+.veil h3::after{content:"";display:block;width:20px;height:20px;margin:10px auto 0;background:var(--shu);border-radius:2px;
   box-shadow:inset 0 0 0 2px var(--shu),inset 0 0 0 3px rgba(255,255,255,.55)}
 .veil.solid{inset:9px;background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 6px,var(--rake) 6px 7px);backdrop-filter:none}
 .vlabel{margin:0;font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.04em;white-space:nowrap}
 .startgo{padding:12px 36px;font-size:16px;letter-spacing:.3em;margin-top:4px}
+/* solved card: compact so it fits even the smallest garden on a phone */
+.card.win{padding:16px 16px 14px;gap:9px;max-width:300px}
+.card.win h3{font-size:24px;letter-spacing:.2em;padding-left:.2em;display:flex;align-items:center;gap:10px}
+.card.win h3::after{margin:0;width:17px;height:17px}
+.card.win .small{font-size:12px;line-height:1.5}
+.sharebox{width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0 2px;border-top:1px solid var(--line)}
+.sharelabel{font-size:11px;color:var(--muted);letter-spacing:.14em}
+.sharelinks{display:flex;justify-content:center;gap:6px;flex-wrap:nowrap}
+.sbtn{font-family:var(--display);font-weight:500;font-size:12.5px;color:var(--ink);text-decoration:none;cursor:pointer;
+  border:1px solid var(--line);background:var(--panel);border-radius:2px;padding:5px 10px;min-width:40px;text-align:center;line-height:1.4;white-space:nowrap}
+.winbtns{display:flex;gap:6px;justify-content:center;flex-wrap:nowrap}
+.winbtns .btn{padding:8px 12px;font-size:13.5px;white-space:nowrap}
+.sbtn:hover{border-color:var(--ink)}
+.sbtn:focus-visible{outline:2px solid var(--moss);outline-offset:2px}
 .spinner{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);border-top-color:var(--ink);animation:spin 1.1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -955,7 +969,9 @@ let drag=null;
 const board=$('board');
 board.addEventListener('contextmenu',e=>e.preventDefault());
 board.addEventListener('pointerdown',e=>{
-  const el=e.target.closest('.cell');if(!el||!S||S.done||!S.started)return;const i=+el.dataset.i;if(S.clue[i]>=0)return;
+  const el=e.target.closest('.cell');
+  if(el&&S&&S.done&&$('veil').hidden){showWin(true);return;}
+  if(!el||!S||S.done||!S.started)return;const i=+el.dataset.i;if(S.clue[i]>=0)return;
   e.preventDefault();
   const useMark=mode===1||e.button===2;const cur=S.cells[i];
   const target=useMark?(cur===2?0:2):(cur===1?0:1);
@@ -1117,13 +1133,46 @@ function stopClock(){if(tick)clearInterval(tick);tick=null;}
 
 // ---- veil / win ----
 // solid = the garden is covered completely (loading / before start); otherwise the board shows through
-function showVeil(html,solid){$('veilCard').innerHTML=html;$('veil').classList.toggle('solid',!!solid);$('veil').hidden=false;}
+function showVeil(html,solid){$('veilCard').className='card';$('veilCard').innerHTML=html;$('veil').classList.toggle('solid',!!solid);$('veil').hidden=false;}
 function hideVeil(){$('veil').hidden=true;$('veil').classList.remove('solid');}
+// ---- sharing the clear time ----
+// The link carries the garden (size, difficulty, number) so friends can walk the same garden.
+const SITE_URL='https://yrgeo9.github.io/puzzle_sekitei/';
+function shareUrl(){
+  const onSite=/^https?:$/.test(location.protocol)&&location.hostname.endsWith('github.io');
+  const base=onSite?location.origin+location.pathname:SITE_URL;
+  return `${base}?n=${S.N}&d=${S.diff}&s=${S.seed}&w=${walk?1:0}`;
+}
+function shareText(){
+  const t=new Date(),kind=`${SIZES[S.N].name}・${S.diff?'じっくり':'手引き多め'}`;
+  const where=walk?`漫ろ歩きの庭（${kind}）`:`${t.getMonth()+1}月${t.getDate()}日の今日の庭（${kind}）`;
+  return `石庭パズル ${where}を${S.hints?`、教えを${S.hints}回乞いつつ`:''} ${fmt(S.time)} で整えました。 #石庭パズル`;
+}
 function showWin(again){
   $('time').textContent=fmt(S.time);
-  showVeil(`<h3>整いました</h3><div class="small">${SIZES[S.N].name} ・ ${S.diff?'じっくり':'手引き多め'} ・ ${fmt(S.time)}${S.hints?` ・ 教えてもらった手 ${S.hints}`:''}</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px">
+  const canShare=typeof navigator.share==='function';
+  showVeil(`<h3>整いました</h3><div class="small">${SIZES[S.N].name} ・ ${S.diff?'じっくり':'手引き多め'} ・ ${fmt(S.time)}${S.hints?` ・ 教えを乞うた ${S.hints}回`:''}</div>
+    <div class="sharebox"><span class="sharelabel">記録を伝える</span>
+      <div class="sharelinks">
+        ${canShare?'<button type="button" class="sbtn" id="shareNative">共有</button>':''}
+        <a class="sbtn" id="shareX" target="_blank" rel="noopener noreferrer">X</a>
+        <a class="sbtn" id="shareLine" target="_blank" rel="noopener noreferrer">LINE</a>
+        <button type="button" class="sbtn" id="shareCopy">コピー</button>
+      </div></div>
+    <div class="winbtns">
     <button class="btn" id="viewBtn">庭を眺める</button><button class="btn primary" id="nextBtn">${walk?'別の庭へ歩く':'漫ろ歩きへ'}</button></div>`);
+  $('veilCard').classList.add('win');
+  const text=shareText(),url=shareUrl(),enc=encodeURIComponent;
+  $('shareX').href=`https://x.com/intent/post?text=${enc(text)}&url=${enc(url)}`;
+  $('shareLine').href=`https://line.me/R/share?text=${enc(text+'\n'+url)}`;
+  if(canShare)$('shareNative').onclick=()=>{Sound.play('tap');navigator.share({title:'石庭パズル',text,url}).catch(()=>{});};
+  $('shareCopy').onclick=()=>{
+    const all=text+'\n'+url,b=$('shareCopy');Sound.play('tap');
+    const done=()=>{b.textContent='コピー済み';setTimeout(()=>{if(b.isConnected)b.textContent='コピー';},1800);};
+    const fallback=()=>{const ta=document.createElement('textarea');ta.value=all;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){}ta.remove();};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(all).then(done,fallback);else fallback();
+  };
   // today's garden has only one puzzle, so from there the next step is a walk
   $('nextBtn').onclick=()=>{if(!walk)setWalk(true);start(size,diff,randomSeed());};
   $('viewBtn').onclick=hideVeil;
@@ -1146,8 +1195,15 @@ function renderRecords(){
 }
 
 const last=store.get('sekitei2:last');
+// a shared link (?n=&d=&s=&w=) opens exactly that garden; every value is range-checked
+let shared=null;
+try{const q=new URLSearchParams(location.search);
+  if(q.has('s')){const N=int(q.get('n'),8,12,0),d=int(q.get('d'),0,1,0),sd=int(q.get('s'),1,9999,0);
+    if(SIZES[N]&&sd)shared={N,d,sd,w:q.get('w')==='1'};
+    history.replaceState(null,'',location.pathname);}}catch(e){}
+if(shared){setWalk(shared.w||shared.sd!==todaySeed());start(shared.N,shared.d,shared.sd);}
 // 今日の庭 always opens today's puzzle (a new day brings a new one); 漫ろ歩き resumes the last walk
-if(last&&typeof last==='object'&&SIZES[last.N])start(last.N,last.d,walk?last.seed:todaySeed());else start(8,0,todaySeed());
+else if(last&&typeof last==='object'&&SIZES[last.N])start(last.N,last.d,walk?last.seed:todaySeed());else start(8,0,todaySeed());
 })();
 </script>
 <script>
