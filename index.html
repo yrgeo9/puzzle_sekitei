@@ -283,7 +283,7 @@ aside p{margin:0}
   .veil.solid{inset:6px}
   .coords-top{padding-inline:6px}
   .coords-right{padding-block:6px}
-  .tools{flex-shrink:0;display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr 1.25fr;gap:5px}
+  .tools{flex-shrink:0;display:grid;grid-template-columns:1.25fr 1fr 1fr 1.1fr 1fr;gap:5px}
   .tools .btn{font-size:13px;padding:0 2px;min-height:46px;justify-content:center;gap:5px;white-space:nowrap;letter-spacing:.02em}
   .tools .btn.two{gap:1px}
   .tools .btn{font-size:12.5px;letter-spacing:0}
@@ -359,11 +359,11 @@ button{touch-action:manipulation}
       <p class="hintmsg" id="hintMsg" aria-live="polite"></p>
     </div>
     <div class="tools">
-      <button class="btn two" id="hintBtn" title="次に推理できる一手を教わる"><span>教えを乞う</span><small>ヒントを貰う</small></button>
-      <button class="btn two" id="pauseBtn" title="パズルを一時停止 (P)"><span>休憩</span><small>パズルを一時停止</small></button>
-      <button class="btn two" id="resetBtn" title="盤上の印をすべて消す"><span>砂を均す</span><small>印を全消し</small></button>
-      <button class="btn" id="undoBtn" title="一手戻す (Z)">一手戻す <kbd>Z</kbd></button>
       <button class="btn mode" id="modeBtn" aria-pressed="false" title="置くものを切り替え"><span class="mopt on" id="optStone"><i class="modeicon"></i>石</span><span class="msep" aria-hidden="true"></span><span class="mopt" id="optMark"><i class="modeicon ring"></i>印</span></button>
+      <button class="btn" id="undoBtn" title="一手戻す (Z)">一手戻す <kbd>Z</kbd></button>
+      <button class="btn two" id="pauseBtn" title="パズルを一時停止 (P)"><span>休憩</span><small>パズルを一時停止</small></button>
+      <button class="btn two" id="hintBtn" title="次に推理できる一手を教わる"><span>教えを乞う</span><small>ヒントを貰う</small></button>
+      <button class="btn two" id="resetBtn" title="盤上の印をすべて消す"><span>砂を均す</span><small>印を全消し</small></button>
     </div>
   </main>
 
