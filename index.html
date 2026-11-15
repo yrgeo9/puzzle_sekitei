@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-VhNrmWiZZlLT0+lqc35B6faqZK7pkBCFhTwXtbKV3iY=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-pNkUteSgCxvwaOey+NCGDIT+kh0nyWx/h2myxrhqaEA=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -102,11 +102,13 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
   background:var(--sand);
   box-shadow:inset 0 1px 4px rgba(60,50,30,.12)}
 .rake{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
-.rake g path,.rake g circle{fill:none;stroke:var(--rake);stroke-width:1.15;vector-effect:non-scaling-stroke;stroke-linecap:round}
+/* line widths are in garden units: --px is one screen pixel in those units (set by rakeScale), so lines stay
+   about a pixel wide without vector-effect, which iPhone Safari drops inside a fading group */
+.rake g path,.rake g circle{fill:none;stroke:var(--rake);stroke-width:calc(var(--px,.03)*1.15);stroke-linecap:round}
 /* where the grooves cross: a small pressed point, like the pegs of a stretched string */
 .rake .rr{transition:opacity .5s ease}
 .rake .rr path{stroke:color-mix(in srgb,var(--rake) 80%,#b5aa94)}
-.rake circle.knot{transition:opacity .8s;fill:rgba(120,108,86,.28);stroke:var(--ridge);stroke-width:.8}
+.rake circle.knot{transition:opacity .8s;fill:rgba(120,108,86,.28);stroke:var(--ridge);stroke-width:calc(var(--px,.03)*.8)}
 .cell{position:relative;aspect-ratio:1;border:0;padding:0;margin:0;background:transparent;cursor:pointer;
   box-shadow:inset -1px -1px 0 var(--groove),inset 1px 1px 0 var(--ridge);font:inherit;color:inherit}
 .cell.edgeR{box-shadow:inset 0 -1px 0 var(--groove),inset 1px 1px 0 var(--ridge)}
@@ -1045,13 +1047,18 @@ function rakeSvg(N,seed,clue){
   const kn=el('g',{});for(let y=1;y<N;y++)for(let x=1;x<N;x++)kn.appendChild(el('circle',{class:'knot',cx:x,cy:y,r:N<=8?.05:.06}));
   svg.appendChild(kn);
   for(const it of items){let d='';for(const [x,y] of it.pts)d+=(d?'L':'M')+f(x)+','+f(y);it.e.setAttribute('d',d);}
-  RK={N,sp,el,f,mk,caps,rings,moss,cur:null,key:null,nodes:new Map(),str:new Map(),target:new Map(),raf:0};
+  RK={N,svg,sp,el,f,mk,caps,rings,moss,cur:null,key:null,nodes:new Map(),str:new Map(),target:new Map(),raf:0};
   return svg;
 }
 // Ripples: RAKE_RINGS lines round every stone and moss island, starting just outside its body (RAKE_CORE,
 // in cells from its centre). They are traced as contours of "distance to the nearest body" on a fine
 // grid (marching squares), which is what makes neighbouring ripples merge instead of crossing.
 const RAKE_CORE=.44,RAKE_RINGS=3;
+// keep --px (one screen pixel, in garden units) right as the garden changes size
+function rakeScale(){if(!RK||!RK.svg.isConnected)return;const w=RK.svg.getBoundingClientRect().width;
+  if(w>0)RK.svg.style.setProperty('--px',String(Math.round(RK.N/w*1e5)/1e5));}
+const rakeRO=typeof ResizeObserver==='function'?new ResizeObserver(()=>rakeScale()):null;
+addEventListener('resize',()=>rakeScale());
 // pairs of bodies one cell apart across or down: their ripples go round both as one capsule
 function rakePairs(bodies){const out=[],at=new Set(bodies.map(([x,y])=>x+','+y));
   for(const [x,y] of bodies){if(at.has((x+1)+','+y))out.push([x,y,x+1,y]);if(at.has(x+','+(y+1)))out.push([x,y,x,y+1]);}return out;}
@@ -1130,7 +1137,7 @@ function build(){
     }
   }
   if(RK&&RK.raf)cancelAnimationFrame(RK.raf);
-  b.prepend(rakeSvg(N,S.seed,S.clue));rakeStones(S.cells,true);
+  b.prepend(rakeSvg(N,S.seed,S.clue));rakeStones(S.cells,true);rakeScale();if(rakeRO){rakeRO.disconnect();rakeRO.observe(b);}
   // edges, shogi style: above each column its number (1 = rightmost) and its stone count;
   // right of each row its stone count and its kanji number (一 = top)
   const ct=$('colLabels'),cr=$('rowLabels');
