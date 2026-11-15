@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-ghbi3Rx1svC2MjP/Ch9GyyCj07aJQm7l9clqm/ZGll8=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-hcpG4gwmNrwq4y3w8v2uG4ZVqntXCR9vTQKecuuKEl8=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -399,9 +399,9 @@ button{touch-action:manipulation}
         <button data-diff="1" aria-pressed="true">じっくり</button>
       </div>
       <p class="small segnote" id="diffDesc"></p>
-      <div id="walkMore" hidden>
-        <button class="btn primary newgarden" type="button" id="newGardenBtn">別の庭へ歩く</button>
-        <p class="small" style="margin-top:6px">同じ広さ・難しさで、まだ見ていない庭を作ります。</p>
+      <div id="walkMore">
+        <button class="btn primary newgarden" type="button" id="newGardenBtn">別の庭に向かう</button>
+        <p class="small" id="goNote" style="margin-top:6px"></p>
       </div>
     </section>
     <section data-tab="rules">
@@ -872,10 +872,11 @@ function todaySeed(){const d=new Date();return (d.getFullYear()*372+d.getMonth()
 let walk=store.get('sekitei:walk')===1;
 const randomSeed=()=>Math.floor(Math.random()*9000)+1;
 const newSeed=()=>walk?randomSeed():todaySeed();
+let pend=null;   // choices made in 庭の種類 that are not applied yet
 const labelText=()=>`${SIZES[size].name} ・ ${diff?'じっくり':'手引き多め'} ・ ${walk?'漫ろ歩き':'今日の庭'}`;
 function start(N,d,seed){
   N=SIZES[N]?N:8;d=d===1?1:0;seed=int(seed,1,9999,todaySeed());
-  size=N;diff=d;syncSeg();
+  size=N;diff=d;pend={walk,size,diff};syncSeg();
   const K=SIZES[N].K;$('kRule').textContent=K;$('sizeNote').textContent=`（${SIZES[N].name}・石${K}の場合）`;
   stopClock();if(S)S.started=false;
   $('time').style.visibility='hidden';
@@ -1080,33 +1081,36 @@ function shareApp(btn){
 }
 $('appShare').onclick=()=>shareApp($('appShare'));
 $('appShareDesk').onclick=()=>shareApp($('appShareDesk'));
-$('newGardenBtn').onclick=()=>{closeSheet();start(size,diff,randomSeed());};
-function setWalk(v){walk=!!v;store.set('sekitei:walk',walk?1:0);syncSeg();}
-document.querySelectorAll('.walkSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(!b)return;
-  const v=b.dataset.walk==='1';if(v===walk&&S&&!S.done)return;Sound.play('unmark');setWalk(v);closeSheet();start(size,diff,newSeed());});
+$('newGardenBtn').onclick=()=>{
+  const P=pend||{walk,size,diff};setWalk(P.walk);closeSheet();
+  start(P.size,P.diff,P.walk?randomSeed():todaySeed());};
+function setWalk(v){walk=!!v;store.set('sekitei:walk',walk?1:0);if(pend)pend.walk=walk;syncSeg();}
+function choose(k,v){if(!pend)pend={walk,size,diff};if(pend[k]===v)return;pend[k]=v;Sound.play('unmark');syncSeg();}
+document.querySelectorAll('.walkSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('walk',b.dataset.walk==='1');});
 // desktop: the garden settings live at the top of the side panel; bring them into view
 $('gardenBtn').onclick=()=>{const s=$('gardenSec');s.scrollIntoView({behavior:'smooth',block:'nearest'});
   s.classList.remove('flash');void s.offsetWidth;s.classList.add('flash');Sound.play('tap');};
 // changing any 庭の種類 setting sweeps the sand: same sound as clearing a mark
-document.querySelectorAll('.sizeSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b){Sound.play('unmark');closeSheet();start(+b.dataset.size,diff,newSeed());}});
-document.querySelectorAll('.diffSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b){Sound.play('unmark');closeSheet();start(size,+b.dataset.diff,newSeed());}});
+document.querySelectorAll('.sizeSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('size',+b.dataset.size);});
+document.querySelectorAll('.diffSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('diff',+b.dataset.diff);});
 function syncSeg(){
-  document.querySelectorAll('.walkSeg button').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.walk==='1')===walk?'true':'false'));
-  $('walkNote').textContent=walk?'気の向くままに、毎回ちがう庭を歩きます。':'日付ごとに決まる一局です。誰が遊んでも同じ庭になります。';
-  $('walkMore').hidden=!walk;
-  document.querySelectorAll('.sizeSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.size===size?'true':'false'));
-  document.querySelectorAll('.diffSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.diff===diff?'true':'false'));
+  const P=pend||{walk,size,diff};
+  document.querySelectorAll('.walkSeg button').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.walk==='1')===P.walk?'true':'false'));
+  $('walkNote').textContent=P.walk?'気の向くままに、毎回ちがう庭を歩きます。':'日付ごとに決まる一局です。誰が遊んでも同じ庭になります。';
+  $('goNote').textContent=P.walk?'選んだ広さ・難しさで、まだ見ていない庭を作ります。':'選んだ広さ・難しさの、今日の庭に向かいます。';
+  document.querySelectorAll('.sizeSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.size===P.size?'true':'false'));
+  document.querySelectorAll('.diffSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.diff===P.diff?'true':'false'));
   $('sizeDesc').textContent={
     8:'8×8マスの小さな庭。各行・各列に石を1つずつ置きます。はじめての方に。',
-    10:'10×10マスの広い庭。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'}[size];
-  $('diffDesc').textContent=diff
+    10:'10×10マスの広い庭。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'}[P.size];
+  $('diffDesc').textContent=P.diff
     ?'苔の手がかりを外せるだけ外した庭です。2つの行や苔を合わせて考える一手が必要になります。'
     :'苔の手がかりが多めの庭です。1つの行・列・苔を見るだけで解き進められます。';
 }
 // ---- bottom sheet (phone) ----
 function setTab(t){$('sheet').dataset.tab=t;document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t?'true':'false'));$('sheetBody').scrollTop=0;}
 setTimeout(()=>document.body.classList.add('ready'),400);
-function openSheet(t){setTab(t);document.body.classList.add('sheet-open');setTimeout(()=>$('sheetClose').focus({preventScroll:true}),50);}
+function openSheet(t){pend={walk,size,diff};syncSeg();setTab(t);document.body.classList.add('sheet-open');setTimeout(()=>$('sheetClose').focus({preventScroll:true}),50);}
 function closeSheet(){document.body.classList.remove('sheet-open');}
 document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{openSheet(b.dataset.open);Sound.play('tap');});
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{setTab(b.dataset.tab);Sound.play('tap');});
@@ -1170,7 +1174,7 @@ function showWin(again){
     <div class="sharebox"><span class="sharelabel">記録を伝える</span>
       <button type="button" class="sbtn" id="shareBtn">共有</button></div>
     <div class="winbtns">
-    <button class="btn" id="viewBtn">庭を眺める</button><button class="btn primary" id="nextBtn">${walk?'別の庭へ歩く':'漫ろ歩きへ'}</button></div>`);
+    <button class="btn" id="viewBtn">庭を眺める</button><button class="btn primary" id="nextBtn">${walk?'別の庭に向かう':'漫ろ歩きへ'}</button></div>`);
   $('veilCard').classList.add('win');
   const text=shareText(),url=shareUrl();
   // one button: the phone's share sheet (X, LINE, …); where there is none, copy the text and link instead
