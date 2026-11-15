@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-pNkUteSgCxvwaOey+NCGDIT+kh0nyWx/h2myxrhqaEA=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-LaaSIXaujsZ8xDPTr3XHn1tq38+OnvX8eiQOIaZGlg0=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -273,6 +273,28 @@ aside p{margin:0}
 .mini i.s.bad::after{background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--err) 55%,white),var(--err) 66%)}
 .mini i.m{display:grid;place-items:center;color:var(--moss-ink);font-family:var(--display);font-weight:700;font-size:13px;isolation:isolate}
 .mini i.m::before{content:"";position:absolute;inset:6%;border-radius:46% 52% 44% 50% / 50% 44% 54% 46%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--moss) 70%,#c8d39a),var(--moss) 55%,var(--moss-dk));z-index:-1}
+.intro.ask{width:min(340px,calc(100vw - 32px))}
+.intro.ask h2{font-size:21px;letter-spacing:.14em}
+.askbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.askbtns .btn{justify-content:center;padding:11px;font-size:14px;letter-spacing:.12em}
+.pats{display:flex;flex-direction:column;gap:14px;margin-top:10px}
+.patrow{display:flex;flex-direction:column;gap:6px}
+.patrow b{font-family:var(--display);font-size:14px;letter-spacing:.04em}
+.patrow p{margin:0}
+.patpair{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.patpair figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:3px}
+.patpair figcaption{font-size:10.5px;color:var(--muted);letter-spacing:.1em}
+.patarrow{color:var(--muted);font-size:14px;margin-bottom:16px}
+.pat{display:grid;grid-template-columns:repeat(var(--c),17px);background:var(--sand);border:2px solid var(--curb);border-radius:2px;margin-top:2px}
+.pat i{width:17px;height:17px;position:relative;display:grid;place-items:center;font-style:normal;font-size:10.5px;line-height:1;color:var(--muted);
+  box-shadow:inset -1px -1px 0 var(--groove),inset 1px 1px 0 var(--ridge)}
+.pat i.q::after{content:"?"}
+.pat i.h{background:color-mix(in srgb,var(--moss) 16%,transparent)}
+.pat i.c{background:color-mix(in srgb,var(--shu) 13%,transparent)}
+.pat i.x::after{content:"×";color:color-mix(in srgb,var(--ink) 38%,transparent)}
+.pat i.s::after{content:"";position:absolute;inset:16%;border-radius:50%;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%)}
+.pat i.m{color:var(--moss-ink);font-family:var(--display);font-weight:700;font-size:11px;isolation:isolate}
+.pat i.m::before{content:"";position:absolute;inset:6%;border-radius:46% 52% 44% 50% / 50% 44% 54% 46%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--moss) 70%,#c8d39a),var(--moss) 55%,var(--moss-dk));z-index:-1}
 .intro-go{justify-content:center;padding:12px;margin-top:4px;font-size:15px;letter-spacing:.2em}
 
 /* ---- phone: one screen, no page scroll; side panels become a bottom sheet ---- */
@@ -318,7 +340,7 @@ aside p{margin:0}
   .msep{margin:0 6px}
   .tools .btn.mode{gap:0}
   .msep{margin:0 8px}
-  .hintmsg{flex-shrink:0;font-size:12.5px;line-height:1.5;height:3em;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .hintmsg{flex-shrink:0;font-size:12.5px;line-height:1.45;height:5.8em;overflow:hidden;display:flex;align-items:center;justify-content:center}
   .scrim{display:block;position:fixed;inset:0;background:rgba(40,36,28,.3);opacity:0;pointer-events:none;transition:opacity .2s;z-index:29}
   body.sheet-open .scrim{opacity:1;pointer-events:auto}
   aside{position:fixed;left:0;right:0;bottom:0;z-index:30;max-height:80%;overflow:hidden;display:flex;flex-direction:column;
@@ -456,6 +478,18 @@ button{touch-action:manipulation}
       <p class="small" style="margin-top:8px">盤の上と右の小さな丸は、その列・行に置いた石の数です。</p>
       <p class="small" style="margin-top:4px">マスの呼び方は将棋盤と同じです。<br>上の数字が列（右から1、2…）、右の漢数字が行（上から一、二…）で、<br>「1二」は右端の列の上から2マス目です。</p>
     </section>
+    <section data-tab="rules">
+      <h2>「じっくり」を解くためのヒント</h2>
+      <p class="small">「じっくり」の庭は、1つの行・列・苔だけを見ても次の一手が決まりません。<b>2つの手がかり（行と行、行と苔、苔と苔）の置き方の組み合わせを全部考え、どの組み合わせでも同じになるマスを確定する</b>のが基本です。よく出てくる形を、5×5の盤（八間と同じく各行・各列に石1つ）の、解く前と解いた後の図で挙げます（? は候補、× は石なし、● は石。解いた後の図は、その形で決まるマスだけを書き換えています）。</p>
+      <div class="pats">
+        <div class="patrow"><b>2つの行が、同じ2列を取り合う</b><div class="patpair" aria-hidden="true"><figure><div class="pat" style="--c:5"><i class="x h"></i><i class="q h"></i><i class="x h"></i><i class="q h"></i><i class="x h"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x h"></i><i class="q h"></i><i class="x h"></i><i class="q h"></i><i class="x h"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="pat" style="--c:5"><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="x c"></i><i class="q"></i><i class="x c"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="x c"></i><i class="q"></i><i class="x c"></i><i class="q"></i><i class="x"></i><i class="x c"></i><i class="x"></i><i class="x c"></i><i class="s c"></i></div><figcaption>解いた後</figcaption></figure></div><p class="small">色の付いた1行目と3行目は、どちらも2列目か4列目にしか石を置けません。2行で2つの石なので、<b>2列目と4列目の石は、この2行が1つずつ使い切ります</b>。だから、ほかの行の2列目・4列目はすべて石なしです。すると5行目は5列目しか残らず、石が決まります。列と行を入れ替えても同じです。</p></div>
+        <div class="patrow"><b>片方の置き方が、もう片方の置き場をつぶす</b><div class="patpair" aria-hidden="true"><figure><div class="pat" style="--c:5"><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="pat" style="--c:5"><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="x"></i><i class="s"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="s"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解いた後</figcaption></figure></div><p class="small">2行目の候補は3・4列目、すぐ下の3行目の候補は3〜5列目です。2行目を4列目に置くと、3行目の候補がすべて隣接して置けなくなります。だから<b>2行目は3列目、3行目は5列目</b>に決まります。「ここに置くと、隣の行や苔が成り立たなくなる」置き方を消していきます。</p></div>
+        <div class="patrow"><b>行の候補が、すべて苔のまわりに入っている</b><div class="patpair" aria-hidden="true"><figure><div class="pat" style="--c:5"><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="m">1</i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="pat" style="--c:5"><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="m">1</i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解いた後</figcaption></figure></div><p class="small">4行目の石は2〜4列目のどれか、つまり必ず苔「1」のまわりに入ります。それで苔の「1」が埋まるので、<b>苔のまわりの、ほかのマスはすべて石なし</b>です（4行目の石の位置はまだ決まりません）。逆に、苔の残りの候補がすべて1つの行にあれば、その行の苔から外れたマスが石なしになります。</p></div>
+        <div class="patrow"><b>苔と苔の引き算</b><div class="patpair" aria-hidden="true"><figure><div class="pat" style="--c:5"><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="m">2</i><i class="m">1</i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="pat" style="--c:5"><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="s"></i><i class="m">2</i><i class="m">1</i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解いた後</figcaption></figure></div><p class="small">右の苔「1」の候補（真ん中の上下4マス）は、すべて左の苔「2」のまわりにも入っています。つまりそこには石がちょうど1つで、左の「2」のもう1つの石は、<b>左の「2」だけが接するマス（2行目の左端）</b>に入ります。マインスイーパーの引き算と同じ考え方です。</p></div>
+        <div class="patrow"><b>苔の数と「隣り合わない」決まり</b><div class="patpair" aria-hidden="true"><figure><div class="pat" style="--c:5"><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="m">2</i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="pat" style="--c:5"><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="s"></i><i class="x"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="m">2</i><i class="s"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解いた後</figcaption></figure></div><p class="small">苔「2」のまわりで残っている候補は3マスです。そのうち隣り合わない2つの組は、<b>左上と右の組だけ</b>なので、その2マスが石、残る真上は石なしです。苔の数が大きいほど置き方が絞られ、決まりやすくなります。</p></div>
+      </div>
+      <p class="small" style="margin-top:8px">候補が2〜3マスしかない行・列・苔を探し、隣の行や重なる苔と組み合わせてみてください。印をこまめに付けると候補が見えやすくなります。「教えを乞う」に出る「○と△を合わせて考えると、」は、どの2つを組み合わせればよいかの手がかりです。続く理由の部分で、なぜそのマスが決まるのかを確かめられます。</p>
+    </section>
     <section data-tab="records">
       <h2>記録</h2>
       <div class="records" id="records"></div>
@@ -474,6 +508,14 @@ button{touch-action:manipulation}
   </aside>
 </div>
 
+<dialog class="intro ask" id="hintAsk" aria-labelledby="askTitle">
+  <div class="intro-body">
+    <h2 id="askTitle">教えを乞う</h2>
+    <p class="intro-lead" id="askText"></p>
+    <p class="small" id="askNote"></p>
+    <div class="askbtns"><button class="btn" type="button" id="askNo">やめる</button><button class="btn primary" type="button" id="askYes">教わる</button></div>
+  </div>
+</dialog>
 <dialog class="intro" id="intro" aria-labelledby="introTitle">
   <button type="button" class="close intro-x" id="introX" aria-label="閉じる">×</button>
   <div class="intro-body">
@@ -1176,8 +1218,10 @@ function render(){
 
 function save(){store.set(keyOf(S.N,S.seed,S.diff),{cells:S.cells,time:S.time,hints:S.hints,done:S.done});}
 
+function clearFocus(){clearTimeout(msgTimer);cellEls.forEach(e=>e.classList.remove('focus'));}
 function apply(changes){ // [[i,newVal],...]
   const real=changes.filter(([i,v])=>S.cells[i]!==v);if(!real.length)return;
+  clearFocus();   // any move ends a hint's highlight
   S.hist.push(real.map(([i])=>[i,S.cells[i]]));
   real.forEach(([i,v])=>S.cells[i]=v);
   afterChange();
@@ -1233,7 +1277,7 @@ function setMode(m){mode=m;$('modeBtn').setAttribute('aria-pressed',m?'true':'fa
   $('optStone').classList.toggle('on',!m);$('optMark').classList.toggle('on',!!m);
   $('modeBtn').setAttribute('aria-label',m?'置くもの：印（押すと石に切り替え）':'置くもの：石（押すと印に切り替え）');}
 $('modeBtn').onclick=()=>setMode(mode?0:1);
-function undo(){if(!S||S.done||!S.started||!S.hist.length)return;S.hist.pop().forEach(([i,v])=>S.cells[i]=v);render();save();}
+function undo(){if(!S||S.done||!S.started||!S.hist.length)return;clearFocus();S.hist.pop().forEach(([i,v])=>S.cells[i]=v);render();save();}
 $('undoBtn').onclick=undo;
 function pauseGame(){
   if(!S||S.done||!S.started)return;
@@ -1252,51 +1296,100 @@ let msgTimer=null;
 // Japanese has no spaces, so a narrow screen would break a line anywhere. Each sentence (ends in 。)
 // and each phrase inside it (ends in 、 or ：) is an inline-block: a line breaks between sentences
 // first, then between phrases, and only mid-phrase when one phrase is wider than the whole line.
-function phrase(el,t){
+function phrase(el,t,flat){
   const wrap=document.createElement('span');wrap.className='ph';
-  for(const sen of String(t).match(/[^。]+。?/g)||[]){const sp=document.createElement('span');
+  for(const sen of String(t).match(/[^。]+。?/g)||[]){
+    // flat: phrases only, packed line after line (a long message would waste room keeping sentences whole)
+    const sp=flat?wrap:document.createElement('span');
     for(const c of sen.match(/[^、：]+[、：]?/g)){const cs=document.createElement('span');cs.textContent=c;sp.appendChild(cs);}
-    wrap.appendChild(sp);}
+    if(!flat)wrap.appendChild(sp);}
   el.replaceChildren(wrap);}
-// on a phone the hint line has room for two lines; a longer message steps its type down a little to fit
-function fitMsg(){const box=$('hintMsg');box.style.fontSize='';
+// On a phone the hint line has room for four lines. A message that does not fit is first packed phrase by
+// phrase instead of sentence by sentence, then its type steps down a little.
+let msgText='';
+function fitMsg(){const box=$('hintMsg'),over=()=>box.scrollHeight>box.clientHeight+1;
+  box.style.fontSize='';phrase(box,msgText);
+  if(!over())return;phrase(box,msgText,true);
   let f=parseFloat(getComputedStyle(box).fontSize);
-  while(box.scrollHeight>box.clientHeight+1&&f>10.5){f-=.5;box.style.fontSize=f+'px';}}
-function setMsg(t){phrase($('hintMsg'),t);fitMsg();}
+  while(over()&&f>10){f-=.5;box.style.fontSize=f+'px';}}
+function setMsg(t){msgText=String(t);fitMsg();}
 addEventListener('resize',()=>fitMsg());
-function focusCells(list){
+// ms: how long the highlight stays; 0 keeps it until the next move on the board (clearFocus)
+function focusCells(list,ms){
   cellEls.forEach(e=>e.classList.remove('focus'));list.forEach(i=>cellEls[i]&&cellEls[i].classList.add('focus'));
-  clearTimeout(msgTimer);msgTimer=setTimeout(()=>cellEls.forEach(e=>e.classList.remove('focus')),2600);
+  clearTimeout(msgTimer);if(ms!==0)msgTimer=setTimeout(()=>cellEls.forEach(e=>e.classList.remove('focus')),ms||2600);
 }
 function unitLabel(u){
   if(u.kind==='row')return `${rowName(u.id)}の行`;if(u.kind==='col')return `${colName(u.id)}の列`;
   return `${cellName(u.id)}の苔「${S.clue[u.id]}」`;}
 function unitCells(u){return u.kind==='clue'?[u.id,...u.cells]:u.cells;}
-function explain(d,v){
-  const w=d.why,what=v?'石が入ります':'石は置けません';
+// Why a hint's cell is decided, worked out from the board as it was before the move (st).
+const isAdj=(N,a,b)=>a!==b&&Math.abs(((a/N)|0)-((b/N)|0))<=1&&Math.abs(a%N-b%N)<=1;
+function unitReason(w,i,v,st){
+  const e=enumUnit(S.N,w.u,st,4000),L=unitLabel(w.u),n=w.need;if(!e||e.bad)return '';
+  if(v)return e.unk.length===n?(n===1?`${L}は石を置けるマスがここしか残っていないので`:`${L}は残り${n}つの石に対して置けるマスが${n}マスしかないので`)
+    :`${L}の残り${n}つの石は、隣り合わないように置くとどの置き方でもこのマスを使うので`;
+  return `${L}の残り${n}つの石は、このマスに置くと残りを隣り合わないように置けなくなるので`;}
+// Two units: every way of filling one of them, with this cell decided the other way, leaves the other unit
+// no way to be filled. Say which unit runs out, and whether it is because its stones would touch the
+// first unit's stones or because the two disagree on a cell they share.
+function pairReason(w,i,v,st){
+  const N=S.N,A=enumUnit(N,w.a,st,4000),B=enumUnit(N,w.b,st,4000);if(!A||!B||A.bad||B.bad)return '';
+  const inA=A.unk.indexOf(i)>=0,inB=B.unk.indexOf(i)>=0,shared=A.unk.filter(c=>B.unk.indexOf(c)>=0);
+  const lead=v?'ここを空ければ':'ここに石を置けば';
+  if(inA&&inB)return lead+`両方を満たす置き方がなくなるので`;
+  const xa=inA,X=xa?w.a:w.b,Y=xa?w.b:w.a,EX=xa?A:B,EY=xa?B:A;
+  const PX=EX.pl.filter(p=>(p.indexOf(i)>=0)!==!!v);   // ways to fill X with this cell decided the other way
+  let adjN=0,cntN=0;
+  for(const p of PX)for(const q of EY.pl){
+    let cnt=false;for(const c of shared)if((p.indexOf(c)>=0)!==(q.indexOf(c)>=0)){cnt=true;break;}
+    if(cnt){cntN++;continue;}
+    let ad=false;for(const x of p){for(const y of q)if(isAdj(N,x,y)){ad=true;break;}if(ad)break;}
+    if(ad)adjN++;}
+  const LX=unitLabel(X),LY=unitLabel(Y),n=EY.need;
+  if(adjN&&!cntN)return v?`${lead}${LX}の石がほかに入り、${LY}の残り${n}つの石がどこに置いてもそれと隣り合うので`
+    :`${lead}${LY}の残り${n}つの石がどこに置いてもこの石と隣り合うので`;
+  if(cntN&&!adjN)return `${lead}重なるマスで石の数が合わなくなるので`;
+  return `${lead}${LY}の残り${n}つの石を置ける場所がなくなるので`;}
+function explain(d,v,st){
+  const w=d.why,what=v?'石が入ります':'石は置けません',i=d.set[0][0];
   if(w.kind==='adj')return `石のまわり8マスには、ほかの石を置けません。`;
   if(w.kind==='unit'){
     if(w.need===0)return w.u.kind==='clue'&&w.u.target===0?`${unitLabel(w.u)}のまわりには石がひとつもありません。`
       :`${unitLabel(w.u)}はもう石が揃っています。残りのマスに${what}。`;
-    return `${unitLabel(w.u)}：残り${w.need}つの石をどう置いても、このマスには${what}。`;}
-  return `${unitLabel(w.a)}と${unitLabel(w.b)}を合わせて考えると、このマスには${what}。`;
+    const r=st?unitReason(w,i,v,st):'';
+    return r?`${r}、このマスには${what}。`:`${unitLabel(w.u)}：残り${w.need}つの石をどう置いても、このマスには${what}。`;}
+  const r=st?pairReason(w,i,v,st):'';
+  return `${unitLabel(w.a)}と${unitLabel(w.b)}を合わせて考えると、${r?r+'、':''}このマスには${what}。`;
 }
 function flash(i){const el=cellEls[i];el.classList.remove('hint');void el.offsetWidth;el.classList.add('hint');}
-$('hintBtn').onclick=()=>{
+// 教えを乞う: a mistake on the board comes first; otherwise the next deduction, made on the board, with its reason
+const hintCells=w=>w.kind==='adj'?[w.i]:w.kind==='unit'?unitCells(w.u):[...unitCells(w.a),...unitCells(w.b)];
+function giveHint(){
   if(!S||S.done||!S.started)return;const {N,K,cells,stone,clue}=S;
-  // 1) point out a mistake first
   for(let i=0;i<N*N;i++){if(clue[i]>=0)continue;
     if(cells[i]===1&&!stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);Sound.play('remove');setMsg('この石は答えと合わないので取り除きました。');return;}
     if(cells[i]===2&&stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);Sound.play('unmark');setMsg('ここには石が入るので、印を外しました。');return;}}
-  // 2) find the next deduction from what is already on the board
   const st=new Int8Array(N*N).fill(-1);
   for(let i=0;i<N*N;i++){if(clue[i]>=0)st[i]=0;else if(cells[i]===1)st[i]=1;else if(cells[i]===2)st[i]=0;}
   const nb=geoOf(N);const d=logicStep(N,K,clue,st,3,{nb,units:unitsOf(N,K,clue,nb)});
-  if(!d)return;
-  const [i,v]=d.set[0];S.hints++;apply([[i,v?1:2]]);flash(i);if(!S.done)Sound.play('hint');
-  const w=d.why;if(!S.done)focusCells(w.kind==='adj'?[w.i]:w.kind==='unit'?unitCells(w.u):[...unitCells(w.a),...unitCells(w.b)]);
-  setMsg(explain(d,v));
-};
+  if(!d){setMsg('いまの盤面から教えられる一手はありません。');return;}
+  const [i,v]=d.set[0],msg=explain(d,v,st);   // the reason is read off the board before the move is made
+  S.hints++;apply([[i,v?1:2]]);flash(i);if(!S.done)Sound.play('hint');
+  if(!S.done)focusCells(hintCells(d.why),0);   // stays lit until the next move
+  setMsg(msg);}
+// ask before each hint
+const hintAsk=$('hintAsk');
+function closeAsk(){if(hintAsk.open)hintAsk.close();else hintAsk.removeAttribute('open');}
+$('hintBtn').onclick=()=>{
+  if(!S||S.done||!S.started)return;
+  phrase($('askText'),'次に推理できる一手とその理由を見て、盤に置きますか？');
+  $('askYes').textContent='教わる';
+  $('askNote').textContent=S.hints?`これまでに${S.hints}回教えを乞いました。`:'教えを乞うと、この庭は「手助けなしの最短記録」には残りません。';
+  try{hintAsk.showModal();}catch(e){hintAsk.setAttribute('open','');}
+  Sound.play('tap');};
+$('askNo').onclick=closeAsk;
+$('askYes').onclick=()=>{closeAsk();giveHint();};
 // 共有 in the top menu passes the game itself on (not a result): share sheet, or copy the link
 function shareApp(btn){
   const onSite=/^https?:$/.test(location.protocol)&&location.hostname.endsWith('github.io');
@@ -1368,7 +1461,7 @@ $('introGo').onclick=closeIntro;
 // every button sounds like setting a mark; board cells, 教えを乞う, 砂を均す and the 庭の種類 choices keep their own sounds.
 // Bubble phase, so a press that turns 効果音 on is already heard.
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('button');
-  if(b&&!b.closest('.cell,#hintBtn,#resetBtn,.walkSeg,.sizeSeg,.diffSeg'))Sound.play('mark');});$('introX').onclick=closeIntro;
+  if(b&&!b.closest('.cell,#hintBtn,#askYes,#resetBtn,.walkSeg,.sizeSeg,.diffSeg'))Sound.play('mark');});$('introX').onclick=closeIntro;
 $('introAgain').onclick=()=>{closeSheet();openIntro();};
 if(store.get('sekitei:intro')!==1)openIntro();
 document.addEventListener('keydown',e=>{
