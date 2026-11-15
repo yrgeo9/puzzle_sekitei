@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-hcpG4gwmNrwq4y3w8v2uG4ZVqntXCR9vTQKecuuKEl8=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-0SeIPfum50UjZmUtKsee83bkhZVpyEmavftyO7+tFHM=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -124,6 +124,7 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .cell.hint{animation:hint 1.2s ease 2}
 .cell.focus:not(.clue){background:color-mix(in srgb,var(--moss) 13%,transparent)}
 .cell.clue.focus::before{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--moss)}
+.hintmsg .hm span{display:inline-block}
 .hintmsg{margin:0;min-height:1.75em;width:100%;max-width:560px;text-align:center;font-size:14px;color:var(--ink);letter-spacing:.02em}
 @keyframes hint{50%{background-color:color-mix(in srgb,var(--moss) 28%,transparent)}}
 .pips{display:flex;align-items:center;justify-content:center;gap:3px}
@@ -199,14 +200,13 @@ aside p{margin:0}
 .startgo{padding:12px 36px;font-size:16px;letter-spacing:.3em;margin-top:4px}
 /* solved card: compact so it fits even the smallest garden on a phone */
 .card.win{padding:16px 16px 14px;gap:9px;max-width:300px}
-.card.win h3{font-size:24px;letter-spacing:.2em;padding-left:.2em;display:flex;align-items:center;gap:10px}
-.card.win h3::after{margin:0;width:17px;height:17px}
+.card.win h3{font-size:24px;letter-spacing:.2em;padding-left:.2em}
+.card.win h3::after{content:none}
+.card.win .winmeta{line-height:1.7}
 .card.win .small{font-size:12px;line-height:1.5}
-.sharebox{width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0 2px;border-top:1px solid var(--line)}
-.sharelabel{font-size:11px;color:var(--muted);letter-spacing:.14em}
 .sbtn{font-family:var(--display);font-weight:500;font-size:13.5px;letter-spacing:.2em;color:var(--ink);cursor:pointer;
   border:1px solid var(--line);background:var(--panel);border-radius:2px;padding:7px 26px;min-width:120px;text-align:center;line-height:1.4;white-space:nowrap}
-.winbtns{display:flex;gap:6px;justify-content:center;flex-wrap:nowrap}
+.winbtns{width:100%;display:flex;gap:6px;justify-content:center;flex-wrap:nowrap;padding-top:11px;margin-top:2px;border-top:1px solid var(--line)}
 .winbtns .btn{padding:8px 12px;font-size:13.5px;white-space:nowrap}
 .sbtn:hover{border-color:var(--ink)}
 .sbtn:focus-visible{outline:2px solid var(--moss);outline-offset:2px}
@@ -898,7 +898,7 @@ function showStart(){
   showVeil(`<p class="vlabel">${labelText()}</p>
     <button class="btn primary startgo" id="startBtn" type="button">${resumed?'つづける':'はじめる'}</button>
     <div class="small">${resumed?'押すと盤面とタイマーが戻ります。':'押すと盤面が現れ、タイマーが始まります。'}</div>`,true);
-  $('startBtn').onclick=()=>{S.started=true;hideVeil();$('time').style.visibility='';startClock();Sound.play('new');};
+  $('startBtn').onclick=()=>{S.started=true;hideVeil();$('time').style.visibility='';startClock();};
 }
 
 const KAN=['','一','二','三','四','五','六','七','八','九','十','十一','十二'];
@@ -1015,24 +1015,31 @@ board.addEventListener('keydown',e=>{
 function setMode(m){mode=m;$('modeBtn').setAttribute('aria-pressed',m?'true':'false');
   $('optStone').classList.toggle('on',!m);$('optMark').classList.toggle('on',!!m);
   $('modeBtn').setAttribute('aria-label',m?'置くもの：印（押すと石に切り替え）':'置くもの：石（押すと印に切り替え）');}
-$('modeBtn').onclick=()=>{setMode(mode?0:1);Sound.play('tap');};
-function undo(){if(!S||S.done||!S.started||!S.hist.length)return;S.hist.pop().forEach(([i,v])=>S.cells[i]=v);render();save();Sound.play('undo');}
+$('modeBtn').onclick=()=>setMode(mode?0:1);
+function undo(){if(!S||S.done||!S.started||!S.hist.length)return;S.hist.pop().forEach(([i,v])=>S.cells[i]=v);render();save();}
 $('undoBtn').onclick=undo;
 function pauseGame(){
   if(!S||S.done||!S.started)return;
-  S.started=false;stopClock();save();Sound.play('tap');
+  S.started=false;stopClock();save();
   showVeil(`<p class="vlabel">休憩中</p>
     <button class="btn primary startgo" id="resumeBtn" type="button">つづける</button>
     <div class="small">押すと盤面とタイマーが戻ります。</div>`,true);
-  $('resumeBtn').onclick=()=>{S.started=true;hideVeil();startClock();Sound.play('tap');};
+  $('resumeBtn').onclick=()=>{S.started=true;hideVeil();startClock();};
 }
 $('pauseBtn').onclick=pauseGame;
 // 砂を均す: rake away every mark; stones stay where they are
 $('resetBtn').onclick=()=>{if(!S||S.done||!S.started)return;const ch=[];S.cells.forEach((v,i)=>{if(v===2)ch.push([i,0]);});
-  if(ch.length){apply(ch);Sound.play('new');setMsg('印をすべて消しました。「一手戻す」で元に戻せます。');}
-  else{Sound.play('tap');setMsg('消す印がありません。');}};
+  if(ch.length){apply(ch);setMsg('印をすべて消しました。「一手戻す」で元に戻せます。');}
+  else setMsg('消す印がありません。');};
 let msgTimer=null;
-function setMsg(t){$('hintMsg').textContent=t;}
+function setMsg(t){
+  // each sentence is one unbreakable-looking piece, so a narrow screen breaks the line at 。
+  const box=$('hintMsg'),wrap=document.createElement('span');wrap.className='hm';
+  // a sentence too long for one line then breaks at its 、 instead
+  for(const part of String(t).match(/[^。]+。?/g)||[]){const sp=document.createElement('span');
+    for(const c of part.match(/[^、]+、?/g)){const cs=document.createElement('span');cs.textContent=c;sp.appendChild(cs);}
+    wrap.appendChild(sp);}
+  box.replaceChildren(wrap);}
 function focusCells(list){
   cellEls.forEach(e=>e.classList.remove('focus'));list.forEach(i=>cellEls[i]&&cellEls[i].classList.add('focus'));
   clearTimeout(msgTimer);msgTimer=setTimeout(()=>cellEls.forEach(e=>e.classList.remove('focus')),2600);
@@ -1055,14 +1062,14 @@ $('hintBtn').onclick=()=>{
   if(!S||S.done||!S.started)return;const {N,K,cells,stone,clue}=S;
   // 1) point out a mistake first
   for(let i=0;i<N*N;i++){if(clue[i]>=0)continue;
-    if(cells[i]===1&&!stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);Sound.play('remove');setMsg('この石は答えと合わないので取り除きました。');return;}
-    if(cells[i]===2&&stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);Sound.play('unmark');setMsg('ここには石が入るので、印を外しました。');return;}}
+    if(cells[i]===1&&!stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);setMsg('この石は答えと合わないので取り除きました。');return;}
+    if(cells[i]===2&&stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);setMsg('ここには石が入るので、印を外しました。');return;}}
   // 2) find the next deduction from what is already on the board
   const st=new Int8Array(N*N).fill(-1);
   for(let i=0;i<N*N;i++){if(clue[i]>=0)st[i]=0;else if(cells[i]===1)st[i]=1;else if(cells[i]===2)st[i]=0;}
   const nb=geoOf(N);const d=logicStep(N,K,clue,st,3,{nb,units:unitsOf(N,K,clue,nb)});
   if(!d)return;
-  const [i,v]=d.set[0];S.hints++;apply([[i,v?1:2]]);flash(i);if(!S.done)Sound.play('hint');
+  const [i,v]=d.set[0];S.hints++;apply([[i,v?1:2]]);flash(i);
   const w=d.why;focusCells(w.kind==='adj'?[w.i]:w.kind==='unit'?unitCells(w.u):[...unitCells(w.a),...unitCells(w.b)]);
   setMsg(explain(d,v));
 };
@@ -1071,7 +1078,6 @@ function shareApp(btn){
   const onSite=/^https?:$/.test(location.protocol)&&location.hostname.endsWith('github.io');
   const url=onSite?location.origin+location.pathname:SITE_URL;
   const text='石庭パズル ― 苔の数字を手がかりに、庭に石を据える。推理だけで解ける論理パズルです。';
-  Sound.play('tap');
   if(typeof navigator.share==='function'){navigator.share({title:'石庭パズル',text,url}).catch(()=>{});return;}
   const label=btn.textContent,done=()=>{btn.textContent='コピー済み';setTimeout(()=>{btn.textContent=label;},1800);};
   const all=text+'\n'+url;
@@ -1089,7 +1095,7 @@ function choose(k,v){if(!pend)pend={walk,size,diff};if(pend[k]===v)return;pend[k
 document.querySelectorAll('.walkSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('walk',b.dataset.walk==='1');});
 // desktop: the garden settings live at the top of the side panel; bring them into view
 $('gardenBtn').onclick=()=>{const s=$('gardenSec');s.scrollIntoView({behavior:'smooth',block:'nearest'});
-  s.classList.remove('flash');void s.offsetWidth;s.classList.add('flash');Sound.play('tap');};
+  s.classList.remove('flash');void s.offsetWidth;s.classList.add('flash');};
 // changing any 庭の種類 setting sweeps the sand: same sound as clearing a mark
 document.querySelectorAll('.sizeSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('size',+b.dataset.size);});
 document.querySelectorAll('.diffSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('diff',+b.dataset.diff);});
@@ -1112,17 +1118,17 @@ function setTab(t){$('sheet').dataset.tab=t;document.querySelectorAll('.tabs but
 setTimeout(()=>document.body.classList.add('ready'),400);
 function openSheet(t){pend={walk,size,diff};syncSeg();setTab(t);document.body.classList.add('sheet-open');setTimeout(()=>$('sheetClose').focus({preventScroll:true}),50);}
 function closeSheet(){document.body.classList.remove('sheet-open');}
-document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{openSheet(b.dataset.open);Sound.play('tap');});
-document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{setTab(b.dataset.tab);Sound.play('tap');});
-$('sheetClose').onclick=()=>{closeSheet();Sound.play('tap');};$('scrim').onclick=closeSheet;
+document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openSheet(b.dataset.open));
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+$('sheetClose').onclick=closeSheet;$('scrim').onclick=closeSheet;
 
 // ---- sound settings ----
 function syncSound(){const p=Sound.prefs();
   $('bgmToggle').setAttribute('aria-pressed',p.bgm?'true':'false');$('bgmState').textContent=p.bgm?'入':'切';
   $('seToggle').setAttribute('aria-pressed',p.se?'true':'false');$('seState').textContent=p.se?'入':'切';
   $('bgmVol').value=p.bgmVol;$('seVol').value=p.seVol;}
-$('bgmToggle').onclick=()=>{Sound.set('bgm',!Sound.prefs().bgm);syncSound();Sound.play('tap');};
-$('seToggle').onclick=()=>{Sound.set('se',!Sound.prefs().se);syncSound();Sound.play('tap');};
+$('bgmToggle').onclick=()=>{Sound.set('bgm',!Sound.prefs().bgm);syncSound();};
+$('seToggle').onclick=()=>{Sound.set('se',!Sound.prefs().se);syncSound();};
 $('bgmVol').oninput=e=>Sound.set('bgmVol',e.target.value);
 $('seVol').oninput=e=>Sound.set('seVol',e.target.value);
 $('seVol').onchange=()=>Sound.play('place');
@@ -1133,16 +1139,20 @@ syncSound();
 const intro=$('intro');
 function openIntro(){if(intro.open)return;try{intro.showModal();}catch(e){intro.setAttribute('open','');}}
 intro.addEventListener('close',()=>store.set('sekitei:intro',1));
-function closeIntro(){store.set('sekitei:intro',1);if(intro.open)intro.close();else intro.removeAttribute('open');Sound.play('tap');}
-$('introGo').onclick=closeIntro;$('introX').onclick=closeIntro;
-$('introAgain').onclick=()=>{closeSheet();openIntro();Sound.play('tap');};
+function closeIntro(){store.set('sekitei:intro',1);if(intro.open)intro.close();else intro.removeAttribute('open');}
+$('introGo').onclick=closeIntro;
+// every button sounds like setting a mark; the 庭の種類 choices keep their own sweep and board cells keep theirs.
+// Bubble phase, so a press that turns 効果音 on is already heard.
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('button');
+  if(b&&!b.closest('.cell,.walkSeg,.sizeSeg,.diffSeg'))Sound.play('mark');});$('introX').onclick=closeIntro;
+$('introAgain').onclick=()=>{closeSheet();openIntro();};
 if(store.get('sekitei:intro')!==1)openIntro();
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&document.body.classList.contains('sheet-open')){closeSheet();return;}
   if(document.body.classList.contains('sheet-open')||intro.open)return;
   if(e.target.closest('input,textarea'))return;
-  if((e.key==='z'||e.key==='Z')&&!e.altKey){e.preventDefault();undo();}
-  else if(e.key==='p'||e.key==='P'){pauseGame();}
+  if((e.key==='z'||e.key==='Z')&&!e.altKey){e.preventDefault();Sound.play('mark');undo();}
+  else if(e.key==='p'||e.key==='P'){Sound.play('mark');pauseGame();}
 });
 
 // ---- clock ----
@@ -1170,16 +1180,15 @@ function shareText(){
 }
 function showWin(again){
   $('time').textContent=fmt(S.time);
-  showVeil(`<h3>整いました</h3><div class="small">${SIZES[S.N].name} ・ ${S.diff?'じっくり':'手引き多め'} ・ ${fmt(S.time)}${S.hints?` ・ 教えを乞うた ${S.hints}回`:''}</div>
-    <div class="sharebox"><span class="sharelabel">記録を伝える</span>
-      <button type="button" class="sbtn" id="shareBtn">共有</button></div>
+  showVeil(`<h3>整いました</h3><div class="small winmeta">${SIZES[S.N].name}・${S.diff?'じっくり':'手引き多め'}<br>${fmt(S.time)}${S.hints?` ・ ${S.hints}回教えを乞うた`:''}</div>
+    <button type="button" class="sbtn" id="shareBtn">共有</button>
     <div class="winbtns">
     <button class="btn" id="viewBtn">庭を眺める</button><button class="btn primary" id="nextBtn">${walk?'別の庭に向かう':'漫ろ歩きへ'}</button></div>`);
   $('veilCard').classList.add('win');
   const text=shareText(),url=shareUrl();
   // one button: the phone's share sheet (X, LINE, …); where there is none, copy the text and link instead
   $('shareBtn').onclick=()=>{
-    const b=$('shareBtn'),all=text+'\n'+url;Sound.play('tap');
+    const b=$('shareBtn'),all=text+'\n'+url;
     if(typeof navigator.share==='function'){navigator.share({title:'石庭パズル',text,url}).catch(()=>{});return;}
     const done=()=>{b.textContent='文面をコピーしました';setTimeout(()=>{if(b.isConnected)b.textContent='共有';},2000);};
     const fallback=()=>{const ta=document.createElement('textarea');ta.value=all;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';
