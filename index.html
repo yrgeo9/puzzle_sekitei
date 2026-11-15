@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-++b7Cn47q16tMXdcZDFy/U/aZhpYoKtW1vgkA7LGnTw=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-vA247QM5X/J1xbIDb7pwjYQEcbwJTNPOBgJzCX+CW90=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -103,7 +103,6 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
   box-shadow:inset 0 1px 4px rgba(60,50,30,.12)}
 .rake{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
 .rake g path,.rake g circle{fill:none;stroke:var(--rake);stroke-width:1.15;vector-effect:non-scaling-stroke;stroke-linecap:round}
-.rake path.fan{fill:var(--sand);stroke:none}
 /* where the grooves cross: a small pressed point, like the pegs of a stretched string */
 .rake .rr{transition:opacity .5s ease}
 .rake .rr path{stroke:color-mix(in srgb,var(--rake) 80%,#b5aa94)}
@@ -932,14 +931,16 @@ const colName=c=>String(S.N-c);          // 1 is the rightmost column, as on a s
 const rowName=r=>KAN[r+1];               // 一 is the top row
 const cellName=i=>colName(i%S.N)+rowName((i/S.N)|0);   // e.g. 1二
 // 枯山水: each garden gets its own raking, drawn from its seed so it stays the same when you come back.
-// As in a real garden, rake lines never run into each other square-on: the whole ground is one family
-// of lines that only ever lie side by side. It is one of
-//   long lines (straight, rippling or 大波), lines that turn a corner together (nested and rounded),
-//   arcs of a ripple that started outside the garden, or 青海波 (overlapping fans).
+// The ground is a stack of raked areas. At the bottom, one pattern over the whole garden: long lines
+// (straight, rippling or 大波) or lines that all turn a corner together. On top, one or two areas raked
+// another way: a band across, a band that comes in and sweeps round a corner, a curved band, or arcs
+// round a corner of the garden. No curve is wider than RAKE_BEND cells in radius.
+// An upper area always wins: the lines beneath stop short of its edge, so no two lines ever cross.
 // Every moss island and every placed stone sits in smoothed sand with ripples round it. The ripples are
 // lines of equal distance from the nearest island or stone, so where two are close their rings fuse into
 // one outline round both (like a matryoshka's), and no ripple ever runs over a stone or moss.
 let RK=null;
+const RAKE_BEND=3;
 function rakeSvg(N,seed,clue){
   const R=rngFrom((seed^0x5eed5a1d)>>>0),pick=(a,b)=>a+R()*(b-a),NS='http://www.w3.org/2000/svg';
   const sp=N<=8?1/6:1/5,step=.1;                 // gap between rake lines / sampling, in cells
@@ -947,70 +948,119 @@ function rakeSvg(N,seed,clue){
   const f=x=>Math.round(x*1000)/1000;
   const svg=el('svg',{class:'rake',viewBox:`0 0 ${N} ${N}`,preserveAspectRatio:'none','aria-hidden':'true'});
   const defs=el('defs',{});svg.appendChild(defs);
-  const id='rk'+(seed>>>0).toString(36);
+  const id='rk'+(seed>>>0).toString(36);let uid=0;
   const mk=el('mask',{id:id+'f',maskUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2});
   mk.appendChild(el('rect',{x:-1,y:-1,width:N+2,height:N+2,fill:'#fff'}));defs.appendChild(mk);
   const field=el('g',{mask:`url(#${id}f)`}),rings=el('g',{class:'ripples'});svg.append(field,rings);
   const items=[];
-  const add=(g,pts,cls)=>{const e=el('path',cls?{class:cls}:{});g.appendChild(e);
-    let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const [x,y] of pts){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}
-    items.push({e,pts,closed:cls==='fan'});};
+  const add=(g,pts)=>{const e=el('path',{});g.appendChild(e);items.push({e,pts});};
   const inView=([x,y])=>x>-.6&&x<N+.6&&y>-.6&&y<N+.6;
   const addRuns=(g,pts)=>{let run=[];for(const q of pts){if(inView(q))run.push(q);else{if(run.length>1)add(g,run);run=[];}}if(run.length>1)add(g,run);};
-  // turn the canonical drawing a random quarter and maybe mirror it
-  const rot=Math.floor(R()*4),mir=R()<.5;
-  const T=([x,y])=>{if(mir)x=N-x;for(let i=0;i<rot;i++)[x,y]=[N-y,x];return [x,y];};
+  const circ=(g,cx,cy,r)=>{const pts=[],n=Math.ceil(2*Math.PI*r/step);for(let k=0;k<=n;k++){const t=k/n*2*Math.PI;pts.push([cx+r*Math.cos(t),cy+r*Math.sin(t)]);}addRuns(g,pts);};
+  // a random quarter turn and mirror, as point mapping and as an SVG transform (the same thing)
+  const turn=()=>{const rot=Math.floor(R()*4),mir=R()<.5;
+    return {P:([x,y])=>{if(mir)x=N-x;for(let i=0;i<rot;i++)[x,y]=[N-y,x];return [x,y];},
+      tf:`rotate(${90*rot} ${N/2} ${N/2})`+(mir?` translate(${N} 0) scale(-1 1)`:''),rot};};
 
-  function lines(amp,wl,ph){            // parallel lines across the board
+  // ---- whole-garden patterns (the bottom layer) ----
+  function lines(g,P,amp,wl,ph){
     for(let a=sp/2;a<N;a+=sp){const pts=[];
-      for(let b=-.5;b<=N+.5;b+=step)pts.push(T([b,a+amp*Math.sin(2*Math.PI*b/wl+ph)]));add(field,pts);}}
-  function corner(){                    // lines come across, all turn the corner together and carry on down
-    const kx=pick(N*.35,N*.72),ky=pick(N*.28,N*.65),Rc=pick(1,2.8);
+      for(let b=-.5;b<=N+.5;b+=step)pts.push(P([b,a+amp*Math.sin(2*Math.PI*b/wl+ph)]));add(g,pts);}}
+  function corner(g,P){
+    const kx=pick(N*.35,N*.72),ky=pick(N*.28,N*.65),Rc=pick(1,2.4);
     const lo=-Math.max(kx,N-ky)-.5,hi=Math.max(ky,N-kx)+.5;
+    let last=null;
     for(let o=lo;o<hi;o+=sp){
-      const rr=Math.max(.14,Rc+o),yh=ky-o,xv=kx+o,pts=[];
+      // the rounding grows outwards from Rc but stops at RAKE_BEND; beyond that the lines are the same
+      // curve moved out along the diagonal, so they still never touch
+      const rr=Math.min(RAKE_BEND,Math.max(.14,Rc+o)),yh=ky-o,xv=kx+o,pts=[];last={rr,yh,xv};
       for(let x=-.5;x<xv-rr;x+=step)pts.push([x,yh]);
       const n=Math.max(3,Math.ceil(rr*Math.PI/2/step));
       for(let k=0;k<=n;k++){const t=-Math.PI/2+k/n*Math.PI/2;pts.push([xv-rr+rr*Math.cos(t),yh+rr+rr*Math.sin(t)]);}
       for(let y=yh+rr+step;y<=N+.5;y+=step)pts.push([xv,y]);
-      addRuns(field,pts.map(T));}}
-  function farRipple(){                 // arcs of a ripple whose centre lies outside the garden
-    const cx=pick(-N*.9,-N*.25),cy=pick(-N*.2,N*1.2);
-    let dmin=1e9,dmax=0;for(const [x,y] of [[0,0],[N,0],[0,N],[N,N]]){const d=Math.hypot(x-cx,y-cy);dmax=Math.max(dmax,d);}
-    dmin=Math.hypot(Math.max(0,-cx),Math.max(0,-cy,cy-N));
-    for(let r=Math.max(sp,dmin-.5);r<dmax+.5;r+=sp){const pts=[],da=step/r;
-      for(let t=-Math.PI;t<=Math.PI;t+=da)pts.push(T([cx+r*Math.cos(t),cy+r*Math.sin(t)]));addRuns(field,pts);}}
-  function seigaiha(){                  // 青海波: rows of fans, each lower row laid over the one above
-    const r=N<=8?.8:.72,n=4;
-    for(let j=0,y=0;y<N+r;j++,y+=r/2)
-      for(let x=-(j%2?r:0);x<N+r;x+=2*r){
-        const arc=q=>{const pts=[],m=Math.max(6,Math.ceil(q*Math.PI/step));for(let k=0;k<=m;k++){const t=Math.PI+k/m*Math.PI;pts.push([x+q*Math.cos(t),y+q*Math.sin(t)]);}return pts;};
-        add(field,arc(r),'fan');for(let m=n;m>=1;m--)add(field,arc(r*m/n));}}
+      addRuns(g,pts.map(P));}
+    // The outermost curve can leave the far corner bare. Fill it with straight lines, across or down,
+    // that stop a little short of that curve, so they meet it without crossing it.
+    const cx=last.xv-last.rr,cy=last.yh+last.rr,Ro=last.rr+sp*.6;
+    if(R()<.5){for(let y=sp/2;y<cy;y+=sp){const dy=cy-y;if(dy>=Ro)continue;
+        const x0=cx+Math.sqrt(Ro*Ro-dy*dy);if(x0<N+.3)addRuns(g,[[x0,y],[N+.5,y]].map(P));}}
+    else{for(let x=N-sp/2;x>cx;x-=sp){const dx=x-cx;if(dx>=Ro)continue;
+        const y0=cy-Math.sqrt(Ro*Ro-dx*dx);if(y0>-.3)addRuns(g,[[x,-.5],[x,y0]].map(P));}}}
+  // ---- areas laid on top: each draws its lines and says what shape it covers ----
+  // shape: {d, tf, evenodd}; d is in the area's own (canonical) frame, tf turns it into place
+  const over={
+    band(g,dir){                          // straight band right across, at right angles to the lines below
+      const w=pick(1.4,2.8),o=pick(.8,N-.8-w);
+      for(let a=o+sp/2;a<o+w;a+=sp)add(g,dir?[[a,-.5],[a,N+.5]]:[[-.5,a],[N+.5,a]]);
+      return {d:dir?`M${f(o)},-2H${f(o+w)}V${N+2}H${f(o)}Z`:`M-2,${f(o)}V${f(o+w)}H${N+2}V${f(o)}Z`,tf:''};},
+    bend(g){                              // band that comes in from one side and sweeps round to another
+      const {tf}=turn(),cx=pick(N*.3,N*.62),cy=pick(N*.25,N*.6),W=pick(1.4,2.6),inner=el('g',{transform:tf});g.appendChild(inner);
+      for(let r=sp/2;r<W;r+=sp)add(inner,[[-1,cy-r],[cx,cy-r],...Array.from({length:13},(_,k)=>{const t=-Math.PI/2+k/12*Math.PI/2;return [cx+r*Math.cos(t),cy+r*Math.sin(t)];}),[cx+r,N+1]]);
+      return {d:`M-2,${f(cy-W)}L${f(cx)},${f(cy-W)}A${f(W)},${f(W)} 0 0 1 ${f(cx+W)},${f(cy)}L${f(cx+W)},${N+2}L${f(cx)},${N+2}L${f(cx)},${f(cy)}L-2,${f(cy)}Z`,tf};},
+    curve(g){                             // a broad curved band, arcs round a centre near a corner
+      const {tf}=turn(),W=pick(1.2,1.8),r1=pick(.9,RAKE_BEND-W),cx=pick(-.6,.4),cy=pick(-.6,.4),inner=el('g',{transform:tf});g.appendChild(inner);
+      for(let r=r1+sp/2;r<r1+W;r+=sp)circ(inner,cx,cy,r);
+      const ring=r=>`M${f(cx-r)},${f(cy)}a${f(r)},${f(r)} 0 1,0 ${f(2*r)},0a${f(r)},${f(r)} 0 1,0 ${f(-2*r)},0`;
+      return {d:ring(r1+W)+ring(r1),tf,evenodd:true};},
+    fan(g){                               // arcs spreading from a corner of the garden
+      const {tf}=turn(),cx=pick(-.4,.3),cy=pick(-.4,.3),Rr=pick(2,RAKE_BEND),inner=el('g',{transform:tf});g.appendChild(inner);
+      for(let r=sp/2;r<Rr;r+=sp)circ(inner,cx,cy,r);
+      return {d:`M${f(cx-Rr)},${f(cy)}a${f(Rr)},${f(Rr)} 0 1,0 ${f(2*Rr)},0a${f(Rr)},${f(Rr)} 0 1,0 ${f(-2*Rr)},0`,tf};}};
 
-  const t=R(),k=R();
-  if(t<.42)lines(k<.3?0:k<.8?pick(.05,.13):pick(.22,.38),k<.8?pick(2.2,4.5):pick(4,6.5),pick(0,6.3));
-  else if(t<.74)corner();
-  else if(t<.88)farRipple();
-  else seigaiha();
+
+  // ---- compose ----
+  const layers=[];
+  const base=el('g',{});field.appendChild(base);layers.push({g:base});
+  const t=R(),k=R();let across=null;        // across: direction of the bottom lines, when they have one
+  if(t<.68){const T=turn();across=T.rot%2;lines(base,T.P,k<.3?0:k<.8?pick(.05,.13):pick(.22,.38),k<.8?pick(2.2,4.5):pick(4,6.5),pick(0,6.3));}
+  else corner(base,turn().P);
+  const n=R()<.1?0:R()<.6?1:2;
+  let curved=false;   // at most one curved area: two side by side leave thin slivers of ground between them
+  for(let q=0;q<n;q++){
+    const u=R();let kind=u<.32?'bend':u<.6?'band':u<.82?'curve':'fan';
+    if(kind==='band'&&across===null)kind='bend';
+    if(curved&&kind!=='band'){if(across===null)break;kind='band';}
+    if(kind==='bend'||kind==='curve'||kind==='fan')curved=true;
+    const g=el('g',{});field.appendChild(g);
+    const sh=kind==='band'?over.band(g,across===0?1:0):over[kind](g);
+    const cp=el('clipPath',{id:`${id}c${uid}`}),cpp=el('path',{d:sh.d});if(sh.tf)cpp.setAttribute('transform',sh.tf);
+    if(sh.evenodd)cpp.setAttribute('clip-rule','evenodd');cp.appendChild(cpp);defs.appendChild(cp);
+    g.setAttribute('clip-path',`url(#${id}c${uid++})`);layers.push({g,sh});}
+  // each layer is hidden under every layer above it, plus half a line's gap so its lines end cleanly
+  layers.forEach((L,i)=>{const above=layers.slice(i+1);if(!above.length)return;
+    const m=el('mask',{id:`${id}m${uid}`,maskUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2});
+    m.appendChild(el('rect',{x:-1,y:-1,width:N+2,height:N+2,fill:'#fff'}));
+    for(const {sh} of above){const e=el('path',{d:sh.d,fill:'#000',stroke:'#000','stroke-width':f(sp)});
+      if(sh.tf)e.setAttribute('transform',sh.tf);if(sh.evenodd)e.setAttribute('fill-rule','evenodd');m.appendChild(e);}
+    defs.appendChild(m);const w=el('g',{mask:`url(#${id}m${uid++})`});field.insertBefore(w,L.g);w.appendChild(L.g);});
 
   // moss islands: smoothed sand round each, for good
   const moss=[];clue.forEach((v,i)=>{if(v>=0){moss.push([i%N+.5,Math.floor(i/N)+.5]);
     mk.appendChild(el('circle',{cx:i%N+.5,cy:Math.floor(i/N)+.5,r:f(RAKE_CORE+RAKE_RINGS*sp),fill:'#000'}));}});
+  const caps=el('path',{fill:'#000',d:''});mk.appendChild(caps);   // the waists of side-by-side pairs (rakeStones)
   const kn=el('g',{});for(let y=1;y<N;y++)for(let x=1;x<N;x++)kn.appendChild(el('circle',{class:'knot',cx:x,cy:y,r:N<=8?.05:.06}));
   svg.appendChild(kn);
-  for(const it of items){let d='';for(const [x,y] of it.pts)d+=(d?'L':'M')+f(x)+','+f(y);it.e.setAttribute('d',it.closed?d+'Z':d);}
-  RK={N,sp,el,f,mk,rings,moss,cur:null,key:null,nodes:new Map(),str:new Map(),target:new Map(),raf:0};
+  for(const it of items){let d='';for(const [x,y] of it.pts)d+=(d?'L':'M')+f(x)+','+f(y);it.e.setAttribute('d',d);}
+  RK={N,sp,el,f,mk,caps,rings,moss,cur:null,key:null,nodes:new Map(),str:new Map(),target:new Map(),raf:0};
   return svg;
 }
 // Ripples: RAKE_RINGS lines round every stone and moss island, starting just outside its body (RAKE_CORE,
 // in cells from its centre). They are traced as contours of "distance to the nearest body" on a fine
 // grid (marching squares), which is what makes neighbouring ripples merge instead of crossing.
 const RAKE_CORE=.44,RAKE_RINGS=3;
+// pairs of bodies one cell apart across or down: their ripples go round both as one capsule
+function rakePairs(bodies){const out=[],at=new Set(bodies.map(([x,y])=>x+','+y));
+  for(const [x,y] of bodies){if(at.has((x+1)+','+y))out.push([x,y,x+1,y]);if(at.has(x+','+(y+1)))out.push([x,y,x,y+1]);}return out;}
 function rakeContours(bodies){
   const {N,sp,el,f}=RK,h=1/24,G=Math.round(N/h)+1,F=new Float32Array(G*G).fill(9),ext=RAKE_CORE+RAKE_RINGS*sp+2*h;
-  for(const [cx,cy] of bodies){
-    const i0=Math.max(0,Math.floor((cx-ext)/h)),i1=Math.min(G-1,Math.ceil((cx+ext)/h)),j0=Math.max(0,Math.floor((cy-ext)/h)),j1=Math.min(G-1,Math.ceil((cy+ext)/h));
-    for(let j=j0;j<=j1;j++){const dy=j*h-cy;for(let i=i0;i<=i1;i++){const v=Math.hypot(i*h-cx,dy)-RAKE_CORE,k=j*G+i;if(v<F[k])F[k]=v;}}}
+  // distance to a segment (a disc is a segment of no length)
+  const segs=bodies.map(([x,y])=>[x,y,x,y]).concat(rakePairs(bodies));
+  for(const [ax,ay,bx,by] of segs){
+    const i0=Math.max(0,Math.floor((Math.min(ax,bx)-ext)/h)),i1=Math.min(G-1,Math.ceil((Math.max(ax,bx)+ext)/h)),
+          j0=Math.max(0,Math.floor((Math.min(ay,by)-ext)/h)),j1=Math.min(G-1,Math.ceil((Math.max(ay,by)+ext)/h));
+    for(let j=j0;j<=j1;j++){const y=j*h;for(let i=i0;i<=i1;i++){const x=i*h;
+      const qx=Math.min(Math.max(x,Math.min(ax,bx)),Math.max(ax,bx)),qy=Math.min(Math.max(y,Math.min(ay,by)),Math.max(ay,by));
+      const v=Math.hypot(x-qx,y-qy)-RAKE_CORE,k=j*G+i;if(v<F[k])F[k]=v;}}}
   const g=el('g',{class:'rr'});
   for(let m=0;m<RAKE_RINGS;m++){const L=(m+.5)*sp,parts=[];
     for(let j=0;j<G-1;j++)for(let i=0;i<G-1;i++){
@@ -1039,6 +1089,8 @@ function rakeStones(cells,instant){
   cells.forEach((v,i)=>{if(v===1){want.set(i,1);bodies.push([i%N+.5,Math.floor(i/N)+.5]);}});
   const key=[...want.keys()].join(',');
   if(key!==RK.key){RK.key=key;const g=rakeContours(bodies),old=RK.cur;RK.cur=g;
+    const Z=RAKE_CORE+RAKE_RINGS*RK.sp,f=RK.f;   // smooth the sand along each capsule's waist too
+    RK.caps.setAttribute('d',rakePairs(bodies).map(([ax,ay,bx,by])=>ax===bx?`M${f(ax-Z)},${ay}H${f(ax+Z)}V${by}H${f(ax-Z)}Z`:`M${ax},${f(ay-Z)}V${f(ay+Z)}H${bx}V${f(ay-Z)}Z`).join(''));
     const still=instant||matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(still){if(old)old.remove();RK.rings.appendChild(g);}
     else{g.style.opacity='0';RK.rings.appendChild(g);g.getBoundingClientRect();
