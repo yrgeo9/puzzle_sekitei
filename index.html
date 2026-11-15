@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-0SeIPfum50UjZmUtKsee83bkhZVpyEmavftyO7+tFHM=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-++b7Cn47q16tMXdcZDFy/U/aZhpYoKtW1vgkA7LGnTw=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -30,6 +30,8 @@
   --panel:#ffffff;
   --sand:#f2efe8;        /* white gravel */
   --rake:#e2ddd1;        /* rake lines */
+  --groove:rgba(120,108,86,.22);   /* grid: the shaded side of a pressed line */
+  --ridge:rgba(255,255,255,.6);   /* grid: its lit side */
   --curb:#d3cdc0;        /* stone curb around the garden */
   --curb-dk:#bdb6a7;
   --line:#e2ded4;        /* hairlines */
@@ -96,21 +98,44 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .garden{box-sizing:border-box;width:100%;max-width:560px;position:relative;padding:9px;border-radius:3px;
   background:linear-gradient(160deg,var(--curb),var(--curb-dk));
   box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 1px 0 rgba(0,0,0,.04),0 24px 40px -30px rgba(50,40,20,.5)}
-.board{display:grid;gap:0;touch-action:none;container-type:inline-size;user-select:none;-webkit-user-select:none;
-  background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 6px,var(--rake) 6px 7px);
+.board{position:relative;display:grid;gap:0;touch-action:none;container-type:inline-size;user-select:none;-webkit-user-select:none;
+  background:var(--sand);
   box-shadow:inset 0 1px 4px rgba(60,50,30,.12)}
+.rake{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+.rake g path,.rake g circle{fill:none;stroke:var(--rake);stroke-width:1.15;vector-effect:non-scaling-stroke;stroke-linecap:round}
+.rake path.fan{fill:var(--sand);stroke:none}
+/* where the grooves cross: a small pressed point, like the pegs of a stretched string */
+.rake .rr{transition:opacity .5s ease}
+.rake .rr path{stroke:color-mix(in srgb,var(--rake) 80%,#b5aa94)}
+.rake circle.knot{transition:opacity .8s;fill:rgba(120,108,86,.28);stroke:var(--ridge);stroke-width:.8}
 .cell{position:relative;aspect-ratio:1;border:0;padding:0;margin:0;background:transparent;cursor:pointer;
-  box-shadow:inset 0 0 0 .5px color-mix(in srgb,var(--ink) 7%,transparent);font:inherit;color:inherit}
-.cell.edgeR{box-shadow:inset -1px 0 0 color-mix(in srgb,var(--ink) 10%,transparent),inset 0 0 0 .5px color-mix(in srgb,var(--ink) 7%,transparent)}
+  box-shadow:inset -1px -1px 0 var(--groove),inset 1px 1px 0 var(--ridge);font:inherit;color:inherit}
+.cell.edgeR{box-shadow:inset 0 -1px 0 var(--groove),inset 1px 1px 0 var(--ridge)}
+.cell.edgeB{box-shadow:inset -1px 0 0 var(--groove),inset 1px 1px 0 var(--ridge)}
+.cell.edgeR.edgeB{box-shadow:inset 1px 1px 0 var(--ridge)}
+.cell.top{box-shadow:inset -1px -1px 0 var(--groove),inset 1px 0 0 var(--ridge)}
+.cell.top.edgeR{box-shadow:inset 0 -1px 0 var(--groove),inset 1px 0 0 var(--ridge)}
+.cell.left{box-shadow:inset -1px -1px 0 var(--groove),inset 0 1px 0 var(--ridge)}
+.cell.left.edgeB{box-shadow:inset -1px 0 0 var(--groove),inset 0 1px 0 var(--ridge)}
+.cell.top.left{box-shadow:inset -1px -1px 0 var(--groove)}
 /* stone with raked rings */
 .cell .st{position:absolute;inset:17%;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%);
-  box-shadow:0 0 0 3px var(--sand),0 0 0 4px var(--rake),0 0 0 7px var(--sand),0 0 0 8px var(--rake),0 3px 5px -1px rgba(30,25,15,.35);
+  box-shadow:0 0 0 3px var(--sand),0 3px 5px -1px rgba(30,25,15,.35);
   transform:scale(.4);opacity:0;transition:transform .18s ease,opacity .18s ease;z-index:1}
 .cell.stone .st{transform:scale(1);opacity:1}
 .cell.stone.bad .st{background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--err) 55%,white),var(--err) 66%)}
-.cell .dot{position:absolute;left:50%;top:50%;width:20%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;
-  border:1.5px solid color-mix(in srgb,var(--ink) 45%,transparent);opacity:0;transition:opacity .12s}
-.cell.mark .dot{opacity:.8}
+/* mark: a small ring drawn into the sand with a fingertip. The sand inside and just round it is
+   smoothed (the rake lines stop), and the ring itself is a groove: shaded inside, lit on its lower lip */
+.cell .dot{position:absolute;left:50%;top:50%;width:26%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;box-sizing:border-box;
+  background:var(--sand);border:1.5px solid rgba(110,98,76,.58);
+  box-shadow:inset 0 1px 1.5px rgba(80,70,50,.22),0 1px 0 var(--ridge),0 0 0 3.5px var(--sand);
+  opacity:0;transform:scale(.55);transition:opacity .12s,transform .16s ease-out}
+.cell.mark .dot{opacity:1;transform:scale(1)}
+.cell{transition:box-shadow .8s}
+.board.solved .cell{box-shadow:none}
+.board.solved .rake .knot{opacity:0}
+.board.solved .cell.mark .dot{opacity:0;transform:scale(.55);transition:opacity .5s,transform .5s}
+.cell.focus .dot{background:transparent;box-shadow:inset 0 1px 1.5px rgba(80,70,50,.22),0 1px 0 var(--ridge)}
 /* moss island: an organic mound rather than a square tile */
 .cell.clue{cursor:default}
 .cell.clue::before{content:"";position:absolute;inset:8%;border-radius:46% 52% 44% 50% / 50% 44% 54% 46%;
@@ -124,7 +149,7 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .cell.hint{animation:hint 1.2s ease 2}
 .cell.focus:not(.clue){background:color-mix(in srgb,var(--moss) 13%,transparent)}
 .cell.clue.focus::before{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--moss)}
-.hintmsg .hm span{display:inline-block}
+.ph span{display:inline-block}
 .hintmsg{margin:0;min-height:1.75em;width:100%;max-width:560px;text-align:center;font-size:14px;color:var(--ink);letter-spacing:.02em}
 @keyframes hint{50%{background-color:color-mix(in srgb,var(--moss) 28%,transparent)}}
 .pips{display:flex;align-items:center;justify-content:center;gap:3px}
@@ -182,7 +207,8 @@ aside p{margin:0}
 .sw.c::before{content:"";position:absolute;inset:1px;border-radius:46% 52% 44% 50% / 50% 44% 54% 46%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--moss) 70%,#c8d39a),var(--moss) 55%,var(--moss-dk));z-index:-1}
 .sw.c{isolation:isolate}
 .sw .s{position:absolute;inset:6px;border-radius:50%;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%)}
-.sw .d{position:absolute;left:50%;top:50%;width:6px;height:6px;translate:-50% -50%;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--ink) 45%,transparent)}
+.sw .d{position:absolute;left:50%;top:50%;width:9px;height:9px;translate:-50% -50%;border-radius:50%;box-sizing:border-box;background:var(--sand);
+  border:1.5px solid rgba(110,98,76,.58);box-shadow:inset 0 1px 1.5px rgba(80,70,50,.22),0 1px 0 rgba(255,255,255,.85),0 0 0 3px var(--sand)}
 .records{display:grid;grid-template-columns:auto 1fr auto;gap:5px 12px;font-size:13px;font-variant-numeric:tabular-nums}
 .records span:nth-child(3n+1){font-family:var(--display);font-weight:700;letter-spacing:.08em}
 .records span:nth-child(3n){text-align:right;font-family:var(--display)}
@@ -425,9 +451,9 @@ button{touch-action:manipulation}
         <div class="sw"><div class="d"></div></div><span>右クリック、または「印」モードで「石なし」の印。なぞると続けて付けられます</span>
         <div class="sw c">3</div><span>石が数ぶん揃うと薄くなり、多すぎると赤くなる</span>
       </div>
-      <p class="small" style="margin-top:8px">「砂を均す」は盤上の印をすべて消します（石はそのまま）。「一手戻す」で元に戻せます。「休憩」を押すと、盤面を隠してタイマーを止められます。</p>
+      <p class="small" style="margin-top:8px">「砂を均す」は盤上の印をすべて消します（石はそのまま）。<br>「一手戻す」で元に戻せます。<br>「休憩」を押すと、盤面を隠してタイマーを止められます。</p>
       <p class="small" style="margin-top:8px">盤の上と右の小さな丸は、その列・行に置いた石の数です。</p>
-      <p class="small" style="margin-top:4px">マスの呼び方は将棋盤と同じです。上の数字が列（右から1、2…）、右の漢数字が行（上から一、二…）で、「1二」は右端の列の上から2マス目です。</p>
+      <p class="small" style="margin-top:4px">マスの呼び方は将棋盤と同じです。<br>上の数字が列（右から1、2…）、右の漢数字が行（上から一、二…）で、<br>「1二」は右端の列の上から2マス目です。</p>
     </section>
     <section data-tab="records">
       <h2>記録</h2>
@@ -905,6 +931,130 @@ const KAN=['','一','二','三','四','五','六','七','八','九','十','十�
 const colName=c=>String(S.N-c);          // 1 is the rightmost column, as on a shogi board
 const rowName=r=>KAN[r+1];               // 一 is the top row
 const cellName=i=>colName(i%S.N)+rowName((i/S.N)|0);   // e.g. 1二
+// 枯山水: each garden gets its own raking, drawn from its seed so it stays the same when you come back.
+// As in a real garden, rake lines never run into each other square-on: the whole ground is one family
+// of lines that only ever lie side by side. It is one of
+//   long lines (straight, rippling or 大波), lines that turn a corner together (nested and rounded),
+//   arcs of a ripple that started outside the garden, or 青海波 (overlapping fans).
+// Every moss island and every placed stone sits in smoothed sand with ripples round it. The ripples are
+// lines of equal distance from the nearest island or stone, so where two are close their rings fuse into
+// one outline round both (like a matryoshka's), and no ripple ever runs over a stone or moss.
+let RK=null;
+function rakeSvg(N,seed,clue){
+  const R=rngFrom((seed^0x5eed5a1d)>>>0),pick=(a,b)=>a+R()*(b-a),NS='http://www.w3.org/2000/svg';
+  const sp=N<=8?1/6:1/5,step=.1;                 // gap between rake lines / sampling, in cells
+  const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+  const f=x=>Math.round(x*1000)/1000;
+  const svg=el('svg',{class:'rake',viewBox:`0 0 ${N} ${N}`,preserveAspectRatio:'none','aria-hidden':'true'});
+  const defs=el('defs',{});svg.appendChild(defs);
+  const id='rk'+(seed>>>0).toString(36);
+  const mk=el('mask',{id:id+'f',maskUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2});
+  mk.appendChild(el('rect',{x:-1,y:-1,width:N+2,height:N+2,fill:'#fff'}));defs.appendChild(mk);
+  const field=el('g',{mask:`url(#${id}f)`}),rings=el('g',{class:'ripples'});svg.append(field,rings);
+  const items=[];
+  const add=(g,pts,cls)=>{const e=el('path',cls?{class:cls}:{});g.appendChild(e);
+    let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const [x,y] of pts){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}
+    items.push({e,pts,closed:cls==='fan'});};
+  const inView=([x,y])=>x>-.6&&x<N+.6&&y>-.6&&y<N+.6;
+  const addRuns=(g,pts)=>{let run=[];for(const q of pts){if(inView(q))run.push(q);else{if(run.length>1)add(g,run);run=[];}}if(run.length>1)add(g,run);};
+  // turn the canonical drawing a random quarter and maybe mirror it
+  const rot=Math.floor(R()*4),mir=R()<.5;
+  const T=([x,y])=>{if(mir)x=N-x;for(let i=0;i<rot;i++)[x,y]=[N-y,x];return [x,y];};
+
+  function lines(amp,wl,ph){            // parallel lines across the board
+    for(let a=sp/2;a<N;a+=sp){const pts=[];
+      for(let b=-.5;b<=N+.5;b+=step)pts.push(T([b,a+amp*Math.sin(2*Math.PI*b/wl+ph)]));add(field,pts);}}
+  function corner(){                    // lines come across, all turn the corner together and carry on down
+    const kx=pick(N*.35,N*.72),ky=pick(N*.28,N*.65),Rc=pick(1,2.8);
+    const lo=-Math.max(kx,N-ky)-.5,hi=Math.max(ky,N-kx)+.5;
+    for(let o=lo;o<hi;o+=sp){
+      const rr=Math.max(.14,Rc+o),yh=ky-o,xv=kx+o,pts=[];
+      for(let x=-.5;x<xv-rr;x+=step)pts.push([x,yh]);
+      const n=Math.max(3,Math.ceil(rr*Math.PI/2/step));
+      for(let k=0;k<=n;k++){const t=-Math.PI/2+k/n*Math.PI/2;pts.push([xv-rr+rr*Math.cos(t),yh+rr+rr*Math.sin(t)]);}
+      for(let y=yh+rr+step;y<=N+.5;y+=step)pts.push([xv,y]);
+      addRuns(field,pts.map(T));}}
+  function farRipple(){                 // arcs of a ripple whose centre lies outside the garden
+    const cx=pick(-N*.9,-N*.25),cy=pick(-N*.2,N*1.2);
+    let dmin=1e9,dmax=0;for(const [x,y] of [[0,0],[N,0],[0,N],[N,N]]){const d=Math.hypot(x-cx,y-cy);dmax=Math.max(dmax,d);}
+    dmin=Math.hypot(Math.max(0,-cx),Math.max(0,-cy,cy-N));
+    for(let r=Math.max(sp,dmin-.5);r<dmax+.5;r+=sp){const pts=[],da=step/r;
+      for(let t=-Math.PI;t<=Math.PI;t+=da)pts.push(T([cx+r*Math.cos(t),cy+r*Math.sin(t)]));addRuns(field,pts);}}
+  function seigaiha(){                  // 青海波: rows of fans, each lower row laid over the one above
+    const r=N<=8?.8:.72,n=4;
+    for(let j=0,y=0;y<N+r;j++,y+=r/2)
+      for(let x=-(j%2?r:0);x<N+r;x+=2*r){
+        const arc=q=>{const pts=[],m=Math.max(6,Math.ceil(q*Math.PI/step));for(let k=0;k<=m;k++){const t=Math.PI+k/m*Math.PI;pts.push([x+q*Math.cos(t),y+q*Math.sin(t)]);}return pts;};
+        add(field,arc(r),'fan');for(let m=n;m>=1;m--)add(field,arc(r*m/n));}}
+
+  const t=R(),k=R();
+  if(t<.42)lines(k<.3?0:k<.8?pick(.05,.13):pick(.22,.38),k<.8?pick(2.2,4.5):pick(4,6.5),pick(0,6.3));
+  else if(t<.74)corner();
+  else if(t<.88)farRipple();
+  else seigaiha();
+
+  // moss islands: smoothed sand round each, for good
+  const moss=[];clue.forEach((v,i)=>{if(v>=0){moss.push([i%N+.5,Math.floor(i/N)+.5]);
+    mk.appendChild(el('circle',{cx:i%N+.5,cy:Math.floor(i/N)+.5,r:f(RAKE_CORE+RAKE_RINGS*sp),fill:'#000'}));}});
+  const kn=el('g',{});for(let y=1;y<N;y++)for(let x=1;x<N;x++)kn.appendChild(el('circle',{class:'knot',cx:x,cy:y,r:N<=8?.05:.06}));
+  svg.appendChild(kn);
+  for(const it of items){let d='';for(const [x,y] of it.pts)d+=(d?'L':'M')+f(x)+','+f(y);it.e.setAttribute('d',it.closed?d+'Z':d);}
+  RK={N,sp,el,f,mk,rings,moss,cur:null,key:null,nodes:new Map(),str:new Map(),target:new Map(),raf:0};
+  return svg;
+}
+// Ripples: RAKE_RINGS lines round every stone and moss island, starting just outside its body (RAKE_CORE,
+// in cells from its centre). They are traced as contours of "distance to the nearest body" on a fine
+// grid (marching squares), which is what makes neighbouring ripples merge instead of crossing.
+const RAKE_CORE=.44,RAKE_RINGS=3;
+function rakeContours(bodies){
+  const {N,sp,el,f}=RK,h=1/24,G=Math.round(N/h)+1,F=new Float32Array(G*G).fill(9),ext=RAKE_CORE+RAKE_RINGS*sp+2*h;
+  for(const [cx,cy] of bodies){
+    const i0=Math.max(0,Math.floor((cx-ext)/h)),i1=Math.min(G-1,Math.ceil((cx+ext)/h)),j0=Math.max(0,Math.floor((cy-ext)/h)),j1=Math.min(G-1,Math.ceil((cy+ext)/h));
+    for(let j=j0;j<=j1;j++){const dy=j*h-cy;for(let i=i0;i<=i1;i++){const v=Math.hypot(i*h-cx,dy)-RAKE_CORE,k=j*G+i;if(v<F[k])F[k]=v;}}}
+  const g=el('g',{class:'rr'});
+  for(let m=0;m<RAKE_RINGS;m++){const L=(m+.5)*sp,parts=[];
+    for(let j=0;j<G-1;j++)for(let i=0;i<G-1;i++){
+      const a=F[j*G+i],b=F[j*G+i+1],c=F[(j+1)*G+i+1],e=F[(j+1)*G+i];
+      const A=a<L,B=b<L,C=c<L,E=e<L;if(A===B&&B===C&&C===E)continue;
+      const x=i*h,y=j*h,pts=[];
+      if(A!==B)pts.push([x+h*(L-a)/(b-a),y]);
+      if(B!==C)pts.push([x+h,y+h*(L-b)/(c-b)]);
+      if(E!==C)pts.push([x+h*(L-e)/(c-e),y+h]);
+      if(A!==E)pts.push([x,y+h*(L-a)/(e-a)]);
+      const seg=(p,q)=>parts.push('M'+f(p[0])+','+f(p[1])+'L'+f(q[0])+','+f(q[1]));
+      if(pts.length===2)seg(pts[0],pts[1]);
+      else if(pts.length===4){   // saddle: decide by the centre of the square
+        if(((a+b+c+e)/4<L)===A){seg(pts[0],pts[1]);seg(pts[2],pts[3]);}else{seg(pts[0],pts[3]);seg(pts[1],pts[2]);}}}
+    g.appendChild(el('path',{d:parts.join('')}));}
+  return g;}
+// a stone's own patch of smoothed sand; it opens as the stone is set down and closes when it is lifted
+function rakeSet(i,s){
+  let n=RK.nodes.get(i);
+  if(s<=0){if(n){n.remove();RK.nodes.delete(i);}return;}
+  if(!n){const N=RK.N;n=RK.el('circle',{cx:i%N+.5,cy:Math.floor(i/N)+.5,r:0,fill:'#000'});RK.mk.appendChild(n);RK.nodes.set(i,n);}
+  const e=s*s*(3-2*s);n.setAttribute('r',String(Math.round((RAKE_CORE+RAKE_RINGS*RK.sp)*e*1000)/1000));}
+// follow the stones on the board: the ripples are traced again and fade across, the stones' patches open and close
+function rakeStones(cells,instant){
+  if(!RK)return;const N=RK.N,want=new Map(),bodies=RK.moss.slice();
+  cells.forEach((v,i)=>{if(v===1){want.set(i,1);bodies.push([i%N+.5,Math.floor(i/N)+.5]);}});
+  const key=[...want.keys()].join(',');
+  if(key!==RK.key){RK.key=key;const g=rakeContours(bodies),old=RK.cur;RK.cur=g;
+    const still=instant||matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(still){if(old)old.remove();RK.rings.appendChild(g);}
+    else{g.style.opacity='0';RK.rings.appendChild(g);g.getBoundingClientRect();
+      requestAnimationFrame(()=>{g.style.opacity='1';if(old){old.style.opacity='0';setTimeout(()=>old.remove(),600);}});}}
+  RK.target=want;
+  if(instant||matchMedia('(prefers-reduced-motion: reduce)').matches){
+    new Set([...RK.str.keys(),...want.keys()]).forEach(i=>rakeSet(i,want.get(i)||0));RK.str=new Map(want);return;}
+  if(RK.raf)return;
+  let last=performance.now();
+  const tick=now=>{const dt=Math.min(.1,(now-last)/1000);last=now;let moving=0;
+    const keys=new Set([...RK.str.keys(),...RK.target.keys()]);
+    keys.forEach(i=>{const s=RK.str.get(i)||0,g=RK.target.get(i)||0;if(s===g)return;
+      const n=g>s?Math.min(g,s+dt/.45):Math.max(g,s-dt/.3);
+      if(n<=0)RK.str.delete(i);else RK.str.set(i,n);rakeSet(i,n);moving++;});
+    RK.raf=moving?requestAnimationFrame(tick):0;};
+  RK.raf=requestAnimationFrame(tick);}
 function build(){
   const {N,K}=S;const b=$('board');b.innerHTML='';
   b.style.gridTemplateColumns=`repeat(${N},1fr)`;
@@ -919,10 +1069,12 @@ function build(){
         const h=(i*2654435761>>>0);const rr=k=>40+((h>>>k)&15);
         el.innerHTML=`<div class="st" style="border-radius:${rr(0)}% ${100-rr(0)}% ${rr(4)}% ${100-rr(4)}% / ${rr(8)}% ${rr(12)}% ${100-rr(12)}% ${100-rr(8)}%;rotate:${(h%40)-20}deg"></div><div class="dot"></div>`;
       }
-      if(c===N-1)el.classList.add('edgeR');
+      if(c===N-1)el.classList.add('edgeR');if(r===N-1)el.classList.add('edgeB');if(r===0)el.classList.add('top');if(c===0)el.classList.add('left');
       b.appendChild(el);cellEls.push(el);
     }
   }
+  if(RK&&RK.raf)cancelAnimationFrame(RK.raf);
+  b.prepend(rakeSvg(N,S.seed,S.clue));rakeStones(S.cells,true);
   // edges, shogi style: above each column its number (1 = rightmost) and its stone count;
   // right of each row its stone count and its kanji number (一 = top)
   const ct=$('colLabels'),cr=$('rowLabels');
@@ -954,6 +1106,8 @@ function render(){
   const pip=(el,n)=>{el.classList.toggle('over',n>K);el.classList.toggle('full',n===K);[...el.children].forEach((p,k)=>p.classList.toggle('on',k<n));};
   for(let r=0;r<N;r++){pip(rowPips[r],rowC[r]);if(rowC[r]!==K)allOk=false;}
   for(let c=0;c<N;c++){pip(colPips[c],colC[c]);if(colC[c]!==K)allOk=false;}
+  rakeStones(cells);
+  $('board').classList.toggle('solved',allOk);
   return allOk;
 }
 
@@ -965,7 +1119,7 @@ function apply(changes){ // [[i,newVal],...]
   real.forEach(([i,v])=>S.cells[i]=v);
   afterChange();
 }
-function afterChange(){const ok=render();save();if(ok&&!S.done){S.done=true;stopClock();save();recordWin();showWin(false);Sound.play('clear',.15);}}
+function afterChange(){const ok=render();save();if(ok&&!S.done){S.done=true;stopClock();save();focusCells([]);recordWin();showWin(false);Sound.play('clear',.15);}}
 
 // ---- input: tap / drag ----
 let drag=null;
@@ -1029,17 +1183,24 @@ function pauseGame(){
 $('pauseBtn').onclick=pauseGame;
 // 砂を均す: rake away every mark; stones stay where they are
 $('resetBtn').onclick=()=>{if(!S||S.done||!S.started)return;const ch=[];S.cells.forEach((v,i)=>{if(v===2)ch.push([i,0]);});
-  if(ch.length){apply(ch);setMsg('印をすべて消しました。「一手戻す」で元に戻せます。');}
-  else setMsg('消す印がありません。');};
+  if(ch.length){apply(ch);Sound.play('new');setMsg('印をすべて消しました。「一手戻す」で元に戻せます。');}
+  else{Sound.play('tap');setMsg('消す印がありません。');}};
 let msgTimer=null;
-function setMsg(t){
-  // each sentence is one unbreakable-looking piece, so a narrow screen breaks the line at 。
-  const box=$('hintMsg'),wrap=document.createElement('span');wrap.className='hm';
-  // a sentence too long for one line then breaks at its 、 instead
-  for(const part of String(t).match(/[^。]+。?/g)||[]){const sp=document.createElement('span');
-    for(const c of part.match(/[^、]+、?/g)){const cs=document.createElement('span');cs.textContent=c;sp.appendChild(cs);}
+// Japanese has no spaces, so a narrow screen would break a line anywhere. Each sentence (ends in 。)
+// and each phrase inside it (ends in 、 or ：) is an inline-block: a line breaks between sentences
+// first, then between phrases, and only mid-phrase when one phrase is wider than the whole line.
+function phrase(el,t){
+  const wrap=document.createElement('span');wrap.className='ph';
+  for(const sen of String(t).match(/[^。]+。?/g)||[]){const sp=document.createElement('span');
+    for(const c of sen.match(/[^、：]+[、：]?/g)){const cs=document.createElement('span');cs.textContent=c;sp.appendChild(cs);}
     wrap.appendChild(sp);}
-  box.replaceChildren(wrap);}
+  el.replaceChildren(wrap);}
+// on a phone the hint line has room for two lines; a longer message steps its type down a little to fit
+function fitMsg(){const box=$('hintMsg');box.style.fontSize='';
+  let f=parseFloat(getComputedStyle(box).fontSize);
+  while(box.scrollHeight>box.clientHeight+1&&f>10.5){f-=.5;box.style.fontSize=f+'px';}}
+function setMsg(t){phrase($('hintMsg'),t);fitMsg();}
+addEventListener('resize',()=>fitMsg());
 function focusCells(list){
   cellEls.forEach(e=>e.classList.remove('focus'));list.forEach(i=>cellEls[i]&&cellEls[i].classList.add('focus'));
   clearTimeout(msgTimer);msgTimer=setTimeout(()=>cellEls.forEach(e=>e.classList.remove('focus')),2600);
@@ -1062,15 +1223,15 @@ $('hintBtn').onclick=()=>{
   if(!S||S.done||!S.started)return;const {N,K,cells,stone,clue}=S;
   // 1) point out a mistake first
   for(let i=0;i<N*N;i++){if(clue[i]>=0)continue;
-    if(cells[i]===1&&!stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);setMsg('この石は答えと合わないので取り除きました。');return;}
-    if(cells[i]===2&&stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);setMsg('ここには石が入るので、印を外しました。');return;}}
+    if(cells[i]===1&&!stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);Sound.play('remove');setMsg('この石は答えと合わないので取り除きました。');return;}
+    if(cells[i]===2&&stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);Sound.play('unmark');setMsg('ここには石が入るので、印を外しました。');return;}}
   // 2) find the next deduction from what is already on the board
   const st=new Int8Array(N*N).fill(-1);
   for(let i=0;i<N*N;i++){if(clue[i]>=0)st[i]=0;else if(cells[i]===1)st[i]=1;else if(cells[i]===2)st[i]=0;}
   const nb=geoOf(N);const d=logicStep(N,K,clue,st,3,{nb,units:unitsOf(N,K,clue,nb)});
   if(!d)return;
-  const [i,v]=d.set[0];S.hints++;apply([[i,v?1:2]]);flash(i);
-  const w=d.why;focusCells(w.kind==='adj'?[w.i]:w.kind==='unit'?unitCells(w.u):[...unitCells(w.a),...unitCells(w.b)]);
+  const [i,v]=d.set[0];S.hints++;apply([[i,v?1:2]]);flash(i);if(!S.done)Sound.play('hint');
+  const w=d.why;if(!S.done)focusCells(w.kind==='adj'?[w.i]:w.kind==='unit'?unitCells(w.u):[...unitCells(w.a),...unitCells(w.b)]);
   setMsg(explain(d,v));
 };
 // 共有 in the top menu passes the game itself on (not a result): share sheet, or copy the link
@@ -1102,16 +1263,16 @@ document.querySelectorAll('.diffSeg').forEach(s=>s.onclick=e=>{const b=e.target.
 function syncSeg(){
   const P=pend||{walk,size,diff};
   document.querySelectorAll('.walkSeg button').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.walk==='1')===P.walk?'true':'false'));
-  $('walkNote').textContent=P.walk?'気の向くままに、毎回ちがう庭を歩きます。':'日付ごとに決まる一局です。誰が遊んでも同じ庭になります。';
-  $('goNote').textContent=P.walk?'選んだ広さ・難しさで、まだ見ていない庭を作ります。':'選んだ広さ・難しさの、今日の庭に向かいます。';
+  phrase($('walkNote'),P.walk?'気の向くままに、毎回ちがう庭を歩きます。':'日付ごとに決まる一局です。誰が遊んでも同じ庭になります。');
+  phrase($('goNote'),P.walk?'選んだ広さ・難しさで、まだ見ていない庭を作ります。':'選んだ広さ・難しさの、今日の庭に向かいます。');
   document.querySelectorAll('.sizeSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.size===P.size?'true':'false'));
   document.querySelectorAll('.diffSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.diff===P.diff?'true':'false'));
-  $('sizeDesc').textContent={
+  phrase($('sizeDesc'),{
     8:'8×8マスの小さな庭。各行・各列に石を1つずつ置きます。はじめての方に。',
-    10:'10×10マスの広い庭。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'}[P.size];
-  $('diffDesc').textContent=P.diff
+    10:'10×10マスの広い庭。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'}[P.size]);
+  phrase($('diffDesc'),P.diff
     ?'苔の手がかりを外せるだけ外した庭です。2つの行や苔を合わせて考える一手が必要になります。'
-    :'苔の手がかりが多めの庭です。1つの行・列・苔を見るだけで解き進められます。';
+    :'苔の手がかりが多めの庭です。1つの行・列・苔を見るだけで解き進められます。');
 }
 // ---- bottom sheet (phone) ----
 function setTab(t){$('sheet').dataset.tab=t;document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t?'true':'false'));$('sheetBody').scrollTop=0;}
@@ -1141,10 +1302,10 @@ function openIntro(){if(intro.open)return;try{intro.showModal();}catch(e){intro.
 intro.addEventListener('close',()=>store.set('sekitei:intro',1));
 function closeIntro(){store.set('sekitei:intro',1);if(intro.open)intro.close();else intro.removeAttribute('open');}
 $('introGo').onclick=closeIntro;
-// every button sounds like setting a mark; the 庭の種類 choices keep their own sweep and board cells keep theirs.
+// every button sounds like setting a mark; board cells, 教えを乞う, 砂を均す and the 庭の種類 choices keep their own sounds.
 // Bubble phase, so a press that turns 効果音 on is already heard.
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('button');
-  if(b&&!b.closest('.cell,.walkSeg,.sizeSeg,.diffSeg'))Sound.play('mark');});$('introX').onclick=closeIntro;
+  if(b&&!b.closest('.cell,#hintBtn,#resetBtn,.walkSeg,.sizeSeg,.diffSeg'))Sound.play('mark');});$('introX').onclick=closeIntro;
 $('introAgain').onclick=()=>{closeSheet();openIntro();};
 if(store.get('sekitei:intro')!==1)openIntro();
 document.addEventListener('keydown',e=>{
