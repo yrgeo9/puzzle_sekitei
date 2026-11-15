@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-LaaSIXaujsZ8xDPTr3XHn1tq38+OnvX8eiQOIaZGlg0=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-ltzjt/rcC3yGTR6kitQ+BYvtbG0mJyRpSytI21dc3fQ=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -978,13 +978,13 @@ const cellName=i=>colName(i%S.N)+rowName((i/S.N)|0);   // e.g. 1二
 // The ground is a stack of raked areas. At the bottom, one pattern over the whole garden: long lines
 // (straight, rippling or 大波) or lines that all turn a corner together. On top, one or two areas raked
 // another way: a band across, a band that comes in and sweeps round a corner, a curved band, or arcs
-// round a corner of the garden. No curve is wider than RAKE_BEND cells in radius.
+// round a corner of the garden. Every bend is a curve of RAKE_BEND cells in radius: no sharp corners.
 // An upper area always wins: the lines beneath stop short of its edge, so no two lines ever cross.
 // Every moss island and every placed stone sits in smoothed sand with ripples round it. The ripples are
 // lines of equal distance from the nearest island or stone, so where two are close their rings fuse into
 // one outline round both (like a matryoshka's), and no ripple ever runs over a stone or moss.
 let RK=null;
-const RAKE_BEND=3;
+const RAKE_BEND=2;
 function rakeSvg(N,seed,clue){
   const R=rngFrom((seed^0x5eed5a1d)>>>0),pick=(a,b)=>a+R()*(b-a),NS='http://www.w3.org/2000/svg';
   const sp=N<=8?1/6:1/5,step=.1;                 // gap between rake lines / sampling, in cells
@@ -1010,18 +1010,18 @@ function rakeSvg(N,seed,clue){
   function lines(g,P,wv){               // parallel lines; wv(b) bends them (all by the same amount, so they never meet)
     for(let a=sp/2;a<N;a+=sp){const pts=[];
       for(let b=-.5;b<=N+.5;b+=step)pts.push(P([b,a+wv(b)]));add(g,pts);}}
-  // a wave made of circular arcs of radius r (≤ RAKE_BEND), crest and trough by turns, each turning
+  // a wave made of circular arcs of radius r (= RAKE_BEND), crest and trough by turns, each turning
   // through ±th; the arcs meet smoothly, so the line never bends tighter or wider than r
   const arcWave=(r,th,ph)=>{const L=2*r*Math.sin(th),c=r*Math.cos(th);
     return b=>{const z=b+ph,k=Math.round(z/L),u=z-k*L;return (k%2?-1:1)*(Math.sqrt(r*r-u*u)-c);};};
   function corner(g,P){
-    const kx=pick(N*.35,N*.72),ky=pick(N*.28,N*.65),Rc=pick(1,2.4);
+    const kx=pick(N*.35,N*.72),ky=pick(N*.28,N*.65);
     const lo=-Math.max(kx,N-ky)-.5,hi=Math.max(ky,N-kx)+.5;
     let last=null;
     for(let o=lo;o<hi;o+=sp){
-      // the rounding grows outwards from Rc but stops at RAKE_BEND; beyond that the lines are the same
-      // curve moved out along the diagonal, so they still never touch
-      const rr=Math.min(RAKE_BEND,Math.max(.14,Rc+o)),yh=ky-o,xv=kx+o,pts=[];last={rr,yh,xv};
+      // every line is the same curve of radius RAKE_BEND, moved along the diagonal, so they never touch
+      // and none turns sharply
+      const rr=RAKE_BEND,yh=ky-o,xv=kx+o,pts=[];last={rr,yh,xv};
       for(let x=-.5;x<xv-rr;x+=step)pts.push([x,yh]);
       const n=Math.max(3,Math.ceil(rr*Math.PI/2/step));
       for(let k=0;k<=n;k++){const t=-Math.PI/2+k/n*Math.PI/2;pts.push([xv-rr+rr*Math.cos(t),yh+rr+rr*Math.sin(t)]);}
@@ -1042,16 +1042,18 @@ function rakeSvg(N,seed,clue){
       for(let a=o+sp/2;a<o+w;a+=sp)add(g,dir?[[a,-.5],[a,N+.5]]:[[-.5,a],[N+.5,a]]);
       return {d:dir?`M${f(o)},-2H${f(o+w)}V${N+2}H${f(o)}Z`:`M-2,${f(o)}V${f(o+w)}H${N+2}V${f(o)}Z`,tf:''};},
     bend(g){                              // band that comes in from one side and sweeps round to another
-      const {tf}=turn(),cx=pick(N*.3,N*.62),cy=pick(N*.25,N*.6),W=pick(1.4,2.6),inner=el('g',{transform:tf});g.appendChild(inner);
-      for(let r=sp/2;r<W;r+=sp)add(inner,[[-1,cy-r],[cx,cy-r],...Array.from({length:13},(_,k)=>{const t=-Math.PI/2+k/12*Math.PI/2;return [cx+r*Math.cos(t),cy+r*Math.sin(t)];}),[cx+r,N+1]]);
-      return {d:`M-2,${f(cy-W)}L${f(cx)},${f(cy-W)}A${f(W)},${f(W)} 0 0 1 ${f(cx+W)},${f(cy)}L${f(cx+W)},${N+2}L${f(cx)},${N+2}L${f(cx)},${f(cy)}L-2,${f(cy)}Z`,tf};},
+      const {tf}=turn(),W=pick(1.4,2.6),cx=pick(N*.3,N*.62-RAKE_BEND+W),cy=pick(N*.25+W,N*.6),inner=el('g',{transform:tf});g.appendChild(inner);
+      // each line turns on the same radius, RAKE_BEND, moved along the diagonal (no sharp inner corner)
+      const Rb=RAKE_BEND,y0=cy-W;
+      for(let o=sp/2;o<W;o+=sp)add(inner,[[-1,y0+o],[cx-o,y0+o],...Array.from({length:17},(_,k)=>{const t=-Math.PI/2+k/16*Math.PI/2;return [cx-o+Rb*Math.cos(t),y0+o+Rb+Rb*Math.sin(t)];}),[cx-o+Rb,N+1]]);
+      return {d:`M-2,${f(y0)}L${f(cx)},${f(y0)}A${Rb},${Rb} 0 0 1 ${f(cx+Rb)},${f(y0+Rb)}L${f(cx+Rb)},${N+2}L${f(cx+Rb-W)},${N+2}L${f(cx+Rb-W)},${f(cy+Rb)}A${Rb},${Rb} 0 0 0 ${f(cx-W)},${f(cy)}L-2,${f(cy)}Z`,tf};},
     curve(g){                             // a broad curved band, arcs round a centre near a corner
-      const {tf}=turn(),W=pick(1.2,1.8),r1=pick(.9,RAKE_BEND-W),cx=pick(-.6,.4),cy=pick(-.6,.4),inner=el('g',{transform:tf});g.appendChild(inner);
+      const {tf}=turn(),W=pick(1.2,1.8),r1=RAKE_BEND-W/2,cx=pick(-.6,.4),cy=pick(-.6,.4),inner=el('g',{transform:tf});g.appendChild(inner);
       for(let r=r1+sp/2;r<r1+W;r+=sp)circ(inner,cx,cy,r);
       const ring=r=>`M${f(cx-r)},${f(cy)}a${f(r)},${f(r)} 0 1,0 ${f(2*r)},0a${f(r)},${f(r)} 0 1,0 ${f(-2*r)},0`;
       return {d:ring(r1+W)+ring(r1),tf,evenodd:true};},
     fan(g){                               // arcs spreading from a corner of the garden
-      const {tf}=turn(),cx=pick(-.4,.3),cy=pick(-.4,.3),Rr=pick(2,RAKE_BEND),inner=el('g',{transform:tf});g.appendChild(inner);
+      const {tf}=turn(),cx=pick(-.4,.3),cy=pick(-.4,.3),Rr=RAKE_BEND,inner=el('g',{transform:tf});g.appendChild(inner);
       for(let r=sp/2;r<Rr;r+=sp)circ(inner,cx,cy,r);
       return {d:`M${f(cx-Rr)},${f(cy)}a${f(Rr)},${f(Rr)} 0 1,0 ${f(2*Rr)},0a${f(Rr)},${f(Rr)} 0 1,0 ${f(-2*Rr)},0`,tf};}};
 
@@ -1060,7 +1062,7 @@ function rakeSvg(N,seed,clue){
   const layers=[];
   const base=el('g',{});field.appendChild(base);layers.push({g:base});
   const t=R(),k=R();let across=null;        // across: direction of the bottom lines, when they have one
-  if(t<.68){const T=turn();across=T.rot%2;lines(base,T.P,k<.3?()=>0:k<.8?arcWave(pick(1.8,RAKE_BEND),pick(.2,.32),pick(0,9)):arcWave(pick(2.4,RAKE_BEND),pick(.45,.6),pick(0,9)));}
+  if(t<.68){const T=turn();across=T.rot%2;lines(base,T.P,k<.3?()=>0:k<.8?arcWave(RAKE_BEND,pick(.24,.38),pick(0,9)):arcWave(RAKE_BEND,pick(.5,.68),pick(0,9)));}
   else corner(base,turn().P);
   const n=R()<.1?0:R()<.6?1:2;
   let curved=false;   // at most one curved area: two side by side leave thin slivers of ground between them
