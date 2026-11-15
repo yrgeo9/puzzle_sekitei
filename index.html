@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-E42lm6Yu0kevAeWdm1eDupS+/tOgI7c8zUkAwCGXN5w=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-ghbi3Rx1svC2MjP/Ch9GyyCj07aJQm7l9clqm/ZGll8=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -152,6 +152,7 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .btn.two small{font-family:var(--body);font-size:10.5px;color:var(--muted);letter-spacing:0;font-weight:400}
 .btn.em{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .btn.em:hover{background:#34342f}
+.topbtns{display:flex;gap:8px;align-items:center}
 .newgarden{margin-top:14px;width:100%;justify-content:center;letter-spacing:.14em}
 aside .seg{display:flex;width:100%;box-sizing:border-box;border-bottom:1px solid var(--line)}
 aside .seg button{flex:1;padding:9px 2px;font-size:13px;margin-bottom:-1px;white-space:nowrap;letter-spacing:0}
@@ -165,7 +166,8 @@ kbd{font-family:var(--body);font-size:10.5px;color:var(--muted);border:1px solid
 @media (hover:none){kbd{display:none}}
 
 /* ---- side panel ---- */
-aside{min-width:0;width:100%;max-width:582px;justify-self:center;display:flex;flex-direction:column;gap:34px;margin-top:20px}
+aside{min-width:0;width:100%;max-width:582px;justify-self:center;display:flex;flex-direction:column;margin-top:20px}
+.sheet-body{display:flex;flex-direction:column;gap:34px}
 aside section + section{border-top:1px solid var(--line);padding-top:30px}
 aside h2{font-family:var(--display);font-weight:700;font-size:17px;margin:0 0 8px;letter-spacing:.14em;display:flex;align-items:center;gap:8px}
 aside h2::before{content:"";width:5px;height:5px;background:var(--shu);flex-shrink:0}
@@ -202,9 +204,8 @@ aside p{margin:0}
 .card.win .small{font-size:12px;line-height:1.5}
 .sharebox{width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0 2px;border-top:1px solid var(--line)}
 .sharelabel{font-size:11px;color:var(--muted);letter-spacing:.14em}
-.sharelinks{display:flex;justify-content:center;gap:6px;flex-wrap:nowrap}
-.sbtn{font-family:var(--display);font-weight:500;font-size:12.5px;color:var(--ink);text-decoration:none;cursor:pointer;
-  border:1px solid var(--line);background:var(--panel);border-radius:2px;padding:5px 10px;min-width:40px;text-align:center;line-height:1.4;white-space:nowrap}
+.sbtn{font-family:var(--display);font-weight:500;font-size:13.5px;letter-spacing:.2em;color:var(--ink);cursor:pointer;
+  border:1px solid var(--line);background:var(--panel);border-radius:2px;padding:7px 26px;min-width:120px;text-align:center;line-height:1.4;white-space:nowrap}
 .winbtns{display:flex;gap:6px;justify-content:center;flex-wrap:nowrap}
 .winbtns .btn{padding:8px 12px;font-size:13.5px;white-space:nowrap}
 .sbtn:hover{border-color:var(--ink)}
@@ -266,9 +267,9 @@ aside p{margin:0}
   .brand p,.desk-only{display:none}
   /* menu as words divided by hairlines; 庭を変える stands out in sumi */
   .mnav{display:flex;flex-shrink:0;align-items:center}
-  .mnav .btn{border:0;background:transparent;border-radius:0;padding:6px 7px;font-size:13px;letter-spacing:.02em}
+  .mnav .btn{border:0;background:transparent;border-radius:0;padding:6px 6px;font-size:13px;letter-spacing:0}
   .mnav .btn + .btn{box-shadow:-1px 0 0 var(--line)}
-  .mnav .btn.em{background:var(--ink);color:var(--paper);border-radius:2px;padding:6px 10px;margin-right:4px}
+  .mnav .btn.em{background:var(--ink);color:var(--paper);border-radius:2px;padding:6px 8px;margin-right:3px}
   .mnav .btn.em + .btn{box-shadow:none}
   main{flex:1;min-height:0;gap:8px}
   /* status + board + hint message form one block, centred in the free height.
@@ -282,7 +283,7 @@ aside p{margin:0}
   .veil.solid{inset:6px}
   .coords-top{padding-inline:6px}
   .coords-right{padding-block:6px}
-  .tools{flex-shrink:0;display:grid;grid-template-columns:1.25fr 1fr 1fr 1.1fr 1fr;gap:5px}
+  .tools{flex-shrink:0;display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr 1.25fr;gap:5px}
   .tools .btn{font-size:13px;padding:0 2px;min-height:46px;justify-content:center;gap:5px;white-space:nowrap;letter-spacing:.02em}
   .tools .btn.two{gap:1px}
   .tools .btn{font-size:12.5px;letter-spacing:0}
@@ -293,19 +294,18 @@ aside p{margin:0}
   .hintmsg{flex-shrink:0;font-size:12.5px;line-height:1.5;height:3em;overflow:hidden;display:flex;align-items:center;justify-content:center}
   .scrim{display:block;position:fixed;inset:0;background:rgba(40,36,28,.3);opacity:0;pointer-events:none;transition:opacity .2s;z-index:29}
   body.sheet-open .scrim{opacity:1;pointer-events:auto}
-  aside{position:fixed;left:0;right:0;bottom:0;z-index:30;max-height:80%;overflow-y:auto;overscroll-behavior:contain;
-    background:var(--panel);border-radius:6px 6px 0 0;box-shadow:0 -10px 30px -12px rgba(40,30,10,.3);gap:28px;width:auto;max-width:none;margin-top:0;justify-self:stretch;
-    padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));
-    padding-bottom:calc(22px + env(safe-area-inset-bottom,0px));
-    transform:translateY(105%);visibility:hidden}
-  aside::before{content:"";position:sticky;top:0;display:block;height:6px;margin-inline:calc(-1 * max(18px,env(safe-area-inset-left,0px)));
-    background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 2px,var(--rake) 2px 3px);z-index:2}
+  aside{position:fixed;left:0;right:0;bottom:0;z-index:30;max-height:80%;overflow:hidden;display:flex;flex-direction:column;
+    background:var(--panel);border-radius:6px 6px 0 0;box-shadow:0 -10px 30px -12px rgba(40,30,10,.3);width:auto;max-width:none;margin-top:0;justify-self:stretch;
+    padding:0;transform:translateY(105%);visibility:hidden}
+  aside::before{content:"";flex:none;display:block;height:6px;
+    background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 2px,var(--rake) 2px 3px)}
+  .sheet-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;gap:28px;
+    padding:18px max(18px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
   aside section + section{border-top:0;padding-top:0}
-  .sheet-head + section{margin-top:-6px}
   body.ready aside{transition:transform .25s ease,visibility 0s linear .25s}
   body.sheet-open aside{transform:none;visibility:visible}
   body.ready.sheet-open aside{transition:transform .25s ease}
-  .sheet-head{display:flex;position:sticky;top:6px;z-index:1;background:var(--panel);padding-block:6px 2px;align-items:center;gap:6px;border-bottom:1px solid var(--line)}
+  .sheet-head{display:flex;flex:none;background:var(--panel);padding:6px max(18px,env(safe-area-inset-right,0px)) 2px max(18px,env(safe-area-inset-left,0px));align-items:center;gap:6px;border-bottom:1px solid var(--line)}
   aside section{display:none}
   aside[data-tab="garden"] section[data-tab="garden"],
   aside[data-tab="rules"] section[data-tab="rules"],
@@ -331,12 +331,13 @@ button{touch-action:manipulation}
       <span class="seal" aria-hidden="true">石</span>
       <h1>石庭</h1>
     </div>
-    <button class="btn em desk-only" type="button" id="gardenBtn">庭を変える</button>
+    <div class="desk-only topbtns"><button class="btn" type="button" id="appShareDesk">共有</button><button class="btn em" type="button" id="gardenBtn">庭を変える</button></div>
     <nav class="mnav" aria-label="メニュー">
       <button class="btn em" type="button" data-open="garden">庭を変える</button>
       <button class="btn" type="button" data-open="rules">遊び方</button>
       <button class="btn" type="button" data-open="records">記録</button>
       <button class="btn" type="button" data-open="sound" aria-label="音の設定">音</button>
+      <button class="btn" type="button" id="appShare">共有</button>
     </nav>
   </header>
 
@@ -358,11 +359,11 @@ button{touch-action:manipulation}
       <p class="hintmsg" id="hintMsg" aria-live="polite"></p>
     </div>
     <div class="tools">
-      <button class="btn mode" id="modeBtn" aria-pressed="false" title="置くものを切り替え"><span class="mopt on" id="optStone"><i class="modeicon"></i>石</span><span class="msep" aria-hidden="true"></span><span class="mopt" id="optMark"><i class="modeicon ring"></i>印</span></button>
-      <button class="btn" id="undoBtn" title="一手戻す (Z)">一手戻す <kbd>Z</kbd></button>
-      <button class="btn two" id="pauseBtn" title="パズルを一時停止 (P)"><span>休憩</span><small>パズルを一時停止</small></button>
       <button class="btn two" id="hintBtn" title="次に推理できる一手を教わる"><span>教えを乞う</span><small>ヒントを貰う</small></button>
+      <button class="btn two" id="pauseBtn" title="パズルを一時停止 (P)"><span>休憩</span><small>パズルを一時停止</small></button>
       <button class="btn two" id="resetBtn" title="盤上の印をすべて消す"><span>砂を均す</span><small>印を全消し</small></button>
+      <button class="btn" id="undoBtn" title="一手戻す (Z)">一手戻す <kbd>Z</kbd></button>
+      <button class="btn mode" id="modeBtn" aria-pressed="false" title="置くものを切り替え"><span class="mopt on" id="optStone"><i class="modeicon"></i>石</span><span class="msep" aria-hidden="true"></span><span class="mopt" id="optMark"><i class="modeicon ring"></i>印</span></button>
     </div>
   </main>
 
@@ -377,6 +378,7 @@ button{touch-action:manipulation}
       </div>
       <button type="button" class="close" id="sheetClose" aria-label="閉じる">×</button>
     </div>
+    <div class="sheet-body" id="sheetBody">
     <section data-tab="garden" id="gardenSec">
       <h2>庭の種類</h2>
       <p class="sublabel">巡り方</p>
@@ -389,7 +391,6 @@ button{touch-action:manipulation}
       <div class="seg sizeSeg" role="group" aria-label="庭の広さ">
         <button data-size="8" aria-pressed="true">八間 ・ 石1</button>
         <button data-size="10" aria-pressed="false">十間 ・ 石2</button>
-        <button data-size="12" aria-pressed="false">十二間 ・ 石2</button>
       </div>
       <p class="small segnote" id="sizeDesc"></p>
       <p class="sublabel">難しさ</p>
@@ -425,7 +426,7 @@ button{touch-action:manipulation}
         <div class="sw c">3</div><span>石が数ぶん揃うと薄くなり、多すぎると赤くなる</span>
       </div>
       <p class="small" style="margin-top:8px">「砂を均す」は盤上の印をすべて消します（石はそのまま）。「一手戻す」で元に戻せます。「休憩」を押すと、盤面を隠してタイマーを止められます。</p>
-      <p class="small" style="margin-top:8px">盤の右と下の小さな丸は、その行・列に置いた石の数です。</p>
+      <p class="small" style="margin-top:8px">盤の上と右の小さな丸は、その列・行に置いた石の数です。</p>
       <p class="small" style="margin-top:4px">マスの呼び方は将棋盤と同じです。上の数字が列（右から1、2…）、右の漢数字が行（上から一、二…）で、「1二」は右端の列の上から2マス目です。</p>
     </section>
     <section data-tab="records">
@@ -442,6 +443,7 @@ button{touch-action:manipulation}
       </div>
       <p class="small" id="soundNote" style="margin-top:8px">最初に画面に触れたときから鳴り始めます。iPhoneを消音モードにしているときは鳴りません。</p>
     </section>
+    </div>
   </aside>
 </div>
 
@@ -454,7 +456,7 @@ button{touch-action:manipulation}
     <ol class="intro-rules">
       <li>
         <div class="mini" style="--c:5" aria-hidden="true"><i></i><i></i><i class="s"></i><i></i><i></i></div>
-        <div><b>どの行・列にも、石を決まった数ずつ</b><span>八間は1つ、十間と十二間は2つ。盤の右と下の丸で、置いた数を確かめられます。</span></div>
+        <div><b>どの行・列にも、石を決まった数ずつ</b><span>八間は1つ、十間は2つ。盤の上と右の丸で、置いた数を確かめられます。</span></div>
       </li>
       <li>
         <div class="mini" style="--c:3" aria-hidden="true"><i class="s bad"></i><i></i><i></i><i></i><i class="s bad"></i><i></i><i></i><i></i><i></i></div>
@@ -834,7 +836,7 @@ const Sound=(function(){
 
 <script>
 (function(){
-const SIZES={8:{K:1,name:'八間'},10:{K:2,name:'十間'},12:{K:2,name:'十二間'}};
+const SIZES={8:{K:1,name:'八間'},10:{K:2,name:'十間'}};
 const $=id=>document.getElementById(id);
 const store={get(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
 // Saved data is untrusted (another page on the same origin, or the user, can edit it):
@@ -1063,6 +1065,21 @@ $('hintBtn').onclick=()=>{
   const w=d.why;focusCells(w.kind==='adj'?[w.i]:w.kind==='unit'?unitCells(w.u):[...unitCells(w.a),...unitCells(w.b)]);
   setMsg(explain(d,v));
 };
+// 共有 in the top menu passes the game itself on (not a result): share sheet, or copy the link
+function shareApp(btn){
+  const onSite=/^https?:$/.test(location.protocol)&&location.hostname.endsWith('github.io');
+  const url=onSite?location.origin+location.pathname:SITE_URL;
+  const text='石庭パズル ― 苔の数字を手がかりに、庭に石を据える。推理だけで解ける論理パズルです。';
+  Sound.play('tap');
+  if(typeof navigator.share==='function'){navigator.share({title:'石庭パズル',text,url}).catch(()=>{});return;}
+  const label=btn.textContent,done=()=>{btn.textContent='コピー済み';setTimeout(()=>{btn.textContent=label;},1800);};
+  const all=text+'\n'+url;
+  const fallback=()=>{const ta=document.createElement('textarea');ta.value=all;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){}ta.remove();};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(all).then(done,fallback);else fallback();
+}
+$('appShare').onclick=()=>shareApp($('appShare'));
+$('appShareDesk').onclick=()=>shareApp($('appShareDesk'));
 $('newGardenBtn').onclick=()=>{closeSheet();start(size,diff,randomSeed());};
 function setWalk(v){walk=!!v;store.set('sekitei:walk',walk?1:0);syncSeg();}
 document.querySelectorAll('.walkSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(!b)return;
@@ -1081,14 +1098,13 @@ function syncSeg(){
   document.querySelectorAll('.diffSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.diff===diff?'true':'false'));
   $('sizeDesc').textContent={
     8:'8×8マスの小さな庭。各行・各列に石を1つずつ置きます。はじめての方に。',
-    10:'10×10マスの庭。各行・各列に石を2つずつ置きます。',
-    12:'12×12マスの広い庭。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'}[size];
+    10:'10×10マスの広い庭。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'}[size];
   $('diffDesc').textContent=diff
     ?'苔の手がかりを外せるだけ外した庭です。2つの行や苔を合わせて考える一手が必要になります。'
     :'苔の手がかりが多めの庭です。1つの行・列・苔を見るだけで解き進められます。';
 }
 // ---- bottom sheet (phone) ----
-function setTab(t){$('sheet').dataset.tab=t;document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t?'true':'false'));$('sheet').scrollTop=0;}
+function setTab(t){$('sheet').dataset.tab=t;document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t?'true':'false'));$('sheetBody').scrollTop=0;}
 setTimeout(()=>document.body.classList.add('ready'),400);
 function openSheet(t){setTab(t);document.body.classList.add('sheet-open');setTimeout(()=>$('sheetClose').focus({preventScroll:true}),50);}
 function closeSheet(){document.body.classList.remove('sheet-open');}
@@ -1150,25 +1166,18 @@ function shareText(){
 }
 function showWin(again){
   $('time').textContent=fmt(S.time);
-  const canShare=typeof navigator.share==='function';
   showVeil(`<h3>整いました</h3><div class="small">${SIZES[S.N].name} ・ ${S.diff?'じっくり':'手引き多め'} ・ ${fmt(S.time)}${S.hints?` ・ 教えを乞うた ${S.hints}回`:''}</div>
     <div class="sharebox"><span class="sharelabel">記録を伝える</span>
-      <div class="sharelinks">
-        ${canShare?'<button type="button" class="sbtn" id="shareNative">共有</button>':''}
-        <a class="sbtn" id="shareX" target="_blank" rel="noopener noreferrer">X</a>
-        <a class="sbtn" id="shareLine" target="_blank" rel="noopener noreferrer">LINE</a>
-        <button type="button" class="sbtn" id="shareCopy">コピー</button>
-      </div></div>
+      <button type="button" class="sbtn" id="shareBtn">共有</button></div>
     <div class="winbtns">
     <button class="btn" id="viewBtn">庭を眺める</button><button class="btn primary" id="nextBtn">${walk?'別の庭へ歩く':'漫ろ歩きへ'}</button></div>`);
   $('veilCard').classList.add('win');
-  const text=shareText(),url=shareUrl(),enc=encodeURIComponent;
-  $('shareX').href=`https://x.com/intent/post?text=${enc(text)}&url=${enc(url)}`;
-  $('shareLine').href=`https://line.me/R/share?text=${enc(text+'\n'+url)}`;
-  if(canShare)$('shareNative').onclick=()=>{Sound.play('tap');navigator.share({title:'石庭パズル',text,url}).catch(()=>{});};
-  $('shareCopy').onclick=()=>{
-    const all=text+'\n'+url,b=$('shareCopy');Sound.play('tap');
-    const done=()=>{b.textContent='コピー済み';setTimeout(()=>{if(b.isConnected)b.textContent='コピー';},1800);};
+  const text=shareText(),url=shareUrl();
+  // one button: the phone's share sheet (X, LINE, …); where there is none, copy the text and link instead
+  $('shareBtn').onclick=()=>{
+    const b=$('shareBtn'),all=text+'\n'+url;Sound.play('tap');
+    if(typeof navigator.share==='function'){navigator.share({title:'石庭パズル',text,url}).catch(()=>{});return;}
+    const done=()=>{b.textContent='文面をコピーしました';setTimeout(()=>{if(b.isConnected)b.textContent='共有';},2000);};
     const fallback=()=>{const ta=document.createElement('textarea');ta.value=all;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';
       document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){}ta.remove();};
     if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(all).then(done,fallback);else fallback();
@@ -1183,13 +1192,13 @@ function recordWin(){
 }
 function readRecords(){
   const raw=store.get('sekitei:rec');const out={};
-  for(const N of [8,10,12])for(const d of [0,1]){const id=N+':'+d;const r=raw&&typeof raw==='object'?raw[id]:null;
+  for(const N of [8,10])for(const d of [0,1]){const id=N+':'+d;const r=raw&&typeof raw==='object'?raw[id]:null;
     if(r&&typeof r==='object')out[id]={n:int(r.n,0,1e6,0),best:r.best===null?null:int(r.best,0,1e7,null)};}
   return out;
 }
 function renderRecords(){
   const rec=readRecords();let h='';
-  for(const N of [8,10,12])for(const d of [0,1]){const r=rec[N+':'+d];
+  for(const N of [8,10])for(const d of [0,1]){const r=rec[N+':'+d];
     h+=`<span>${SIZES[N].name}</span><span class="small">${d?'じっくり':'手引き多め'}</span><span>${r?`${r.n}局 ・ ${r.best!==null?fmt(r.best):'―'}`:'―'}</span>`;}
   $('records').innerHTML=h+'<span class="small" style="grid-column:1/-1">解いた数 ・ 手助けなしの最短時間（この端末だけに保存）</span>';
 }
