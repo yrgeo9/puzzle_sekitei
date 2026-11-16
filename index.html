@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-rWL5Mv05Za1a0J6mCzzeRbf80kSEgmlUZr8eS3bgl8Q=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-Wy8rOYLmsYO3as4DhDw7xElV6OUMMpOXWGTt1cBrJAs=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
-<meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
+<meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="石庭">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta property="og:title" content="石庭パズル">
-<meta property="og:description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
+<meta property="og:description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta property="og:type" content="website">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -156,7 +156,7 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .pips{display:flex;align-items:center;justify-content:center;gap:3px}
 .pip{width:6px;height:6px;border-radius:50%;border:1.2px solid var(--curb-dk);box-sizing:border-box}
 .pip.on{background:var(--stone);border-color:var(--stone)}
-.pips.over .pip{border-color:var(--err);background:var(--err)}
+.pips.over .pip,.pips.short .pip{border-color:var(--err);background:var(--err)}
 
 /* ---- buttons: thin-lined, mincho lettering ---- */
 .tools{display:flex;flex-wrap:nowrap;gap:8px;justify-content:center;width:100%;max-width:602px}
@@ -277,11 +277,21 @@ aside p{margin:0}
 .intro.ask h2{font-size:21px;letter-spacing:.14em}
 .intro.pick{width:min(420px,calc(100vw - 32px))}
 .intro.pick h2{font-size:22px;letter-spacing:.16em}
-.pick .sublabel{margin-top:18px}
+.pick .sublabel{margin-top:22px}
 .pick .sublabel:first-child{margin-top:0}
 .pick .seg{display:flex;width:100%;box-sizing:border-box;border-bottom:1px solid var(--line)}
 .pick .seg button{flex:1;padding:9px 2px;font-size:13.5px;margin-bottom:-1px;white-space:nowrap;letter-spacing:0}
-.pick .segnote{margin:6px 0 0!important;min-height:3.2em}
+.pick .segnote{margin:6px 0 0!important}
+/* laid out like the choices above: an underlined row in the same lettering (16px keeps iPhone from zooming in) */
+.pickno{display:block;width:100%;box-sizing:border-box;padding:7px 2px 8px;border:0;border-bottom:1px solid var(--line);border-radius:0;
+  background:transparent;color:var(--ink);font:500 16px var(--display);letter-spacing:.06em;text-align:center}
+.pickno::placeholder{color:var(--muted);opacity:.7}
+.pickno:focus{outline:0;border-bottom-color:var(--ink)}
+.pickno.bad{border-color:var(--err)}
+.pick .pickrow .sublabel{margin-top:22px}
+.pickrow.off label,.pickrow.off .pickno{opacity:.45}
+.pickno:disabled{cursor:not-allowed}
+#pickNoNote.bad{color:var(--err)}
 .askbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
 .askbtns .btn{justify-content:center;padding:11px;font-size:14px;letter-spacing:.12em}
 .pats{display:flex;flex-direction:column;gap:14px;margin-top:10px}
@@ -292,13 +302,16 @@ aside p{margin:0}
 .patpair figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:3px}
 .patpair figcaption{font-size:10.5px;color:var(--muted);letter-spacing:.1em}
 .patarrow{color:var(--muted);font-size:14px;margin-bottom:16px}
-.pat{display:grid;grid-template-columns:repeat(var(--c),17px);background:var(--sand);border:2px solid var(--curb);border-radius:2px;margin-top:2px}
+.patb{display:grid;grid-template-columns:auto 12px;grid-template-rows:12px auto;column-gap:2px}
+.patcols{display:grid;grid-template-columns:repeat(6,17px);padding:0 2px;font-size:8.5px;color:var(--muted);text-align:center;line-height:12px}
+.patrows{grid-row:2;grid-column:2;display:grid;grid-template-rows:repeat(6,17px);padding:4px 0 2px;font-size:8.5px;color:var(--muted);line-height:17px}
+.patcols span,.patrows span{display:block}
+.pat{grid-row:2;grid-column:1;display:grid;grid-template-columns:repeat(var(--c),17px);background:var(--sand);border:2px solid var(--curb);border-radius:2px;margin-top:2px}
 .pat i{width:17px;height:17px;position:relative;display:grid;place-items:center;font-style:normal;font-size:10.5px;line-height:1;color:var(--muted);
   box-shadow:inset -1px -1px 0 var(--groove),inset 1px 1px 0 var(--ridge)}
-.pat i.q::after{content:"?"}
 .pat i.h{background:color-mix(in srgb,var(--moss) 16%,transparent)}
 .pat i.c{background:color-mix(in srgb,var(--shu) 13%,transparent)}
-.pat i.x::after{content:"×";color:color-mix(in srgb,var(--ink) 38%,transparent)}
+.pat i.k::after{content:"";width:32%;aspect-ratio:1;border-radius:50%;box-sizing:border-box;border:1.2px solid rgba(110,98,76,.58);background:var(--sand)}
 .pat i.s::after{content:"";position:absolute;inset:16%;border-radius:50%;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%)}
 .pat i.m{color:var(--moss-ink);font-family:var(--display);font-weight:700;font-size:11px;isolation:isolate}
 .pat i.m::before{content:"";position:absolute;inset:6%;border-radius:46% 52% 44% 50% / 50% 44% 54% 46%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--moss) 70%,#c8d39a),var(--moss) 55%,var(--moss-dk));z-index:-1}
@@ -479,21 +492,21 @@ button{touch-action:manipulation}
       <div class="legend">
         <div class="sw"><div class="s"></div></div><span>タップで石を置く・取る</span>
         <div class="sw"><div class="d"></div></div><span>右クリック、または「印」モードで「石なし」の印。なぞると続けて付けられます</span>
-        <div class="sw c">3</div><span>石が数ぶん揃うと薄くなり、多すぎると赤くなる</span>
+        <div class="sw c">3</div><span>石が数ぶん揃うと薄くなる。多すぎるときや、まわりが埋まったのに足りないときは赤くなる</span>
       </div>
       <p class="small" style="margin-top:8px">「一手戻す」で直前の操作を元に戻せます。<br>「休憩」を押すと、盤面を隠してタイマーを止められます。</p>
-      <p class="small" style="margin-top:8px">盤の上と右の小さな丸は、その列・行に置いた石の数です。</p>
+      <p class="small" style="margin-top:8px">盤の上と右の小さな丸は、その列・行に置いた石の数です。多すぎるときや、空いたマスがないのに石が足りないときは赤くなります。</p>
       <p class="small" style="margin-top:4px">マスの呼び方は将棋盤と同じです。<br>上の数字が列（右から1、2…）、右の漢数字が行（上から一、二…）で、<br>「1二」は右端の列の上から2マス目です。</p>
     </section>
     <section data-tab="rules">
       <h2>「じっくり」を解くためのヒント</h2>
-      <p class="small">「じっくり」の庭は、1つの行・列・苔だけを見ても次の一手が決まりません。<b>2つの手がかり（行と行、行と苔、苔と苔）の置き方の組み合わせを全部考え、どの組み合わせでも同じになるマスを確定する</b>のが基本です。よく出てくる形を、5×5の盤（八間と同じく各行・各列に石1つ）の、解く前と解いた後の図で挙げます（? は候補、× は石なし、● は石。解いた後の図は、その形で決まるマスだけを書き換えています）。</p>
+      <p class="small">「じっくり」の盤面は、1つの行・列・苔だけを見ても次の一手が決まりません。<b>2つの手がかり（行と行、行と苔、苔と苔）の置き方の組み合わせを全部考え、どの組み合わせでも同じになるマスを確定する</b>のが基本です。よく出てくる形を、実際の六間「じっくり」の途中の盤面で挙げます。緑の数字は苔、黒い丸は石、小さな輪は「石なし」の印です。解く前の図で色の付いたマスが注目する行・列・苔のまわり、解いた後の図で朱色のマスがその形で決まるマスです。マスの呼び方は盤と同じで、「4二」は右から4列目・上から2行目です。</p>
       <div class="pats">
-        <div class="patrow"><b>2つの行が、同じ2列を取り合う</b><div class="patpair" aria-hidden="true"><figure><div class="pat" style="--c:5"><i class="x h"></i><i class="q h"></i><i class="x h"></i><i class="q h"></i><i class="x h"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x h"></i><i class="q h"></i><i class="x h"></i><i class="q h"></i><i class="x h"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="pat" style="--c:5"><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="x c"></i><i class="q"></i><i class="x c"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="x c"></i><i class="q"></i><i class="x c"></i><i class="q"></i><i class="x"></i><i class="x c"></i><i class="x"></i><i class="x c"></i><i class="s c"></i></div><figcaption>解いた後</figcaption></figure></div><p class="small">色の付いた1行目と3行目は、どちらも2列目か4列目にしか石を置けません。2行で2つの石なので、<b>2列目と4列目の石は、この2行が1つずつ使い切ります</b>。だから、ほかの行の2列目・4列目はすべて石なしです。すると5行目は5列目しか残らず、石が決まります。列と行を入れ替えても同じです。</p></div>
-        <div class="patrow"><b>片方の置き方が、もう片方の置き場をつぶす</b><div class="patpair" aria-hidden="true"><figure><div class="pat" style="--c:5"><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="pat" style="--c:5"><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="x"></i><i class="s"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="s"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解いた後</figcaption></figure></div><p class="small">2行目の候補は3・4列目、すぐ下の3行目の候補は3〜5列目です。2行目を4列目に置くと、3行目の候補がすべて隣接して置けなくなります。だから<b>2行目は3列目、3行目は5列目</b>に決まります。「ここに置くと、隣の行や苔が成り立たなくなる」置き方を消していきます。</p></div>
-        <div class="patrow"><b>行の候補が、すべて苔のまわりに入っている</b><div class="patpair" aria-hidden="true"><figure><div class="pat" style="--c:5"><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="m">1</i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="pat" style="--c:5"><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="m">1</i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解いた後</figcaption></figure></div><p class="small">4行目の石は2〜4列目のどれか、つまり必ず苔「1」のまわりに入ります。それで苔の「1」が埋まるので、<b>苔のまわりの、ほかのマスはすべて石なし</b>です（4行目の石の位置はまだ決まりません）。逆に、苔の残りの候補がすべて1つの行にあれば、その行の苔から外れたマスが石なしになります。</p></div>
-        <div class="patrow"><b>苔と苔の引き算</b><div class="patpair" aria-hidden="true"><figure><div class="pat" style="--c:5"><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="m">2</i><i class="m">1</i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="pat" style="--c:5"><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="s"></i><i class="m">2</i><i class="m">1</i><i class="x"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解いた後</figcaption></figure></div><p class="small">右の苔「1」の候補（真ん中の上下4マス）は、すべて左の苔「2」のまわりにも入っています。つまりそこには石がちょうど1つで、左の「2」のもう1つの石は、<b>左の「2」だけが接するマス（2行目の左端）</b>に入ります。マインスイーパーの引き算と同じ考え方です。</p></div>
-        <div class="patrow"><b>苔の数と「隣り合わない」決まり</b><div class="patpair" aria-hidden="true"><figure><div class="pat" style="--c:5"><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="m">2</i><i class="q"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="pat" style="--c:5"><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="s"></i><i class="x"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="m">2</i><i class="s"></i><i class="q"></i><i class="q"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i><i class="q"></i></div><figcaption>解いた後</figcaption></figure></div><p class="small">苔「2」のまわりで残っている候補は3マスです。そのうち隣り合わない2つの組は、<b>左上と右の組だけ</b>なので、その2マスが石、残る真上は石なしです。苔の数が大きいほど置き方が絞られ、決まりやすくなります。</p></div>
+        <div class="patrow"><b>2つの行が、同じ2列を取り合う</b><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i class="k"></i><i></i><i class="m">1</i><i></i><i class="k"></i><i class="k"></i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="m">2</i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="m h">2</i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="m">1</i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i class="k"></i><i></i><i class="m">1</i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="m">2</i><i class="k"></i><i class="k"></i><i class="k"></i><i class="m">2</i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="m">1</i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">二の行と四の行は、どちらも2の列か1の列にしか石を置けません。2つの行で石は2つなので、<b>2の列と1の列の石は、この2行が1つずつ使い切ります</b>。だから、ほかの行の2の列・1の列（2六・1六）には石を置けません。列と行を入れ替えても同じです。</p></div>
+        <div class="patrow"><b>片方の置き方が、もう片方の置き場をつぶす</b><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i class="m">0</i><i class="k"></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="k h"></i><i class="m h">0</i><i class="k h"></i><i class="h"></i><i class="h"></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="m">1</i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i class="m">0</i><i class="k"></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="s c"></i><i class="k"></i><i class="m">0</i><i class="k"></i><i class="k c"></i><i class="k c"></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="m">1</i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">二の行の石は、2二か1二のどちらかです。三の行に残る2三・1三は、そのどちらとも隣り合うので、二の行の石がどちらに入っても置けません。だから<b>三の行の石は6三に決まります</b>。「ここに置くと、隣の行や苔が成り立たなくなる」置き方を消していきます。</p></div>
+        <div class="patrow"><b>行の候補が、すべて苔のまわりに入っている</b><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i class="h"></i><i class="h"></i><i class="k h"></i><i class="m h">1</i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="m h">1</i><i class="h"></i><i></i><i class="k"></i><i class="m">1</i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="k"></i><i></i><i></i><i class="m">1</i><i></i><i></i><i></i><i class="k"></i><i class="m">2</i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i></i><i class="k"></i><i class="m">1</i><i class="k"></i><i class="k"></i><i class="k"></i><i class="m">1</i><i class="k c"></i><i></i><i class="k"></i><i class="m">1</i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="m">1</i><i></i><i></i><i></i><i class="k"></i><i class="m">2</i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">一の行の石は、6一か5一のどちらかです。どちらも5二の苔「1」のまわりにあるので、苔の「1」はこの石で埋まります。だから<b>苔のまわりの、ほかのマス（4二）には石を置けません</b>。逆に、苔の残りの候補がすべて1つの行にあれば、その行の苔から外れたマスに石を置けなくなります。</p></div>
+        <div class="patrow"><b>苔と苔の引き算</b><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i class="k"></i><i></i><i class="k"></i><i class="m">0</i><i class="k"></i><i class="h"></i><i class="k h"></i><i class="h"></i><i class="k"></i><i class="m">1</i><i class="k"></i><i class="m h">1</i><i class="m h">2</i><i class="k h"></i><i class="k"></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="k h"></i><i></i><i class="k"></i><i class="m">1</i><i class="k"></i><i></i><i class="k"></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i class="k"></i><i></i><i class="k"></i><i class="m">0</i><i class="k"></i><i></i><i class="k"></i><i class="s c"></i><i class="k"></i><i class="m">1</i><i class="k"></i><i class="m">1</i><i class="m">2</i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i></i><i class="k"></i><i class="m">1</i><i class="k"></i><i></i><i class="k"></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">6三の苔「1」の候補（6二・6四・5四）は、すべて5三の苔「2」のまわりにも入っています。つまりそこには石がちょうど1つです。5三の「2」のもう1つの石は、<b>「2」だけが接する4二に入ります</b>。マインスイーパーの引き算と同じ考え方です。</p></div>
+        <div class="patrow"><b>苔の数と「隣り合わない」決まり</b><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="m">1</i><i class="m h">1</i><i class="k h"></i><i class="h"></i><i></i><i></i><i></i><i class="h"></i><i class="m h">2</i><i class="k h"></i><i class="m">1</i><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i class="k h"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="m">1</i><i class="m">1</i><i class="k"></i><i class="s c"></i><i></i><i></i><i></i><i></i><i class="m">2</i><i class="k"></i><i class="m">1</i><i class="k"></i><i class="k"></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">4三の苔「2」のまわりで残っているのは、3二・5三・5四・4四の4マスです。このうち5三・5四・4四は互いに隣り合うので、石は多くて1つしか置けません。だから<b>もう1つの石は3二に決まります</b>。苔の数が大きいほど置き方が絞られ、決まりやすくなります。</p></div>
       </div>
       <p class="small" style="margin-top:8px">候補が2〜3マスしかない行・列・苔を探し、隣の行や重なる苔と組み合わせてみてください。印をこまめに付けると候補が見えやすくなります。「教えを乞う」に出る「○と△を合わせて考えると、」は、どの2つを組み合わせればよいかの手がかりです。続く理由の部分で、なぜそのマスが決まるのかを確かめられます。</p>
     </section>
@@ -547,6 +560,11 @@ button{touch-action:manipulation}
         <button data-diff="1" aria-pressed="true">じっくり</button>
       </div>
       <p class="small segnote" data-note="diff"></p>
+      <div class="pickrow">
+      <p class="sublabel"><label for="pickNo">番号で選ぶ（任意）</label></p>
+      <input class="pickno" id="pickNo" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" autocomplete="off" placeholder="1〜99999">
+      <p class="small segnote" id="pickNoNote"></p>
+      </div>
     </div>
     <button class="btn primary intro-go" id="pickGo" type="button" autofocus>庭に向かう</button>
   </div>
@@ -556,7 +574,7 @@ button{touch-action:manipulation}
   <div class="intro-body">
     <p class="intro-eyebrow">はじめての方へ</p>
     <h2 id="introTitle">石庭へようこそ</h2>
-    <p class="intro-lead">苔の数字を手がかりに、庭に石を据えるパズルです。決まりは3つだけです。</p>
+    <p class="intro-lead">苔の数字を手がかりに、盤面に石を据えるパズルです。決まりは3つだけです。</p>
     <ol class="intro-rules">
       <li>
         <div class="mini" style="--c:5" aria-hidden="true"><i></i><i></i><i class="s"></i><i></i><i></i></div>
@@ -970,16 +988,18 @@ let cellEls=[],rowPips=[],colPips=[];
 let tick=null,lastTs=0,firstLoad=true;
 
 function keyOf(N,seed,d){return 'sekitei2:'+N+':'+d+':'+seed;}
-function todaySeed(){const d=new Date();return (d.getFullYear()*372+d.getMonth()*31+d.getDate())%9000+1;}
+// 今日の庭: a number drawn from the date, out of the same 1–99999 as 漫ろ歩き (the same for everyone on that day)
+function todaySeed(){const d=new Date(),r=rngFrom(Math.imul(d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate(),0x9E3779B1)>>>0);r();
+  return Math.floor(r()*99999)+1;}
 
 // 今日の庭: one puzzle per day (same for everyone); 漫ろ歩き: a random garden each time
 let walk=store.get('sekitei:walk')===1;
-const randomSeed=()=>Math.floor(Math.random()*9000)+1;
+const randomSeed=()=>Math.floor(Math.random()*99999)+1;   // 1–99999, the same range as a garden chosen by number
 const newSeed=()=>walk?randomSeed():todaySeed();
 let pend=null;   // choices made in 庭の種類 that are not applied yet
 const labelText=()=>`${SIZES[size].name} ・ ${diff?'じっくり':'手引き多め'} ・ ${walk?'漫ろ歩き':'今日の庭'}`;
 function start(N,d,seed){
-  N=SIZES[N]?N:8;d=d===1?1:0;seed=int(seed,1,9999,todaySeed());
+  N=SIZES[N]?N:8;d=d===1?1:0;seed=int(seed,1,99999,todaySeed());
   size=N;diff=d;pend={walk,size,diff};syncSeg();
   const K=SIZES[N].K;$('kRule').textContent=K;$('sizeNote').textContent=`（${SIZES[N].name}・石${K}の場合）`;
   stopClock();if(S)S.started=false;
@@ -1239,15 +1259,19 @@ function render(){
     for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;const rr=r+dr,cc=c+dc;if(rr<0||cc<0||rr>=N||cc>=N)continue;if(cells[rr*N+cc]===1){bad.add(i);}}}
   let allOk=bad.size===0;
   for(let i=0;i<N*N;i++){const el=cellEls[i];
-    if(clue[i]>=0){const r=(i/N)|0,c=i%N;let s=0;
-      for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const rr=r+dr,cc=c+dc;if(rr<0||cc<0||rr>=N||cc>=N)continue;if(cells[rr*N+cc]===1)s++;}
-      el.classList.toggle('bad',s>clue[i]);el.classList.toggle('done',s===clue[i]);if(s!==clue[i])allOk=false;continue;}
+    if(clue[i]>=0){const r=(i/N)|0,c=i%N;let s=0,e=0;   // e: empty cells round it (not stone, mark or moss)
+      for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const rr=r+dr,cc=c+dc;if(rr<0||cc<0||rr>=N||cc>=N)continue;const j=rr*N+cc;if(cells[j]===1)s++;else if(cells[j]===0&&clue[j]<0)e++;}
+      // too many stones, or no empty cell left round it and still too few: red
+      el.classList.toggle('bad',s>clue[i]||(s<clue[i]&&!e));el.classList.toggle('done',s===clue[i]);if(s!==clue[i])allOk=false;continue;}
     el.classList.toggle('stone',cells[i]===1);el.classList.toggle('mark',cells[i]===2);el.classList.toggle('bad',bad.has(i));
     el.setAttribute('aria-label',`${cellName(i)} ${cells[i]===1?'石':cells[i]===2?'印':'空き'}`);
   }
-  const pip=(el,n)=>{el.classList.toggle('over',n>K);el.classList.toggle('full',n===K);[...el.children].forEach((p,k)=>p.classList.toggle('on',k<n));};
-  for(let r=0;r<N;r++){pip(rowPips[r],rowC[r]);if(rowC[r]!==K)allOk=false;}
-  for(let c=0;c<N;c++){pip(colPips[c],colC[c]);if(colC[c]!==K)allOk=false;}
+  // a line with no empty cell left (stones, marks and moss only) but too few stones can no longer be right: red too
+  const rowE=new Array(N).fill(0),colE=new Array(N).fill(0);
+  for(let i=0;i<N*N;i++)if(clue[i]<0&&cells[i]===0){rowE[(i/N)|0]++;colE[i%N]++;}
+  const pip=(el,n,e)=>{el.classList.toggle('over',n>K);el.classList.toggle('short',n<K&&!e);el.classList.toggle('full',n===K);[...el.children].forEach((p,k)=>p.classList.toggle('on',k<n));};
+  for(let r=0;r<N;r++){pip(rowPips[r],rowC[r],rowE[r]);if(rowC[r]!==K)allOk=false;}
+  for(let c=0;c<N;c++){pip(colPips[c],colC[c],colE[c]);if(colC[c]!==K)allOk=false;}
   rakeStones(cells);
   $('board').classList.toggle('solved',allOk);
   return allOk;
@@ -1418,7 +1442,7 @@ $('hintBtn').onclick=()=>{
   if(!S||S.done||!S.started)return;
   phrase($('askText'),'次に推理できる一手とその理由を見て、盤に置きますか？');
   $('askYes').textContent='教わる';
-  $('askNote').textContent=S.hints?`これまでに${S.hints}回教えを乞いました。`:'教えを乞うと、この庭は「手助けなしの最短記録」には残りません。';
+  $('askNote').textContent=S.hints?`これまでに${S.hints}回教えを乞いました。`:'教えを乞うと、この盤面は「手助けなしの最短記録」には残りません。';
   try{hintAsk.showModal();}catch(e){hintAsk.setAttribute('open','');}
   Sound.play('tap');};
 $('askNo').onclick=closeAsk;
@@ -1427,7 +1451,7 @@ $('askYes').onclick=()=>{closeAsk();giveHint();};
 function shareApp(btn){
   const onSite=/^https?:$/.test(location.protocol)&&location.hostname.endsWith('github.io');
   const url=onSite?location.origin+location.pathname:SITE_URL;
-  const text='石庭パズル ― 苔の数字を手がかりに、庭に石を据える。推理だけで解ける論理パズルです。';
+  const text='石庭パズル ― 苔の数字を手がかりに、盤面に石を据える。推理だけで解ける論理パズルです。';
   if(typeof navigator.share==='function'){navigator.share({title:'石庭パズル',text,url}).catch(()=>{});return;}
   const label=btn.textContent,done=()=>{btn.textContent='コピー済み';setTimeout(()=>{btn.textContent=label;},1800);};
   const all=text+'\n'+url;
@@ -1452,21 +1476,25 @@ $('gardenBtn').onclick=()=>openPick(false);
 // changing any 庭の種類 setting sweeps the sand: same sound as clearing a mark
 document.querySelectorAll('.sizeSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('size',+b.dataset.size);});
 document.querySelectorAll('.diffSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('diff',+b.dataset.diff);});
+// the notes under each choice; the popup keeps room for the longest of each, so nothing moves when you choose
+const NOTES={
+  walk:['日付ごとに決まる一局です。誰が遊んでも同じ盤面になります。','気の向くままに、毎回ちがう盤面を解きます。'],
+  size:{6:'6×6マスの小さな盤面。各行・各列に石を1つずつ置きます。はじめての方に。',
+    8:'8×8マスの盤面。各行・各列に石を1つずつ置きます。決まりに慣れたら。',
+    10:'10×10マスの広い盤面。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'},
+  diff:['苔の手がかりが多めの盤面です。1つの行・列・苔を見るだけで解き進められます。',
+    '苔の手がかりを外せるだけ外した盤面です。2つの行や苔を合わせて考える一手が必要になります。']};
 function syncSeg(){
   const P=pend||{walk,size,diff};
+  if(document.getElementById('pick').open)noField();   // 今日の庭 turns the number off
   document.querySelectorAll('.walkSeg button').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.walk==='1')===P.walk?'true':'false'));
   const note=(id,k,t)=>{phrase($(id),t);document.querySelectorAll(`[data-note="${k}"]`).forEach(e=>phrase(e,t));};
-  note('walkNote','walk',P.walk?'気の向くままに、毎回ちがう庭を歩きます。':'日付ごとに決まる一局です。誰が遊んでも同じ庭になります。');
-  phrase($('goNote'),P.walk?'選んだ広さ・難しさで、まだ見ていない庭を作ります。':'選んだ広さ・難しさの、今日の庭に向かいます。');
+  note('walkNote','walk',NOTES.walk[P.walk?1:0]);
+  phrase($('goNote'),P.walk?'選んだ広さ・難しさで、まだ見ていない盤面を作ります。':'選んだ広さ・難しさの、今日の庭に向かいます。');
   document.querySelectorAll('.sizeSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.size===P.size?'true':'false'));
   document.querySelectorAll('.diffSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.diff===P.diff?'true':'false'));
-  note('sizeDesc','size',{
-    6:'6×6マスの小さな庭。各行・各列に石を1つずつ置きます。はじめての方に。',
-    8:'8×8マスの庭。各行・各列に石を1つずつ置きます。決まりに慣れたら。',
-    10:'10×10マスの広い庭。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'}[P.size]);
-  note('diffDesc','diff',P.diff
-    ?'苔の手がかりを外せるだけ外した庭です。2つの行や苔を合わせて考える一手が必要になります。'
-    :'苔の手がかりが多めの庭です。1つの行・列・苔を見るだけで解き進められます。');
+  note('sizeDesc','size',NOTES.size[P.size]);
+  note('diffDesc','diff',NOTES.diff[P.diff?1:0]);
 }
 // ---- bottom sheet (phone) ----
 function setTab(t){$('sheet').dataset.tab=t;document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t?'true':'false'));$('sheetBody').scrollTop=0;}
@@ -1508,11 +1536,35 @@ $('introAgain').onclick=()=>{closeSheet();openIntro();};
 // 庭を選ぶ: opens with the page, over the garden that loaded behind it. Closing it keeps that garden.
 const pick=$('pick');
 let pickOnLoad=false;   // opened with the page (keep the garden behind it when nothing changes) or from 庭を変える
-function openPick(onLoad){if(pick.open)return;pickOnLoad=!!onLoad;closeSheet();pend=savedPick()||{walk,size,diff};syncSeg();try{pick.showModal();}catch(e){pick.setAttribute('open','');}}
+function openPick(onLoad){if(pick.open)return;$('pickNo').value='';pickOnLoad=!!onLoad;closeSheet();pend=savedPick()||{walk,size,diff};syncSeg();noField();try{pick.showModal();}catch(e){pick.setAttribute('open','');}holdPickHeights();}
 function closePick(){if(pick.open)pick.close();else pick.removeAttribute('open');pend=null;syncSeg();}
 pick.addEventListener('close',()=>{pend=null;syncSeg();});
 $('pickX').onclick=closePick;
-$('pickGo').onclick=()=>{const P=pend||{walk,size,diff};
+const NO_NOTE='番号で盤面を指定できます。空欄ならランダムな盤面になります。',NO_BAD='番号は1〜99999の数字で入れてください。',NO_TODAY='今日の庭では番号を指定できません。';
+// give every note in the popup the height of its longest text (measured at the current width)
+function holdPickHeights(){if(!pick.open)return;
+  const hold=(el,texts)=>{el.style.minHeight='';let h=0;for(const t of texts){phrase(el,t);h=Math.max(h,el.getBoundingClientRect().height);}el.style.minHeight=Math.ceil(h)+'px';};
+  pick.querySelectorAll('[data-note]').forEach(el=>hold(el,Object.values(NOTES[el.dataset.note])));
+  hold($('pickNoNote'),[NO_NOTE,NO_BAD,NO_TODAY]);
+  syncSeg();noField();}
+addEventListener('resize',holdPickHeights);
+// the web font can arrive after the popup opened and change line heights: measure again then
+if(document.fonts){document.fonts.ready.then(holdPickHeights);document.fonts.addEventListener&&document.fonts.addEventListener('loadingdone',holdPickHeights);}
+// 今日の庭 is the day's own garden, so a number can only be given for 漫ろ歩き
+function noField(){const el=$('pickNo'),today=!(pend||{walk}).walk;
+  el.disabled=today;el.closest('.pickrow').classList.toggle('off',today);
+  if(today){el.classList.remove('bad');$('pickNoNote').classList.remove('bad');phrase($('pickNoNote'),NO_TODAY);return 0;}
+  const t=el.value.trim().replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0));
+  const ok=!t||/^[0-9]{1,5}$/.test(t)&&+t>=1&&+t<=99999;
+  el.classList.toggle('bad',!ok);$('pickNoNote').classList.toggle('bad',!ok);
+  phrase($('pickNoNote'),ok?NO_NOTE:NO_BAD);
+  return ok?(t?+t:0):-1;}
+$('pickNo').addEventListener('input',noField);
+$('pickNo').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('pickGo').click();}});
+$('pickGo').onclick=()=>{const P=pend||{walk,size,diff},no=P.walk?noField():0;
+  if(no<0){$('pickNo').focus();return;}
+  if(no){   // a garden by its number (漫ろ歩き only)
+    closePick();$('pickNo').value='';setWalk(true);start(P.size,P.diff,no);return;}
   // the same 今日の庭 is the garden already open; the same 漫ろ歩き goes on to a new garden, unless the page just opened
   const same=P.size===size&&P.diff===diff&&P.walk===walk&&(!P.walk||pickOnLoad);
   closePick();setWalk(P.walk);
@@ -1553,7 +1605,7 @@ function showWin(again){
   showVeil(`<h3>整いました</h3><div class="small winmeta">${SIZES[S.N].name}・${S.diff?'じっくり':'手引き多め'}<br>${fmt(S.time)}${S.hints?` ・ ${S.hints}回教えを乞うた`:''}</div>
     <button type="button" class="sbtn" id="shareBtn">共有</button>
     <div class="winbtns">
-    <button class="btn" id="viewBtn">庭を眺める</button><button class="btn primary" id="nextBtn">${walk?'別の庭に向かう':'漫ろ歩きへ'}</button></div>`);
+    <button class="btn" id="viewBtn">庭を眺める</button><button class="btn primary" id="nextBtn">別の庭に向かう</button></div>`);
   $('veilCard').classList.add('win');
   const text=shareText(),url=shareUrl();
   // one button: the phone's share sheet (X, LINE, …); where there is none, copy the text and link instead
@@ -1566,7 +1618,7 @@ function showWin(again){
     if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(all).then(done,fallback);else fallback();
   };
   // today's garden has only one puzzle, so from there the next step is a walk
-  $('nextBtn').onclick=()=>{if(!walk)setWalk(true);start(size,diff,randomSeed());};
+  $('nextBtn').onclick=()=>openPick(false);   // the same 庭を選ぶ popup as 庭を変える
   $('viewBtn').onclick=hideVeil;
 }
 function recordWin(){
@@ -1590,7 +1642,7 @@ const last=store.get('sekitei2:last');
 // a shared link (?n=&d=&s=&w=) opens exactly that garden; every value is range-checked
 let shared=null;
 try{const q=new URLSearchParams(location.search);
-  if(q.has('s')){const N=int(q.get('n'),6,12,0),d=int(q.get('d'),0,1,0),sd=int(q.get('s'),1,9999,0);
+  if(q.has('s')){const N=int(q.get('n'),6,12,0),d=int(q.get('d'),0,1,0),sd=int(q.get('s'),1,99999,0);
     if(SIZES[N]&&sd)shared={N,d,sd,w:q.get('w')==='1'};
     history.replaceState(null,'',location.pathname);}}catch(e){}
 const firstVisit=store.get('sekitei:intro')!==1;
