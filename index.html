@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-Wy8rOYLmsYO3as4DhDw7xElV6OUMMpOXWGTt1cBrJAs=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-w48+2V8TvNixd1KBXxmKZKV1I85LfIFhUUWtRFnLw2g=' 'sha256-Wy8rOYLmsYO3as4DhDw7xElV6OUMMpOXWGTt1cBrJAs=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -788,6 +788,17 @@ const Sound=(function(){
       const s=ctx.createGain();s.gain.value=.6;g.connect(s);s.connect(seRevIn);}
   }
 
+  // a rin (temple singing bowl): near-harmonic partials, a pair a few Hz apart for the slow shimmer,
+  // a soft attack and a long, clean decay. Gentler than bell(), whose 2.76 partial clangs.
+  function rin(t,f,peak){
+    for(const [m,a,d,det] of [[1,1,3.4,0],[1,.55,3.4,1.7],[2.005,.22,2.2,0],[3.01,.07,1.3,0]]){
+      const o=ctx.createOscillator();o.type='sine';o.frequency.value=f*m+det;
+      const g=ctx.createGain();g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(peak*a,t+.015);
+      g.gain.exponentialRampToValueAtTime(.0001,t+d);
+      o.connect(g);g.connect(seBus);const s=ctx.createGain();s.gain.value=.55;g.connect(s);s.connect(seRevIn);
+      o.start(t);o.stop(t+d+.05);}
+  }
+
   // ---- sound effects ----
   const SYN={
     place:t=>{tone(t,'sine',340,.5,.1,seBus,170);noise(t,.32,.05,seBus,'bandpass',2300,2.5);tone(t,'triangle',1200,.06,.03,seBus);},
@@ -810,7 +821,12 @@ const Sound=(function(){
     error:t=>{tone(t,'sine',196,.28,.2,seBus,182);tone(t,'triangle',233,.06,.15,seBus);},
     hint:t=>{bell(t,hz(88),.1);bell(t+.1,hz(95),.06);},
     new:t=>{noise(t,.2,1,seBus,'bandpass',450,1.3,1700);noise(t+.4,.11,.7,seBus,'bandpass',1700,1.3,650);},
-    clear:t=>{[62,63,67,69,70,74].forEach((m,k)=>koto(t+k*.14,m,.36,seBus,seRevIn,.45));bell(t+.85,hz(86),.12);bell(t+.85,hz(93),.06);},
+    // garden finished: a koto run up the bright yo scale (D E G A B D), a soft open chord strummed
+    // (A D A E: fifths only, nothing that clashes), then a rin whose pure, slowly beating ring fades away
+    clear:t=>{
+      [62,64,67,69,71,74].forEach((m,k)=>koto(t+k*.095,m,.3-k*.015,seBus,seRevIn,.5));
+      [57,62,69,76].forEach((m,k)=>koto(t+.66+k*.03,m,.2,seBus,seRevIn,.65));
+      rin(t+.74,hz(86),.075);},
   };
   function play(name,delay){
     if(!prefs.se||!ensure()||ctx.state!=='running'&&ctx.state!=='suspended')return;
