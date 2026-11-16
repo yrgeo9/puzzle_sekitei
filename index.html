@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-4RAAIJ+8H9HoU36kaRHSMBkmkUwSA2xG5AmUI1A+yEE=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-rWL5Mv05Za1a0J6mCzzeRbf80kSEgmlUZr8eS3bgl8Q=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -275,6 +275,13 @@ aside p{margin:0}
 .mini i.m::before{content:"";position:absolute;inset:6%;border-radius:46% 52% 44% 50% / 50% 44% 54% 46%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--moss) 70%,#c8d39a),var(--moss) 55%,var(--moss-dk));z-index:-1}
 .intro.ask{width:min(340px,calc(100vw - 32px))}
 .intro.ask h2{font-size:21px;letter-spacing:.14em}
+.intro.pick{width:min(420px,calc(100vw - 32px))}
+.intro.pick h2{font-size:22px;letter-spacing:.16em}
+.pick .sublabel{margin-top:18px}
+.pick .sublabel:first-child{margin-top:0}
+.pick .seg{display:flex;width:100%;box-sizing:border-box;border-bottom:1px solid var(--line)}
+.pick .seg button{flex:1;padding:9px 2px;font-size:13.5px;margin-bottom:-1px;white-space:nowrap;letter-spacing:0}
+.pick .segnote{margin:6px 0 0!important;min-height:3.2em}
 .askbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
 .askbtns .btn{justify-content:center;padding:11px;font-size:14px;letter-spacing:.12em}
 .pats{display:flex;flex-direction:column;gap:14px;margin-top:10px}
@@ -514,6 +521,34 @@ button{touch-action:manipulation}
     <p class="intro-lead" id="askText"></p>
     <p class="small" id="askNote"></p>
     <div class="askbtns"><button class="btn" type="button" id="askNo">やめる</button><button class="btn primary" type="button" id="askYes">教わる</button></div>
+  </div>
+</dialog>
+<dialog class="intro pick" id="pick" aria-labelledby="pickTitle">
+  <button type="button" class="close intro-x" id="pickX" aria-label="閉じる">×</button>
+  <div class="intro-body">
+    <h2 id="pickTitle">庭を選ぶ</h2>
+    <div>
+      <p class="sublabel">巡り方</p>
+      <div class="seg walkSeg" role="group" aria-label="巡り方">
+        <button data-walk="0" aria-pressed="true">今日の庭</button>
+        <button data-walk="1" aria-pressed="false">漫ろ歩き</button>
+      </div>
+      <p class="small segnote" data-note="walk"></p>
+      <p class="sublabel">広さ</p>
+      <div class="seg sizeSeg" role="group" aria-label="庭の広さ">
+        <button data-size="6" aria-pressed="false">六間 ・ 石1</button>
+        <button data-size="8" aria-pressed="true">八間 ・ 石1</button>
+        <button data-size="10" aria-pressed="false">十間 ・ 石2</button>
+      </div>
+      <p class="small segnote" data-note="size"></p>
+      <p class="sublabel">難しさ</p>
+      <div class="seg diffSeg" role="group" aria-label="難しさ">
+        <button data-diff="0" aria-pressed="false">手引き多め</button>
+        <button data-diff="1" aria-pressed="true">じっくり</button>
+      </div>
+      <p class="small segnote" data-note="diff"></p>
+    </div>
+    <button class="btn primary intro-go" id="pickGo" type="button" autofocus>庭に向かう</button>
   </div>
 </dialog>
 <dialog class="intro" id="intro" aria-labelledby="introTitle">
@@ -1406,26 +1441,30 @@ $('newGardenBtn').onclick=()=>{
   const P=pend||{walk,size,diff};setWalk(P.walk);closeSheet();
   start(P.size,P.diff,P.walk?randomSeed():todaySeed());};
 function setWalk(v){walk=!!v;store.set('sekitei:walk',walk?1:0);if(pend)pend.walk=walk;syncSeg();}
-function choose(k,v){if(!pend)pend={walk,size,diff};if(pend[k]===v)return;pend[k]=v;Sound.play('unmark');syncSeg();}
+function choose(k,v){if(!pend)pend={walk,size,diff};if(pend[k]===v)return;pend[k]=v;store.set('sekitei:pick',pend);Sound.play('unmark');syncSeg();}
+// what was last chosen in 庭の種類, even if the popup was closed without going: it opens with that again
+function savedPick(){const q=store.get('sekitei:pick');
+  return q&&typeof q==='object'&&SIZES[q.size]&&(q.diff===0||q.diff===1)?{walk:q.walk===true,size:q.size,diff:q.diff}:null;}
 document.querySelectorAll('.walkSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('walk',b.dataset.walk==='1');});
 // desktop: the garden settings live at the top of the side panel; bring them into view
-$('gardenBtn').onclick=()=>{const s=$('gardenSec');s.scrollIntoView({behavior:'smooth',block:'nearest'});
-  s.classList.remove('flash');void s.offsetWidth;s.classList.add('flash');};
+// 庭を変える (desktop and phone) opens the 庭を選ぶ popup
+$('gardenBtn').onclick=()=>openPick(false);
 // changing any 庭の種類 setting sweeps the sand: same sound as clearing a mark
 document.querySelectorAll('.sizeSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('size',+b.dataset.size);});
 document.querySelectorAll('.diffSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('diff',+b.dataset.diff);});
 function syncSeg(){
   const P=pend||{walk,size,diff};
   document.querySelectorAll('.walkSeg button').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.walk==='1')===P.walk?'true':'false'));
-  phrase($('walkNote'),P.walk?'気の向くままに、毎回ちがう庭を歩きます。':'日付ごとに決まる一局です。誰が遊んでも同じ庭になります。');
+  const note=(id,k,t)=>{phrase($(id),t);document.querySelectorAll(`[data-note="${k}"]`).forEach(e=>phrase(e,t));};
+  note('walkNote','walk',P.walk?'気の向くままに、毎回ちがう庭を歩きます。':'日付ごとに決まる一局です。誰が遊んでも同じ庭になります。');
   phrase($('goNote'),P.walk?'選んだ広さ・難しさで、まだ見ていない庭を作ります。':'選んだ広さ・難しさの、今日の庭に向かいます。');
   document.querySelectorAll('.sizeSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.size===P.size?'true':'false'));
   document.querySelectorAll('.diffSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.diff===P.diff?'true':'false'));
-  phrase($('sizeDesc'),{
+  note('sizeDesc','size',{
     6:'6×6マスの小さな庭。各行・各列に石を1つずつ置きます。はじめての方に。',
     8:'8×8マスの庭。各行・各列に石を1つずつ置きます。決まりに慣れたら。',
     10:'10×10マスの広い庭。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'}[P.size]);
-  phrase($('diffDesc'),P.diff
+  note('diffDesc','diff',P.diff
     ?'苔の手がかりを外せるだけ外した庭です。2つの行や苔を合わせて考える一手が必要になります。'
     :'苔の手がかりが多めの庭です。1つの行・列・苔を見るだけで解き進められます。');
 }
@@ -1434,7 +1473,7 @@ function setTab(t){$('sheet').dataset.tab=t;document.querySelectorAll('.tabs but
 setTimeout(()=>document.body.classList.add('ready'),400);
 function openSheet(t){pend={walk,size,diff};syncSeg();setTab(t);document.body.classList.add('sheet-open');setTimeout(()=>$('sheetClose').focus({preventScroll:true}),50);}
 function closeSheet(){document.body.classList.remove('sheet-open');}
-document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openSheet(b.dataset.open));
+document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>b.dataset.open==='garden'?openPick(false):openSheet(b.dataset.open));
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
 $('sheetClose').onclick=closeSheet;$('scrim').onclick=closeSheet;
 
@@ -1454,18 +1493,33 @@ syncSound();
 // ---- rules popup: shown on the first visit, reopenable from 遊び方 ----
 const intro=$('intro');
 function openIntro(){if(intro.open)return;try{intro.showModal();}catch(e){intro.setAttribute('open','');}}
-intro.addEventListener('close',()=>store.set('sekitei:intro',1));
-function closeIntro(){store.set('sekitei:intro',1);if(intro.open)intro.close();else intro.removeAttribute('open');}
+let introThenPick=false;   // the very first visit: はじめの説明, then 庭を選ぶ
+function afterIntro(){store.set('sekitei:intro',1);if(introThenPick){introThenPick=false;$('introGo').textContent='庭に入る';openPick(true);}}
+intro.addEventListener('close',afterIntro);
+// the close event comes later (and may wait while the page is in the background), so go on at once;
+// afterIntro does nothing more when the event arrives
+function closeIntro(){if(intro.open)intro.close();else intro.removeAttribute('open');afterIntro();}
 $('introGo').onclick=closeIntro;
 // every button sounds like setting a mark; board cells, 教えを乞う and the 庭の種類 choices keep their own sounds.
 // Bubble phase, so a press that turns 効果音 on is already heard.
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('button');
   if(b&&!b.closest('.cell,#hintBtn,#askYes,.walkSeg,.sizeSeg,.diffSeg'))Sound.play('mark');});$('introX').onclick=closeIntro;
 $('introAgain').onclick=()=>{closeSheet();openIntro();};
-if(store.get('sekitei:intro')!==1)openIntro();
+// 庭を選ぶ: opens with the page, over the garden that loaded behind it. Closing it keeps that garden.
+const pick=$('pick');
+let pickOnLoad=false;   // opened with the page (keep the garden behind it when nothing changes) or from 庭を変える
+function openPick(onLoad){if(pick.open)return;pickOnLoad=!!onLoad;closeSheet();pend=savedPick()||{walk,size,diff};syncSeg();try{pick.showModal();}catch(e){pick.setAttribute('open','');}}
+function closePick(){if(pick.open)pick.close();else pick.removeAttribute('open');pend=null;syncSeg();}
+pick.addEventListener('close',()=>{pend=null;syncSeg();});
+$('pickX').onclick=closePick;
+$('pickGo').onclick=()=>{const P=pend||{walk,size,diff};
+  // the same 今日の庭 is the garden already open; the same 漫ろ歩き goes on to a new garden, unless the page just opened
+  const same=P.size===size&&P.diff===diff&&P.walk===walk&&(!P.walk||pickOnLoad);
+  closePick();setWalk(P.walk);
+  if(!same)start(P.size,P.diff,P.walk?randomSeed():todaySeed());};
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&document.body.classList.contains('sheet-open')){closeSheet();return;}
-  if(document.body.classList.contains('sheet-open')||intro.open)return;
+  if(document.body.classList.contains('sheet-open')||intro.open||pick.open)return;
   if(e.target.closest('input,textarea'))return;
   if((e.key==='z'||e.key==='Z')&&!e.altKey){e.preventDefault();Sound.play('mark');undo();}
   else if(e.key==='p'||e.key==='P'){Sound.play('mark');pauseGame();}
@@ -1474,7 +1528,7 @@ document.addEventListener('keydown',e=>{
 // ---- clock ----
 function fmt(s){s=Math.floor(s);const h=Math.floor(s/3600),m=Math.floor(s/60)%60,x=s%60;return (h?h+':'+String(m).padStart(2,'0'):m)+':'+String(x).padStart(2,'0');}
 function startClock(){stopClock();lastTs=performance.now();$('time').textContent=fmt(S.time);
-  tick=setInterval(()=>{const now=performance.now();if(!document.hidden&&!intro.open){S.time+=(now-lastTs)/1000;$('time').textContent=fmt(S.time);if(Math.floor(S.time)%5===0)save();}lastTs=now;},500);}
+  tick=setInterval(()=>{const now=performance.now();if(!document.hidden&&!intro.open&&!pick.open){S.time+=(now-lastTs)/1000;$('time').textContent=fmt(S.time);if(Math.floor(S.time)%5===0)save();}lastTs=now;},500);}
 function stopClock(){if(tick)clearInterval(tick);tick=null;}
 
 // ---- veil / win ----
@@ -1539,9 +1593,14 @@ try{const q=new URLSearchParams(location.search);
   if(q.has('s')){const N=int(q.get('n'),6,12,0),d=int(q.get('d'),0,1,0),sd=int(q.get('s'),1,9999,0);
     if(SIZES[N]&&sd)shared={N,d,sd,w:q.get('w')==='1'};
     history.replaceState(null,'',location.pathname);}}catch(e){}
-if(shared){setWalk(shared.w||shared.sd!==todaySeed());start(shared.N,shared.d,shared.sd);}
-// 今日の庭 always opens today's puzzle (a new day brings a new one); 漫ろ歩き resumes the last walk
-else if(last&&typeof last==='object'&&SIZES[last.N])start(last.N,last.d,walk?last.seed:todaySeed());else start(8,0,todaySeed());
+const firstVisit=store.get('sekitei:intro')!==1;
+// a shared link goes straight to its garden (after the welcome, on a first visit)
+if(shared){setWalk(shared.w||shared.sd!==todaySeed());start(shared.N,shared.d,shared.sd);if(firstVisit)openIntro();}
+else{
+  // 今日の庭 always opens today's puzzle (a new day brings a new one); 漫ろ歩き resumes the last walk
+  if(last&&typeof last==='object'&&SIZES[last.N])start(last.N,last.d,walk?last.seed:todaySeed());else start(6,0,todaySeed());
+  // then the choice of garden: straight away, or after はじめの説明 on a first visit
+  if(firstVisit){introThenPick=true;$('introGo').textContent='庭を選ぶ';openIntro();}else openPick(true);}
 })();
 </script>
 <script>
