@@ -156,7 +156,8 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .pips{display:flex;align-items:center;justify-content:center;gap:3px}
 .pip{width:6px;height:6px;border-radius:50%;border:1.2px solid var(--curb-dk);box-sizing:border-box}
 .pip.on{background:var(--stone);border-color:var(--stone)}
-.pips.over .pip,.pips.short .pip{border-color:var(--err);background:var(--err)}
+.pips.over .pip,.pips.short .pip.on{border-color:var(--err);background:var(--err)}
+.pips.short .pip:not(.on){border-color:var(--err)}   /* short: the stones placed stay filled, the missing ones stay hollow */
 
 /* ---- buttons: thin-lined, mincho lettering ---- */
 .tools{display:flex;flex-wrap:nowrap;gap:8px;justify-content:center;width:100%;max-width:602px}
