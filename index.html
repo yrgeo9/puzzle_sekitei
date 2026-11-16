@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-ltzjt/rcC3yGTR6kitQ+BYvtbG0mJyRpSytI21dc3fQ=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-wQugApye2pwf3+5ialD52HTU8hmzUDu2wc6N5UuWSWg=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -332,7 +332,7 @@ aside p{margin:0}
   .veil.solid{inset:6px}
   .coords-top{padding-inline:6px}
   .coords-right{padding-block:6px}
-  .tools{flex-shrink:0;display:grid;grid-template-columns:1.25fr 1fr 1fr 1.1fr 1fr;gap:5px}
+  .tools{flex-shrink:0;display:grid;grid-template-columns:1.25fr 1fr 1fr 1.1fr;gap:5px}
   .tools .btn{font-size:13px;padding:0 2px;min-height:46px;justify-content:center;gap:5px;white-space:nowrap;letter-spacing:.02em}
   .tools .btn.two{gap:1px}
   .tools .btn{font-size:12.5px;letter-spacing:0}
@@ -412,7 +412,6 @@ button{touch-action:manipulation}
       <button class="btn" id="undoBtn" title="一手戻す (Z)">一手戻す <kbd>Z</kbd></button>
       <button class="btn two" id="pauseBtn" title="パズルを一時停止 (P)"><span>休憩</span><small>パズルを一時停止</small></button>
       <button class="btn two" id="hintBtn" title="次に推理できる一手を教わる"><span>教えを乞う</span><small>ヒントを貰う</small></button>
-      <button class="btn two" id="resetBtn" title="盤上の印をすべて消す"><span>砂を均す</span><small>印を全消し</small></button>
     </div>
   </main>
 
@@ -474,7 +473,7 @@ button{touch-action:manipulation}
         <div class="sw"><div class="d"></div></div><span>右クリック、または「印」モードで「石なし」の印。なぞると続けて付けられます</span>
         <div class="sw c">3</div><span>石が数ぶん揃うと薄くなり、多すぎると赤くなる</span>
       </div>
-      <p class="small" style="margin-top:8px">「砂を均す」は盤上の印をすべて消します（石はそのまま）。<br>「一手戻す」で元に戻せます。<br>「休憩」を押すと、盤面を隠してタイマーを止められます。</p>
+      <p class="small" style="margin-top:8px">「一手戻す」で直前の操作を元に戻せます。<br>「休憩」を押すと、盤面を隠してタイマーを止められます。</p>
       <p class="small" style="margin-top:8px">盤の上と右の小さな丸は、その列・行に置いた石の数です。</p>
       <p class="small" style="margin-top:4px">マスの呼び方は将棋盤と同じです。<br>上の数字が列（右から1、2…）、右の漢数字が行（上から一、二…）で、<br>「1二」は右端の列の上から2マス目です。</p>
     </section>
@@ -1290,10 +1289,6 @@ function pauseGame(){
   $('resumeBtn').onclick=()=>{S.started=true;hideVeil();startClock();};
 }
 $('pauseBtn').onclick=pauseGame;
-// 砂を均す: rake away every mark; stones stay where they are
-$('resetBtn').onclick=()=>{if(!S||S.done||!S.started)return;const ch=[];S.cells.forEach((v,i)=>{if(v===2)ch.push([i,0]);});
-  if(ch.length){apply(ch);Sound.play('new');setMsg('印をすべて消しました。「一手戻す」で元に戻せます。');}
-  else{Sound.play('tap');setMsg('消す印がありません。');}};
 let msgTimer=null;
 // Japanese has no spaces, so a narrow screen would break a line anywhere. Each sentence (ends in 。)
 // and each phrase inside it (ends in 、 or ：) is an inline-block: a line breaks between sentences
@@ -1460,10 +1455,10 @@ function openIntro(){if(intro.open)return;try{intro.showModal();}catch(e){intro.
 intro.addEventListener('close',()=>store.set('sekitei:intro',1));
 function closeIntro(){store.set('sekitei:intro',1);if(intro.open)intro.close();else intro.removeAttribute('open');}
 $('introGo').onclick=closeIntro;
-// every button sounds like setting a mark; board cells, 教えを乞う, 砂を均す and the 庭の種類 choices keep their own sounds.
+// every button sounds like setting a mark; board cells, 教えを乞う and the 庭の種類 choices keep their own sounds.
 // Bubble phase, so a press that turns 効果音 on is already heard.
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('button');
-  if(b&&!b.closest('.cell,#hintBtn,#askYes,#resetBtn,.walkSeg,.sizeSeg,.diffSeg'))Sound.play('mark');});$('introX').onclick=closeIntro;
+  if(b&&!b.closest('.cell,#hintBtn,#askYes,.walkSeg,.sizeSeg,.diffSeg'))Sound.play('mark');});$('introX').onclick=closeIntro;
 $('introAgain').onclick=()=>{closeSheet();openIntro();};
 if(store.get('sekitei:intro')!==1)openIntro();
 document.addEventListener('keydown',e=>{
