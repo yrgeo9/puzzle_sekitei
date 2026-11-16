@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-wQugApye2pwf3+5ialD52HTU8hmzUDu2wc6N5UuWSWg=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-6m2UkkkguhqR6+ykFUPsmwKgebcGYNutMPv6bQDLWUM=' 'sha256-4RAAIJ+8H9HoU36kaRHSMBkmkUwSA2xG5AmUI1A+yEE=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、庭に石を据える論理パズル。どの問題も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -437,6 +437,7 @@ button{touch-action:manipulation}
       <p class="small" id="walkNote" style="margin-top:8px"></p>
       <p class="sublabel">広さ</p>
       <div class="seg sizeSeg" role="group" aria-label="庭の広さ">
+        <button data-size="6" aria-pressed="false">六間 ・ 石1</button>
         <button data-size="8" aria-pressed="true">八間 ・ 石1</button>
         <button data-size="10" aria-pressed="false">十間 ・ 石2</button>
       </div>
@@ -524,7 +525,7 @@ button{touch-action:manipulation}
     <ol class="intro-rules">
       <li>
         <div class="mini" style="--c:5" aria-hidden="true"><i></i><i></i><i class="s"></i><i></i><i></i></div>
-        <div><b>どの行・列にも、石を決まった数ずつ</b><span>八間は1つ、十間は2つ。盤の上と右の丸で、置いた数を確かめられます。</span></div>
+        <div><b>どの行・列にも、石を決まった数ずつ</b><span>六間・八間は1つ、十間は2つ。盤の上と右の丸で、置いた数を確かめられます。</span></div>
       </li>
       <li>
         <div class="mini" style="--c:3" aria-hidden="true"><i class="s bad"></i><i></i><i></i><i></i><i class="s bad"></i><i></i><i></i><i></i><i></i></div>
@@ -904,7 +905,7 @@ const Sound=(function(){
 
 <script>
 (function(){
-const SIZES={8:{K:1,name:'八間'},10:{K:2,name:'十間'}};
+const SIZES={6:{K:1,name:'六間'},8:{K:1,name:'八間'},10:{K:2,name:'十間'}};
 const $=id=>document.getElementById(id);
 const store={get(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
 // Saved data is untrusted (another page on the same origin, or the user, can edit it):
@@ -986,7 +987,7 @@ let RK=null;
 const RAKE_BEND=2;
 function rakeSvg(N,seed,clue){
   const R=rngFrom((seed^0x5eed5a1d)>>>0),pick=(a,b)=>a+R()*(b-a),NS='http://www.w3.org/2000/svg';
-  const sp=N<=8?1/6:1/5,step=.1;                 // gap between rake lines / sampling, in cells
+  const sp=1/9,step=.08;   // gap between rake lines (9 to a cell at every size, so a cell looks the same) / sampling, in cells
   const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
   const f=x=>Math.round(x*1000)/1000;
   const svg=el('svg',{class:'rake',viewBox:`0 0 ${N} ${N}`,preserveAspectRatio:'none','aria-hidden':'true'});
@@ -1087,7 +1088,7 @@ function rakeSvg(N,seed,clue){
   const moss=[];clue.forEach((v,i)=>{if(v>=0){moss.push([i%N+.5,Math.floor(i/N)+.5]);
     mk.appendChild(el('circle',{cx:i%N+.5,cy:Math.floor(i/N)+.5,r:f(RAKE_CORE+RAKE_RINGS*sp),fill:'#000'}));}});
   const caps=el('path',{fill:'#000',d:''});mk.appendChild(caps);   // the waists of side-by-side pairs (rakeStones)
-  const kn=el('g',{});for(let y=1;y<N;y++)for(let x=1;x<N;x++)kn.appendChild(el('circle',{class:'knot',cx:x,cy:y,r:N<=8?.05:.06}));
+  const kn=el('g',{});for(let y=1;y<N;y++)for(let x=1;x<N;x++)kn.appendChild(el('circle',{class:'knot',cx:x,cy:y,r:N<=6?.04:N<=8?.05:.06}));
   svg.appendChild(kn);
   for(const it of items){let d='';for(const [x,y] of it.pts)d+=(d?'L':'M')+f(x)+','+f(y);it.e.setAttribute('d',d);}
   RK={N,svg,sp,el,f,mk,caps,rings,moss,cur:null,key:null,nodes:new Map(),str:new Map(),target:new Map(),raf:0};
@@ -1421,7 +1422,8 @@ function syncSeg(){
   document.querySelectorAll('.sizeSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.size===P.size?'true':'false'));
   document.querySelectorAll('.diffSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.diff===P.diff?'true':'false'));
   phrase($('sizeDesc'),{
-    8:'8×8マスの小さな庭。各行・各列に石を1つずつ置きます。はじめての方に。',
+    6:'6×6マスの小さな庭。各行・各列に石を1つずつ置きます。はじめての方に。',
+    8:'8×8マスの庭。各行・各列に石を1つずつ置きます。決まりに慣れたら。',
     10:'10×10マスの広い庭。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'}[P.size]);
   phrase($('diffDesc'),P.diff
     ?'苔の手がかりを外せるだけ外した庭です。2つの行や苔を合わせて考える一手が必要になります。'
@@ -1519,13 +1521,13 @@ function recordWin(){
 }
 function readRecords(){
   const raw=store.get('sekitei:rec');const out={};
-  for(const N of [8,10])for(const d of [0,1]){const id=N+':'+d;const r=raw&&typeof raw==='object'?raw[id]:null;
+  for(const N of [6,8,10])for(const d of [0,1]){const id=N+':'+d;const r=raw&&typeof raw==='object'?raw[id]:null;
     if(r&&typeof r==='object')out[id]={n:int(r.n,0,1e6,0),best:r.best===null?null:int(r.best,0,1e7,null)};}
   return out;
 }
 function renderRecords(){
   const rec=readRecords();let h='';
-  for(const N of [8,10])for(const d of [0,1]){const r=rec[N+':'+d];
+  for(const N of [6,8,10])for(const d of [0,1]){const r=rec[N+':'+d];
     h+=`<span>${SIZES[N].name}</span><span class="small">${d?'じっくり':'手引き多め'}</span><span>${r?`${r.n}局 ・ ${r.best!==null?fmt(r.best):'―'}`:'―'}</span>`;}
   $('records').innerHTML=h+'<span class="small" style="grid-column:1/-1">解いた数 ・ 手助けなしの最短時間（この端末だけに保存）</span>';
 }
@@ -1534,7 +1536,7 @@ const last=store.get('sekitei2:last');
 // a shared link (?n=&d=&s=&w=) opens exactly that garden; every value is range-checked
 let shared=null;
 try{const q=new URLSearchParams(location.search);
-  if(q.has('s')){const N=int(q.get('n'),8,12,0),d=int(q.get('d'),0,1,0),sd=int(q.get('s'),1,9999,0);
+  if(q.has('s')){const N=int(q.get('n'),6,12,0),d=int(q.get('d'),0,1,0),sd=int(q.get('s'),1,9999,0);
     if(SIZES[N]&&sd)shared={N,d,sd,w:q.get('w')==='1'};
     history.replaceState(null,'',location.pathname);}}catch(e){}
 if(shared){setWalk(shared.w||shared.sd!==todaySeed());start(shared.N,shared.d,shared.sd);}
