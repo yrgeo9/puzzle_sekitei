@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-w48+2V8TvNixd1KBXxmKZKV1I85LfIFhUUWtRFnLw2g=' 'sha256-MkQXadHEIQpAv3VCLy6+kdVrryKgk636Sql3RvbV4JQ=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-w48+2V8TvNixd1KBXxmKZKV1I85LfIFhUUWtRFnLw2g=' 'sha256-YUWK/mSoukBnozVi1jbh8UW3zDy6MWvxsxfTvkt4MWM=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -545,8 +545,8 @@ button{touch-action:manipulation}
 <dialog class="intro pick" id="pick" aria-labelledby="pickTitle">
   <button type="button" class="close intro-x" id="pickX" aria-label="閉じる">×</button>
   <div class="intro-body">
-    <h2 id="pickTitle">庭を変える</h2>
-    <p class="small picklead">庭の様式（設定）を選択してください。</p>
+    <h2 id="pickTitle">庭の様式</h2>
+    <p class="small picklead">盤面の設定を選択してください。</p>
     <div>
       <p class="sublabel">巡り方</p>
       <div class="seg walkSeg" role="group" aria-label="巡り方">
@@ -1449,7 +1449,7 @@ document.querySelectorAll('.sizeSeg').forEach(s=>s.onclick=e=>{const b=e.target.
 document.querySelectorAll('.diffSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('diff',+b.dataset.diff);});
 // the notes under each choice; the popup keeps room for the longest of each, so nothing moves when you choose
 const NOTES={
-  walk:['日付ごとに決まる庭です。誰が訪れても同じ盤面になります。','気の向くままに、毎回ちがう庭を巡ります。'],
+  walk:['日付ごとに決まる庭です。誰が訪れても同じ盤面になります。','気の向くままに庭を巡ります。毎回違う盤面になります。'],
   size:{6:'6×6マスの小さな盤面。各行・各列に石を1つずつ置きます。はじめての方に。',
     8:'8×8マスの盤面。各行・各列に石を1つずつ置きます。決まりに慣れたら。',
     10:'10×10マスの広い盤面。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'},
