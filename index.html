@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-mWWnQ/+qBadTG9pfDaTpnw+gGv5cSl0bR4Wxe+aYt0U=' 'sha256-vbTUlGFVfvIXZv5ZH5sAVPxVmQN3PdcU4kZkHxqptgE=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-mWWnQ/+qBadTG9pfDaTpnw+gGv5cSl0bR4Wxe+aYt0U=' 'sha256-lACa9VyXvkHlR1FORw04JTn/1VDXIP1QknPtMTBJhjs=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -1226,6 +1226,7 @@ function start(N,d,seed){
   showVeil('<div class="spinner"></div><div class="small">砂を整えています…<br>推理だけで解けるか確かめています</div>',true);
   const saved=store.get(keyOf(N,seed,d));
   makePuzzle(N,K,seed,d===1,p=>{
+    if(tut)return;   // a 練習用の庭 was opened while this garden was being made
     S={N,K,seed,diff:d,clue:p.clue,stone:p.stone,cells:new Array(N*N).fill(0),hist:[],time:0,hints:0,done:false};
     if(saved&&Array.isArray(saved.cells)&&saved.cells.length===N*N){
       S.cells=saved.cells.map((v,i)=>S.clue[i]>=0?0:int(v,0,2,0));
@@ -1707,11 +1708,12 @@ syncSound();
 // ---- 練習用の庭: a fixed 5×5 garden walked through step by step ----
 // Each step lights the cells it is about and accepts only the move it asks for (other taps get a nudge).
 // The step shown is always the first one not yet done on the board, so 一手戻す simply steps back.
-const TN=5,TCLUE={'5五':0,'4二':2,'4三':2},TSTONE=['4一','2二','5三','3四','1五'];
-const tIdx=nm=>'一二三四五'.indexOf(nm.slice(1))*TN+(TN-+nm[0]);
-const tRow=r=>[0,1,2,3,4].map(c=>r*TN+c),tCol=c=>[0,1,2,3,4].map(r=>r*TN+c);
-const tRing=nm=>{const i=tIdx(nm),r=(i/TN)|0,c=i%TN,o=[];for(let rr=r-1;rr<=r+1;rr++)for(let cc=c-1;cc<=c+1;cc++)if((rr!==r||cc!==c)&&rr>=0&&cc>=0&&rr<TN&&cc<TN)o.push(rr*TN+cc);return o;};
-const tWant=(names,v)=>Object.fromEntries(names.map(n=>[tIdx(n),v]));
+// helpers for one lesson's board size N: cell index from a name like 4三, a row, a column, the 8 cells round a cell
+function tKit(N){const idx=nm=>'一二三四五六七八九十'.indexOf(nm.slice(1))*N+(N-+nm[0]),seq=[...Array(N).keys()];
+  return {idx,row:r=>seq.map(c=>r*N+c),col:c=>seq.map(r=>r*N+c),
+    ring:nm=>{const i=idx(nm),r=(i/N)|0,c=i%N,o=[];for(let rr=r-1;rr<=r+1;rr++)for(let cc=c-1;cc<=c+1;cc++)if((rr!==r||cc!==c)&&rr>=0&&cc>=0&&rr<N&&cc<N)o.push(rr*N+cc);return o;},
+    want:(names,v)=>Object.fromEntries(names.map(n=>[idx(n),v]))};}
+const {idx:tIdx,row:tRow,col:tCol,ring:tRing,want:tWant}=tKit(5);
 const TSTEPS=[
   {want:tWant(['5四','4四','4五'],2),lit:()=>[tIdx('5五'),...tRing('5五')],
    text:'左下の苔「0」は、周囲のマスに石がひとつもないという意味です。「石」のボタンを押すと「石なしの印」に切り替わるので、\n光っている3マスに「石なしの印」を付けましょう。'},
@@ -1731,14 +1733,33 @@ const TSTEPS=[
    text:'3四のまわりと、石が揃った四の行の残りに、印を付けましょう。'},
   {free:true,lit:()=>[],
    text:'仕上げです。これまで学んだことをもとに、あなた自身で残り2つの石を置いてみましょう。決まりごとを守って石を5個置ききれば完成です。'}];
-let tut=null;   // {back:{N,d,seed,walk}|null, first:bool} while the 練習用の庭 is open
+// 手引き少なめ: the 六間 garden No. 97102 part-way through. The three guided steps each join two clues:
+// a stone that would leave a moss with nowhere to go, then twice a moss that must take a row's only stone.
+const A6=tKit(6);
+const ADV_STEPS=[
+  {want:A6.want(['4二'],2),lit:()=>[...A6.row(1),A6.idx('6一'),...A6.ring('6一')],
+   text:'二の行と、6一の苔「1」を合わせて考えます。4二に石を置くと二の行の残りは空きになり、苔の石は5一にしか置けませんが、5一は4二と隣り合います。だから4二に印を付けましょう。'},
+  {want:A6.want(['6二','1二'],2),lit:()=>[...A6.row(1),A6.idx('4三'),...A6.ring('4三')],
+   text:'4三の苔「2」の候補は、二の行の5二・3二と、隣り合う5四・4四。どちらの組も石は1つまでなので、5二か3二に必ず石が入ります。二の行の残り、6二・1二に印を付けましょう。'},
+  {want:A6.want(['6六','1六'],2),lit:()=>[...A6.row(5),A6.idx('4五'),...A6.ring('4五')],
+   text:'同じ考え方です。4五の苔「2」は、隣り合う5四・4四から1つ、六の行の5六・4六・3六から1つ石を取ります。だから六の行の残り、6六・1六に印を付けましょう。'},
+  {free:true,lit:()=>[],
+   text:'ここからは、1つの行・列・苔を見るだけで解けます。決まりごとを守って石を6個置ききれば完成です。'}];
+const LESSONS={
+  basic:{N:5,clue:{'5五':0,'4二':2,'4三':2},stone:['4一','2二','5三','3四','1五'],marks:[],steps:TSTEPS,title:'練習用の庭',tag:'',
+    intro:'光るマスと下の説明に沿って、1手ずつ進めます。'},
+  adv:{N:6,clue:{'6一':1,'2一':1,'5三':2,'4三':2,'2四':1,'4五':2},stone:['1一','5二','2三','4四','6五','3六'],
+    marks:['4一','2二','3三','1三','3四','1四','5五','3五','1五','2六'],steps:ADV_STEPS,title:'練習用の庭（手引き少なめ）',tag:'手引き少なめ・',short:'練習用の庭（少なめ）',
+    intro:'途中まで進めた盤面です。2つの手がかりを組み合わせて考える一手を、光るマスと説明に沿って練習します。'}};
+let tut=null;   // {lesson, back:{N,d,seed,walk}|null, first:bool} while a 練習用の庭 is open
+const LS=()=>LESSONS[tut?tut.lesson:'basic'];
 const tDone=st=>st.free?false:Object.entries(st.want).every(([i,v])=>S.cells[i]===v);
-const tStep=()=>{let k=0;while(k<TSTEPS.length-1&&tDone(TSTEPS[k]))k++;return k;};
-function tutAllow(i,target){const st=TSTEPS[tStep()];if(st.free)return true;return st.want[i]===target;}
-function tutShow(){const k=tStep(),st=TSTEPS[k];$('label').textContent=`練習用の庭 ${k+1}/${TSTEPS.length}`;setMsg(st.text);focusCells(st.lit(),0);}
+const tStep=()=>{const T=LS().steps;let k=0;while(k<T.length-1&&tDone(T[k]))k++;return k;};
+function tutAllow(i,target){const st=LS().steps[tStep()];if(st.free)return true;return st.want[i]===target;}
+function tutShow(){const L=LS(),k=tStep(),st=L.steps[k];$('label').textContent=`${L.short||L.title} ${k+1}/${L.steps.length}`;setMsg(st.text);focusCells(st.lit(),0);}
 let nudgeT=null;
-function tutNudge(i,target){const st=TSTEPS[tStep()],w=st.want&&st.want[i];
-  let t='光っているマスを見てください。';
+function tutNudge(i,target){const st=LS().steps[tStep()],w=st.want&&st.want[i];
+  let t=st.lit().includes(i)?'そのマスはまだ決まりません。説明をもう一度読んでみましょう。':'光っているマスを見てください。';
   if(w===2&&target===1)t='印を付けるには、下のボタンで「印」に切り替えます。';
   else if(w===1&&target===2)t='石を置くには、下のボタンで「石」に切り替えます。';
   else if(w!==undefined&&target===0)t='そのマスはもう済んでいます。';
@@ -1747,36 +1768,37 @@ function tutNudge(i,target){const st=TSTEPS[tStep()],w=st.want&&st.want[i];
 function tutCheck(){
   if(render()){S.done=true;clearTimeout(nudgeT);focusCells([]);setMsg('');Sound.play('clear',.15);tutWin();return;}
   tutShow();}
-function tutStart(){
+function tutStart(lesson){
+  if(typeof lesson!=='string')lesson=tut?tut.lesson:'basic';
   const back=S&&!S.tut?{N:S.N,d:S.diff,seed:S.seed,walk}:tut&&tut.back;
   const first=!!(tut&&tut.first)||introThenPick;introThenPick=false;
   stopClock();closeSheet();if(intro.open)intro.close();if(pick.open)closePick();
-  const clue=new Int8Array(TN*TN).fill(-1),stone=new Uint8Array(TN*TN);
-  for(const [n,v] of Object.entries(TCLUE))clue[tIdx(n)]=v;TSTONE.forEach(n=>stone[tIdx(n)]=1);
-  tut={back,first};clearTimeout(nudgeT);
-  S={N:TN,K:1,seed:4242,diff:0,clue,stone,cells:new Array(TN*TN).fill(0),hist:[],time:0,hints:0,done:false,started:false,tut:true};
+  const L=LESSONS[lesson],TN=L.N,k=tKit(TN),clue=new Int8Array(TN*TN).fill(-1),stone=new Uint8Array(TN*TN),cells=new Array(TN*TN).fill(0);
+  for(const [n,v] of Object.entries(L.clue))clue[k.idx(n)]=v;L.stone.forEach(n=>stone[k.idx(n)]=1);L.marks.forEach(n=>cells[k.idx(n)]=2);
+  tut={lesson,back,first};clearTimeout(nudgeT);
+  S={N:TN,K:1,seed:lesson==='adv'?97102:4242,diff:lesson==='adv'?1:0,clue,stone,cells,hist:[],time:0,hints:0,done:false,started:false,tut:true};
   build();setMode(0);$('time').hidden=true;$('tutQuit').hidden=false;
   // the button may sit far down the side panel: bring the garden into view
-  $('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent='練習用の庭';setMsg('');
-  showVeil(`<p class="vlabel">練習用の庭（5×5・石5）</p>
-    <p class="startgoal"><b>完成条件</b>決まりごとを守りながら、石を5個置ききる。</p>${startRules(1)}
-    <div class="small">光るマスと下の説明に沿って、1手ずつ進めます。</div>
+  $('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent=L.short||L.title;setMsg('');
+  showVeil(`<p class="vlabel">練習用の庭（${L.tag}${TN}×${TN}・石${TN}）</p>
+    <p class="startgoal"><b>完成条件</b>決まりごとを守りながら、石を${TN}個置ききる。</p>${startRules(1)}
+    <div class="small">${L.intro}</div>
     <button class="btn primary startgo" id="tutGo" type="button">はじめる</button>`,true);
   $('veilCard').classList.add('start');
   $('tutGo').onclick=()=>{S.started=true;hideVeil();tutShow();};}
 function tutWin(){
   showVeil(`<h3>整いました</h3>
-    <p class="tutgoal">決まりごとを守ったまま、石を5個置ききりました。これが<b>完成</b>です。印を付けていないマスが残っていても構いません。</p>
+    <p class="tutgoal">決まりごとを守ったまま、石を${S.N}個置ききりました。これが<b>完成</b>です。印を付けていないマスが残っていても構いません。</p>
     <div class="winbtns"><button type="button" class="btn" id="tutAgain">もう一度</button><button type="button" class="btn primary" id="tutEnd">${tut&&tut.first?'庭へ向かう':'庭に戻る'}</button></div>`);
   $('veilCard').classList.add('win');
-  $('tutAgain').onclick=tutStart;$('tutEnd').onclick=tutLeave;}
+  $('tutAgain').onclick=()=>tutStart(tut.lesson);$('tutEnd').onclick=tutLeave;}
 // back to the garden that was open before (the first visit then goes on to 庭の様式)
 function tutLeave(){const t=tut;if(!t)return;const b=t.back;
   if(b){setWalk(b.walk);start(b.N,b.d,b.seed);}else start(6,0,todaySeed());
   if(t.first)openPick(true);}
 function tutOff(){if(!tut)return;tut=null;clearTimeout(nudgeT);focusCells([]);$('time').hidden=false;$('tutQuit').hidden=true;}
 $('tutQuit').onclick=tutLeave;
-document.querySelectorAll('[data-tut]').forEach(b=>b.onclick=tutStart);
+document.querySelectorAll('[data-tut]').forEach(b=>b.onclick=()=>tutStart('basic'));
 // ---- rules popup: shown on the first visit, reopenable from 遊び方 ----
 const intro=$('intro');
 // the popup can be taller than the screen: open it at the top (the focused button would scroll it to the end)
@@ -1795,7 +1817,7 @@ intro.addEventListener('close',afterIntro);
 // afterIntro does nothing more when the event arrives
 function closeIntro(){if(intro.open)intro.close();else intro.removeAttribute('open');afterIntro();}
 $('introGo').onclick=closeIntro;
-$('introTut').onclick=()=>{store.set('sekitei:intro',1);tutStart();};
+$('introTut').onclick=()=>{store.set('sekitei:intro',1);tutStart('basic');};
 // every button sounds like setting a mark; board cells, 教えを乞う and the 庭の種類 choices keep their own sounds.
 // Bubble phase, so a press that turns 効果音 on is already heard.
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('button');
@@ -1915,13 +1937,16 @@ try{const q=new URLSearchParams(location.search);
     if(SIZES[N]&&sd)shared={N,d,sd,w:q.get('w')==='1'};
     history.replaceState(null,'',location.pathname);}}catch(e){}
 const firstVisit=store.get('sekitei:intro')!==1;
+// 管理者テスト用: ?tut=adv opens the 手引き少なめ lesson directly (not linked from anywhere yet)
+let adminTut=null;try{const q=new URLSearchParams(location.search);if(q.get('tut')==='adv'){adminTut='adv';history.replaceState(null,'',location.pathname);}}catch(e){}
 // a shared link goes straight to its garden (after the welcome, on a first visit)
 if(shared){setWalk(shared.w||shared.sd!==todaySeed());start(shared.N,shared.d,shared.sd);if(firstVisit)openIntro();}
 else{
   // 今日の庭 always opens today's puzzle (a new day brings a new one); 漫ろ歩き resumes the last walk
   if(last&&typeof last==='object'&&SIZES[last.N])start(last.N,last.d,walk?last.seed:todaySeed());else start(6,0,todaySeed());
   // then the choice of garden: straight away, or after はじめの説明 on a first visit
-  if(firstVisit){introThenPick=true;$('introGo').textContent='庭に入る';openIntro();}else openPick(true);}
+  if(adminTut)tutStart(adminTut);
+  else if(firstVisit){introThenPick=true;$('introGo').textContent='庭に入る';openIntro();}else openPick(true);}
 })();
 </script>
 <script>
