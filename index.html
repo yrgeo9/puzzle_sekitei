@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-mWWnQ/+qBadTG9pfDaTpnw+gGv5cSl0bR4Wxe+aYt0U=' 'sha256-d+Fxd4AeR6csDYLvMeGivXvOq/F5e8YkP0/rJGdgJFU=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-mWWnQ/+qBadTG9pfDaTpnw+gGv5cSl0bR4Wxe+aYt0U=' 'sha256-vbTUlGFVfvIXZv5ZH5sAVPxVmQN3PdcU4kZkHxqptgE=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -127,6 +127,9 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
   box-shadow:0 0 0 3px var(--sand),0 3px 5px -1px rgba(30,25,15,.35);
   transform:scale(.4);opacity:0;transition:transform .18s ease,opacity .18s ease;z-index:1}
 .cell.stone .st{transform:scale(1);opacity:1}
+/* stone kinds: low flat (伏石), peaked (須弥山); the round blob is the default */
+.cell .st.k-fuse{inset:22% 14% 18%}
+.cell .st.k-yama{inset:14% 19% 17%}
 .cell.stone.bad .st{background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--err) 55%,white),var(--err) 66%)}
 /* mark: a small ring drawn into the sand with a fingertip. The sand inside and just round it is
    smoothed (the rake lines stop), and the ring itself is a groove: shaded inside, lit on its lower lip */
@@ -142,17 +145,19 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .cell.focus .dot{background:transparent;box-shadow:inset 0 1px 1.5px rgba(80,70,50,.22),0 1px 0 var(--ridge)}
 /* moss island: an organic mound rather than a square tile */
 .cell.clue{cursor:default}
-.cell.clue::before{content:"";position:absolute;inset:8%;border-radius:46% 52% 44% 50% / 50% 44% 54% 46%;
+.cell.clue::before{content:none}
+/* 苔石: a mound of moss shaped and lit like the stones (light from the upper left, a ring of smoothed sand
+   and a soft shadow) */
+.cell.clue .mo{position:absolute;inset:8%;
   background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--moss) 70%,#c8d39a),var(--moss) 55%,var(--moss-dk));
   box-shadow:0 1px 2px rgba(30,40,10,.25),inset 0 -2px 3px rgba(0,0,0,.12)}
-.cell.clue:nth-child(3n)::before{border-radius:52% 44% 50% 46% / 46% 54% 44% 52%}
 .cell.clue span{position:absolute;inset:0;display:grid;place-items:center;z-index:1;font-family:var(--display);font-weight:700;
   color:var(--moss-ink);font-size:min(calc(100cqw / var(--cols) * .5),24px)}
 .cell.clue.done span{opacity:.5}
-.cell.clue.bad::before{background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--err) 60%,white),var(--err) 70%)}
+.cell.clue.bad .mo{background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--err) 60%,white),var(--err) 70%)}
 .cell.hint{animation:hint 1.2s ease 2}
 .cell.focus:not(.clue){background:color-mix(in srgb,var(--moss) 13%,transparent)}
-.cell.clue.focus::before{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--moss)}
+.cell.clue.focus .mo{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--moss)}
 .ph span{display:inline-block}
 .hintmsg{margin:0;min-height:1.75em;width:100%;max-width:560px;text-align:center;font-size:14px;color:var(--ink);letter-spacing:.02em}
 @keyframes hint{50%{background-color:color-mix(in srgb,var(--moss) 28%,transparent)}}
@@ -304,8 +309,10 @@ aside .intro-rules{margin:0 0 8px}
 /* the 8 cells round a stone (up, down, sideways and diagonal) can take no stone: a red cross on each */
 .mini i.x::before,.mini i.x::after{content:"";position:absolute;left:50%;top:50%;width:44%;height:1.6px;border-radius:1px;background:color-mix(in srgb,var(--err) 85%,transparent);translate:-50% -50%;rotate:45deg}
 .mini i.x::after{rotate:-45deg}
+.mini.lit i.m{background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 4px,var(--rake) 4px 5px)}
+.mini.lit{background-image:linear-gradient(color-mix(in srgb,var(--moss) 20%,transparent),color-mix(in srgb,var(--moss) 20%,transparent)),repeating-linear-gradient(0deg,transparent 0 4px,var(--rake) 4px 5px)}
 .mini i{aspect-ratio:1;position:relative;font-style:normal;box-shadow:inset 0 0 0 .5px color-mix(in srgb,var(--ink) 8%,transparent)}
-.mini i.s::after{content:"";position:absolute;inset:16%;border-radius:50%;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%)}
+.mini i.s::after{content:"";position:absolute;inset:16%;border-radius:50%;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%);box-shadow:0 2px 3px -1px rgba(30,25,15,.35)}
 .mini i.s.bad::after{background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--err) 55%,white),var(--err) 66%)}
 .mini i.m{display:grid;place-items:center;color:var(--moss-ink);font-family:var(--display);font-weight:700;font-size:13px;isolation:isolate}
 .mini i.m::before{content:"";position:absolute;inset:6%;border-radius:46% 52% 44% 50% / 50% 44% 54% 46%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--moss) 70%,#c8d39a),var(--moss) 55%,var(--moss-dk));z-index:-1}
@@ -446,7 +453,7 @@ aside .intro-rules{margin:0 0 8px}
 .tray{display:flex;gap:4px}.tray .gs{width:10px;height:10px}
 .goalnote{margin:0;font-size:13.5px;line-height:1.75}
 .goalnote span{display:block;margin-top:2px;font-size:12.5px;color:var(--muted);line-height:1.65}
-/* ---- 練習の庭 ---- */
+/* ---- 練習用の庭 ---- */
 .tutquit{font:inherit;font-size:12.5px;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:2px;padding:3px 9px;cursor:pointer;letter-spacing:.04em}
 .tutquit:hover{color:var(--ink);border-color:var(--ink)}
 .tutgo{justify-content:center;width:100%;margin-top:10px}
@@ -454,6 +461,7 @@ aside .intro-rules{margin:0 0 8px}
 .introbtns .intro-go{margin-top:0}
 .btn.nudge{animation:nudge .9s ease 2}
 @keyframes nudge{0%,100%{box-shadow:none}40%{box-shadow:0 0 0 3px color-mix(in srgb,var(--shu) 55%,transparent)}}
+.card .mossnote{margin:0;font-size:12px;line-height:1.5;color:var(--moss);font-weight:700;text-align:center}
 .card .tutgoal{text-align:left;font-size:13px;line-height:1.7;color:var(--ink);margin:0}
 .card .tutgoal b{color:var(--shu);font-weight:700}
 .startgoal{margin:2px 0 0;font-size:13px;line-height:1.7;color:var(--ink)}
@@ -497,6 +505,13 @@ aside .intro-rules{margin:0 0 8px}
   #label .sep{margin:0 .1em}
 }
 @media (max-width:400px){#label{font-size:12.5px;letter-spacing:.04em}}
+/* 青紅葉: sprays of fresh green maple reaching in from the left of the garden (decoration only, never in the way) */
+.momiji{position:absolute;z-index:3;pointer-events:none;overflow:visible;width:96px;height:96px;filter:drop-shadow(0 3px 3px rgba(40,50,20,.25))}
+.momiji.tr{right:-66px;top:-52px}
+.momiji.bl{left:-71px;bottom:-66px}
+html,body{overflow-x:clip}
+/* phone: the leaves fit the small gaps — above the row numbers beside the timer, and below the garden left of the stones */
+@media (max-width:820px){.momiji{width:46px;height:46px}.momiji.tr{right:-42px;top:-37px}.momiji.bl{left:2px;bottom:-40px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 <style>
@@ -508,6 +523,12 @@ button{touch-action:manipulation}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <radialGradient id="kaedeG" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#a9cd6c"/><stop offset=".6" stop-color="#6f9e3c"/><stop offset="1" stop-color="#4b7829"/></radialGradient>
+  <radialGradient id="kaedeG2" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#c2db86"/><stop offset=".6" stop-color="#88b450"/><stop offset="1" stop-color="#5f8f34"/></radialGradient>
+  <symbol id="kaede" viewBox="0 0 100 100" overflow="visible"><path d="M50,56 Q52,72 47,86" stroke="#6b5a3a" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M47.9,61.6 L44.5,60.6 L41.2,62.9 L40.9,62.7 L37.9,64.2 L37.3,63.8 L35.0,64.0 L36.5,62.2 L36.5,61.5 L39.4,59.8 L39.4,59.4 L43.1,58.0 L36.7,57.9 L37.0,56.5 L30.7,56.0 L28.9,55.1 L24.3,53.8 L22.8,52.1 L19.7,49.6 L23.6,48.5 L25.6,47.6 L30.4,48.3 L32.4,48.1 L38.3,50.3 L36.6,48.0 L35.9,46.9 L30.0,41.8 L28.5,39.0 L25.3,34.1 L24.9,30.7 L24.3,25.4 L29.5,26.9 L32.8,27.9 L37.0,31.9 L39.5,33.9 L43.4,40.5 L44.3,40.4 L44.6,38.3 L43.2,30.0 L43.9,26.4 L44.6,20.2 L46.7,16.9 L50.0,12.0 L53.3,16.9 L55.4,20.2 L56.1,26.4 L56.8,30.0 L55.4,38.3 L55.3,41.3 L56.6,40.5 L60.5,33.9 L63.0,31.9 L67.2,27.9 L70.5,26.9 L75.7,25.4 L75.1,30.7 L74.7,34.1 L71.5,39.0 L70.0,41.8 L64.1,46.9 L61.5,49.1 L61.7,50.3 L67.6,48.1 L69.6,48.3 L74.4,47.6 L76.4,48.5 L80.3,49.6 L77.2,52.1 L75.7,53.8 L71.1,55.1 L69.3,56.0 L63.0,56.5 L60.0,57.4 L56.9,58.0 L60.6,59.4 L60.6,59.8 L63.5,61.5 L63.5,62.2 L65.0,64.0 L62.7,63.8 L62.1,64.2 L59.1,62.7 L58.8,62.9 L55.5,60.6 L52.1,61.6Z" fill="url(#kaedeG)" stroke="#456d25" stroke-width=".7" stroke-linejoin="round"/><path d="M50,56 L37.2,62.8M50,56 L24.2,50.5M50,56 L28.1,30.0M50,56 L50.0,18.6M50,56 L71.9,30.0M50,56 L75.8,50.5M50,56 L62.8,62.8" stroke="#dcebb0" stroke-width=".8" opacity=".65" fill="none"/></symbol>
+  <symbol id="kaedeL" viewBox="0 0 100 100" overflow="visible"><path d="M50,56 Q52,72 47,86" stroke="#6b5a3a" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M47.9,61.6 L44.5,60.6 L41.2,62.9 L40.9,62.7 L37.9,64.2 L37.3,63.8 L35.0,64.0 L36.5,62.2 L36.5,61.5 L39.4,59.8 L39.4,59.4 L43.1,58.0 L36.7,57.9 L37.0,56.5 L30.7,56.0 L28.9,55.1 L24.3,53.8 L22.8,52.1 L19.7,49.6 L23.6,48.5 L25.6,47.6 L30.4,48.3 L32.4,48.1 L38.3,50.3 L36.6,48.0 L35.9,46.9 L30.0,41.8 L28.5,39.0 L25.3,34.1 L24.9,30.7 L24.3,25.4 L29.5,26.9 L32.8,27.9 L37.0,31.9 L39.5,33.9 L43.4,40.5 L44.3,40.4 L44.6,38.3 L43.2,30.0 L43.9,26.4 L44.6,20.2 L46.7,16.9 L50.0,12.0 L53.3,16.9 L55.4,20.2 L56.1,26.4 L56.8,30.0 L55.4,38.3 L55.3,41.3 L56.6,40.5 L60.5,33.9 L63.0,31.9 L67.2,27.9 L70.5,26.9 L75.7,25.4 L75.1,30.7 L74.7,34.1 L71.5,39.0 L70.0,41.8 L64.1,46.9 L61.5,49.1 L61.7,50.3 L67.6,48.1 L69.6,48.3 L74.4,47.6 L76.4,48.5 L80.3,49.6 L77.2,52.1 L75.7,53.8 L71.1,55.1 L69.3,56.0 L63.0,56.5 L60.0,57.4 L56.9,58.0 L60.6,59.4 L60.6,59.8 L63.5,61.5 L63.5,62.2 L65.0,64.0 L62.7,63.8 L62.1,64.2 L59.1,62.7 L58.8,62.9 L55.5,60.6 L52.1,61.6Z" fill="url(#kaedeG2)" stroke="#5a8433" stroke-width=".7" stroke-linejoin="round"/><path d="M50,56 L37.2,62.8M50,56 L24.2,50.5M50,56 L28.1,30.0M50,56 L50.0,18.6M50,56 L71.9,30.0M50,56 L75.8,50.5M50,56 L62.8,62.8" stroke="#eef6d2" stroke-width=".8" opacity=".6" fill="none"/></symbol>
+</defs></svg>
 <div class="wrap">
   <header class="top">
     <div class="brand">
@@ -535,6 +556,8 @@ button{touch-action:manipulation}
       <div class="boardwrap">
         <div class="coords coords-top" id="colLabels" aria-hidden="true"></div>
         <div class="garden">
+          <svg class="momiji tr" viewBox="0 0 60 60" aria-hidden="true"><use href="#kaedeL" width="100" height="100" transform="translate(46 42) rotate(110) scale(0.34) translate(-50 -56)"/><use href="#kaede" width="100" height="100" transform="translate(37 32) rotate(45) scale(0.5) translate(-50 -56)"/></svg>
+          <svg class="momiji bl" viewBox="0 0 60 60" aria-hidden="true"><use href="#kaedeL" width="100" height="100" transform="translate(14 18) rotate(-70) scale(0.34) translate(-50 -56)"/><use href="#kaede" width="100" height="100" transform="translate(28 32) rotate(-135) scale(0.5) translate(-50 -56)"/></svg>
           <div class="board" id="board" role="grid" aria-label="石庭の盤面"></div>
           <div class="veil" id="veil" hidden><div class="card" id="veilCard"></div></div>
         </div>
@@ -576,8 +599,8 @@ button{touch-action:manipulation}
           <div><b>石どうしは縦・横・斜めのどれでも隣り合わない</b></div>
         </li>
         <li>
-          <div class="mini" style="--c:3" aria-hidden="true"><i class="s"></i><i></i><i></i><i></i><i class="m">2</i><i></i><i></i><i></i><i class="s"></i></div>
-          <div><b>苔の上の数は、まわり8マスにある石の数</b><span>苔の上には石を置けない</span></div>
+          <div class="mini lit" style="--c:3" aria-hidden="true"><i class="s"></i><i></i><i></i><i></i><i class="m">2</i><i></i><i></i><i></i><i class="s"></i></div>
+          <div><b>苔の上の数は、まわり8マスにある石の数</b><span>苔石は、行・列の石の数としては数えない</span></div>
         </li>
       </ol>
     </section>
@@ -711,8 +734,8 @@ button{touch-action:manipulation}
         <div><b>石どうしは縦・横・斜めのどれでも隣り合わない</b></div>
       </li>
       <li>
-        <div class="mini" style="--c:3" aria-hidden="true"><i class="s"></i><i></i><i></i><i></i><i class="m">2</i><i></i><i></i><i></i><i class="s"></i></div>
-        <div><b>苔の上の数は、まわり8マスにある石の数</b><span>苔の上には石を置けない</span></div>
+        <div class="mini lit" style="--c:3" aria-hidden="true"><i class="s"></i><i></i><i></i><i></i><i class="m">2</i><i></i><i></i><i></i><i class="s"></i></div>
+        <div><b>苔の上の数は、まわり8マスにある石の数</b><span>苔石は、行・列の石の数としては数えない</span></div>
       </li>
     </ol>
       </div>
@@ -732,7 +755,7 @@ button{touch-action:manipulation}
     </div>
     <div class="introbtns">
       <button class="btn primary intro-go" id="introNext" type="button" autofocus>次へ</button>
-      <button class="btn primary intro-go" id="introTut" type="button">練習の庭で試す</button>
+      <button class="btn primary intro-go" id="introTut" type="button">練習用の庭で試す</button>
       <button class="btn intro-go" id="introGo" type="button">庭に入る</button>
     </div>
   </div>
@@ -1218,7 +1241,7 @@ const startRules=K=>`<div class="startrules"><b>決まりごと</b><ul><li>ど�
 function showStart(){
   const resumed=S.time>0||S.cells.some(v=>v);
   showVeil(`<p class="vlabel">${labelText()}</p>
-    <p class="startgoal"><b>完成条件</b>決まりごとを守りながら、石を${S.N*S.K}つ置ききる。</p>
+    <p class="startgoal"><b>完成条件</b>決まりごとを守りながら、石を${S.N*S.K}個置ききる。</p>
     ${startRules(S.K)}
     <button class="btn primary startgo" id="startBtn" type="button">${resumed?'つづける':'はじめる'}</button>`,true);
   $('veilCard').classList.add('start');
@@ -1351,6 +1374,15 @@ function rakeStones(cells,instant){
       if(n<=0)RK.str.delete(i);else RK.str.set(i,n);rakeSet(i,n);moving++;});
     RK.raf=moving?requestAnimationFrame(tick):0;};
   RK.raf=requestAnimationFrame(tick);}
+// 石の姿: every stone gets its own shape, chosen from the cell so it stays the same. The kinds follow the stones
+// of a karesansui arrangement: the low flat stones that flank a 三尊石組, the peaked mountain stone of a
+// 須弥山石組, and a weathered rounded stone.
+const STONE_KINDS=['maru','fuse','yama'];
+function stoneLook(h){return 'k-'+STONE_KINDS[(h>>>3)%3];}
+function stoneStyle(h){const r=k=>(h>>>k)&15,k=STONE_KINDS[(h>>>3)%3],rot=n=>((h>>>9)%(2*n+1))-n;
+  if(k==='fuse')return `border-radius:${48+r(0)%6}% ${44+r(4)%8}% ${46+r(8)%6}% ${50+r(12)%6}% / ${58+r(0)%10}% ${62+r(4)%10}% ${40+r(8)%8}% ${38+r(12)%8}%;rotate:${rot(8)}deg`;
+  if(k==='yama')return `border-radius:${42+r(0)%10}% ${50+r(4)%10}% ${40+r(8)%8}% ${44+r(12)%8}% / ${72+r(0)%10}% ${68+r(4)%10}% ${28+r(8)%6}% ${30+r(12)%6}%;rotate:${rot(6)}deg`;
+  const rr=n=>40+r(n);return `border-radius:${rr(0)}% ${100-rr(0)}% ${rr(4)}% ${100-rr(4)}% / ${rr(8)}% ${rr(12)}% ${100-rr(12)}% ${100-rr(8)}%;rotate:${(h%40)-20}deg`;}
 function build(){
   const {N,K}=S;const b=$('board');b.innerHTML='';
   b.style.gridTemplateColumns=`repeat(${N},1fr)`;
@@ -1360,10 +1392,10 @@ function build(){
     for(let c=0;c<N;c++){
       const i=r*N+c;const el=document.createElement('button');el.className='cell';el.dataset.i=i;el.type='button';
       el.setAttribute('role','gridcell');
-      if(S.clue[i]>=0){el.classList.add('clue');el.innerHTML=`<span>${S.clue[i]}</span>`;el.setAttribute('aria-label',`苔 ${S.clue[i]}`);el.tabIndex=-1;}
+      if(S.clue[i]>=0){el.classList.add('clue');const h=(i*2654435761>>>0),q=k=>45+((h>>>k)&15)%8;el.innerHTML=`<div class="mo" style="border-radius:${q(0)}% ${100-q(0)}% ${q(4)}% ${100-q(4)}% / ${q(8)}% ${q(12)}% ${100-q(12)}% ${100-q(8)}%;rotate:${(h%16)-8}deg"></div><span>${S.clue[i]}</span>`;el.setAttribute('aria-label',`苔 ${S.clue[i]}`);el.tabIndex=-1;}
       else{
         const h=(i*2654435761>>>0);const rr=k=>40+((h>>>k)&15);
-        el.innerHTML=`<div class="st" style="border-radius:${rr(0)}% ${100-rr(0)}% ${rr(4)}% ${100-rr(4)}% / ${rr(8)}% ${rr(12)}% ${100-rr(12)}% ${100-rr(8)}%;rotate:${(h%40)-20}deg"></div><div class="dot"></div>`;
+        el.innerHTML=`<div class="st ${stoneLook(h)}" style="${stoneStyle(h)}"></div><div class="dot"></div>`;
       }
       if(c===N-1)el.classList.add('edgeR');if(r===N-1)el.classList.add('edgeB');if(r===0)el.classList.add('top');if(c===0)el.classList.add('left');
       b.appendChild(el);cellEls.push(el);
@@ -1672,7 +1704,7 @@ if(!Sound.available)$('soundNote').textContent='このブラウザでは音を�
 syncSound();
 
 
-// ---- 練習の庭: a fixed 5×5 garden walked through step by step ----
+// ---- 練習用の庭: a fixed 5×5 garden walked through step by step ----
 // Each step lights the cells it is about and accepts only the move it asks for (other taps get a nudge).
 // The step shown is always the first one not yet done on the board, so 一手戻す simply steps back.
 const TN=5,TCLUE={'5五':0,'4二':2,'4三':2},TSTONE=['4一','2二','5三','3四','1五'];
@@ -1682,9 +1714,9 @@ const tRing=nm=>{const i=tIdx(nm),r=(i/TN)|0,c=i%TN,o=[];for(let rr=r-1;rr<=r+1;
 const tWant=(names,v)=>Object.fromEntries(names.map(n=>[tIdx(n),v]));
 const TSTEPS=[
   {want:tWant(['5四','4四','4五'],2),lit:()=>[tIdx('5五'),...tRing('5五')],
-   text:'左下の苔「0」は、周囲のマスに石がひとつもないという意味です。「石」のボタンを押して「印」に切り替えたうえで、\n光っている3マスに「石なし」の印を付けましょう。'},
+   text:'左下の苔「0」は、周囲のマスに石がひとつもないという意味です。「石」のボタンを押すと「石なしの印」に切り替わるので、\n光っている3マスに「石なしの印」を付けましょう。'},
   {want:tWant(['4一'],1),lit:()=>tCol(1),
-   text:'光っている4の列を見てください。苔と印を除くと、石を置けるのは4一だけです。「石」に切り替えて、4一に石を置きましょう。'},
+   text:'光っている4の列を見てください。苔石は石の数として数えず、上に石も置けないので、石を置けるのは4一だけです。「石」に切り替えて、4一に石を置きましょう。'},
   {want:tWant(['5一','3一','5二','3二'],2),lit:()=>tRing('4一'),
    text:'石どうしは縦・横・斜めのどれでも隣り合えません。「印」に切り替えて、4一のまわりの空いたマスに印を付けましょう。'},
   {want:tWant(['2一','1一'],2),lit:()=>tRow(0),
@@ -1695,15 +1727,15 @@ const TSTEPS=[
    text:'三の行も石が揃いました。残りのマスに印を付けましょう。'},
   {want:tWant(['3四'],1),lit:()=>[tIdx('4三'),...tRing('4三')],
    text:'4三の苔「2」のまわりには、石が5三の1つだけです。もう1つを置ける空きマスは3四しかありません。3四に石を置きましょう。'},
-  {want:tWant(['2四','3五','2五','1四'],2),lit:()=>[...tRing('3四'),...tRow(3)],
+  {want:tWant(['2四','3五','2五','1四'],2),lit:()=>[...tRing('3四'),...tRow(3),tIdx('3一'),tIdx('3二')],
    text:'3四のまわりと、石が揃った四の行の残りに、印を付けましょう。'},
-  {free:true,lit:()=>[...tRow(4),...tCol(3)],
-   text:'仕上げです。五の行と2の列に、自分で石を1つずつ置いてみましょう。決まりごとを守って石を5つ置ききれば完成です。'}];
-let tut=null;   // {back:{N,d,seed,walk}|null, first:bool} while the 練習の庭 is open
+  {free:true,lit:()=>[],
+   text:'仕上げです。これまで学んだことをもとに、あなた自身で残り2つの石を置いてみましょう。決まりごとを守って石を5個置ききれば完成です。'}];
+let tut=null;   // {back:{N,d,seed,walk}|null, first:bool} while the 練習用の庭 is open
 const tDone=st=>st.free?false:Object.entries(st.want).every(([i,v])=>S.cells[i]===v);
 const tStep=()=>{let k=0;while(k<TSTEPS.length-1&&tDone(TSTEPS[k]))k++;return k;};
 function tutAllow(i,target){const st=TSTEPS[tStep()];if(st.free)return true;return st.want[i]===target;}
-function tutShow(){const k=tStep(),st=TSTEPS[k];$('label').textContent=`練習の庭 ${k+1}/${TSTEPS.length}`;setMsg(st.text);focusCells(st.lit(),0);}
+function tutShow(){const k=tStep(),st=TSTEPS[k];$('label').textContent=`練習用の庭 ${k+1}/${TSTEPS.length}`;setMsg(st.text);focusCells(st.lit(),0);}
 let nudgeT=null;
 function tutNudge(i,target){const st=TSTEPS[tStep()],w=st.want&&st.want[i];
   let t='光っているマスを見てください。';
@@ -1725,16 +1757,16 @@ function tutStart(){
   S={N:TN,K:1,seed:4242,diff:0,clue,stone,cells:new Array(TN*TN).fill(0),hist:[],time:0,hints:0,done:false,started:false,tut:true};
   build();setMode(0);$('time').hidden=true;$('tutQuit').hidden=false;
   // the button may sit far down the side panel: bring the garden into view
-  $('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent='練習の庭';setMsg('');
-  showVeil(`<p class="vlabel">練習の庭（5×5・石5）</p>
-    <p class="startgoal"><b>完成条件</b>決まりごとを守りながら、石を5つ置ききる。</p>${startRules(1)}
+  $('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent='練習用の庭';setMsg('');
+  showVeil(`<p class="vlabel">練習用の庭（5×5・石5）</p>
+    <p class="startgoal"><b>完成条件</b>決まりごとを守りながら、石を5個置ききる。</p>${startRules(1)}
     <div class="small">光るマスと下の説明に沿って、1手ずつ進めます。</div>
     <button class="btn primary startgo" id="tutGo" type="button">はじめる</button>`,true);
   $('veilCard').classList.add('start');
   $('tutGo').onclick=()=>{S.started=true;hideVeil();tutShow();};}
 function tutWin(){
   showVeil(`<h3>整いました</h3>
-    <p class="tutgoal">決まりごとを守ったまま、石を5つ置ききりました。これが<b>完成</b>です。印を付けていないマスが残っていても構いません。</p>
+    <p class="tutgoal">決まりごとを守ったまま、石を5個置ききりました。これが<b>完成</b>です。印を付けていないマスが残っていても構いません。</p>
     <div class="winbtns"><button type="button" class="btn" id="tutAgain">もう一度</button><button type="button" class="btn primary" id="tutEnd">${tut&&tut.first?'庭へ向かう':'庭に戻る'}</button></div>`);
   $('veilCard').classList.add('win');
   $('tutAgain').onclick=tutStart;$('tutEnd').onclick=tutLeave;}
