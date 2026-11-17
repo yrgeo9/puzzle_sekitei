@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-mWWnQ/+qBadTG9pfDaTpnw+gGv5cSl0bR4Wxe+aYt0U=' 'sha256-uiP4C4gljM96+S0CrQ1nhNpEelyEteguF6MqgemEz/k=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-Y2NJewo1PBruWlGkIME/o35dnQGnv7Oo9WTr9T2JupI=' 'sha256-aTV4N3Yyi+lO18a4fgPhs6d2L44jdAFjW5MMdfgbhOA=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -1171,7 +1171,9 @@ const Sound=(function(){
   }
   // read-only snapshot, handy when checking which sounds come from files
   const status=()=>({ctx:ctx?ctx.state:'none',bgmOn,source:bgmEl?'file':timer?'synth':'off',files:Object.assign({},files),loaded:Object.keys(buffers)});
-  return {play,set,status,prefs:()=>Object.assign({},prefs),available:!!AC};
+  // hold(true) fades the music out without touching the BGM setting; hold(false) brings it back if BGM is on
+  const hold=on=>{if(on)stopBgm();else if(prefs.bgm)startBgm();};
+  return {play,set,status,hold,prefs:()=>Object.assign({},prefs),available:!!AC};
 })();
 </script>
 
@@ -1519,11 +1521,11 @@ function undo(){if(!S||S.done||!S.started||!S.hist.length)return;clearFocus();S.
 $('undoBtn').onclick=undo;
 function pauseGame(){
   if(!S||S.done||!S.started||S.tut)return;
-  S.started=false;stopClock();save();
+  S.started=false;stopClock();save();Sound.hold(true);
   showVeil(`<p class="vlabel">休憩中</p>
     <button class="btn primary startgo" id="resumeBtn" type="button">つづける</button>
     <div class="small">押すと盤面とタイマーが戻ります。</div>`,true);
-  $('resumeBtn').onclick=()=>{S.started=true;hideVeil();startClock();};
+  $('resumeBtn').onclick=()=>{S.started=true;hideVeil();startClock();Sound.hold(false);};
 }
 $('pauseBtn').onclick=pauseGame;
 let msgTimer=null;
@@ -1626,7 +1628,7 @@ function giveHint(){
 const hintAsk=$('hintAsk');
 function closeAsk(){if(hintAsk.open)hintAsk.close();else hintAsk.removeAttribute('open');}
 $('hintBtn').onclick=()=>{
-  if(S&&S.tut){if(S.started&&!S.done){tutShow();Sound.play('tap');}return;}
+  if(S&&S.tut){if(S.started&&!S.done){if(tut&&tut.lesson==='adv'&&tut.hint<3)tut.hint++;tutShow();Sound.play(tut&&tut.lesson==='adv'?'hint':'tap');}return;}
   if(!S||S.done||!S.started)return;
   phrase($('askText'),'次に推理できる一手とその理由を見て、盤に置きますか？');
   $('askYes').textContent='教わる';
@@ -1738,37 +1740,53 @@ const TSTEPS=[
 // st: the board as the chapter opens (digit = moss, O = stone, x = mark, . = empty); stones: the answer.
 function drillCh(c){const k=tKit(c.N),rows=c.st.split('/');c.cells=[];c.clue=[];
   rows.forEach((r,ri)=>[...r].forEach((ch,ci)=>{const i=ri*c.N+ci;c.clue[i]=/\d/.test(ch)?+ch:-1;c.cells[i]=ch==='O'?1:ch==='x'?2:0;}));
-  c.want=Object.fromEntries(Object.entries(c.want).map(([n,v])=>[k.idx(n),v]));const L=c.lit(k);c.lit=()=>L;return c;}
+  c.want=Object.fromEntries(Object.entries(c.want).map(([n,v])=>[k.idx(n),v]));
+  const L1=c.lit1(k),L2=c.lit2(k),L3=Object.keys(c.want).map(Number);
+  c.lit=()=>{const h=tut?tut.hint:0;return h===0?[]:h===1?L1:h===2?L2:L3;};return c;}
 const DRILL=[
   {title:'2つの行が、同じ2列を取り合う',idea:'同じ2列にしか石を置けない行が2つあれば、その2列の石はその2行で使い切られます。',
    N:6,K:1,st:'x.1.xx/xxxx../....x2/xxx2../....xx/1.....',stones:[1,11,14,22,24,33],
-   want:{'2六':2,'1六':2},lit:k=>[...k.row(1),...k.row(3),...k.col(4),...k.col(5)],
-   text:'二の行の石は2二か1二、四の行の石は2四か1四で、どちらも2の列か1の列に入ります。この2列の石はこの2行で使い切るので、2六・1六に印を付けましょう。'},
+   want:{'2六':2,'1六':2},lit1:k=>[...k.row(1),...k.row(3)],lit2:k=>[...k.row(1),...k.row(3),...k.col(4),...k.col(5)],
+   focus:'二の行と四の行に注目してみましょう。どちらも、石を置けるマスが2つしかありません。',
+   why:'二の行の石は2二か1二、四の行の石は2四か1四。どちらも2の列か1の列に入るので、2列の石はこの2行で使い切られます。',
+   act:'2の列と1の列の残り、2六・1六に印を付けましょう。'},
   {title:'片方の置き方が、もう片方の置き場をつぶす',idea:'ある置き方をすると隣の行に石を置けなくなるなら、その置き方はできません。',
    N:6,K:1,st:'0x..xx/xxxx../.x0x../.xxx../....../...1..',stones:[2,10,12,23,27,31],
-   want:{'6三':1,'2三':2,'1三':2},lit:k=>[...k.row(1),...k.row(2)],
-   text:'二の行の石は2二か1二です。2三・1三に石を置くと、そのどちらとも隣り合って二の行に石を置けなくなります。だから6三に石を置き、2三・1三に印を付けましょう。'},
+   want:{'6三':1,'2三':2,'1三':2},lit1:k=>[...k.row(1),...k.row(2)],lit2:k=>[...k.row(1),...k.row(2)],
+   focus:'二の行と三の行を見比べてみましょう。',
+   why:'二の行の石は2二か1二です。三の行の石を2三か1三に置くと、そのどちらとも隣り合い、二の行に石を置けなくなります。',
+   act:'三の行の石は6三です。6三に石を置き、2三・1三に印を付けましょう。'},
   {title:'行の候補が、すべて苔のまわりに入っている',idea:'行の候補がすべて苔のまわりにあれば、苔の石はその行の石で足ります。',
    N:6,K:1,st:'..x1xx/x1..x1/xxxx../1...x2/....../......',stones:[0,9,17,19,28,32],
-   want:{'4二':2},lit:k=>[...k.row(0),k.idx('5二'),...k.ring('5二')],
-   text:'一の行の石は6一か5一で、どちらも5二の苔「1」のまわりです。苔の石は一の行の石で足りるので、苔のまわりの残り、4二に印を付けましょう。'},
+   want:{'4二':2},lit1:k=>[...k.row(0),k.idx('5二'),...k.ring('5二')],lit2:k=>[...k.row(0),k.idx('5二'),...k.ring('5二')],
+   focus:'一の行と、5二の苔「1」に注目してみましょう。',
+   why:'一の行の石は6一か5一で、どちらも5二の苔のまわりにあります。苔の石は、一の行の石で足ります。',
+   act:'苔のまわりの残り、4二に印を付けましょう。'},
   {title:'苔の候補が、すべて1つの行に入っている',idea:'苔の候補がすべて1つの行にあれば、その行の石は苔のために使われます。',
    N:6,K:1,st:'....../xx..../0x..../xx.x../11...1/..1x..',stones:[1,10,14,23,27,30],
-   want:{'2六':2,'1六':2},lit:k=>[k.idx('6五'),...k.ring('6五'),...k.row(5)],
-   text:'6五の苔「1」の候補は6六・5六で、どちらも六の行にあります。苔の石が六の行に入るので、六の行の残り、2六・1六に印を付けましょう。'},
+   want:{'2六':2,'1六':2},lit1:k=>[k.idx('6五'),...k.ring('6五'),...k.row(5)],lit2:k=>[k.idx('6五'),...k.ring('6五'),...k.row(5)],
+   focus:'6五の苔「1」と、六の行に注目してみましょう。',
+   why:'6五の苔の候補は6六・5六で、どちらも六の行にあります。六の行の石は、苔のために使われます。',
+   act:'六の行の残り、2六・1六に印を付けましょう。'},
   {title:'苔が、行の石を必ず1つ使う',idea:'苔の候補を「同じ行」と「隣り合う組」に分けて数えると、行の石を必ず使うと分かることがあります。',
    N:6,K:1,st:'1.x.1./..x.x./.22x.x/...x1x/.x2x.x/....x.',stones:[5,7,16,20,24,33],
-   want:{'6二':2,'1二':2},lit:k=>[...k.row(1),k.idx('4三'),...k.ring('4三')],
-   text:'4三の苔「2」の候補は、二の行の5二・3二と、隣り合う5四・4四。どちらの組も石は1つまでなので、5二か3二に必ず石が入ります。二の行の残り、6二・1二に印を付けましょう。'},
+   want:{'6二':2,'1二':2},lit1:k=>[...k.row(1),k.idx('4三'),...k.ring('4三')],lit2:k=>[...k.row(1),k.idx('4三'),...k.ring('4三')],
+   focus:'4三の苔「2」と、二の行に注目してみましょう。',
+   why:'4三の苔の候補は、二の行の5二・3二と、隣り合う5四・4四。どちらの組も石は1つまでなので、5二か3二に必ず石が入ります。',
+   act:'二の行の残り、6二・1二に印を付けましょう。'},
   {title:'苔と苔の引き算',idea:'小さい苔の候補が大きい苔のまわりに収まっていれば、引き算で大きい苔の残りが分かります。',
    N:6,K:1,st:'.x.x0x/.x.x1x/12xx../..x.x1/x.x.xx/..x...',stones:[0,8,16,19,27,35],
-   want:{'4二':1},lit:k=>[k.idx('6三'),...k.ring('6三'),k.idx('5三'),...k.ring('5三')],
-   text:'6三の苔「1」の候補（6二・6四・5四）は、すべて5三の苔「2」のまわりにもあります。そこに石は1つだけなので、5三のもう1つの石は4二です。4二に石を置きましょう。'},
+   want:{'4二':1},lit1:k=>[k.idx('6三'),...k.ring('6三'),k.idx('5三'),...k.ring('5三')],lit2:k=>[k.idx('6三'),...k.ring('6三'),k.idx('5三'),...k.ring('5三')],
+   focus:'6三の苔「1」と、5三の苔「2」を見比べてみましょう。',
+   why:'6三の苔の候補（6二・6四・5四）は、すべて5三の苔のまわりにもあります。そこに入る石は1つだけです。',
+   act:'5三のもう1つの石は4二です。4二に石を置きましょう。'},
   {title:'隣り合う2列を、2×2のかたまりに分ける',idea:'石2の盤面では、隣り合う2列（2行）を2×2のかたまり5つに分け、石が1つまでであることを使います。',
    N:10,K:2,st:'....x.xOx./..xxxxxx2./xxx1OxO1xx/..xxx4xx../xxx2OxOxx2/.2.2xxxx../....2.x..2/....x.x.../....x.x2../..2.x.x...',
    stones:[2,7,10,19,24,26,31,39,44,46,52,58,60,65,73,78,81,85,93,97],
-   want:{'8六':1},lit:k=>[...k.col(2),...k.col(3)],
-   text:'8の列と7の列を2×2のかたまり5つに分けます。かたまりに石は1つまで、2列で石は4つなので、空のかたまり（三〜四の行）以外に1つずつ。五〜六の行は候補が8六だけなので、8六に石を置きましょう。'}].map(drillCh);
+   want:{'8六':1},lit1:k=>[...k.col(2),...k.col(3)],lit2:k=>[...k.col(2),...k.col(3)],
+   focus:'8の列と7の列に注目しましょう。この2列に石は4つ入ります。',
+   why:'2列を2×2のかたまり5つに分けると、かたまりに石は1つまで。三〜四の行は候補がないので、残り4つに1つずつ入ります。',
+   act:'五〜六の行は候補が8六だけ。8六に石を置きましょう。'}].map(drillCh);
 const LESSONS={
   basic:{N:5,clue:{'5五':0,'4二':2,'4三':2},stone:['4一','2二','5三','3四','1五'],marks:[],steps:TSTEPS,title:'練習用の庭',tag:'',
     intro:'光るマスと下の説明に沿って、1手ずつ進めます。'},};
@@ -1778,9 +1796,13 @@ const LS=()=>tut&&tut.lesson==='adv'?{steps:[DRILL[tut.ch]],short:DRILL_SHORT,dr
 const tDone=st=>st.free?false:Object.entries(st.want).every(([i,v])=>S.cells[i]===v);
 const tStep=()=>{const T=LS().steps;let k=0;while(k<T.length-1&&tDone(T[k]))k++;return k;};
 function tutAllow(i,target){const st=LS().steps[tStep()];if(st.free)return true;return st.want[i]===target;}
-function tutShow(){const L=LS(),k=tStep(),st=L.steps[k];$('label').textContent=L.drill?`${DRILL_SHORT} ${tut.ch+1}/${DRILL.length}`:`${L.short||L.title} ${k+1}/${L.steps.length}`;setMsg(st.text);focusCells(st.lit(),0);}
+const DRILL_START='この盤面で、次に決まる一手を探してみましょう。わからないときは「教えを乞う」を押すと、少しずつヒントが出ます。';
+function drillMsg(c){const h=tut.hint;return h===0?DRILL_START:h===1?c.focus:h===2?c.focus+c.why:c.why+c.act;}
+function tutShow(){const L=LS(),k=tStep(),st=L.steps[k];if(L.drill){$('label').textContent=`${DRILL_SHORT} ${tut.ch+1}/${DRILL.length}`;setMsg(drillMsg(st));focusCells(st.lit(),0);return;}$('label').textContent=L.drill?`${DRILL_SHORT} ${tut.ch+1}/${DRILL.length}`:`${L.short||L.title} ${k+1}/${L.steps.length}`;setMsg(st.text);focusCells(st.lit(),0);}
 let nudgeT=null;
 function tutNudge(i,target){const st=LS().steps[tStep()],w=st.want&&st.want[i];
+  if(tut&&tut.lesson==='adv'&&w===undefined){setMsg('そのマスは、まだ決まりません。');clearTimeout(nudgeT);
+    nudgeT=setTimeout(()=>{if(S&&S.tut&&!S.done){if(tut.hint<3)tut.hint++;tutShow();}},1600);return;}
   let t=st.lit().includes(i)?'そのマスはまだ決まりません。説明をもう一度読んでみましょう。':'光っているマスを見てください。';
   if(w===2&&target===1)t='印を付けるには、下のボタンで「印」に切り替えます。';
   else if(w===1&&target===2)t='石を置くには、下のボタンで「石」に切り替えます。';
@@ -1819,20 +1841,21 @@ function tutWin(){
   $('tutAgain').onclick=()=>tutStart(tut.lesson);$('tutEnd').onclick=tutLeave;}
 // one chapter of the 手引き少なめ drill: its board, then a card naming the pattern (after a solved chapter: できました)
 function drillChapter(ch,afterDone){
-  const c=DRILL[ch];tut.ch=ch;clearTimeout(nudgeT);
+  const c=DRILL[ch],prev=afterDone?DRILL[ch-1]:null;tut.ch=ch;tut.hint=0;clearTimeout(nudgeT);
   const stone=new Uint8Array(c.N*c.N);c.stones.forEach(i=>stone[i]=1);
   S={N:c.N,K:c.K,seed:900+ch,diff:1,clue:Int8Array.from(c.clue),stone,cells:c.cells.slice(),hist:[],time:0,hints:0,done:false,started:false,tut:true};
   build();setMode(0);$('time').hidden=true;$('tutQuit').hidden=false;
   $('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent=`${DRILL_SHORT} ${ch+1}/${DRILL.length}`;setMsg('');
-  const head=ch===0?`<p class="vlabel">練習用の庭（手引き少なめ）</p><div class="small">「手引き少なめ」で使う、2つの手がかりを組み合わせる考え方を、実際の盤面で1つずつ練習します（全${DRILL.length}問）。</div>`
-    :`<p class="vlabel">${afterDone?'できました。':''}次は${ch+1}問目です</p>`;
+  const head=ch===0?`<p class="vlabel">練習用の庭（手引き少なめ）</p><div class="small">「手引き少なめ」で使う、2つの手がかりを組み合わせる考え方を、実際の盤面で1問ずつ練習します（全${DRILL.length}問）。はじめはヒントなし。わからないときは「教えを乞う」で、少しずつヒントが出ます。</div>`
+    :`<p class="vlabel">できました</p><p class="startgoal"><b>${prev.title}</b>${prev.idea}</p>`;
   showVeil(`${head}
-    <p class="startgoal"><b>${ch+1}/${DRILL.length}　${c.title}</b>${c.idea}</p>
+    <div class="small">${ch+1}問目（全${DRILL.length}問）</div>
     <button class="btn primary startgo" id="tutGo" type="button">${ch===0?'はじめる':'次へ'}</button>`,true);
   $('veilCard').classList.add('start');
   $('tutGo').onclick=()=>{S.started=true;hideVeil();tutShow();};}
 function drillWin(){S.done=true;Sound.play('clear',.15);
   showVeil(`<h3>整いました</h3>
+    <p class="startgoal"><b>${DRILL[DRILL.length-1].title}</b>${DRILL[DRILL.length-1].idea}</p>
     <p class="tutgoal">「手引き少なめ」で使う${DRILL.length}つの考え方を、すべて練習しました。実際の盤面でも、候補が2〜3マスしかない行・列・苔を探し、隣や重なる手がかりと組み合わせてみてください。</p>
     <div class="winbtns"><button type="button" class="btn" id="tutAgain">もう一度</button><button type="button" class="btn primary" id="tutEnd">庭に戻る</button></div>`);
   $('veilCard').classList.add('win');
