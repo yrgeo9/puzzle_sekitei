@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-w48+2V8TvNixd1KBXxmKZKV1I85LfIFhUUWtRFnLw2g=' 'sha256-G2jHtukria+wLp9UNRvdQw5HNFMwpD2pHujuccWnnwM=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-w48+2V8TvNixd1KBXxmKZKV1I85LfIFhUUWtRFnLw2g=' 'sha256-h/Drv9qrmxZKY/c9EcoZL0hZIypyCV/kMW7t8uMULZo=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -160,7 +160,8 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .pips.short .pip:not(.on){border-color:var(--err)}   /* short: the stones placed stay filled, the missing ones stay hollow */
 
 /* ---- buttons: thin-lined, mincho lettering ---- */
-.tools{display:flex;flex-wrap:nowrap;gap:8px;justify-content:center;width:100%;max-width:602px}
+.tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%;max-width:602px}
+.tools .btn{justify-content:center;min-width:0}
 .tools .btn{padding-inline:12px;white-space:nowrap}
 .btn{font-family:var(--display);font-weight:500;font-size:14px;letter-spacing:.06em;border:1px solid var(--line);background:var(--panel);color:var(--ink);
   border-radius:2px;padding:9px 16px;cursor:pointer;display:inline-flex;gap:8px;align-items:center;transition:border-color .15s,background .15s}
@@ -296,6 +297,9 @@ aside .intro-rules{margin:0 0 8px}
 .mini{display:grid;grid-template-columns:repeat(var(--c),calc(66px / var(--c)));justify-self:center;
   background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 4px,var(--rake) 4px 5px);
   border:3px solid var(--curb);border-radius:2px}
+/* the 8 cells round a stone (up, down, sideways and diagonal) can take no stone: a red cross on each */
+.mini i.x::before,.mini i.x::after{content:"";position:absolute;left:50%;top:50%;width:44%;height:1.6px;border-radius:1px;background:color-mix(in srgb,var(--err) 85%,transparent);translate:-50% -50%;rotate:45deg}
+.mini i.x::after{rotate:-45deg}
 .mini i{aspect-ratio:1;position:relative;font-style:normal;box-shadow:inset 0 0 0 .5px color-mix(in srgb,var(--ink) 8%,transparent)}
 .mini i.s::after{content:"";position:absolute;inset:16%;border-radius:50%;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%)}
 .mini i.s.bad::after{background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--err) 55%,white),var(--err) 66%)}
@@ -390,7 +394,7 @@ aside .intro-rules{margin:0 0 8px}
   .veil.solid{inset:6px}
   .coords-top{padding-inline:6px}
   .coords-right{padding-block:6px}
-  .tools{flex-shrink:0;display:grid;grid-template-columns:1.25fr 1fr 1fr 1.1fr;gap:5px}
+  .tools{flex-shrink:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
   .tools .btn{font-size:13px;padding:0 2px;min-height:46px;justify-content:center;gap:5px;white-space:nowrap;letter-spacing:.02em}
   .tools .btn.two{gap:1px}
   .tools .btn{font-size:12.5px;letter-spacing:0}
@@ -473,6 +477,8 @@ aside .intro-rules{margin:0 0 8px}
   .goal.many .gicons{display:grid;grid-template-columns:repeat(10,11px);gap:3px 4px}.goal.many .gs{width:11px;height:11px}
   .stage{--g:min(100cqw - 42px,100cqh - 174px)}
 }
+/* very narrow phones: four equal buttons leave little room for the small second line */
+@media (max-width:360px){.tools{gap:4px}.tools .btn{padding:0}.tools .btn.two small{font-size:8px;letter-spacing:-.05em}.tools .msep{margin:0 4px}.tools kbd{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 <style>
@@ -552,7 +558,7 @@ button{touch-action:manipulation}
           <div><b>どの行にも、どの列にも、石を決まった数だけ置く</b><span>1つか2つかは庭の様式で決まり、はじめる前に表示されます</span></div>
         </li>
         <li>
-          <div class="mini" style="--c:3" aria-hidden="true"><i class="s bad"></i><i></i><i></i><i></i><i class="s bad"></i><i></i><i></i><i></i><i></i></div>
+          <div class="mini" style="--c:3" aria-hidden="true"><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="s"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i></div>
           <div><b>石どうしは縦・横・斜めのどれでも隣り合わない</b></div>
         </li>
         <li>
@@ -685,7 +691,7 @@ button{touch-action:manipulation}
         <div><b>どの行にも、どの列にも、石を決まった数だけ置く</b><span>1つか2つかは庭の様式で決まり、はじめる前に表示されます</span></div>
       </li>
       <li>
-        <div class="mini" style="--c:3" aria-hidden="true"><i class="s bad"></i><i></i><i></i><i></i><i class="s bad"></i><i></i><i></i><i></i><i></i></div>
+        <div class="mini" style="--c:3" aria-hidden="true"><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="s"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i></div>
         <div><b>石どうしは縦・横・斜めのどれでも隣り合わない</b></div>
       </li>
       <li>
@@ -1442,11 +1448,12 @@ let msgTimer=null;
 // first, then between phrases, and only mid-phrase when one phrase is wider than the whole line.
 function phrase(el,t,flat){
   const wrap=document.createElement('span');wrap.className='ph';
-  for(const sen of String(t).match(/[^。]+。?/g)||[]){
+  String(t).split('\n').forEach((line,li)=>{if(li)wrap.appendChild(document.createElement('br'));
+  for(const sen of line.match(/[^。]+。?/g)||[]){
     // flat: phrases only, packed line after line (a long message would waste room keeping sentences whole)
     const sp=flat?wrap:document.createElement('span');
     for(const c of sen.match(/[^、：]+[、：]?/g)){const cs=document.createElement('span');cs.textContent=c;sp.appendChild(cs);}
-    if(!flat)wrap.appendChild(sp);}
+    if(!flat)wrap.appendChild(sp);}});
   el.replaceChildren(wrap);}
 // On a phone the hint line has room for four lines. A message that does not fit is first packed phrase by
 // phrase instead of sentence by sentence, then its type steps down a little.
@@ -1623,7 +1630,7 @@ const tRing=nm=>{const i=tIdx(nm),r=(i/TN)|0,c=i%TN,o=[];for(let rr=r-1;rr<=r+1;
 const tWant=(names,v)=>Object.fromEntries(names.map(n=>[tIdx(n),v]));
 const TSTEPS=[
   {want:tWant(['5四','4四','4五'],2),lit:()=>[tIdx('5五'),...tRing('5五')],
-   text:'左下の苔「0」は、まわり8マスに石がひとつもないという意味です。下のボタンで「印」に切り替えて、光る3マスに「石なし」の印を付けましょう。'},
+   text:'左下の苔「0」は、周囲のマスに石がひとつもないという意味です。「石」のボタンを押して「印」に切り替えたうえで、\n光っている3マスに「石なし」の印を付けましょう。'},
   {want:tWant(['4一'],1),lit:()=>tCol(1),
    text:'光っている4の列を見てください。苔と印を除くと、石を置けるのは4一だけです。「石」に切り替えて、4一に石を置きましょう。'},
   {want:tWant(['5一','3一','5二','3二'],2),lit:()=>tRing('4一'),
