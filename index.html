@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-w48+2V8TvNixd1KBXxmKZKV1I85LfIFhUUWtRFnLw2g=' 'sha256-1NzGviKW4xxvZopMyf4AkiTy4YP8UWW8PLVg6FpSbKY=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-w48+2V8TvNixd1KBXxmKZKV1I85LfIFhUUWtRFnLw2g=' 'sha256-d+Fxd4AeR6csDYLvMeGivXvOq/F5e8YkP0/rJGdgJFU=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -86,6 +86,9 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .coords{display:grid;font-family:var(--display);font-size:11px;color:var(--muted);line-height:1}
 .coords b{font-weight:500}
 .edge{display:flex;align-items:center;justify-content:center;gap:4px}
+/* a row or column whose stone count can no longer be right: its number turns red and bold too */
+.edge b{display:inline-grid;place-items:center;min-width:1.5em;height:1.5em;border-radius:3px;line-height:1}
+.edge.bad b{background:var(--err);color:#fff;font-weight:700}
 .coords-top{grid-column:1;grid-row:1;padding-inline:9px}
 .coords-top .edge{flex-direction:column;justify-content:flex-end;padding-bottom:5px}
 .coords-right{grid-column:2;grid-row:2;padding-block:9px}
@@ -1365,7 +1368,7 @@ function render(){
   // a line with no empty cell left (stones, marks and moss only) but too few stones can no longer be right: red too
   const rowE=new Array(N).fill(0),colE=new Array(N).fill(0);
   for(let i=0;i<N*N;i++)if(clue[i]<0&&cells[i]===0){rowE[(i/N)|0]++;colE[i%N]++;}
-  const pip=(el,n,e)=>{el.classList.toggle('over',n>K);el.classList.toggle('short',n<K&&!e);el.classList.toggle('full',n===K);[...el.children].forEach((p,k)=>p.classList.toggle('on',k<n));};
+  const pip=(el,n,e)=>{el.parentElement.classList.toggle('bad',n>K||(n<K&&!e));el.classList.toggle('over',n>K);el.classList.toggle('short',n<K&&!e);el.classList.toggle('full',n===K);[...el.children].forEach((p,k)=>p.classList.toggle('on',k<n));};
   for(let r=0;r<N;r++){pip(rowPips[r],rowC[r],rowE[r]);if(rowC[r]!==K)allOk=false;}
   for(let c=0;c<N;c++){pip(colPips[c],colC[c],colE[c]);if(colC[c]!==K)allOk=false;}
   rakeStones(cells);
