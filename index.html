@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-w48+2V8TvNixd1KBXxmKZKV1I85LfIFhUUWtRFnLw2g=' 'sha256-vPKY95UdMU24Mm5OihyoabrfYRaWndEIlApsYAjURnU=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-w48+2V8TvNixd1KBXxmKZKV1I85LfIFhUUWtRFnLw2g=' 'sha256-G2jHtukria+wLp9UNRvdQw5HNFMwpD2pHujuccWnnwM=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -262,6 +262,33 @@ aside p{margin:0}
 .intro-sub::before{content:"";width:5px;height:5px;background:var(--shu);flex-shrink:0}
 .rules-after{margin:0}
 aside .intro-rules{margin:0 0 8px}
+.ipagetabs{display:flex;border-bottom:1px solid var(--line);margin-top:2px}
+.ipagetabs button{flex:1 1 0;font-family:var(--display);font-weight:500;font-size:13.5px;border:0;background:transparent;color:var(--muted);padding:8px 0;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;white-space:nowrap}
+.ipagetabs button[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--shu)}
+/* every page sits in the same cell, so the popup keeps the height of the tallest one */
+.ipages{display:grid}
+.ipage{grid-area:1/1;display:flex;flex-direction:column;gap:10px;justify-content:center;visibility:hidden}
+.ipage.on{visibility:visible}
+.ipage .intro-rules{margin:0}
+.ipage .goalfig{margin:6px 0 0}
+#intro .intro-body{gap:10px}
+#intro.last #introNext,#intro:not(.last) #introTut,#intro:not(.last) #introGo{display:none}
+#intro .introbtns{flex-direction:row}#intro .introbtns .btn{flex:1 1 0;letter-spacing:.08em;padding:12px 6px}
+#intro .introbtns #introNext{flex:1 1 100%}
+/* small screens: tighter type and spacing so each page needs no scrolling */
+@media (max-width:820px){
+  #intro .intro-body{padding:16px 18px 16px;gap:8px}
+  #intro h2{font-size:22px}
+  #intro .intro-eyebrow{font-size:11px}
+  #intro .intro-lead{font-size:12.5px;line-height:1.6}
+  #intro .intro-x{top:10px}
+  .ipage .intro-rules{gap:10px;padding:4px 0}
+  .ipage .intro-rules li{grid-template-columns:58px minmax(0,1fr);gap:12px}
+  .ipage .intro-rules .mini{grid-template-columns:repeat(var(--c),calc(54px / var(--c)))}
+  .ipage .intro-rules b{font-size:13.5px;line-height:1.45}
+  .ipage .intro-rules span{font-size:11.5px;line-height:1.5}
+  .ipage .legend{font-size:12.5px}
+}
 .intro-rules{list-style:none;margin:4px 0;padding:6px 0;display:flex;flex-direction:column;gap:14px}
 .intro-rules li{display:grid;grid-template-columns:72px minmax(0,1fr);gap:14px;align-items:center}
 .intro-rules b{display:block;font-family:var(--display);font-weight:700;font-size:15px;line-height:1.5;letter-spacing:.04em}
@@ -404,6 +431,11 @@ aside .intro-rules{margin:0 0 8px}
 .goal.many .gicons{display:grid;grid-template-columns:repeat(10,16px);gap:5px}
 .gs.x{background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--err) 55%,white),var(--err) 66%)}
 .goal.ok .gs.e{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--moss) 70%,transparent)}
+.goalfig{display:flex;align-items:center;justify-content:center;gap:14px;margin:10px 0 4px}
+.goalfig figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.goalfig figcaption{font-size:11px;color:var(--muted);letter-spacing:.12em}
+.goalarrow{color:var(--muted);font-size:15px;margin-bottom:18px}
+.tray{display:flex;gap:4px}.tray .gs{width:10px;height:10px}
 .goalnote{margin:0;font-size:13.5px;line-height:1.75}
 .goalnote span{display:block;margin-top:2px;font-size:12.5px;color:var(--muted);line-height:1.65}
 /* ---- 練習の庭 ---- */
@@ -517,7 +549,7 @@ button{touch-action:manipulation}
       <ol class="intro-rules">
         <li>
           <div class="mini" style="--c:5" aria-hidden="true"><i></i><i></i><i class="s"></i><i></i><i></i></div>
-          <div><b>どの行にも、どの列にも、石を決まった数だけ置く</b></div>
+          <div><b>どの行にも、どの列にも、石を決まった数だけ置く</b><span>1つか2つかは庭の様式で決まり、はじめる前に表示されます</span></div>
         </li>
         <li>
           <div class="mini" style="--c:3" aria-hidden="true"><i class="s bad"></i><i></i><i></i><i></i><i class="s bad"></i><i></i><i></i><i></i><i></i></div>
@@ -533,12 +565,16 @@ button{touch-action:manipulation}
     <section data-tab="rules">
       <h2>完成の条件</h2>
       <p class="goalnote">決まりごとを守ったまま、盤の下に並ぶ石がなくなるまで置けば完成です。</p>
+      <div class="goalfig" aria-hidden="true"><figure><div class="mini" style="--c:4"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="tray"><i class="gs"></i><i class="gs"></i><i class="gs"></i><i class="gs"></i></div><figcaption>はじめ</figcaption></figure><span class="goalarrow">→</span><figure><div class="mini" style="--c:4"><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i></div><div class="tray"><i class="gs e"></i><i class="gs e"></i><i class="gs e"></i><i class="gs e"></i></div><figcaption>完成</figcaption></figure></div>
     </section>
     <section data-tab="rules">
       <h2>所作</h2>
       <div class="legend">
         <div class="sw"><div class="s"></div></div><span>「石」モードでタップして石を置く・取る</span>
-        <div class="sw"><div class="d"></div></div><span>「印」モードでタップ、または右クリックで「石なし」の印を付ける・消す<br>なぞると続けて付けたり消したりできます</span>
+        <div class="sw"><div class="d"></div></div><span>「印」モードでタップ（または右クリック）で「石なし」の印を付ける・消す<br>なぞると続けて付けたり消したりできます</span>
+        <span class="minibtn" aria-hidden="true">一手戻す</span><span>直前の操作を元に戻せます</span>
+        <span class="minibtn" aria-hidden="true">休憩</span><span>タイマーを一時停止できます</span>
+        <span class="minibtn" aria-hidden="true">教えを乞う</span><span>ヒントをもらえます。次の一手と、その理由を示します</span>
       </div>
     </section>
     <section data-tab="tips" id="tipsTop">
@@ -636,11 +672,17 @@ button{touch-action:manipulation}
     <p class="intro-eyebrow">はじめての方へ</p>
     <h2 id="introTitle">石庭へようこそ</h2>
     <p class="intro-lead">苔の数字を手がかりに、盤面に石を据えるパズルです。</p>
-    <p class="intro-sub">決まりごと</p>
+    <div class="ipagetabs" role="tablist">
+      <button type="button" role="tab" data-ip="0">決まりごと</button>
+      <button type="button" role="tab" data-ip="1">完成の条件</button>
+      <button type="button" role="tab" data-ip="2">所作</button>
+    </div>
+    <div class="ipages">
+      <div class="ipage" data-ip="0">
     <ol class="intro-rules">
       <li>
         <div class="mini" style="--c:5" aria-hidden="true"><i></i><i></i><i class="s"></i><i></i><i></i></div>
-        <div><b>どの行にも、どの列にも、石を決まった数だけ置く</b></div>
+        <div><b>どの行にも、どの列にも、石を決まった数だけ置く</b><span>1つか2つかは庭の様式で決まり、はじめる前に表示されます</span></div>
       </li>
       <li>
         <div class="mini" style="--c:3" aria-hidden="true"><i class="s bad"></i><i></i><i></i><i></i><i class="s bad"></i><i></i><i></i><i></i><i></i></div>
@@ -652,15 +694,24 @@ button{touch-action:manipulation}
       </li>
     </ol>
     <p class="small rules-after">答えはひとつだけ。どの盤面も推理だけで解けます。</p>
-    <p class="intro-sub">完成の条件</p>
+      </div>
+      <div class="ipage" data-ip="1">
     <p class="goalnote">決まりごとを守ったまま、盤の下に並ぶ石がなくなるまで置けば完成です。</p>
-    <p class="intro-sub">所作</p>
+      <div class="goalfig" aria-hidden="true"><figure><div class="mini" style="--c:4"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="tray"><i class="gs"></i><i class="gs"></i><i class="gs"></i><i class="gs"></i></div><figcaption>はじめ</figcaption></figure><span class="goalarrow">→</span><figure><div class="mini" style="--c:4"><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i></div><div class="tray"><i class="gs e"></i><i class="gs e"></i><i class="gs e"></i><i class="gs e"></i></div><figcaption>完成</figcaption></figure></div>
+      </div>
+      <div class="ipage" data-ip="2">
     <div class="legend">
       <div class="sw"><div class="s"></div></div><span>「石」モードでタップして石を置く・取る</span>
-      <div class="sw"><div class="d"></div></div><span>「印」モードでタップ、または右クリックで「石なし」の印を付ける・消す<br>なぞると続けて付けたり消したりできます</span>
+      <div class="sw"><div class="d"></div></div><span>「印」モードでタップ（または右クリック）で「石なし」の印を付ける・消す<br>なぞると続けて付けたり消したりできます</span>
+      <span class="minibtn" aria-hidden="true">一手戻す</span><span>直前の操作を元に戻せます</span>
+      <span class="minibtn" aria-hidden="true">休憩</span><span>タイマーを一時停止できます</span>
+      <span class="minibtn" aria-hidden="true">教えを乞う</span><span>ヒントをもらえます。次の一手と、その理由を示します</span>
+    </div>
+      </div>
     </div>
     <div class="introbtns">
-      <button class="btn primary intro-go" id="introTut" type="button" autofocus>練習の庭で試す</button>
+      <button class="btn primary intro-go" id="introNext" type="button" autofocus>次へ</button>
+      <button class="btn primary intro-go" id="introTut" type="button">練習の庭で試す</button>
       <button class="btn intro-go" id="introGo" type="button">庭に入る</button>
     </div>
   </div>
@@ -1613,7 +1664,9 @@ function tutStart(){
   for(const [n,v] of Object.entries(TCLUE))clue[tIdx(n)]=v;TSTONE.forEach(n=>stone[tIdx(n)]=1);
   tut={back,first};clearTimeout(nudgeT);
   S={N:TN,K:1,seed:4242,diff:0,clue,stone,cells:new Array(TN*TN).fill(0),hist:[],time:0,hints:0,done:false,started:false,tut:true};
-  build();setMode(0);$('time').hidden=true;$('tutQuit').hidden=false;$('label').textContent='練習の庭';setMsg('');
+  build();setMode(0);$('time').hidden=true;$('tutQuit').hidden=false;
+  // the button may sit far down the side panel: bring the garden into view
+  $('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent='練習の庭';setMsg('');
   showVeil(`<p class="vlabel">練習の庭（5×5・石5）</p>
     <p class="startgoal"><b>完成条件</b>決まりごとを守りながら、石を5つ置ききる。</p>${startRules(1)}
     <div class="small">光るマスと下の説明に沿って、1手ずつ進めます。</div>
@@ -1636,7 +1689,14 @@ document.querySelectorAll('[data-tut]').forEach(b=>b.onclick=tutStart);
 // ---- rules popup: shown on the first visit, reopenable from 遊び方 ----
 const intro=$('intro');
 // the popup can be taller than the screen: open it at the top (the focused button would scroll it to the end)
-function openIntro(){if(intro.open)return;try{intro.showModal();}catch(e){intro.setAttribute('open','');}intro.scrollTop=0;requestAnimationFrame(()=>{intro.scrollTop=0;});}
+function openIntro(){if(intro.open)return;introPage(0);try{intro.showModal();}catch(e){intro.setAttribute('open','');}intro.scrollTop=0;requestAnimationFrame(()=>{intro.scrollTop=0;});}
+// the popup is three pages (決まりごと / 完成の条件 / 所作), so it fits on one screen
+function introPage(k){intro.querySelectorAll('.ipage').forEach(el=>el.classList.toggle('on',+el.dataset.ip===k));
+  intro.querySelectorAll('.ipagetabs button').forEach(b=>b.setAttribute('aria-selected',+b.dataset.ip===k?'true':'false'));
+  intro.classList.toggle('last',k===2);intro.dataset.page=k;}
+intro.querySelectorAll('.ipagetabs button').forEach(b=>b.onclick=()=>introPage(+b.dataset.ip));
+$('introNext').onclick=()=>{introPage(Math.min(2,(+intro.dataset.page||0)+1));$((+intro.dataset.page===2)?'introTut':'introNext').focus({preventScroll:true});};
+introPage(0);
 let introThenPick=false;   // the very first visit: はじめの説明, then 庭を変える
 function afterIntro(){store.set('sekitei:intro',1);if(introThenPick){introThenPick=false;$('introGo').textContent='庭に入る';openPick(true);}}
 intro.addEventListener('close',afterIntro);
