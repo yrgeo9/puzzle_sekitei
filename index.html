@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-kA0saZx0/eXsGigQ1LUfOseUjm2kz5fM5gOweCz8D54=' 'sha256-Y2NJewo1PBruWlGkIME/o35dnQGnv7Oo9WTr9T2JupI=' 'sha256-aTV4N3Yyi+lO18a4fgPhs6d2L44jdAFjW5MMdfgbhOA=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-jjL3j96GH+4k61/xfTxCiCO/YvYnAEj//9vIXCpJ4PQ=' 'sha256-Y2NJewo1PBruWlGkIME/o35dnQGnv7Oo9WTr9T2JupI=' 'sha256-gSrcGIzV45XNPrbp0IaS4caEChT0A/N0reLUFU4xNDY=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -155,6 +155,12 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
   color:var(--moss-ink);font-size:min(calc(100cqw / var(--cols) * .5),24px)}
 .cell.clue.done span{opacity:.5}
 .cell.clue.bad .mo{background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--err) 60%,white),var(--err) 70%)}
+.cell.toro .to{position:absolute;inset:3%;width:94%;height:94%;overflow:visible;filter:drop-shadow(0 1px 1.5px rgba(40,35,25,.3))}
+.cell.toro .to .ston{fill:#a29e94}.cell.toro .to .sdk{fill:#85817a}
+.cell.toro .to .win{fill:#f6db86}.cell.toro .to .glow{fill:#f6db86;opacity:.28}
+.cell.toro.bad .to .win{fill:color-mix(in srgb,var(--err) 70%,white)}
+.cell.toro span{inset:auto 0;top:34%;height:38%;line-height:1;color:#3f2c0c;font-size:min(calc(100cqw / var(--cols) * .38),20px)}
+.cell.toro.focus .to{filter:drop-shadow(0 0 2px #f2c94c) drop-shadow(0 0 1px #f2c94c)}
 .cell.hint{animation:hint 1.2s ease 2}
 .cell.focus:not(.clue){background:color-mix(in srgb,var(--moss) 13%,transparent)}
 .cell.clue.focus .mo{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--moss)}
@@ -650,6 +656,7 @@ button{touch-action:manipulation}
         <div class="patrow"><b>隣り合う2行・2列を、2×2のかたまりに分ける</b><span class="tags"><span class="tag">十間</span></span><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:10;--c:2"><div class="patcols"><span>8</span><span>7</span></div><div class="pat"><i class="h"></i><i class="h"></i><i class="k h"></i><i class="k h"></i><i class="k"></i><i class="m">1</i><i class="k"></i><i class="k"></i><i class="k h"></i><i class="m h">2</i><i class="h"></i><i class="m h">2</i><i></i><i></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="m h">2</i><i class="h"></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>七</span><span>八</span><span>九</span><span>十</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:10;--c:2"><div class="patcols"><span>8</span><span>7</span></div><div class="pat"><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="m">1</i><i class="k"></i><i class="k"></i><i class="k"></i><i class="m">2</i><i class="s c"></i><i class="m">2</i><i></i><i></i><i></i><i></i><i></i><i></i><i class="m">2</i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>七</span><span>八</span><span>九</span><span>十</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">2×2には石が1つまで。2列の5つのかたまりに石4つなので、空のかたまり（三〜四）以外に1つずつ。<b>五〜六は候補が8六だけ</b>。</p></div>
       </div>
       <p class="small" style="margin-top:8px">候補が2〜3マスしかない行・列・苔を探し、隣の行や重なる苔と組み合わせてみてください。印をこまめに付けると候補が見えやすくなります。</p>
+      <button class="btn tutgo" type="button" data-tutadv>「手引き少なめ」の考え方を練習する</button>
     </section>
     <section data-tab="records">
       <h2 id="recTop">記録</h2>
@@ -805,10 +812,18 @@ function solve(N,K,clue,limit,rnd){
 // Level 3: the same, but two interacting units considered together.
 // No guessing and no trial-and-error: a puzzle this solver finishes can be finished by reasoning alone.
 function geoOf(N){const nb=[];for(let i=0;i<N*N;i++){const r=(i/N)|0,c=i%N,a=[];for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;const rr=r+dr,cc=c+dc;if(rr<0||cc<0||rr>=N||cc>=N)continue;a.push(rr*N+cc);}nb.push(a);}return nb;}
+// 灯籠: a clue cell stored as TORO+n. Its light runs up, down, left and right and stops at moss, another
+// lantern or the edge of the garden; n is the number of stones in the cells it lights.
+const TORO=20;
+function rayOf(N,clue,i){const r=(i/N)|0,c=i%N,out=[];
+  for(const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]){let rr=r+dr,cc=c+dc;
+    while(rr>=0&&cc>=0&&rr<N&&cc<N&&clue[rr*N+cc]<0){out.push(rr*N+cc);rr+=dr;cc+=dc;}}
+  return out;}
 function unitsOf(N,K,clue,nb){const u=[];
   for(let r=0;r<N;r++){const cells=[];for(let c=0;c<N;c++)cells.push(r*N+c);u.push({kind:'row',id:r,cells,target:K});}
   for(let c=0;c<N;c++){const cells=[];for(let r=0;r<N;r++)cells.push(r*N+c);u.push({kind:'col',id:c,cells,target:K});}
-  for(let i=0;i<N*N;i++)if(clue[i]>=0)u.push({kind:'clue',id:i,cells:nb[i],target:clue[i]});
+  for(let i=0;i<N*N;i++)if(clue[i]>=TORO)u.push({kind:'toro',id:i,cells:rayOf(N,clue,i),target:clue[i]-TORO});
+    else if(clue[i]>=0)u.push({kind:'clue',id:i,cells:nb[i],target:clue[i]});
   return u;}
 function enumUnit(N,u,st,cap){
   let stones=0;const unk=[];for(const c of u.cells){if(st[c]===1)stones++;else if(st[c]===-1)unk.push(c);}
@@ -859,8 +874,8 @@ function logicSolve(N,K,clue,maxLevel){
   for(;;){const d=logicStep(N,K,clue,st,maxLevel,ctx);if(!d)break;steps++;if(d.level>used)used=d.level;for(const [i,v] of d.set)st[i]=v;}
   return {solved:st.indexOf(-1)<0,used,steps};
 }
-function generate(N,K,seed,hard){
-  const rnd=rngFrom((seed*2654435761+N*97+K*13+(hard?7:0))>>>0);
+function generate(N,K,seed,hard,toro){
+  const rnd=rngFrom((seed*2654435761+N*97+K*13+(hard?7:0)+(toro?0x51ed:0))>>>0);
   const maxLevel=hard?3:2;let best=null;
   for(let attempt=0;attempt<6;attempt++){
     const {sol}=solve(N,K,new Int8Array(N*N).fill(-1),1,rnd);
@@ -870,16 +885,22 @@ function generate(N,K,seed,hard){
     const clue=new Int8Array(N*N).fill(-1);
     // shortest prefix of the shuffled clue list that the deduction solver alone can finish
     // (more clues never block a deduction, so binary search works; a unique answer is implied)
-    const withPrefix=m=>{clue.fill(-1);for(let k=0;k<m;k++)clue[cand[k]]=val(cand[k]);return clue;};
+    // with lanterns: about every third candidate is a lantern; its number depends on which clues stand in its light
+    const lamp=new Uint8Array(N*N);if(toro)for(const i of cand)if(rnd()<.5)lamp[i]=1;
+    const lit=i=>{let s=0;for(const j of rayOf(N,clue,i))s+=stone[j];return TORO+s;};
+    const fix=()=>{if(toro)for(let i=0;i<N*N;i++)if(lamp[i]&&clue[i]>=0)clue[i]=lit(i);return clue;};
+    const withPrefix=m=>{clue.fill(-1);for(let k=0;k<m;k++)clue[cand[k]]=val(cand[k]);return fix();};
     let lo=1,hi=cand.length;
     while(lo<hi){const mid=(lo+hi)>>1;if(logicSolve(N,K,withPrefix(mid),maxLevel).solved)hi=mid;else lo=mid+1;}
     withPrefix(lo);const used=cand.slice(0,lo);
     shuffle(used,rnd);
+    // with lanterns, moss goes first so the lanterns tend to stay
+    if(toro)used.sort((a,b)=>lamp[a]-lamp[b]);
     // "手引き多め": level 1–2 reasoning only, keeps about a third of the spare clues.
     // "じっくり": level 3 allowed, removes every clue it can.
-    for(const i of used){const v=clue[i];clue[i]=-1;
-      if(!hard&&rnd()<0.35){clue[i]=v;continue;}
-      if(!logicSolve(N,K,clue,maxLevel).solved)clue[i]=v;}
+    for(const i of used){const v=clue[i];clue[i]=-1;fix();
+      if(!hard&&rnd()<0.35){clue[i]=v;fix();continue;}
+      if(!logicSolve(N,K,clue,maxLevel).solved){clue[i]=v;fix();}}
     const r=logicSolve(N,K,clue,maxLevel);
     const p={N,K,clue:Array.from(clue),stone:Array.from(stone),level:r.used,steps:r.steps,solved:r.solved};
     if(!best||p.level>best.level)best=p;
@@ -1190,25 +1211,27 @@ const num=(v,lo,hi,def)=>{v=Number(v);return Number.isFinite(v)&&v>=lo&&v<=hi?v:
 // ---- worker for generation (falls back to main thread) ----
 let worker=null,jobId=0;const pending={};
 try{
-  const src=[rngFrom,shuffle,popc,combos,solve,geoOf,unitsOf,enumUnit,logicStep,logicSolve,generate].map(f=>f.toString()).join('\n')+
-    '\nconst comboCache={};onmessage=e=>{const d=e.data;postMessage({id:d.id,p:generate(d.N,d.K,d.seed,d.min)});};';
+  const src=[rngFrom,shuffle,popc,combos,solve,geoOf,rayOf,unitsOf,enumUnit,logicStep,logicSolve,generate].map(f=>f.toString()).join('\n')+
+    '\nconst comboCache={},TORO='+TORO+';onmessage=e=>{const d=e.data;postMessage({id:d.id,p:generate(d.N,d.K,d.seed,d.min,d.toro)});};';
   worker=new Worker(URL.createObjectURL(new Blob([src],{type:'text/javascript'})));
   worker.onmessage=e=>{const cb=pending[e.data.id];delete pending[e.data.id];cb&&cb(e.data.p);};
   worker.onerror=()=>{worker=null;};
 }catch(e){worker=null;}
-function makePuzzle(N,K,seed,min,cb){
-  if(worker){const id=++jobId;pending[id]=cb;worker.postMessage({id,N,K,seed,min});}
-  else setTimeout(()=>cb(generate(N,K,seed,min)),30);
+function makePuzzle(N,K,seed,min,cb,toro){
+  if(worker){const id=++jobId;pending[id]=cb;worker.postMessage({id,N,K,seed,min,toro:!!toro});}
+  else setTimeout(()=>cb(generate(N,K,seed,min,!!toro)),30);
 }
 
 // ---- state ----
 let S=null;          // {N,K,seed,diff,clue,stone,cells,hist,time,hints,done}
+// 管理者テスト用: ?rule=toro makes every garden of this visit a 灯籠 garden (kept apart in saves, not in 記録)
+let toro=false;try{toro=new URLSearchParams(location.search).get('rule')==='toro';}catch(e){}
 let mode=0;          // 0 stone, 1 mark
 let size=8,diff=0;
 let cellEls=[],rowPips=[],colPips=[];
 let tick=null,lastTs=0,firstLoad=true;
 
-function keyOf(N,seed,d){return 'sekitei2:'+N+':'+d+':'+seed;}
+function keyOf(N,seed,d){return 'sekitei2:'+N+':'+d+':'+seed+(toro?':toro':'');}
 // 今日の庭: a number drawn from the date, out of the same 1–99999 as 漫ろ歩き (the same for everyone on that day)
 function todaySeed(){const d=new Date(),r=rngFrom(Math.imul(d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate(),0x9E3779B1)>>>0);r();
   return Math.floor(r()*99999)+1;}
@@ -1218,7 +1241,7 @@ let walk=store.get('sekitei:walk')===1;
 const randomSeed=()=>Math.floor(Math.random()*99999)+1;   // 1–99999, the same range as a garden chosen by number
 const newSeed=()=>walk?randomSeed():todaySeed();
 let pend=null;   // choices made in 庭の種類 that are not applied yet
-const labelText=()=>`${SIZES[size].name} ・ 石${size*SIZES[size].K} ・ ${diff?'手引き少なめ':'手引き多め'} ・ ${walk?'漫ろ歩き':'今日の庭'}`;
+const labelText=()=>`${SIZES[size].name} ・ 石${size*SIZES[size].K} ・ ${diff?'手引き少なめ':'手引き多め'} ・ ${walk?'漫ろ歩き':'今日の庭'}${toro&&!(S&&S.tut)?' ・ 灯籠':''}`;
 function start(N,d,seed){
   N=SIZES[N]?N:8;d=d===1?1:0;seed=int(seed,1,99999,todaySeed());
   size=N;diff=d;pend={walk,size,diff};syncSeg();tutOff();
@@ -1229,23 +1252,23 @@ function start(N,d,seed){
   const saved=store.get(keyOf(N,seed,d));
   makePuzzle(N,K,seed,d===1,p=>{
     if(tut)return;   // a 練習用の庭 was opened while this garden was being made
-    S={N,K,seed,diff:d,clue:p.clue,stone:p.stone,cells:new Array(N*N).fill(0),hist:[],time:0,hints:0,done:false};
+    S={N,K,seed,diff:d,clue:p.clue,stone:p.stone,cells:new Array(N*N).fill(0),hist:[],time:0,hints:0,done:false,toro};
     if(saved&&Array.isArray(saved.cells)&&saved.cells.length===N*N){
       S.cells=saved.cells.map((v,i)=>S.clue[i]>=0?0:int(v,0,2,0));
       S.time=num(saved.time,0,1e7,0);S.hints=int(saved.hints,0,1e6,0);S.done=saved.done===true;}
     store.set('sekitei2:last',{N,d,seed});setMsg('');
     build();
     if(S.done){S.started=true;$('time').style.visibility='';showWin(true);}else showStart();
-  });
+  },toro);
 }
 // every garden opens behind a start card; the board and the timer appear when the player presses it
 // the three rules, short, for the start cards
-const startRules=K=>`<div class="startrules"><b>決まりごと</b><ul><li>どの行にも、どの列にも、石を${K}つだけ置く</li><li>石どうしは縦・横・斜めのどれでも隣り合わない</li><li>苔の上の数は、まわり8マスにある石の数</li></ul></div>`;
+const startRules=(K,t)=>`<div class="startrules"><b>決まりごと</b><ul><li>どの行にも、どの列にも、石を${K}つだけ置く</li><li>石どうしは縦・横・斜めのどれでも隣り合わない</li><li>苔の上の数は、まわり8マスにある石の数</li>${t?'<li>灯籠の数は、縦・横に照らすマスにある石の数。光は苔・灯籠で止まる</li>':''}</ul></div>`;
 function showStart(){
   const resumed=S.time>0||S.cells.some(v=>v);
   showVeil(`<p class="vlabel">${labelText()}</p>
     <p class="startgoal"><b>完成条件</b>決まりごとを守りながら、石を${S.N*S.K}個置ききる。</p>
-    ${startRules(S.K)}
+    ${startRules(S.K,S.toro)}
     <button class="btn primary startgo" id="startBtn" type="button">${resumed?'つづける':'はじめる'}</button>`,true);
   $('veilCard').classList.add('start');
   $('startBtn').onclick=()=>{S.started=true;hideVeil();$('time').style.visibility='';startClock();};
@@ -1395,7 +1418,10 @@ function build(){
     for(let c=0;c<N;c++){
       const i=r*N+c;const el=document.createElement('button');el.className='cell';el.dataset.i=i;el.type='button';
       el.setAttribute('role','gridcell');
-      if(S.clue[i]>=0){el.classList.add('clue');const h=(i*2654435761>>>0),q=k=>45+((h>>>k)&15)%8;el.innerHTML=`<div class="mo" style="border-radius:${q(0)}% ${100-q(0)}% ${q(4)}% ${100-q(4)}% / ${q(8)}% ${q(12)}% ${100-q(12)}% ${100-q(8)}%;rotate:${(h%16)-8}deg"></div><span>${S.clue[i]}</span>`;el.setAttribute('aria-label',`苔 ${S.clue[i]}`);el.tabIndex=-1;}
+      if(S.clue[i]>=TORO){el.classList.add('clue','toro');const v=S.clue[i]-TORO;
+        el.innerHTML=`<svg class="to" viewBox="0 0 40 40" aria-hidden="true"><ellipse class="glow" cx="20" cy="20.5" rx="17" ry="12"/><circle class="ston" cx="20" cy="2.6" r="1.9"/><path class="ston" d="M1.5 10.6Q20 1.6 38.5 10.6L36.5 12H3.5Z"/><rect class="sdk" x="6.5" y="11.6" width="27" height="18.6" rx="1"/><rect class="win" x="9" y="12.8" width="22" height="16.2" rx=".6"/><rect class="ston" x="4.5" y="30" width="31" height="2.8" rx=".8"/><rect class="sdk" x="14.5" y="32.8" width="11" height="3.4"/><rect class="ston" x="9" y="36" width="22" height="3.2" rx="1"/></svg><span>${v}</span>`;
+        el.setAttribute('aria-label',`灯籠 ${v}`);el.tabIndex=-1;}
+      else if(S.clue[i]>=0){el.classList.add('clue');const h=(i*2654435761>>>0),q=k=>45+((h>>>k)&15)%8;el.innerHTML=`<div class="mo" style="border-radius:${q(0)}% ${100-q(0)}% ${q(4)}% ${100-q(4)}% / ${q(8)}% ${q(12)}% ${100-q(12)}% ${100-q(8)}%;rotate:${(h%16)-8}deg"></div><span>${S.clue[i]}</span>`;el.setAttribute('aria-label',`苔 ${S.clue[i]}`);el.tabIndex=-1;}
       else{
         const h=(i*2654435761>>>0);const rr=k=>40+((h>>>k)&15);
         el.innerHTML=`<div class="st ${stoneLook(h)}" style="${stoneStyle(h)}"></div><div class="dot"></div>`;
@@ -1421,6 +1447,7 @@ function build(){
   render();renderRecords();
 }
 
+const nbOf=(N,i)=>{const r=(i/N)|0,c=i%N,o=[];for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const rr=r+dr,cc=c+dc;if((dr||dc)&&rr>=0&&cc>=0&&rr<N&&cc<N)o.push(rr*N+cc);}return o;};
 function render(){
   const {N,K,cells,clue}=S;const bad=new Set();
   const rowC=new Array(N).fill(0),colC=new Array(N).fill(0);
@@ -1428,10 +1455,11 @@ function render(){
     for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;const rr=r+dr,cc=c+dc;if(rr<0||cc<0||rr>=N||cc>=N)continue;if(cells[rr*N+cc]===1){bad.add(i);}}}
   let allOk=bad.size===0;
   for(let i=0;i<N*N;i++){const el=cellEls[i];
-    if(clue[i]>=0){const r=(i/N)|0,c=i%N;let s=0,e=0;   // e: empty cells round it (not stone, mark or moss)
-      for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const rr=r+dr,cc=c+dc;if(rr<0||cc<0||rr>=N||cc>=N)continue;const j=rr*N+cc;if(cells[j]===1)s++;else if(cells[j]===0&&clue[j]<0)e++;}
-      // too many stones, or no empty cell left round it and still too few: red
-      el.classList.toggle('bad',s>clue[i]||(s<clue[i]&&!e));el.classList.toggle('done',s===clue[i]);if(s!==clue[i])allOk=false;continue;}
+    if(clue[i]>=0){let s=0,e=0;   // e: empty cells it watches (not stone, mark or moss)
+      const want=clue[i]>=TORO?clue[i]-TORO:clue[i],seen=clue[i]>=TORO?rayOf(N,clue,i):nbOf(N,i);
+      for(const j of seen){if(cells[j]===1)s++;else if(cells[j]===0&&clue[j]<0)e++;}
+      // too many stones, or no empty cell left and still too few: red
+      el.classList.toggle('bad',s>want||(s<want&&!e));el.classList.toggle('done',s===want);if(s!==want)allOk=false;continue;}
     el.classList.toggle('stone',cells[i]===1);el.classList.toggle('mark',cells[i]===2);el.classList.toggle('bad',bad.has(i));
     el.setAttribute('aria-label',`${cellName(i)} ${cells[i]===1?'石':cells[i]===2?'印':'空き'}`);
   }
@@ -1473,7 +1501,9 @@ board.addEventListener('contextmenu',e=>e.preventDefault());
 board.addEventListener('pointerdown',e=>{
   const el=e.target.closest('.cell');
   if(el&&S&&S.done&&$('veil').hidden){showWin(true);return;}
-  if(!el||!S||S.done||!S.started)return;const i=+el.dataset.i;if(S.clue[i]>=0)return;
+  if(!el||!S||S.done||!S.started)return;const i=+el.dataset.i;
+  if(S.clue[i]>=TORO){focusCells([i,...rayOf(S.N,S.clue,i)]);return;}   // 灯籠: show the cells it lights
+  if(S.clue[i]>=0)return;
   e.preventDefault();
   const useMark=mode===1||e.button===2;const cur=S.cells[i];
   const target=useMark?(cur===2?0:2):(cur===1?0:1);
@@ -1558,8 +1588,9 @@ function focusCells(list,ms){
 }
 function unitLabel(u){
   if(u.kind==='row')return `${rowName(u.id)}の行`;if(u.kind==='col')return `${colName(u.id)}の列`;
+  if(u.kind==='toro')return `${cellName(u.id)}の灯籠「${S.clue[u.id]-TORO}」`;
   return `${cellName(u.id)}の苔「${S.clue[u.id]}」`;}
-function unitCells(u){return u.kind==='clue'?[u.id,...u.cells]:u.cells;}
+function unitCells(u){return u.kind==='clue'||u.kind==='toro'?[u.id,...u.cells]:u.cells;}
 // Why a hint's cell is decided, worked out from the board as it was before the move (st).
 const isAdj=(N,a,b)=>a!==b&&Math.abs(((a/N)|0)-((b/N)|0))<=1&&Math.abs(a%N-b%N)<=1;
 function unitReason(w,i,v,st){
@@ -1592,7 +1623,8 @@ function explain(d,v,st){
   const w=d.why,what=v?'石が入ります':'石は置けません',i=d.set[0][0];
   if(w.kind==='adj')return `石のまわり8マスには、ほかの石を置けません。`;
   if(w.kind==='unit'){
-    if(w.need===0)return w.u.kind==='clue'&&w.u.target===0?`${unitLabel(w.u)}のまわりには石がひとつもありません。`
+    if(w.need===0)return w.u.kind==='toro'&&w.u.target===0?`${unitLabel(w.u)}が照らすマスには石がひとつもありません。`
+      :w.u.kind==='clue'&&w.u.target===0?`${unitLabel(w.u)}のまわりには石がひとつもありません。`
       :`${unitLabel(w.u)}はもう石が揃っています。残りのマスに${what}。`;
     const r=st?unitReason(w,i,v,st):'';
     return r?`${r}、このマスには${what}。`:`${unitLabel(w.u)}：残り${w.need}つの石をどう置いても、このマスには${what}。`;}
@@ -1867,6 +1899,7 @@ function tutLeave(){const t=tut;if(!t)return;const b=t.back;
 function tutOff(){if(!tut)return;tut=null;clearTimeout(nudgeT);focusCells([]);$('time').hidden=false;$('tutQuit').hidden=true;}
 $('tutQuit').onclick=tutLeave;
 document.querySelectorAll('[data-tut]').forEach(b=>b.onclick=()=>tutStart('basic'));
+document.querySelectorAll('[data-tutadv]').forEach(b=>b.onclick=()=>tutStart('adv'));
 // ---- rules popup: shown on the first visit, reopenable from 遊び方 ----
 const intro=$('intro');
 // the popup can be taller than the screen: open it at the top (the focused button would scroll it to the end)
@@ -1980,7 +2013,7 @@ function showWin(again){
   $('nextBtn').onclick=()=>openPick(false);   // the same 庭を変える popup as 庭を変える
   $('viewBtn').onclick=hideVeil;
 }
-function recordWin(){
+function recordWin(){if(S.toro)return;
   const k='sekitei:rec';const rec=readRecords();const id=S.N+':'+S.diff;const r=rec[id]||{n:0,best:null};
   r.n++;if(!S.hints&&(r.best===null||S.time<r.best))r.best=Math.floor(S.time);rec[id]=r;store.set(k,rec);renderRecords();
 }
