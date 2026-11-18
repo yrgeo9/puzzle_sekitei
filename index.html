@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-jjL3j96GH+4k61/xfTxCiCO/YvYnAEj//9vIXCpJ4PQ=' 'sha256-Y2NJewo1PBruWlGkIME/o35dnQGnv7Oo9WTr9T2JupI=' 'sha256-cAsXrfyaCvwS3ssLchhT81EAAtS8ouzUXDW1ukQLvig=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-jjL3j96GH+4k61/xfTxCiCO/YvYnAEj//9vIXCpJ4PQ=' 'sha256-Y2NJewo1PBruWlGkIME/o35dnQGnv7Oo9WTr9T2JupI=' 'sha256-uZQqs+4bruZmth8KwfP1TTqrpUClV78/ts3+yjBM32g=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -157,7 +157,7 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .cell.clue.bad .mo{background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--err) 60%,white),var(--err) 70%)}
 .cell.toro .to{position:absolute;inset:3%;width:94%;height:94%;overflow:visible}
 .cell.toro .to .op{fill:url(#toroO)}.cell.toro.bad .to .op{fill:url(#toroOb)}
-.cell.toro .to text{font-family:var(--display);font-weight:700;font-size:12px;fill:#f5f0e4}
+.cell.toro .to text{font-family:var(--display);font-weight:700;font-size:11.6px;fill:#f5f0e4}
 .cell.toro.done .to text{opacity:.55}
 .cell.toro.focus .to{filter:drop-shadow(0 0 1.5px var(--moss)) drop-shadow(0 0 1px var(--moss))}
 .cell.hint{animation:hint 1.2s ease 2}
@@ -1424,7 +1424,7 @@ function build(){
       const i=r*N+c;const el=document.createElement('button');el.className='cell';el.dataset.i=i;el.type='button';
       el.setAttribute('role','gridcell');
       if(S.clue[i]>=TORO){el.classList.add('clue','toro');const v=S.clue[i]-TORO;
-        el.innerHTML=`<svg class="to" viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="21" cy="39.1" rx="16" ry="1.8" fill="#3c3424" opacity=".2"/><path d="M20 2.45C21.19 3.55 21.79 4.4 21.28 5.42H18.72C18.21 4.4 18.81 3.55 20 2.45Z" fill="url(#toroJ)"/><path d="M.8 16.2C3 12.6 10 7 20 6.4C30 7 37 12.6 39.2 16.2C39.4 16.8 39 17.2 38.4 17.2H1.6C1 17.2 .6 16.8 .8 16.2Z" fill="url(#toroK)"/><path d="M1.6 17.2H38.4L37.2 18.2H2.8Z" fill="#4e4c48"/><path d="M4.8 13.4C8 10.6 12.4 8.4 17 7.4C13.4 9 9.6 11.4 6.6 14.2Z" fill="#7a8a4e"/><path d="M9.6 18.2H30.4V29.4H9.6Z" fill="url(#toroC)"/><path class="op" d="M13.4 28.8V25.8A6.6 6.6 0 0 1 26.6 25.8V28.8Z"/><path d="M13.4 28.8H26.6V28.2H13.4Z" fill="#4e4c48" opacity=".5"/><text x="20" y="24.6" text-anchor="middle" dominant-baseline="central" fill="#000" opacity=".4" transform="translate(-.45,-.45)" style="fill:#000">${v}</text><text x="20" y="24.6" text-anchor="middle" dominant-baseline="central">${v}</text><path d="M7.6 29.4H32.4L31.4 31.4H8.6Z" fill="url(#toroC)"/><path d="M10 31.4H14L11 38.8H6.4Z" fill="#b6b3ad"/><path d="M26 31.4H30L33.6 38.8H29Z" fill="#6a6661"/><path d="M18.2 31.4H21.8L21.4 35.6H18.6Z" fill="#4e4c48"/></svg>`;
+        el.innerHTML=`<svg class="to" viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="21" cy="39.1" rx="16" ry="1.8" fill="#3c3424" opacity=".2"/><path d="M20 2.45C21.19 3.55 21.79 4.4 21.28 5.42H18.72C18.21 4.4 18.81 3.55 20 2.45Z" fill="url(#toroJ)"/><path d="M.8 16.2C3 12.6 10 7 20 6.4C30 7 37 12.6 39.2 16.2C39.4 16.8 39 17.2 38.4 17.2H1.6C1 17.2 .6 16.8 .8 16.2Z" fill="url(#toroK)"/><path d="M1.6 17.2H38.4L37.2 18.2H2.8Z" fill="#4e4c48"/><path d="M4.8 13.4C8 10.6 12.4 8.4 17 7.4C13.4 9 9.6 11.4 6.6 14.2Z" fill="#7a8a4e"/><path d="M9.6 18.2H30.4V29.4H9.6Z" fill="url(#toroC)"/><path class="op" d="M12.2 29.3V22.64A10 10 0 0 1 27.8 22.64V29.3Z"/><path d="M12.2 29.3H27.8V28.9H12.2Z" fill="#4e4c48" opacity=".5"/><text x="20" y="28.55" text-anchor="middle">${v}</text><path d="M7.6 29.4H32.4L31.4 31.4H8.6Z" fill="url(#toroC)"/><path d="M10 31.4H14L11 38.8H6.4Z" fill="#b6b3ad"/><path d="M26 31.4H30L33.6 38.8H29Z" fill="#6a6661"/><path d="M18.2 31.4H21.8L21.4 35.6H18.6Z" fill="#4e4c48"/></svg>`;
         el.setAttribute('aria-label',`灯籠 ${v}`);el.tabIndex=-1;}
       else if(S.clue[i]>=0){el.classList.add('clue');const h=(i*2654435761>>>0),q=k=>45+((h>>>k)&15)%8;el.innerHTML=`<div class="mo" style="border-radius:${q(0)}% ${100-q(0)}% ${q(4)}% ${100-q(4)}% / ${q(8)}% ${q(12)}% ${100-q(12)}% ${100-q(8)}%;rotate:${(h%16)-8}deg"></div><span>${S.clue[i]}</span>`;el.setAttribute('aria-label',`苔 ${S.clue[i]}`);el.tabIndex=-1;}
       else{
