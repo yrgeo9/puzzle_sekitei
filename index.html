@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-jjL3j96GH+4k61/xfTxCiCO/YvYnAEj//9vIXCpJ4PQ=' 'sha256-Y2NJewo1PBruWlGkIME/o35dnQGnv7Oo9WTr9T2JupI=' 'sha256-iEjNDPwEDQ9RBx+7xquGyALRHx0tFdOzasouAgmQZtc=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-jjL3j96GH+4k61/xfTxCiCO/YvYnAEj//9vIXCpJ4PQ=' 'sha256-Y2NJewo1PBruWlGkIME/o35dnQGnv7Oo9WTr9T2JupI=' 'sha256-TkFVkVwoz0/eywtVDFdU6ySVmlYevoJc/UUQxqFjvC8=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -1791,7 +1791,7 @@ const NOTES={
   diff:['苔の手がかりが多めの盤面です。1つの行・列・苔を見るだけで解き進められます。',
     '苔の手がかりを外せるだけ外した上級者向けの盤面です。2つの行や苔を合わせて考える一手が必要になります。'],
   toro:['苔だけを手がかりにする、いつもの庭です。',
-    '苔に加えて灯籠が置かれます。灯籠の数は、縦・横に照らすマスにある石の数。光は苔・灯籠で止まります。']};
+    '苔に加えて灯籠が置かれる中級者向けの盤面です。灯籠の数は、縦・横に照らすマスにある石の数。光は苔・灯籠で止まります。']};
 function syncSeg(){
   const P=pend||{walk,size,diff,toro};
   if(document.getElementById('pick').open)noField();   // 今日の庭 turns the number off
