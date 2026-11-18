@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-jjL3j96GH+4k61/xfTxCiCO/YvYnAEj//9vIXCpJ4PQ=' 'sha256-Y2NJewo1PBruWlGkIME/o35dnQGnv7Oo9WTr9T2JupI=' 'sha256-5Pr6WDx9+DgHO2PJLIgTqaQ1e1iZdChnWAi9bh0hUCo=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-jjL3j96GH+4k61/xfTxCiCO/YvYnAEj//9vIXCpJ4PQ=' 'sha256-J5VDNy1cHD9PMmm6nuN9SctqWkEIGoullvE9UEe8KzU=' 'sha256-3OwNaNYBSbH1uC2JXIAy+3T9CPmNIvCL8R1liiV4OHs=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -261,6 +261,8 @@ aside p{margin:0}
 .card.win h3::after{content:none}
 .card.win .winmeta{line-height:1.7}
 .card.win .small{font-size:12px;line-height:1.5}
+.card .guidetext{text-align:left;line-height:1.7;margin:2px 0 4px}
+.card.start .startgo.guidego{align-self:stretch;justify-content:center;padding:10px 12px;font-size:14px;letter-spacing:.08em}.card .guideskip{margin-top:-2px}
 .winbtns{width:100%;display:flex;gap:6px;justify-content:center;flex-wrap:nowrap;padding-top:11px;margin-top:2px;border-top:1px solid var(--line)}
 .winbtns.top{padding-top:0;margin-top:4px;border-top:0}
 .winbtns .btn{flex:1 1 0;min-width:0;padding:8px 4px;font-size:13px;letter-spacing:.02em;justify-content:center;white-space:nowrap}
@@ -362,6 +364,22 @@ aside .intro-rules{margin:0 0 8px}
 .pickrow.off label,.pickrow.off .pickno{opacity:.45}
 .pickno:disabled{cursor:not-allowed}
 #pickNoNote.bad{color:var(--err)}
+/* 庭の様式 on a phone (or a short window): one screen without scrolling */
+@media (max-width:520px),(max-height:640px){
+  #pick .intro-body{padding:14px 16px;gap:8px}
+  #pick.intro.pick h2{font-size:18px}
+  #pick .intro-x{top:8px}
+  #pick .picklead{display:none}
+  #pick .sublabel{margin-top:9px;font-size:11px;line-height:1.3}
+  #pick .sublabel:first-child{margin-top:0}
+  #pick .seg button{padding:6px 2px;font-size:13px}
+  #pick .segnote{font-size:11px;line-height:1.4;margin:3px 0 0!important}
+  #pick .pickrow{display:grid;grid-template-columns:auto 1fr;align-items:end;column-gap:12px;margin-top:9px}
+  #pick .pickrow .sublabel{margin:0 0 6px}
+  #pick .pickrow .pickno{padding:4px 2px 5px}
+  #pick .pickrow #pickNoNote{grid-column:1/-1}
+  #pick .intro-go{padding:10px;margin-top:2px}
+}
 .askbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
 .askbtns .btn{justify-content:center;padding:11px;font-size:14px;letter-spacing:.12em}
 .pats{display:flex;flex-direction:column;gap:30px;margin-top:14px}
@@ -1097,7 +1115,7 @@ const Sound=(function(){
   const IN=[0,2,5,7,9];
   const deg=d=>50+12*Math.floor(d/5)+IN[((d%5)+5)%5]; // d=0 -> D3 (melody spans about A2–B4)
   const pick=a=>a[Math.floor(Math.random()*a.length)];
-  let nextT=0,voices=[];
+  let nextT=0,voices=[],nextSozu=0;const SOZU_EVERY=45;
   const ksCache={};
   // soft=true: plucked with the flesh of the finger instead of a pick: a rounder burst, so fewer bright overtones
   function ksBuf(m,soft){
@@ -1184,13 +1202,44 @@ const Sound=(function(){
     });
     return t;
   }
+  // 鹿威し: only the knock of the tube striking the stone, at a steady interval in the BGM.
+  function sozu(k,lv=1,dry=bgmDry,rin=revIn){
+    const out=ctx.createGain();out.gain.value=.2*lv;out.connect(dry);
+    // a wide garden: a touch of open-air reverb, a faint echo coming back off the far side about 0.3 s
+    // later, a little duller, and a second, very small and duller still, about 0.3 s after that
+    const wet=ctx.createGain();wet.gain.value=.08;out.connect(wet);wet.connect(rin);
+    const dl=ctx.createDelay(1);dl.delayTime.value=.29;
+    const dlf=ctx.createBiquadFilter();dlf.type='lowpass';dlf.frequency.value=2600;const send=ctx.createGain();send.gain.value=.16;
+    out.connect(send);send.connect(dl);dl.connect(dlf);dlf.connect(dry);
+    const dl2=ctx.createDelay(1);dl2.delayTime.value=.3;const dlf2=ctx.createBiquadFilter();dlf2.type='lowpass';dlf2.frequency.value=1800;
+    const g2=ctx.createGain();g2.gain.value=.3;dlf.connect(dl2);dl2.connect(dlf2);dlf2.connect(g2);g2.connect(dry);
+    setTimeout(()=>{try{send.disconnect();dl.disconnect();dlf.disconnect();dl2.disconnect();dlf2.disconnect();g2.disconnect();}catch(e){}},(k-ctx.currentTime+4)*1000);
+    const noise=(at,dur,type,f,q,a,atk)=>{const n=ctx.createBufferSource();n.buffer=noiseBuf;
+      const fl=ctx.createBiquadFilter();fl.type=type;fl.frequency.value=f;fl.Q.value=q;
+      const g=ctx.createGain();g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(a,at+atk);g.gain.exponentialRampToValueAtTime(.0001,at+dur);
+      n.connect(fl);fl.connect(g);g.connect(out);n.start(at,Math.random()*1.5);n.stop(at+dur+.05);};
+    // A large 鹿威し: 「カ」 — the hard crack of a thick bamboo tube on stone — and 「コーン」 — the big hollow
+    // tube ringing, lower and a little longer than a small one.
+    // It bounces once, so a small second knock follows (「カコン」).
+    const strike=(k,lv)=>{
+      // the crack: a short, muffled burst of noise (no bright, electronic tick)
+      noise(k,.03,'lowpass',2200,.7,.35*lv,.002);
+      noise(k,.032,'bandpass',1300,1.2,.5*lv,.001);noise(k,.05,'lowpass',290,.8,.6*lv,.002);   // the weight of the heavy tube landing
+      for(const [f,a,d] of [[170,.34,.1],[450,.55,.34],[1030,.23,.16],[1755,.07,.07]]){   // the hollow ring (not harmonic: a tube, not a string)
+        const o=ctx.createOscillator();o.type='sine';o.frequency.value=f;
+        const g=ctx.createGain();g.gain.setValueAtTime(.0001,k);g.gain.exponentialRampToValueAtTime(a*lv,k+.004);g.gain.exponentialRampToValueAtTime(.0001,k+d*(lv<1?.6:1));
+        o.connect(g);g.connect(out);o.start(k);o.stop(k+d+.05);}};
+    strike(k,1);strike(k+.095,.26);
+  }
   function schedule(){
     if(!ctx||ctx.state!=='running')return;
+    // 鹿威し: every SOZU_EVERY seconds, on a steady clock (the first one soon after the music starts)
+    if(nextSozu&&ctx.currentTime+.3>=nextSozu){sozu(Math.max(nextSozu,ctx.currentTime+.05));nextSozu+=SOZU_EVERY;}
     if(nextT<ctx.currentTime)nextT=ctx.currentTime+.2;
     while(nextT<ctx.currentTime+1){const end=phrase(nextT);nextT=end+BEAT*(2+Math.random()*3);}
   }
   function startSynth(){
-    if(timer)return;nextT=ctx.currentTime+1;
+    if(timer)return;nextT=ctx.currentTime+1;nextSozu=ctx.currentTime+12;
     const t=ctx.currentTime;
     for(const [f,a] of [[hz(38),.05],[hz(45),.03],[hz(50),.018]]){
       const o=ctx.createOscillator();o.type='sine';o.frequency.value=f;const g=ctx.createGain();g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(a,t+5);
@@ -1334,8 +1383,28 @@ function start(N,d,seed){
 // every garden opens behind a start card; the board and the timer appear when the player presses it
 // the three rules, short, for the start cards
 const startRules=(K,t)=>`<div class="startrules"><b>決まりごと</b><ul><li>どの行にも、どの列にも、石を${K}つだけ置く</li><li>石どうしは縦・横・斜めのどれでも隣り合わない</li><li>苔の上の数は、まわり8マスにある石の数</li>${t?'<li>灯籠の数は、縦・横に照らすマスにある石の数。光は苔・灯籠で止まる</li>':''}</ul></div>`;
+// the first 手引き少なめ / 灯籠あり garden: a card offering its 練習用の庭 first (once each).
+// Someone who has already played that kind of garden (a save exists) is not asked.
+const GUIDE={toro:{name:'灯籠あり',text:'苔に加えて灯籠が手がかりになります。'},
+  adv:{name:'手引き少なめ',text:'2つの行や苔を合わせて考える一手が必要になります。'}};
+function playedKind(k,cur){try{for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);
+  if(key===cur||!/^sekitei2:/.test(key))continue;if(k==='toro'?/:toro$/.test(key):/^sekitei2:\d+:1:/.test(key))return true;}}catch(e){}return false;}
+function guideKinds(){const cur=keyOf(S.N,S.seed,S.diff,S.toro),out=[];
+  for(const k of ['toro','adv'])if((k==='toro'?S.toro:S.diff)&&!store.get('sekitei:met:'+k)){
+    if(playedKind(k,cur))store.set('sekitei:met:'+k,1);else out.push(k);}
+  return out;}
+function showGuide(ks){ks.forEach(k=>store.set('sekitei:met:'+k,1));
+  const names=ks.map(k=>`「${GUIDE[k].name}」`).join('');
+  showVeil(`<p class="vlabel">はじめての${names}</p>
+    <div class="small guidetext">${ks.map(k=>`「${GUIDE[k].name}」の庭では、${GUIDE[k].text}`).join('<br>')}<br>先に練習用の庭で、考え方を練習してみませんか。</div>
+    ${ks.map(k=>`<button class="btn primary startgo guidego" type="button" data-guide="${k}">練習用の庭（${GUIDE[k].name}）へ向かう</button>`).join('')}
+    <button class="btn startgo guidego guideskip" type="button" id="guideSkip">このまま庭に入る</button>`,true);
+  $('veilCard').classList.add('start');
+  $('veilCard').querySelectorAll('[data-guide]').forEach(b=>b.onclick=()=>tutStart(b.dataset.guide));
+  $('guideSkip').onclick=showStart;}
 function showStart(){
   const resumed=S.time>0||S.cells.some(v=>v);
+  if(!resumed&&!S.tut){const ks=guideKinds();if(ks.length){showGuide(ks);return;}}
   showVeil(`<p class="vlabel">${labelText()}</p>
     <div class="startgoal lft"><b class="sh">完成条件</b><ul><li><span class="kw">決まりごと</span>を守りながら、石を${S.N*S.K}個置ききる</li></ul></div>
     ${startRules(S.K,S.toro)}
