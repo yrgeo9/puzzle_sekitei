@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-nP31DXuqdMXLTvnujp+7nvJ/ExIEZpBf5Jy018kf27I=' 'sha256-0z0MIVOneDXyptj9zZV7/okTxJ8kf5Rk46A4IHm2e0o=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-nP31DXuqdMXLTvnujp+7nvJ/ExIEZpBf5Jy018kf27I=' 'sha256-A8BEmEQpq9SJjI/HTex9h0HMIMUOF7cOHGEL3/cSbTw=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -1820,7 +1820,8 @@ board.addEventListener('pointerdown',e=>{
   board.setPointerCapture?.(e.pointerId);
 });
 board.addEventListener('pointermove',e=>{
-  if(!drag)return;const el=document.elementFromPoint(e.clientX,e.clientY)?.closest('.cell');if(!el)return;
+  if(!drag||drag.target===1)return;   // stones go down one tap at a time: a swipe never places them (marks and erasing still follow the finger)
+  const el=document.elementFromPoint(e.clientX,e.clientY)?.closest('.cell');if(!el)return;
   const i=+el.dataset.i;if(drag.touched.has(i)||S.clue[i]>=0)return;
   // dragging only paints onto empty cells or cells already holding the opposite of target's "erase"
   const cur=S.cells[i];if(drag.target!==0?cur!==0:cur!==drag.from)return;
@@ -2321,7 +2322,7 @@ function drillChapter(ch,go){
   const D=DR(),c=D.list[ch];tut.ch=ch;tut.hint=1;clearTimeout(nudgeT);
   const stone=new Uint8Array(c.N*c.N);c.stones.forEach(i=>stone[i]=1);
   S={N:c.N,K:c.K,seed:D.seed+ch,diff:1,clue:Int8Array.from(c.clue),stone,cells:c.cells.slice(),hist:[],time:0,hints:0,done:false,started:false,tut:true};
-  build();setMode(0);$('time').hidden=true;$('tutQuit').hidden=false;
+  build();if(ch===0)setMode(0);   // 石｜印 stays as the player left it from one problem to the next$('time').hidden=true;$('tutQuit').hidden=false;
   tut.tapNext=false;tut.tap=c.tap?[...Array(c.N*c.N).keys()].find(i=>cellName(i)===c.tap):null;   // a lantern to tap first (the first 灯籠 chapter)
   toGame();$('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent=`${D.short} ${ch+1}/${D.list.length}`;setMsg('');
   if(go){hideVeil();S.started=true;tutShow();return;}
