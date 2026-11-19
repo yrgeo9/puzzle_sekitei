@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-WTo3x25deiGH/hTNNgTtGCmwDfBRXrdaIshNkGbsJ8Q=' 'sha256-GGrb+qVQtIuVohiUsGDVKfsrq8tNw/SocbY91xETTnk=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-WTo3x25deiGH/hTNNgTtGCmwDfBRXrdaIshNkGbsJ8Q=' 'sha256-M6x6c/GUou71djBVXAZJ8eB5v4LRWWgDadfz6BtGEuY=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -606,6 +606,25 @@ html,body{overflow-x:clip}
   transition:opacity .2s ease,transform .2s ease;white-space:nowrap}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
+/* 庭を変える as a page inside the site: header and background stay, the garden and side panels make way */
+#pick.intro{position:static;inset:auto;grid-column:1/-1;justify-self:center;width:min(460px,100%);max-width:none;height:auto;max-height:none;margin:0 auto;padding:0;border:0;border-radius:0;box-shadow:none;background:transparent;overflow:visible;color:var(--ink)}
+#pick.intro::before{display:none}
+#pick:not([open]){display:none}
+#pick .intro-x{display:none}
+body.picking main,body.picking aside,body.picking .scrim{display:none!important}
+#pick .intro-body{padding:0 0 40px}
+#pick[open]{animation:pagein .26s ease-out}
+@keyframes pagein{from{transform:translateY(10px);opacity:0}}
+@media (prefers-reduced-motion:reduce){#pick[open]{animation:none}}
+/* the desktop menu looks like the phone one: words divided by hairlines, 庭を変える first in sumi */
+.topbtns{gap:0}
+.topbtns .btn{border:0;background:transparent;border-radius:0;padding:7px 12px;font-size:14px;letter-spacing:.04em}
+.topbtns .btn + .btn{box-shadow:-1px 0 0 var(--line)}
+.topbtns .btn:hover{color:var(--shu)}
+.topbtns .btn.em{background:var(--ink);color:var(--paper);border-radius:2px;padding:7px 14px;margin-left:6px;box-shadow:none}
+.topbtns .btn.em:hover{color:var(--paper);opacity:.88}
+/* 庭を変える at the right end of the menu, on the phone as well */
+.mnav .btn.em{margin:0 0 0 3px;box-shadow:none}
 </style>
 <style>
 :root{color-scheme:light}
@@ -636,14 +655,54 @@ button{touch-action:manipulation}
     </div>
     <div class="desk-only topbtns"><button class="btn" type="button" data-jump="rulesTop">遊び方</button><button class="btn" type="button" id="tipsDesk">コツ</button><button class="btn" type="button" data-jump="recTop">記録</button><button class="btn" type="button" id="appShareDesk">共有</button><button class="btn" type="button" data-jump="soundTop">音</button><button class="btn sndico" type="button" aria-pressed="false" aria-label="消音" title="消音"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 9.2h3.2L11.5 5v14l-4.8-4.2H3.5z" fill="currentColor" stroke="none"/><g class="ico-on"><path d="M15 9.4a3.6 3.6 0 0 1 0 5.2"/><path d="M17.6 6.8a7.3 7.3 0 0 1 0 10.4"/></g><g class="ico-off"><path d="M15.5 9.5l5 5M20.5 9.5l-5 5"/></g></svg></button><button class="btn em" type="button" id="gardenBtn">庭を変える</button></div>
     <nav class="mnav" aria-label="メニュー">
-      <button class="btn em" type="button" data-open="garden">庭を変える</button>
       <button class="btn" type="button" data-open="rules">遊び方</button>
       <button class="btn" type="button" data-open="tips">コツ</button>
       <button class="btn" type="button" data-open="records">記録</button>
       <button class="btn" type="button" id="appShare">共有</button>
       <button class="btn" type="button" data-open="sound" aria-label="音の設定">音</button><button class="btn sndico" type="button" aria-pressed="false" aria-label="消音" title="消音"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 9.2h3.2L11.5 5v14l-4.8-4.2H3.5z" fill="currentColor" stroke="none"/><g class="ico-on"><path d="M15 9.4a3.6 3.6 0 0 1 0 5.2"/><path d="M17.6 6.8a7.3 7.3 0 0 1 0 10.4"/></g><g class="ico-off"><path d="M15.5 9.5l5 5M20.5 9.5l-5 5"/></g></svg></button>
+      <button class="btn em" type="button" data-open="garden">庭を変える</button>
     </nav>
   </header>
+<dialog class="intro pick" id="pick" aria-labelledby="pickTitle">
+  <button type="button" class="close intro-x" id="pickX" aria-label="閉じる">×</button>
+  <div class="intro-body">
+    <h2 id="pickTitle">庭の様式</h2>
+    <p class="small picklead">盤面の設定を選択してください。</p>
+    <div>
+      <p class="sublabel">巡り方</p>
+      <div class="seg walkSeg" role="group" aria-label="巡り方">
+        <button data-walk="0" aria-pressed="true">今日の庭</button>
+        <button data-walk="1" aria-pressed="false">漫ろ歩き</button>
+      </div>
+      <p class="small segnote" data-note="walk"></p>
+      <p class="sublabel">広さ・石の数</p>
+      <div class="seg sizeSeg" role="group" aria-label="広さ・石の数">
+        <button data-size="6" aria-pressed="false">六間 ・ 石6</button>
+        <button data-size="8" aria-pressed="true">八間 ・ 石8</button>
+        <button data-size="10" aria-pressed="false">十間 ・ 石20</button>
+      </div>
+      <p class="small segnote" data-note="size"></p>
+      <p class="sublabel">追加の決まりごと</p>
+      <div class="seg toroSeg" role="group" aria-label="追加の決まりごと">
+        <button data-toro="0" aria-pressed="true">灯籠なし</button>
+        <button data-toro="1" aria-pressed="false">灯籠あり</button>
+      </div>
+      <p class="small segnote" data-note="toro"></p>
+      <p class="sublabel">手がかりの数</p>
+      <div class="seg diffSeg" role="group" aria-label="手がかりの数">
+        <button data-diff="0" aria-pressed="false">手がかり多め</button>
+        <button data-diff="1" aria-pressed="true">手がかり少なめ</button>
+      </div>
+      <p class="small segnote" data-note="diff"></p>
+      <div class="pickrow">
+      <p class="sublabel"><label for="pickNo">番号で選ぶ（任意）</label></p>
+      <input class="pickno" id="pickNo" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" autocomplete="off" placeholder="1〜99999">
+      <p class="small segnote" id="pickNoNote"></p>
+      </div>
+    </div>
+    <button class="btn primary intro-go" id="pickGo" type="button" autofocus>庭へ向かう</button>
+  </div>
+</dialog>
 
   <main>
     <div class="stage">
@@ -797,46 +856,6 @@ button{touch-action:manipulation}
     <p class="intro-lead" id="askText"></p>
     <p class="small" id="askNote"></p>
     <div class="askbtns"><button class="btn" type="button" id="askNo">やめる</button><button class="btn primary" type="button" id="askYes">教わる</button></div>
-  </div>
-</dialog>
-<dialog class="intro pick" id="pick" aria-labelledby="pickTitle">
-  <button type="button" class="close intro-x" id="pickX" aria-label="閉じる">×</button>
-  <div class="intro-body">
-    <h2 id="pickTitle">庭の様式</h2>
-    <p class="small picklead">盤面の設定を選択してください。</p>
-    <div>
-      <p class="sublabel">巡り方</p>
-      <div class="seg walkSeg" role="group" aria-label="巡り方">
-        <button data-walk="0" aria-pressed="true">今日の庭</button>
-        <button data-walk="1" aria-pressed="false">漫ろ歩き</button>
-      </div>
-      <p class="small segnote" data-note="walk"></p>
-      <p class="sublabel">広さ・石の数</p>
-      <div class="seg sizeSeg" role="group" aria-label="広さ・石の数">
-        <button data-size="6" aria-pressed="false">六間 ・ 石6</button>
-        <button data-size="8" aria-pressed="true">八間 ・ 石8</button>
-        <button data-size="10" aria-pressed="false">十間 ・ 石20</button>
-      </div>
-      <p class="small segnote" data-note="size"></p>
-      <p class="sublabel">追加の決まりごと</p>
-      <div class="seg toroSeg" role="group" aria-label="追加の決まりごと">
-        <button data-toro="0" aria-pressed="true">灯籠なし</button>
-        <button data-toro="1" aria-pressed="false">灯籠あり</button>
-      </div>
-      <p class="small segnote" data-note="toro"></p>
-      <p class="sublabel">手がかりの数</p>
-      <div class="seg diffSeg" role="group" aria-label="手がかりの数">
-        <button data-diff="0" aria-pressed="false">手がかり多め</button>
-        <button data-diff="1" aria-pressed="true">手がかり少なめ</button>
-      </div>
-      <p class="small segnote" data-note="diff"></p>
-      <div class="pickrow">
-      <p class="sublabel"><label for="pickNo">番号で選ぶ（任意）</label></p>
-      <input class="pickno" id="pickNo" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" autocomplete="off" placeholder="1〜99999">
-      <p class="small segnote" id="pickNoNote"></p>
-      </div>
-    </div>
-    <button class="btn primary intro-go" id="pickGo" type="button" autofocus>庭へ向かう</button>
   </div>
 </dialog>
 <dialog class="intro" id="intro" aria-labelledby="introTitle">
@@ -2250,9 +2269,24 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 // 庭を変える: opens with the page, over the garden that loaded behind it. Closing it keeps that garden.
 const pick=$('pick');
 let pickOnLoad=false;   // opened with the page (keep the garden behind it when nothing changes) or from 庭を変える
-function openPick(onLoad){if(pick.open)return;$('pickNo').value='';pickOnLoad=!!onLoad;closeSheet();pend=savedPick()||{walk,size,diff,toro};syncSeg();noField();try{pick.showModal();}catch(e){pick.setAttribute('open','');}holdPickHeights();}
-function closePick(){if(pick.open)pick.close();else pick.removeAttribute('open');pend=null;syncSeg();}
-pick.addEventListener('close',()=>{pend=null;syncSeg();});
+function openPick(onLoad){if(pick.open)return;$('pickNo').value='';pickOnLoad=!!onLoad;closeSheet();pend=savedPick()||{walk,size,diff,toro};syncSeg();noField();try{pick.show();}catch(e){pick.setAttribute('open','');}gardenLabel(true);scrollTo(0,0);if(!onLoad)try{history.pushState({sekiteiPick:1},'');pickPushed=true;}catch(e){}holdPickHeights();}
+let pickPushed=false;   // 庭を変える added a history entry, so the browser's back button returns to the garden
+function popPick(){if(pickPushed){pickPushed=false;try{history.back();}catch(e){}}}
+// while this page is open, 庭を変える in the menu reads 庭へ戻る and takes you back
+function gardenLabel(on){document.body.classList.toggle('picking',on);document.querySelectorAll('#gardenBtn,[data-open="garden"]').forEach(b=>b.textContent=on?'庭へ戻る':'庭を変える');}
+function closePick(){if(pick.open)pick.close();else pick.removeAttribute('open');gardenLabel(false);pend=null;syncSeg();popPick();}
+pick.addEventListener('close',()=>{if(pick.open)return;gardenLabel(false);pend=null;syncSeg();popPick();});   // a late close event must not undo a page opened again since
+addEventListener('popstate',()=>{pickPushed=false;if(pick.open)closePick();});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&pick.open){e.preventDefault();closePick();}});
+// in the menu while this page is open: 庭へ戻る goes back; the other buttons (遊び方・コツ・記録…) leave this page first
+document.querySelector('header.top').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!pick.open||b.classList.contains('sndico'))return;
+  e.stopPropagation();
+  if(b.id==='gardenBtn'||b.dataset.open==='garden'){Sound.play('mark');closePick();return;}
+  // leaving this page steps the history back; its scroll would cut the jump short, so press the button again once that is done
+  const again=()=>setTimeout(()=>b.click(),0);
+  if(pickPushed){let t=null;const go=()=>{removeEventListener('popstate',go);clearTimeout(t);again();};addEventListener('popstate',go);t=setTimeout(go,400);}else again();
+  closePick();},true);
+try{history.scrollRestoration='manual';}catch(e){}
 $('pickX').onclick=closePick;
 const NO_NOTE='番号で盤面を指定できます。',NO_BAD='番号は1〜99999の数字で入れてください。',NO_TODAY='今日の庭では番号を指定できません。';
 // give every note in the popup the height of its longest text (measured at the current width)
