@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-WTo3x25deiGH/hTNNgTtGCmwDfBRXrdaIshNkGbsJ8Q=' 'sha256-ZNhjAXcvbPzEYLtuDBVseZPRRl6e+qGnZOtCJ5jPZlU=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-WTo3x25deiGH/hTNNgTtGCmwDfBRXrdaIshNkGbsJ8Q=' 'sha256-kJ5ChS7emGq03YtUokkkpcbzsfXENt98lPHehxFJwPw=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -636,6 +636,21 @@ body.picking .sharefoot{display:none}
 @media (max-width:400px){.topbtns .btn{padding:6px 4px}.topbtns .btn.em{padding:6px 6px}}
 .brand h1{white-space:nowrap}
 @media (max-width:360px){.brand h1{font-size:21px;letter-spacing:.1em}.brand{gap:6px}}
+/* phone: the garden is one screen without scrolling; 遊び方・コツ・記録・音 are pages of their own */
+@media (max-width:820px){
+  html.lock,html.lock body{height:100%;overflow:hidden;overscroll-behavior:none}
+  html:not(.tabview) aside{display:none!important}
+  html.tabview main{display:none!important}
+  html.tabview aside{margin-top:14px}
+  html.tabview aside section{display:none!important}
+  html.tabview aside[data-tab="rules"] section:is([data-tab="rules"],[data-tab="share"]),
+  html.tabview aside[data-tab="tips"] section[data-tab="tips"],
+  html.tabview aside[data-tab="records"] section[data-tab="records"],
+  html.tabview aside[data-tab="sound"] section[data-tab="sound"]{display:block!important}
+  html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop){border-top:0!important;padding-top:0!important;margin-top:0!important}
+  html.tabview aside #shareTop{border-top:1px solid var(--line)!important;padding-top:30px!important;margin-top:0!important}
+  .topbtns .btn[aria-current="page"]{color:var(--shu);font-weight:700}
+}
 </style>
 <style>
 :root{color-scheme:light}
@@ -1977,8 +1992,28 @@ document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>b.dataset.open
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
 $('sheetClose').onclick=closeSheet;
 // desktop: the side panel shows every section, so コツ just brings 解き方のコツ into view
-$('tipsDesk').onclick=()=>$('tipsTop').scrollIntoView({behavior:'smooth',block:'start'});
-document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>$(b.dataset.jump).scrollIntoView({behavior:'smooth',block:'start'}));$('scrim').onclick=closeSheet;
+// PC: the menu scrolls to the section below the garden. Phone: the garden keeps one screen, and each tab is a page of its own
+// (遊び方 also carries 共有); while one is open, 庭を変える reads 庭へ戻る and brings the garden back, as does the back button.
+const PHONE=matchMedia('(max-width:820px)');
+var view='game',viewPushed=false;
+const TABBTN={rules:'[data-jump="rulesTop"]',tips:'#tipsDesk',records:'[data-jump="recTop"]',sound:'[data-jump="soundTop"]'};
+function lockPage(){document.documentElement.classList.toggle('lock',view==='game'&&!document.getElementById('pick').open);}
+function showView(v){const from=view;view=v;
+  document.documentElement.classList.toggle('tabview',v!=='game');if(v!=='game')$('sheet').dataset.tab=v;
+  Object.entries(TABBTN).forEach(([t,sel])=>{const b=document.querySelector(sel);if(b){if(t===v)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');}});
+  $('gardenBtn').textContent=v!=='game'||document.getElementById('pick').open?'庭へ戻る':'庭を変える';lockPage();
+  if(v!=='game'){scrollTo(0,0);if(from==='game'){try{history.pushState({sekiteiView:1},'');viewPushed=true;}catch(e){}}}}
+function toGame(){if(view==='game')return;showView('game');if(viewPushed){viewPushed=false;try{history.back();}catch(e){}}}
+function goSection(id,tab){if(PHONE.matches)showView(tab);else{if(view!=='game')toGame();$(id).scrollIntoView({behavior:'smooth',block:'start'});}}
+$('tipsDesk').onclick=()=>goSection('tipsTop','tips');
+document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>goSection(b.dataset.jump,{rulesTop:'rules',recTop:'records',soundTop:'sound'}[b.dataset.jump]));$('scrim').onclick=closeSheet;
+addEventListener('popstate',()=>{if(view!=='game'){viewPushed=false;showView('game');}});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&view!=='game'){e.preventDefault();toGame();}});
+const widthChanged=()=>{if(!PHONE.matches)toGame();lockPage();};PHONE.addEventListener&&PHONE.addEventListener('change',widthChanged);addEventListener('resize',widthChanged);
+// on a tab page, 庭へ戻る goes back to the garden (not to 庭を変える)
+document.querySelector('header.top').addEventListener('click',e=>{const b=e.target.closest('button');
+  if(b&&b.id==='gardenBtn'&&view!=='game'){e.stopPropagation();Sound.play('mark');toGame();}},true);
+lockPage();
 
 // ---- sound settings ----
 function syncSound(){const p=Sound.prefs();
@@ -2201,7 +2236,7 @@ function tutStart(lesson){
   S={N:TN,K:1,seed:lesson==='adv'?97102:4242,diff:lesson==='adv'?1:0,clue,stone,cells,hist:[],time:0,hints:0,done:false,started:false,tut:true};
   build();setMode(0);$('time').hidden=true;$('tutQuit').hidden=false;
   // the button may sit far down the side panel: bring the garden into view
-  $('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent=L.short||L.title;setMsg('');
+  toGame();$('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent=L.short||L.title;setMsg('');
   showVeil(`<p class="vlabel">練習用の庭（${L.tag}${TN}×${TN}・石${TN}）</p>
     <div class="startgoal lft"><b class="sh">完成条件</b><ul><li><span class="kw">決まりごと</span>を守りながら、石を${TN}個置ききる</li></ul></div>${startRules(1)}
     <div class="small">${L.intro}</div>
@@ -2224,7 +2259,7 @@ function drillChapter(ch,go){
   S={N:c.N,K:c.K,seed:D.seed+ch,diff:1,clue:Int8Array.from(c.clue),stone,cells:c.cells.slice(),hist:[],time:0,hints:0,done:false,started:false,tut:true};
   build();setMode(0);$('time').hidden=true;$('tutQuit').hidden=false;
   tut.tapNext=false;tut.tap=c.tap?[...Array(c.N*c.N).keys()].find(i=>cellName(i)===c.tap):null;   // a lantern to tap first (the first 灯籠 chapter)
-  $('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent=`${D.short} ${ch+1}/${D.list.length}`;setMsg('');
+  toGame();$('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent=`${D.short} ${ch+1}/${D.list.length}`;setMsg('');
   if(go){hideVeil();S.started=true;tutShow();return;}
   showVeil(`<p class="vlabel">${D.name}</p><div class="small">${D.intro}</div>
     <button class="btn primary startgo tutgo2" id="tutGo" type="button">はじめる<small>（全${D.list.length}問）</small></button>`,true);
@@ -2283,7 +2318,7 @@ function openPick(onLoad){if(pick.open)return;$('pickNo').value='';pickOnLoad=!!
 let pickPushed=false;   // 庭を変える added a history entry, so the browser's back button returns to the garden
 function popPick(){if(pickPushed){pickPushed=false;try{history.back();}catch(e){}}}
 // while this page is open, 庭を変える in the menu reads 庭へ戻る and takes you back
-function gardenLabel(on){document.body.classList.toggle('picking',on);document.querySelectorAll('#gardenBtn,[data-open="garden"]').forEach(b=>b.textContent=on?'庭へ戻る':'庭を変える');}
+function gardenLabel(on){document.body.classList.toggle('picking',on);setTimeout(lockPage,0);document.querySelectorAll('#gardenBtn,[data-open="garden"]').forEach(b=>b.textContent=on?'庭へ戻る':'庭を変える');}
 function closePick(){if(pick.open)pick.close();else pick.removeAttribute('open');gardenLabel(false);pend=null;syncSeg();popPick();}
 pick.addEventListener('close',()=>{if(pick.open)return;gardenLabel(false);pend=null;syncSeg();popPick();});   // a late close event must not undo a page opened again since
 addEventListener('popstate',()=>{pickPushed=false;if(pick.open)closePick();});
