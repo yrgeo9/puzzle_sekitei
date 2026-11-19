@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-nP31DXuqdMXLTvnujp+7nvJ/ExIEZpBf5Jy018kf27I=' 'sha256-3uRu8C0k45cHEMqsQqySt2cfwhO7GdA/8jry61x0PaQ=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-nP31DXuqdMXLTvnujp+7nvJ/ExIEZpBf5Jy018kf27I=' 'sha256-Q1bJ1Y703hbxr2PEFBhKhWKPxuyuBJV40DCWs5s+i6E=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -717,6 +717,7 @@ body.picking .sharefoot{display:none}
 .tools,.stage .tools{grid-template-columns:minmax(min-content,1.35fr) minmax(min-content,1fr) minmax(min-content,.85fr) minmax(min-content,1.1fr)}
 .tools .btn{padding-inline:6px}
 @media (max-width:820px){.stage .tools .btn{padding-inline:3px}}
+.rakecv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 </style>
 <style>
 :root{color-scheme:light}
@@ -1522,7 +1523,7 @@ function start(N,d,seed,fresh){
   N=SIZES[N]?N:8;d=d===1?1:0;seed=int(seed,1,99999,todaySeed());
   size=N;diff=d;pend={walk,size,diff,toro};syncSeg();tutOff();
   const K=SIZES[N].K;
-  stopClock();if(S)S.started=false;
+  stopClock();if(S)S.started=false;setMode(0);   // a new garden starts with 石 chosen
   $('time').style.visibility='hidden';
   showVeil('<div class="spinner"></div><div class="small">砂を整えています…<br>推理だけで解けるか確かめています</div>',true);
   let saved=store.get(keyOf(N,seed,d));if(fresh&&saved&&saved.done===true)saved=null;
@@ -1605,13 +1606,7 @@ function rakeSvg(N,seed,clue){
   const mk=el('mask',{id:id+'f',maskUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2});
   mk.appendChild(el('rect',{x:-1,y:-1,width:N+2,height:N+2,fill:'#fff'}));defs.appendChild(mk);
   const field=el('g',{mask:`url(#${id}f)`}),rings=el('g',{class:'ripples'});
-  // test: the raked lines show only where the player has raked (a cell known to hold no stone); the whole garden once solved
-  const mm=el('mask',{id:id+'k',maskUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2});defs.appendChild(mm);
-  mm.appendChild(el('rect',{class:'all',x:-1,y:-1,width:N+2,height:N+2,fill:'#fff'}));
-  const marks=[];for(let i=0;i<N*N;i++){if(clue[i]>=0){marks.push(null);continue;}const x=i%N,y=Math.floor(i/N);
-    const x0=x?x-.01:0,y0=y?y-.01:0,x1=x===N-1?N:x+1.01,y1=y===N-1?N:y+1.01;   // inside the board only (Safari mishandles parts outside it)
-    const r=el('rect',{class:'mc',x:x0,y:y0,width:x1-x0,height:y1-y0,fill:'#fff'});mm.appendChild(r);marks.push(r);}
-  const raked=el('g',{mask:`url(#${id}k)`});raked.appendChild(field);svg.append(raked,rings);
+  svg.append(field,rings);field.setAttribute('display','none');   // the straight raked lines are drawn on a canvas (rakeCanvas)
   const items=[];
   const add=(g,pts)=>{const e=el('path',{});g.appendChild(e);items.push({e,pts});};
   const inView=([x,y])=>x>-.6&&x<N+.6&&y>-.6&&y<N+.6;
@@ -1653,16 +1648,58 @@ function rakeSvg(N,seed,clue){
   const kn=el('g',{});for(let y=1;y<N;y++)for(let x=1;x<N;x++)kn.appendChild(el('circle',{class:'knot',cx:x,cy:y,r:N<=6?.04:N<=8?.05:.06}));
   svg.appendChild(kn);
   for(const it of items){let d='';for(const [x,y] of it.pts)d+=(d?'L':'M')+f(x)+','+f(y);it.e.setAttribute('d',d);}
-  RK={N,svg,sp,el,f,mk,caps,rings,moss,marks,cur:null,key:null,nodes:new Map(),str:new Map(),target:new Map(),raf:0};
+  RK={N,svg,sp,el,f,mk,caps,rings,moss,capsList:[],cur:null,key:null,nodes:new Map(),str:new Map(),target:new Map(),raf:0};
   return svg;
 }
 // Ripples: RAKE_RINGS lines round every stone and moss island, starting just outside its body (RAKE_CORE,
 // in cells from its centre). They are traced as contours of "distance to the nearest body" on a fine
 // grid (marching squares), which is what makes neighbouring ripples merge instead of crossing.
 const RAKE_CORE=.44,RAKE_RINGS=3;
+// 砂紋 on a canvas: rough straight lines, shown only in the cells the player has raked (all over once solved).
+// A plain canvas instead of SVG masks and filters, so every browser (iPhone Safari too) shows each raked cell whole.
+let RC=null;
+function rakeCanvas(N,seed){const cv=document.createElement('canvas');cv.className='rakecv';cv.setAttribute('aria-hidden','true');
+  RC={N,seed,cv,ctx:cv.getContext('2d'),tex:null,w:0,h:0,dpr:1,a:new Float32Array(N*N),want:new Float32Array(N*N),raf:0,pend:0,last:0,started:false,solved:false};return cv;}
+// the lines of the whole garden, drawn once for the canvas size: 9 to a cell, a little uneven, broken by grain
+function rakeTexture(){
+  const {N,w,h,seed,dpr}=RC,t=document.createElement('canvas');t.width=w;t.height=h;const c=t.getContext('2d');
+  const R=rngFrom((seed^0x2a7e51)>>>0),cell=h/N,gap=cell/9,lw=Math.max(1,dpr*1.45),step=Math.max(1,dpr*1.1);
+  c.strokeStyle='#c9c1ae';c.lineCap='round';
+  for(let k=0;k<N*9;k++){const y0=(k+.5)*gap,p=[R()*6.28,R()*6.28,R()*6.28],f=[(1+R())*2.1/cell,(2.6+R()*2)*2.1/cell,(6+R()*4)*2.1/cell];
+    const yy=X=>y0+(Math.sin(X*f[0]+p[0])*.5+Math.sin(X*f[1]+p[1])*.3+Math.sin(X*f[2]+p[2])*.2)*gap*.13;
+    for(let x=0;x<w;){const x2=Math.min(w,x+step*(1+R()*3)),a=R();
+      if(a>.14){c.globalAlpha=.4+.6*a;c.lineWidth=lw*(.7+R()*.6);c.beginPath();c.moveTo(x,yy(x));c.lineTo(x2,yy(x2));c.stroke();}
+      x=x2;}}
+  return t;}
+function rakeResize(){if(!RC||!RC.cv.isConnected)return;const r=RC.cv.getBoundingClientRect(),dpr=Math.min(3,window.devicePixelRatio||1);
+  const w=Math.round(r.width*dpr),h=Math.round(r.height*dpr);if(!w||!h)return;
+  if(w!==RC.w||h!==RC.h){RC.w=w;RC.h=h;RC.dpr=dpr;RC.cv.width=w;RC.cv.height=h;RC.tex=rakeTexture();}rakeDraw();}
+function rakeDraw(){if(!RC||!RC.w||!RC.tex)return;const {N,ctx,w,h}=RC,cw=w/N,ch=h/N;ctx.clearRect(0,0,w,h);
+  for(let i=0;i<N*N;i++){const a=RC.a[i];if(a<=.002)continue;const x=i%N,y=(i/N)|0;
+    const x0=Math.round(x*cw),y0=Math.round(y*ch),x1=Math.round((x+1)*cw),y1=Math.round((y+1)*ch);
+    ctx.globalAlpha=Math.min(1,a);ctx.drawImage(RC.tex,x0,y0,x1-x0,y1-y0,x0,y0,x1-x0,y1-y0);}
+  ctx.globalAlpha=1;
+  // the smoothed sand round moss, lanterns and stones (where the ripples go), as the SVG did
+  if(RK&&RK.N===N){const Z=RAKE_CORE+RAKE_RINGS*RK.sp;ctx.globalCompositeOperation='destination-out';ctx.fillStyle='#000';ctx.beginPath();
+    const disc=(cx,cy,r)=>{ctx.moveTo((cx+r)*cw,cy*ch);ctx.ellipse(cx*cw,cy*ch,r*cw,r*ch,0,0,Math.PI*2);};
+    RK.moss.forEach(([mx,my])=>disc(mx,my,Z));
+    RK.nodes.forEach(n=>{const r=+n.getAttribute('r');if(r>0)disc(+n.getAttribute('cx'),+n.getAttribute('cy'),r);});
+    ctx.fill();
+    (RK.capsList||[]).forEach(([ax,ay,bx,by])=>{if(ax===bx)ctx.fillRect((ax-Z)*cw,ay*ch,2*Z*cw,(by-ay)*ch);else ctx.fillRect(ax*cw,(ay-Z)*ch,(bx-ax)*cw,2*Z*ch);});
+    ctx.globalCompositeOperation='source-over';}}
+function rakeDrawSoon(){if(RC&&!RC.raf&&!RC.pend)RC.pend=requestAnimationFrame(()=>{RC.pend=0;rakeDraw();});}
+// which cells are raked; they fade in (the whole garden slowly when it is solved) and out
+function rakeMarks(cells,solved){if(!RC||cells.length!==RC.N*RC.N)return;
+  for(let i=0;i<cells.length;i++)RC.want[i]=cells[i]===2||solved?1:0;RC.solved=solved;
+  if(!RC.started||matchMedia('(prefers-reduced-motion: reduce)').matches){RC.started=true;RC.a.set(RC.want);rakeDraw();return;}
+  if(!RC.raf){RC.last=performance.now();RC.raf=requestAnimationFrame(rakeTick);}}
+function rakeTick(now){const dt=Math.min(.1,(now-RC.last)/1000);RC.last=now;let moving=false;
+  for(let i=0;i<RC.a.length;i++){const a=RC.a[i],g=RC.want[i];if(a===g)continue;
+    RC.a[i]=g>a?Math.min(g,a+dt/(RC.solved?1.4:.45)):Math.max(g,a-dt/.3);moving=true;}
+  rakeDraw();RC.raf=moving?requestAnimationFrame(rakeTick):0;}
 // keep --px (one screen pixel, in garden units) right as the garden changes size
 function rakeScale(){if(!RK||!RK.svg.isConnected)return;const w=RK.svg.getBoundingClientRect().width;
-  if(w>0)RK.svg.style.setProperty('--px',String(Math.round(RK.N/w*1e5)/1e5));}
+  if(w>0)RK.svg.style.setProperty('--px',String(Math.round(RK.N/w*1e5)/1e5));rakeResize();}
 const rakeRO=typeof ResizeObserver==='function'?new ResizeObserver(()=>rakeScale()):null;
 addEventListener('resize',()=>rakeScale());
 // pairs of bodies one cell apart across or down: their ripples go round both as one capsule
@@ -1697,9 +1734,9 @@ function rakeContours(bodies){
 // a stone's own patch of smoothed sand; it opens as the stone is set down and closes when it is lifted
 function rakeSet(i,s){
   let n=RK.nodes.get(i);
-  if(s<=0){if(n){n.remove();RK.nodes.delete(i);}return;}
+  if(s<=0){if(n){n.remove();RK.nodes.delete(i);rakeDrawSoon();}return;}
   if(!n){const N=RK.N;n=RK.el('circle',{cx:i%N+.5,cy:Math.floor(i/N)+.5,r:0,fill:'#000'});RK.mk.appendChild(n);RK.nodes.set(i,n);}
-  const e=s*s*(3-2*s);n.setAttribute('r',String(Math.round((RAKE_CORE+RAKE_RINGS*RK.sp)*e*1000)/1000));}
+  const e=s*s*(3-2*s);n.setAttribute('r',String(Math.round((RAKE_CORE+RAKE_RINGS*RK.sp)*e*1000)/1000));rakeDrawSoon();}
 // follow the stones on the board: the ripples are traced again and fade across, the stones' patches open and close
 function rakeStones(cells,instant){
   if(!RK)return;const N=RK.N,want=new Map(),bodies=RK.moss.slice();
@@ -1707,7 +1744,8 @@ function rakeStones(cells,instant){
   const key=[...want.keys()].join(',');
   if(key!==RK.key){RK.key=key;const g=rakeContours(bodies),old=RK.cur;RK.cur=g;
     const Z=RAKE_CORE+RAKE_RINGS*RK.sp,f=RK.f;   // smooth the sand along each capsule's waist too
-    RK.caps.setAttribute('d',rakePairs(bodies).map(([ax,ay,bx,by])=>ax===bx?`M${f(ax-Z)},${ay}H${f(ax+Z)}V${by}H${f(ax-Z)}Z`:`M${ax},${f(ay-Z)}V${f(ay+Z)}H${bx}V${f(ay-Z)}Z`).join(''));
+    RK.capsList=rakePairs(bodies);
+    RK.caps.setAttribute('d',RK.capsList.map(([ax,ay,bx,by])=>ax===bx?`M${f(ax-Z)},${ay}H${f(ax+Z)}V${by}H${f(ax-Z)}Z`:`M${ax},${f(ay-Z)}V${f(ay+Z)}H${bx}V${f(ay-Z)}Z`).join(''));
     const still=instant||matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(still){if(old)old.remove();RK.rings.appendChild(g);}
     else{g.style.opacity='0';RK.rings.appendChild(g);g.getBoundingClientRect();
@@ -1754,8 +1792,8 @@ function build(){
       b.appendChild(el);cellEls.push(el);
     }
   }
-  if(RK&&RK.raf)cancelAnimationFrame(RK.raf);
-  b.prepend(rakeSvg(N,S.seed,S.clue));rakeStones(S.cells,true);rakeScale();if(rakeRO){rakeRO.disconnect();rakeRO.observe(b);}
+  if(RK&&RK.raf)cancelAnimationFrame(RK.raf);if(RC&&RC.raf)cancelAnimationFrame(RC.raf);
+  b.prepend(rakeSvg(N,S.seed,S.clue));b.prepend(rakeCanvas(N,S.seed));rakeStones(S.cells,true);rakeScale();if(rakeRO){rakeRO.disconnect();rakeRO.observe(b);}
   // edges, shogi style: above each column its number (1 = rightmost) and its stone count;
   // right of each row its stone count and its kanji number (一 = top)
   const ct=$('colLabels'),cr=$('rowLabels');
@@ -1790,7 +1828,7 @@ function render(){
       const isBad=s>want||(s<want&&(!e||full));
       if(isBad)errs.push(`${clue[i]>=TORO?'灯籠':'苔'}「${want}」（${cellName(i)}）${clue[i]>=TORO?'が照らすマス':'のまわり'}の石が${s>want?'多すぎます':'足りません'}`);
       el.classList.toggle('bad',isBad);el.classList.toggle('done',s===want);if(s!==want)allOk=false;continue;}
-    el.classList.toggle('stone',cells[i]===1);el.classList.toggle('mark',cells[i]===2);if(RK&&RK.marks&&RK.marks[i])RK.marks[i].classList.toggle('on',cells[i]===2);el.classList.toggle('bad',bad.has(i));
+    el.classList.toggle('stone',cells[i]===1);el.classList.toggle('mark',cells[i]===2);el.classList.toggle('bad',bad.has(i));
     el.setAttribute('aria-label',`${cellName(i)} ${cells[i]===1?'石':cells[i]===2?'砂紋':'空き'}`);
   }
   // a line with no empty cell left (stones, marks and moss only) but too few stones can no longer be right: red too
@@ -1802,7 +1840,7 @@ function render(){
   for(let c=0;c<N;c++){pip(colPips[c],colC[c],colE[c]);lineErr(`${colName(c)}の列`,colC[c],colE[c]);if(colC[c]!==K)allOk=false;}
   S.errs=errs;
   rakeStones(cells);
-  $('board').classList.toggle('solved',allOk);
+  $('board').classList.toggle('solved',allOk);rakeMarks(cells,allOk);
   // cleared = every stone the garden needs (N×K) is placed without breaking a rule
   const placed=rowC.reduce((a,b)=>a+b,0);
   // the stones still to place wait under the garden: all of them at first, one fewer (from the end) for each stone
