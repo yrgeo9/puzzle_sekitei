@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-nP31DXuqdMXLTvnujp+7nvJ/ExIEZpBf5Jy018kf27I=' 'sha256-A8BEmEQpq9SJjI/HTex9h0HMIMUOF7cOHGEL3/cSbTw=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-nP31DXuqdMXLTvnujp+7nvJ/ExIEZpBf5Jy018kf27I=' 'sha256-yvuLP5m4CFQb5dN1NJcD75bJOeulaujcTyDa0D9SvY0=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -698,6 +698,25 @@ body.picking .sharefoot{display:none}
 .sicons .storo svg{display:block;width:100%;height:100%;overflow:visible}
 .sicons .storo text{font-family:var(--display);font-weight:700;font-size:14px;fill:#f5f0e4}
 @media (max-width:820px){.sicons .smoss{font-size:10.5px}}
+/* test: no marks; the sand starts plain and is raked where a stone cannot go; when solved the whole garden is raked */
+.rake mask rect.mc{opacity:0;transition:opacity .45s ease}
+.rake mask rect.mc.on{opacity:1}
+.rake mask rect.all{opacity:0;transition:opacity 1.4s ease}
+.board.solved .rake mask rect.all{opacity:1}
+.cell .dot{display:none!important}
+.modeicon.ring{border:0!important;width:12px!important;height:9px!important;border-radius:1px;background:repeating-linear-gradient(0deg,var(--stone) 0 1px,transparent 1px 3px)!important}
+.sw{background-image:none}
+.sw:has(.d){background-image:repeating-linear-gradient(0deg,transparent 0 3px,var(--curb-dk) 3px 4px)}
+.sw .d{display:none}
+@media (prefers-reduced-motion:reduce){.rake mask rect{transition:none}}
+/* test: the rough lines are a little bolder, so the grain reads */
+.rake .ripples .rr path{stroke:color-mix(in srgb,var(--rake) 75%,#a99d86);stroke-width:calc(var(--px,.03)*1.7)}
+.rake .rough path{stroke:color-mix(in srgb,var(--rake) 75%,#a99d86);stroke-width:calc(var(--px,.03)*1.7)}
+/* test: the four buttons share the row by what they hold ([石｜砂紋] and 教えを乞う need more than 休憩), and none is
+   ever narrower than its own words; on narrow phones the type steps down with the screen */
+.tools,.stage .tools{grid-template-columns:minmax(min-content,1.35fr) minmax(min-content,1fr) minmax(min-content,.85fr) minmax(min-content,1.1fr)}
+.tools .btn{padding-inline:6px}
+@media (max-width:820px){.stage .tools .btn{padding-inline:3px}}
 </style>
 <style>
 :root{color-scheme:light}
@@ -784,9 +803,9 @@ button{touch-action:manipulation}
       <div class="goal" id="goal" role="img"></div>
       <p class="hintmsg" id="hintMsg" aria-live="polite"></p>
       <div class="tools">
-        <button class="btn mode" id="modeBtn" aria-pressed="false" title="置くものを切り替え (Q)"><span class="mopt on" id="optStone"><i class="modeicon"></i>石</span><span class="msep" aria-hidden="true"></span><span class="mopt" id="optMark"><i class="modeicon ring"></i>印</span><kbd>Q</kbd></button>
+        <button class="btn mode" id="modeBtn" aria-pressed="false" title="置くものを切り替え (Q)"><span class="mopt on" id="optStone"><i class="modeicon"></i>石</span><span class="msep" aria-hidden="true"></span><span class="mopt" id="optMark"><i class="modeicon ring"></i>砂紋</span><kbd>Q</kbd></button>
         <button class="btn" id="undoBtn" title="一手戻す (Z)">一手戻す <kbd>Z</kbd></button>
-        <button class="btn two" id="pauseBtn" title="タイマーを一時停止 (P)"><span>休憩</span><small>タイマーを一時停止</small></button>
+        <button class="btn two" id="pauseBtn" title="タイマーを一時停止 (P)"><span>休憩</span><small>一時停止</small></button>
         <button class="btn two" id="hintBtn" title="次に推理できる一手を教わる"><span>教えを乞う</span><small>ヒントをもらう</small></button>
       </div>
     </div>
@@ -840,7 +859,7 @@ button{touch-action:manipulation}
       <h2>所作</h2>
       <div class="legend">
         <div class="sw"><div class="s"></div></div><span>「石」モードでタップして石を置く・取る</span>
-        <div class="sw"><div class="d"></div></div><span>「印」モードでタップ（または右クリック）で「石なし」の印を付ける・消す<br>なぞると続けて付けたり消したりできます</span>
+        <div class="sw"><div class="d"></div></div><span>「砂紋」モードでタップ（または右クリック）で「石なし」のマスに砂紋を引く・消す<br>なぞると続けて引いたり消したりできます</span>
         <span class="minibtn" aria-hidden="true">一手戻す</span><span>直前の操作を元に戻せます</span>
         <span class="minibtn" aria-hidden="true">休憩</span><span>タイマーを一時停止できます</span>
         <span class="minibtn" aria-hidden="true">教えを乞う</span><span>次の一手とその理由を示します</span>
@@ -854,7 +873,7 @@ button{touch-action:manipulation}
       <p class="small">どちらの盤面でも使う、1つの行・列・苔だけを見れば決まる形です。「手がかり多め」の盤面は、この形だけで最後まで解けます。図は、形だけを取り出した簡単な例です。</p>
       <div class="pats">
         <div class="patrow"><b>石のまわり8マスには、石を置けない</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:5"><div class="patcols"><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i class="h"></i><i class="s"></i><i class="h"></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:5"><div class="patcols"><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i class="k c"></i><i class="s"></i><i class="k c"></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div></div>
-        <div class="patrow"><b>揃った行・列・苔の残りは空き</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:1;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="h"></i><i class="h"></i><i class="h"></i><i class="s h"></i><i class="h"></i><i class="h"></i></div><div class="patrows"><span>三</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:1;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k c"></i><i class="k c"></i><i class="k c"></i><i class="s"></i><i class="k c"></i><i class="k c"></i></div><div class="patrows"><span>三</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="s h"></i><i class="k h"></i><i class="k h"></i><i></i><i></i><i></i><i class="k h"></i><i class="m h">1</i><i class="k h"></i><i></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="s"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="m">1</i><i class="k"></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">行・列の石が揃ったら、その行・列の残りのマスに印を付ける。苔の数だけ石が入ったら、苔のまわりの残りのマスに印を付ける。</p></div>
+        <div class="patrow"><b>揃った行・列・苔の残りは空き</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:1;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="h"></i><i class="h"></i><i class="h"></i><i class="s h"></i><i class="h"></i><i class="h"></i></div><div class="patrows"><span>三</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:1;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k c"></i><i class="k c"></i><i class="k c"></i><i class="s"></i><i class="k c"></i><i class="k c"></i></div><div class="patrows"><span>三</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="s h"></i><i class="k h"></i><i class="k h"></i><i></i><i></i><i></i><i class="k h"></i><i class="m h">1</i><i class="k h"></i><i></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="s"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="m">1</i><i class="k"></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">行・列の石が揃ったら、その行・列の残りのマスに砂紋を引く。苔の数だけ石が入ったら、苔のまわりの残りのマスに砂紋を引く。</p></div>
         <div class="patrow"><b>残りのマスの数＝残りの石の数なら、全部石</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:1;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k h"></i><i class="k h"></i><i class="h"></i><i class="k h"></i><i class="k h"></i><i class="k h"></i></div><div class="patrows"><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:1;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k"></i><i class="k"></i><i class="s c"></i><i class="k"></i><i class="k"></i><i class="k"></i></div><div class="patrows"><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:3"><div class="patcols"><span>4</span><span>3</span><span>2</span></div><div class="pat"><i class="h"></i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="m h">2</i><i class="k h"></i><i class="k h"></i><i class="h"></i><i class="k h"></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:3"><div class="patcols"><span>4</span><span>3</span><span>2</span></div><div class="pat"><i class="s c"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="m">2</i><i class="k"></i><i class="k"></i><i class="s c"></i><i class="k"></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">行・列でも苔のまわりでも、置けるマスが残りの石の数しかなければ、そのマスはすべて石。</p></div>
         <div class="patrow"><b>互いに隣り合うマスには、石は1つまで</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:3"><div class="patcols"><span>5</span><span>4</span><span>3</span></div><div class="pat"><i class="h"></i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="m h">2</i><i class="h"></i><i class="k h"></i><i class="h"></i><i class="h"></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:3"><div class="patcols"><span>5</span><span>4</span><span>3</span></div><div class="pat"><i class="s c"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="m">2</i><i></i><i class="k"></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">3三・4四・3四は互いに隣り合うので、石は1つまで。<b>もう1つは5二</b>。</p><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:1;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k"></i><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="k"></i><i class="k"></i></div><div class="patrows"><span>三</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:1;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k"></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="s c"></i><i class="k"></i><i class="k"></i></div><div class="patrows"><span>三</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">2マス続き（9三・8三）には石が1つまで。<b>もう1つは3三</b>。</p><p class="small">互いに隣り合うマス（2マス続き、L字の3マス、2×2など）には石が1つしか入らない。そこで足りない分は、ほかの候補に入る。</p></div>
         <div class="patrow"><b>苔の「4」は、四隅に石</b><span class="tags"><span class="tag">十間</span></span><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:3"><div class="patcols"><span>5</span><span>4</span><span>3</span></div><div class="pat"><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="m h">4</i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i></div><div class="patrows"><span>三</span><span>四</span><span>五</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:3"><div class="patcols"><span>5</span><span>4</span><span>3</span></div><div class="pat"><i class="s c"></i><i class="k c"></i><i class="s c"></i><i class="k c"></i><i class="m">4</i><i class="k c"></i><i class="s c"></i><i class="k c"></i><i class="s c"></i></div><div class="patrows"><span>三</span><span>四</span><span>五</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">隣り合わずに4つ置けるのは、<b>四隅だけ</b>。</p></div>
@@ -877,14 +896,14 @@ button{touch-action:manipulation}
     </section>
     <section data-tab="tips">
       <h2>解き方のコツ（手がかり少なめ）</h2>
-      <p class="small">「手がかり少なめ」の盤面は、1つの行・列・苔だけを見ても次の一手が決まらない場面があります。<b>2つの手がかり（行と行、行と苔、苔と苔）の置き方の組み合わせを全部考え、どの組み合わせでも同じになるマスを確定する</b>のが基本です。候補が2〜3マスしかない行・列・苔を探し、隣の行や重なる苔と組み合わせてみてください。印をこまめに付けると候補が見えやすくなります。図の多くは実際の盤面から取っています。</p>
+      <p class="small">「手がかり少なめ」の盤面は、1つの行・列・苔だけを見ても次の一手が決まらない場面があります。<b>2つの手がかり（行と行、行と苔、苔と苔）の置き方の組み合わせを全部考え、どの組み合わせでも同じになるマスを確定する</b>のが基本です。候補が2〜3マスしかない行・列・苔を探し、隣の行や重なる苔と組み合わせてみてください。砂紋をこまめに付けると候補が見えやすくなります。図の多くは実際の盤面から取っています。</p>
       <div class="pats">
         <div class="patrow"><b>片方の石が、もう片方の中に必ず入る</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="m">0</i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k h"></i><i class="k h"></i><i></i><i></i><i></i><i></i><i class="m h">1</i><i class="m h">1</i><i></i><i></i><i></i><i class="m">1</i><i class="h"></i><i class="h"></i><i class="m h">1</i><i class="h"></i><i class="h"></i><i class="h"></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="m">0</i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="m">1</i><i class="m">1</i><i></i><i></i><i></i><i class="m">1</i><i></i><i></i><i class="m">1</i><i class="k c"></i><i class="k c"></i><i class="k c"></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">6五の苔「1」の石は六の行（6六か5六）に入るので、<b>3六・2六・1六は空き</b>。</p><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="m h">1</i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k c"></i><i class="m">1</i><i class="k c"></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">一の行の候補は6一か5一で、どちらも5二の苔「1」のまわり。「1」は一の行の石で埋まるので、<b>6二・4二・6三・5三・4三は空き</b>。</p><p class="patsub">例3</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:4"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span></div><div class="pat"><i class="h"></i><i class="h"></i><i></i><i></i><i class="m h">1</i><i class="m h">2</i><i class="k"></i><i></i><i class="h"></i><i class="h"></i><i class="k"></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:4"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span></div><div class="pat"><i></i><i></i><i class="s c"></i><i></i><i class="m">1</i><i class="m">2</i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">6三の苔「1」の候補（6二・5二・6四・5四）は、すべて5三の苔「2」のまわり。「2」の1つはここで埋まるので、残り1つは<b>4二</b>。</p><p class="patsub">例4</p><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="m h">2</i><i class="blkf et el er"></i><i></i><i></i><i class="m">0</i><i class="k"></i><i class="blkf et eb el"></i><i class="blkf eb er"></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="m">1</i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i class="k c"></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k"></i><i class="k"></i><i class="m">2</i><i></i><i></i><i></i><i class="m">0</i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="m">1</i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">4二の苔「2」の候補は、一の行の5一・4一・3一と、はみ出した3二・4三・3三（枠）の3行・3列。枠の3マスは互いに隣り合うので、石は1つまで。もう1つは必ず一の行に入るので、<b>6一・2一・1一は空き</b>。</p><p class="small">片方の石が必ずもう片方の中に入るなら、もう片方の残りの石はそのぶん減り、0になればほかの候補は空き。候補がはみ出していても、はみ出したマスに石が1つしか入らなければ使える（例4）。</p></div>
         <div class="patrow"><b>どの置き方でも隣になるマスは空き</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">三の行の石は4三か3三。どちらに置いても隣になる<b>4二・3二・4四・3四は空き</b>。苔の候補でも同じ考え方が使えます。</p><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i class="m">0</i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="k h"></i><i class="m h">0</i><i class="k h"></i><i class="h"></i><i class="h"></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="m">1</i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i class="m">0</i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="s c"></i><i class="k"></i><i class="m">0</i><i class="k"></i><i class="k c"></i><i class="k c"></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="m">1</i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">二の行の石は2二か1二。2三・1三はどちらとも隣り合うので、<b>三の行の石は6三</b>。</p><p class="patsub">例3</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">三の行は残り2つで、候補は7三〜4三の4マス続き。隣り合わない置き方は「7三と5三」「7三と4三」「6三と4三」の3通りで、どれも7三〜5三に1つ、6三〜4三にも1つ石が入る。だから、その真ん中の上下の<b>6二・5二・6四・5四は空き</b>。</p></div>
         <div class="patrow"><b>角の苔「1」は、横2・縦1と横1・縦2離れたマスが空き</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span></span><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:3"><div class="patcols"><span>6</span><span>5</span><span>4</span></div><div class="pat"><i class="m h">1</i><i class="h"></i><i></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:3"><div class="patcols"><span>6</span><span>5</span><span>4</span></div><div class="pat"><i class="m">1</i><i></i><i></i><i></i><i></i><i class="k c"></i><i></i><i class="k c"></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">4二に石があると、苔の石は6二しか残らず、二の行に石が2つ並ぶ（5三も同じく5の列で並ぶ）。苔から横に2つ・縦に1つ（または横に1つ・縦に2つ）離れた<b>2マスは空き</b>。</p></div>
         <div class="patrow"><b>苔の数が「入れられる最大数」と等しいなら、余裕なく入る</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:4;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i class="h"></i><i class="m h">2</i><i class="h"></i><i></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:4;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k c"></i><i></i><i class="m">2</i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i class="k c"></i><i></i><i class="k c"></i><i class="k c"></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i class="k c"></i><i></i><i class="k c"></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">石は「5一と3二」か「3一と5二」。どちらでも<b>一・二の行と5・3の列を使い切る</b>ので、その残りと4二・4三は空き。</p><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:8"><div class="patcols"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k h"></i><i class="m h">2</i><i class="k h"></i><i class="k"></i><i class="k"></i><i class="s"></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i class="k"></i><i class="k"></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:8"><div class="patcols"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i class="k c"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="m">2</i><i class="k"></i><i class="k"></i><i class="k"></i><i class="s"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i class="k c"></i><i class="k"></i><i class="k"></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">三の行はもう1三で揃っているので、5三の苔「2」のまわりに入れられる石は、二の行から1つと四の行から1つの<b>最大2つ</b>。これが苔の数と同じなので、どちらの行も石を苔のまわりに入れるしかなく、<b>二・四の行の残りは空き</b>。</p><p class="small">苔のまわりに入れられる石の最大数を、行・列の残りや「2×2には1つまで」から数える。苔の数と同じなら、置き場所が決まる。</p></div>
         <div class="patrow"><b>いくつかの行が、同じ数の列を取り合う</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i></i><i></i><i></i><i class="k c u"></i><i class="k c u"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="u"></i><i class="u"></i><i></i><i></i><i></i><i></i><i class="k c u"></i><i class="k c u"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="u"></i><i class="u"></i><i></i><i></i><i></i><i></i><i class="k c u"></i><i class="k c u"></i><i></i><i></i><i></i><i></i><i class="k c u"></i><i class="k c u"></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">二と四の行の候補は、どちらも2か1の列。2行の石2つで<b>2・1の列を使い切る</b>（赤い列）ので、ほかの行の2・1の列は空き。</p><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:6;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="h"></i><i class="k"></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="k"></i><i class="h"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:6;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="u"></i><i class="k"></i><i class="u"></i><i class="k"></i><i class="k u"></i><i class="k"></i><i class="k c u"></i><i></i><i class="k c u"></i><i></i><i class="k c u"></i><i></i><i class="k u"></i><i class="k"></i><i class="u"></i><i class="k"></i><i class="u"></i><i class="k"></i><i class="k c u"></i><i></i><i class="k c u"></i><i></i><i class="k c u"></i><i></i><i class="u"></i><i class="k"></i><i class="k u"></i><i class="k"></i><i class="u"></i><i class="k"></i><i class="k c u"></i><i></i><i class="k c u"></i><i></i><i class="k c u"></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">一・三・五の行の候補は、どれも6・4・2の列の中。3つの行の石3つで<b>6・4・2の列を使い切る</b>（赤い列）ので、二・四・六の行の6・4・2の列は空き。</p><p class="small">行の候補が、行と同じ数の列に収まっていたら、その列はその行で使い切られる。行と列を入れ替えても同じ。</p></div>
-        <div class="patrow"><b>どの2×2にも、石は1つまで</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:2;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k"></i><i class="k"></i><i class="blkf et el"></i><i class="blkf et er"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="blkf eb el"></i><i class="blkf eb er"></i><i class="k"></i><i class="h"></i></div><div class="patrows"><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:2;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k"></i><i class="k"></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k c"></i><i class="k c"></i><i class="k"></i><i class="s c"></i></div><div class="patrows"><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">三の行の残り1つの石は4三か3三で、どちらも枠の2×2の中。2×2の4マスはお互いに隣り合うので<b>石は1つまで</b>。だから四の行の残り1つの石は、枠の外の<b>1四</b>。</p><p class="small">苔のまわりや隣り合う2行・2列を2×2に区切ると、入る石の上限が数えられる。</p><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:10;--c:2"><div class="patcols"><span>8</span><span>7</span></div><div class="pat"><i class="blkf et el"></i><i class="blkf et er"></i><i class="blkf eb el"></i><i class="blkf eb er"></i><i class="blkf et el k"></i><i class="blkf et er k"></i><i class="blkf eb el k"></i><i class="blkf eb er k"></i><i class="blkf et el k"></i><i class="blkf et er k"></i><i class="blkf eb el h"></i><i class="blkf eb er k"></i><i class="blkf et el"></i><i class="blkf et er"></i><i class="blkf eb el"></i><i class="blkf eb er"></i><i class="blkf et el"></i><i class="blkf et er"></i><i class="blkf eb el"></i><i class="blkf eb er"></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>七</span><span>八</span><span>九</span><span>十</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:10;--c:2"><div class="patcols"><span>8</span><span>7</span></div><div class="pat"><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="s c"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>七</span><span>八</span><span>九</span><span>十</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">8・7の列には石が2つずつ、計4つ。2×2には石が1つまでなので、全部印の三〜四を除く4つのかたまりに1つずつ入る。五〜六は候補が8六だけなので、<b>8六は石</b>。</p></div>
+        <div class="patrow"><b>どの2×2にも、石は1つまで</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:2;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k"></i><i class="k"></i><i class="blkf et el"></i><i class="blkf et er"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="blkf eb el"></i><i class="blkf eb er"></i><i class="k"></i><i class="h"></i></div><div class="patrows"><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:2;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k"></i><i class="k"></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k c"></i><i class="k c"></i><i class="k"></i><i class="s c"></i></div><div class="patrows"><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">三の行の残り1つの石は4三か3三で、どちらも枠の2×2の中。2×2の4マスはお互いに隣り合うので<b>石は1つまで</b>。だから四の行の残り1つの石は、枠の外の<b>1四</b>。</p><p class="small">苔のまわりや隣り合う2行・2列を2×2に区切ると、入る石の上限が数えられる。</p><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:10;--c:2"><div class="patcols"><span>8</span><span>7</span></div><div class="pat"><i class="blkf et el"></i><i class="blkf et er"></i><i class="blkf eb el"></i><i class="blkf eb er"></i><i class="blkf et el k"></i><i class="blkf et er k"></i><i class="blkf eb el k"></i><i class="blkf eb er k"></i><i class="blkf et el k"></i><i class="blkf et er k"></i><i class="blkf eb el h"></i><i class="blkf eb er k"></i><i class="blkf et el"></i><i class="blkf et er"></i><i class="blkf eb el"></i><i class="blkf eb er"></i><i class="blkf et el"></i><i class="blkf et er"></i><i class="blkf eb el"></i><i class="blkf eb er"></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>七</span><span>八</span><span>九</span><span>十</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:10;--c:2"><div class="patcols"><span>8</span><span>7</span></div><div class="pat"><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="s c"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>七</span><span>八</span><span>九</span><span>十</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">8・7の列には石が2つずつ、計4つ。2×2には石が1つまでなので、全部砂紋の三〜四を除く4つのかたまりに1つずつ入る。五〜六は候補が8六だけなので、<b>8六は石</b>。</p></div>
       </div>
       <button class="btn tutgo" type="button" data-tutadv>練習用の庭（手がかり少なめ）へ向かう</button>
     </section>
@@ -957,7 +976,7 @@ button{touch-action:manipulation}
       <div class="ipage" data-ip="2">
     <div class="legend">
       <div class="sw"><div class="s"></div></div><span>「石」モードでタップして石を置く・取る</span>
-      <div class="sw"><div class="d"></div></div><span>「印」モードでタップ（または右クリック）で「石なし」の印を付ける・消す<br>なぞると続けて付けたり消したりできます</span>
+      <div class="sw"><div class="d"></div></div><span>「砂紋」モードでタップ（または右クリック）で「石なし」のマスに砂紋を引く・消す<br>なぞると続けて引いたり消したりできます</span>
       <span class="minibtn" aria-hidden="true">一手戻す</span><span>直前の操作を元に戻せます</span>
       <span class="minibtn" aria-hidden="true">休憩</span><span>タイマーを一時停止できます</span>
       <span class="minibtn" aria-hidden="true">教えを乞う</span><span>次の一手とその理由を示します</span>
@@ -1585,7 +1604,13 @@ function rakeSvg(N,seed,clue){
   const id='rk'+(seed>>>0).toString(36);let uid=0;
   const mk=el('mask',{id:id+'f',maskUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2});
   mk.appendChild(el('rect',{x:-1,y:-1,width:N+2,height:N+2,fill:'#fff'}));defs.appendChild(mk);
-  const field=el('g',{mask:`url(#${id}f)`}),rings=el('g',{class:'ripples'});svg.append(field,rings);
+  const field=el('g',{mask:`url(#${id}f)`}),rings=el('g',{class:'ripples'});
+  // test: the raked lines show only where the player has raked (a cell known to hold no stone); the whole garden once solved
+  const mm=el('mask',{id:id+'k',maskUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2});defs.appendChild(mm);
+  mm.appendChild(el('rect',{class:'all',x:-1,y:-1,width:N+2,height:N+2,fill:'#fff'}));
+  const marks=[];for(let i=0;i<N*N;i++){if(clue[i]>=0){marks.push(null);continue;}const x=i%N,y=Math.floor(i/N);
+    const r=el('rect',{class:'mc',x:x-(x?.01:1),y:y-(y?.01:1),width:1+(x?.01:1)+(x===N-1?1:.01),height:1+(y?.01:1)+(y===N-1?1:.01),fill:'#fff'});mm.appendChild(r);marks.push(r);}
+  const raked=el('g',{mask:`url(#${id}k)`});raked.appendChild(field);svg.append(raked,rings);
   const items=[];
   const add=(g,pts)=>{const e=el('path',{});g.appendChild(e);items.push({e,pts});};
   const inView=([x,y])=>x>-.6&&x<N+.6&&y>-.6&&y<N+.6;
@@ -1601,7 +1626,17 @@ function rakeSvg(N,seed,clue){
   // ---- compose ----
   const layers=[];
   const base=el('g',{});field.appendChild(base);layers.push({g:base});
-  lines(base,q=>q,arcWave(RAKE_BEND,pick(.24,.5),pick(0,9)));   // across the garden, left to right
+  pick(.24,.5);pick(0,9);   // (keeps the random sequence as before)
+  lines(base,q=>q,()=>0);   // test: straight lines across the garden, left to right
+  // test: roughen them — a little unevenness along each line, and grain that breaks it up here and there
+  const gr=el('filter',{id:id+'g',filterUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2,'color-interpolation-filters':'sRGB'});
+  gr.innerHTML=`<feTurbulence type="fractalNoise" baseFrequency="7 1.2" numOctaves="2" seed="${(seed>>>0)%97}" result="n"/>`+
+    `<feDisplacementMap in="SourceGraphic" in2="n" scale="0.04" xChannelSelector="R" yChannelSelector="G" result="d"/>`+
+    `<feTurbulence type="fractalNoise" baseFrequency="24 30" numOctaves="1" seed="${(seed>>>0)%89+1}" result="g"/>`+
+    `<feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  3.2 0 0 0 -0.95" result="ga"/>`+
+    `<feComposite in="d" in2="ga" operator="in"/>`;
+  defs.appendChild(gr);base.setAttribute('filter',`url(#${id}g)`);base.setAttribute('class','rough');
+  rings.setAttribute('filter',`url(#${id}g)`);   // test: the ripples round stones and moss are rough too
   // each layer is hidden under every layer above it, plus half a line's gap so its lines end cleanly
   layers.forEach((L,i)=>{const above=layers.slice(i+1);if(!above.length)return;
     const m=el('mask',{id:`${id}m${uid}`,maskUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2});
@@ -1617,7 +1652,7 @@ function rakeSvg(N,seed,clue){
   const kn=el('g',{});for(let y=1;y<N;y++)for(let x=1;x<N;x++)kn.appendChild(el('circle',{class:'knot',cx:x,cy:y,r:N<=6?.04:N<=8?.05:.06}));
   svg.appendChild(kn);
   for(const it of items){let d='';for(const [x,y] of it.pts)d+=(d?'L':'M')+f(x)+','+f(y);it.e.setAttribute('d',d);}
-  RK={N,svg,sp,el,f,mk,caps,rings,moss,cur:null,key:null,nodes:new Map(),str:new Map(),target:new Map(),raf:0};
+  RK={N,svg,sp,el,f,mk,caps,rings,moss,marks,cur:null,key:null,nodes:new Map(),str:new Map(),target:new Map(),raf:0};
   return svg;
 }
 // Ripples: RAKE_RINGS lines round every stone and moss island, starting just outside its body (RAKE_CORE,
@@ -1754,8 +1789,8 @@ function render(){
       const isBad=s>want||(s<want&&(!e||full));
       if(isBad)errs.push(`${clue[i]>=TORO?'灯籠':'苔'}「${want}」（${cellName(i)}）${clue[i]>=TORO?'が照らすマス':'のまわり'}の石が${s>want?'多すぎます':'足りません'}`);
       el.classList.toggle('bad',isBad);el.classList.toggle('done',s===want);if(s!==want)allOk=false;continue;}
-    el.classList.toggle('stone',cells[i]===1);el.classList.toggle('mark',cells[i]===2);el.classList.toggle('bad',bad.has(i));
-    el.setAttribute('aria-label',`${cellName(i)} ${cells[i]===1?'石':cells[i]===2?'印':'空き'}`);
+    el.classList.toggle('stone',cells[i]===1);el.classList.toggle('mark',cells[i]===2);if(RK&&RK.marks&&RK.marks[i])RK.marks[i].classList.toggle('on',cells[i]===2);el.classList.toggle('bad',bad.has(i));
+    el.setAttribute('aria-label',`${cellName(i)} ${cells[i]===1?'石':cells[i]===2?'砂紋':'空き'}`);
   }
   // a line with no empty cell left (stones, marks and moss only) but too few stones can no longer be right: red too
   const rowE=new Array(N).fill(0),colE=new Array(N).fill(0);
@@ -1832,7 +1867,7 @@ board.addEventListener('pointermove',e=>{
 // sound for one cell change; a newly placed stone that breaks a rule gets a soft low tone after the click
 function cellSound(i,from,to){
   if(to===1){Sound.play('place');if(cellEls[i].classList.contains('bad'))Sound.play('error',.08);}
-  else if(to===2)Sound.play('mark');
+  else if(to===2)Sound.play('unmark');   // test: raking = the sweep that cleared a mark
   else Sound.play(from===1?'remove':'unmark');
 }
 function endDrag(){if(!drag)return;const d=drag;drag=null;
@@ -1851,7 +1886,7 @@ board.addEventListener('keydown',e=>{
 // ---- tools ----
 function setMode(m){mode=m;$('modeBtn').setAttribute('aria-pressed',m?'true':'false');
   $('optStone').classList.toggle('on',!m);$('optMark').classList.toggle('on',!!m);
-  $('modeBtn').setAttribute('aria-label',m?'置くもの：印（押すと石に切り替え）':'置くもの：石（押すと印に切り替え）');}
+  $('modeBtn').setAttribute('aria-label',m?'置くもの：砂紋（押すと石に切り替え）':'置くもの：石（押すと砂紋に切り替え）');}
 $('modeBtn').onclick=()=>setMode(mode?0:1);
 function undo(){if(!S||S.done||!S.started||!S.hist.length)return;clearFocus();S.hist.pop().forEach(([i,v])=>S.cells[i]=v);render();save();if(S.tut)tutShow();else showErrs();}
 $('undoBtn').onclick=undo;
@@ -1959,7 +1994,7 @@ function giveHint(){
   if(!S||S.done||!S.started)return;const {N,K,cells,stone,clue}=S;
   for(let i=0;i<N*N;i++){if(clue[i]>=0)continue;
     if(cells[i]===1&&!stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);Sound.play('remove');setMsg(`${cellName(i)}の石は答えと合わないので取り除きました。`);return;}
-    if(cells[i]===2&&stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);Sound.play('unmark');setMsg(`${cellName(i)}には石が入るので、印を外しました。`);return;}}
+    if(cells[i]===2&&stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);Sound.play('unmark');setMsg(`${cellName(i)}には石が入るので、砂紋を消しました。`);return;}}
   const st=new Int8Array(N*N).fill(-1);
   for(let i=0;i<N*N;i++){if(clue[i]>=0)st[i]=0;else if(cells[i]===1)st[i]=1;else if(cells[i]===2)st[i]=0;}
   const nb=geoOf(N);const d=logicStep(N,K,clue,st,3,{nb,units:unitsOf(N,K,clue,nb)});
@@ -2113,19 +2148,19 @@ function tKit(N){const idx=nm=>'一二三四五六七八九十'.indexOf(nm.slice
 const {idx:tIdx,row:tRow,col:tCol,ring:tRing,want:tWant}=tKit(6);
 const TSTEPS=[
   {want:tWant(['5一','3一','5二','4二','3二'],2),lit:()=>[tIdx('4一'),...tRing('4一')],
-   text:'上の4一の苔「0」は、まわり8マスに石がひとつもないという意味です。「石」のボタンを押すと「石なしの印」に切り替わるので、\n光っている5マスに「石なしの印」を付けましょう。'},
+   text:'上の4一の苔「0」は、まわり8マスに石がひとつもないという意味です。「石」のボタンを押すと「砂紋」に切り替わるので、\n光っている5マスに「砂紋」を付けましょう。'},
   {want:tWant(['6一'],1),lit:()=>[tIdx('6二'),...tRing('6二')],
    text:'6二の苔「2」のまわりで、空いているのは6一・6三・5三の3マスです。6三と5三は互いに隣り合うので、2つ合わせても石は1つまで。もう1つは6一に入ります。「石」に切り替えて、6一に石を置きましょう。'},
   {want:tWant(['2一','1一','6三','6四','6五','6六'],2),lit:()=>[...tRow(0),...tCol(0)],
-   text:'一の行と6の列に石が1つずつ入り、端の丸が塗られました。1つの行・列に石は1つなので、「印」に切り替えて、一の行と6の列の残りのマスに印を付けましょう。'},
+   text:'一の行と6の列に石が1つずつ入り、端の丸が塗られました。1つの行・列に石は1つなので、「砂紋」に切り替えて、一の行と6の列の残りのマスに砂紋を引きましょう。'},
   {want:tWant(['5三'],1),lit:()=>[tIdx('6二'),...tRing('6二')],
    text:'6二の苔「2」は、あと1つ石が必要です。まわりで空いているのは5三だけ。残りのマスの数と残りの石の数が同じなので、そのマスは石です。5三に石を置きましょう。'},
   {want:tWant(['4三','4四'],2),lit:()=>tRing('5三'),
-   text:'石どうしは縦・横・斜めのどれでも隣り合えません。5三のまわりの空いたマスに印を付けましょう。'},
+   text:'石どうしは縦・横・斜めのどれでも隣り合えません。5三のまわりの空いたマスに砂紋を引きましょう。'},
   {want:tWant(['3三','2三','1三','5五','5六'],2),lit:()=>[...tRow(2),...tCol(1)],
-   text:'三の行と5の列も石が揃いました。残りのマスに印を付けましょう。'},
+   text:'三の行と5の列も石が揃いました。残りのマスに砂紋を引きましょう。'},
   {want:tWant(['4五'],2),lit:()=>[tIdx('5四'),...tRing('5四')],
-   text:'5四の苔「1」のまわりには、もう5三の石が1つあります。苔の数だけ石が入ったので、まわりの残りの4五に印を付けましょう。'},
+   text:'5四の苔「1」のまわりには、もう5三の石が1つあります。苔の数だけ石が入ったので、まわりの残りの4五に砂紋を引きましょう。'},
   {want:tWant(['4六'],1),lit:()=>tCol(2),
    text:'光っている4の列を見てください。苔石は石の数として数えず、上に石も置けないので、石を置けるのはもう4六だけです。4六に石を置きましょう。'},
   {free:true,lit:()=>[],
@@ -2144,13 +2179,13 @@ const DRILL=[
    want:{'2六':2,'1六':2},lit1:k=>[k.idx('6五'),...k.ring('6五'),...k.row(5)],lit2:k=>[k.idx('6五'),...k.ring('6五'),...k.row(5)],
    focus:'6五の苔「1」と、六の行に注目してみましょう。',
    why:'6五の苔の候補は6六・5六で、どちらも六の行にあります。六の行の石は、苔のために使われます。',
-   act:'六の行の残り、2六・1六に印を付けましょう。'},
+   act:'六の行の残り、2六・1六に砂紋を引きましょう。'},
   {title:'片方の石が、もう片方の中に必ず入る',idea:'行の候補がすべて苔のまわりにあれば、苔の石はその行の石で足ります。',
    N:6,K:1,st:'..x1xx/x1..x1/xxxx../1...x2/....../......',stones:[0,9,17,19,28,32],
    want:{'4二':2},lit1:k=>[...k.row(0),k.idx('5二'),...k.ring('5二')],lit2:k=>[...k.row(0),k.idx('5二'),...k.ring('5二')],
    focus:'一の行と、5二の苔「1」に注目してみましょう。',
    why:'一の行の石は6一か5一で、どちらも5二の苔のまわりにあります。苔の石は、一の行の石で足ります。',
-   act:'苔のまわりの残り、4二に印を付けましょう。'},
+   act:'苔のまわりの残り、4二に砂紋を引きましょう。'},
   {title:'片方の石が、もう片方の中に必ず入る',idea:'小さい苔の候補が大きい苔のまわりに収まっていれば、引き算で大きい苔の残りが分かります。',
    N:6,K:1,st:'.x.x0x/.x.x1x/12xx../..x.x1/x.x.xx/..x...',stones:[0,8,16,19,27,35],
    want:{'4二':1},lit1:k=>[k.idx('6三'),...k.ring('6三'),k.idx('5三'),...k.ring('5三')],lit2:k=>[k.idx('6三'),...k.ring('6三'),k.idx('5三'),...k.ring('5三')],
@@ -2162,43 +2197,43 @@ const DRILL=[
    want:{'6一':2,'2一':2,'1一':2},lit1:k=>[k.idx('4二'),...k.ring('4二')],lit2:k=>[k.idx('4二'),...k.ring('4二'),...k.row(0)],
    focus:'4二の苔「2」に注目してみましょう。候補が3行・3列に広がっています。',
    why:'4二の苔の候補は、一の行の5一・4一・3一と、行からはみ出した3二・4三・3三。3二・4三・3三は互いに隣り合うので、石は1つまで。苔の「2」を満たすには、一の行の5一・4一・3一のどれかに必ず石が入ります。',
-   act:'一の行の残り、6一・2一・1一に印を付けましょう。'},
+   act:'一の行の残り、6一・2一・1一に砂紋を引きましょう。'},
   {title:'どの置き方でも隣になるマスは空き',idea:'候補のどれに石を置いても隣り合うマスには、石を置けません。',
    N:6,K:1,st:'....1./....../xxxx../....../....../0.....',stones:[1,9,17,18,26,34],
    want:{'2二':2,'1二':2,'2四':2,'1四':2},lit1:k=>[...k.row(2)],lit2:k=>[...k.row(2),...k.ring('2三'),...k.ring('1三')],
    focus:'三の行に注目してみましょう。石を置けるマスが2つしかありません。',
    why:'三の行の石は2三か1三。2二・1二・2四・1四は、どちらに石を置いても隣り合います。',
-   act:'2二・1二・2四・1四に印を付けましょう。'},
+   act:'2二・1二・2四・1四に砂紋を引きましょう。'},
   {title:'どの置き方でも隣になるマスは空き',idea:'ある置き方をすると隣の行に石を置けなくなるなら、その置き方はできません。',
    N:6,K:1,st:'0x..xx/xxxx../.x0x../.xxx../....../...1..',stones:[2,10,12,23,27,31],
    want:{'6三':1,'2三':2,'1三':2},lit1:k=>[...k.row(1),...k.row(2)],lit2:k=>[...k.row(1),...k.row(2)],
    focus:'二の行と三の行を見比べてみましょう。',
    why:'二の行の石は2二か1二です。三の行の石を2三か1三に置くと、そのどちらとも隣り合い、二の行に石を置けなくなります。',
-   act:'三の行の石は6三です。6三に石を置き、2三・1三に印を付けましょう。'},
+   act:'三の行の石は6三です。6三に石を置き、2三・1三に砂紋を引きましょう。'},
   {title:'角の苔「1」は、横2・縦1と横1・縦2離れたマスが空き',idea:'角の苔「1」から横に2つ・縦に1つ（または横に1つ・縦に2つ）離れたマスに石を置くと、行か列に石が2つ並びます。',
    N:6,K:1,st:'1...../....../....../....2./....../0.....',stones:[2,6,16,19,29,33],
    want:{'4二':2,'5三':2},lit1:k=>[k.idx('6一'),...k.ring('6一')],lit2:k=>[k.idx('6一'),...k.ring('6一'),...k.row(1),...k.col(1)],
    focus:'6一の苔「1」に注目してみましょう。角の苔の候補は、5一・6二・5二の3マスです。',
    why:'4二に石を置くと、苔の候補で隣り合わないのは6二だけ。すると二の行に石が2つ並びます。5三も同じく、5の列に石が2つ並びます。',
-   act:'4二・5三に印を付けましょう。'},
+   act:'4二・5三に砂紋を引きましょう。'},
   {title:'苔の数が「入れられる最大数」と等しいなら、余裕なく入る',idea:'六間・八間の辺の苔「2」は、端の行と次の行に石を1つずつ使います。',
    N:6,K:1,st:'..2.../....../....../....../....../.....1',stones:[3,7,17,20,24,34],
    want:{'4二':2,'4三':2,'6一':2,'2一':2,'1一':2,'6二':2,'2二':2,'1二':2,'5三':2,'5四':2,'5五':2,'5六':2,'3三':2,'3四':2,'3五':2,'3六':2},lit1:k=>[k.idx('4一'),...k.ring('4一')],lit2:k=>[k.idx('4一'),...k.ring('4一'),...k.row(0),...k.row(1),...k.col(1),...k.col(3)],
    focus:'4一の苔「2」に注目してみましょう。辺にある苔の「2」です。',
    why:'苔の候補は、一の行の5一・3一と、二の行の5二・4二・3二。行に石は1つずつなので、一の行と二の行に1つずつ入ります。石は「5一と3二」か「3一と5二」なので、5の列と3の列も使い切ります。4二は一の行の、4三は二の行の、どちらの候補とも隣り合います。',
-   act:'4二・4三と、一・二の行の残り（6一・2一・1一・6二・2二・1二）、5の列と3の列の残り（三〜六の行）に印を付けましょう。'},
+   act:'4二・4三と、一・二の行の残り（6一・2一・1一・6二・2二・1二）、5の列と3の列の残り（三〜六の行）に砂紋を引きましょう。'},
   {title:'苔の数が「入れられる最大数」と等しいなら、余裕なく入る',idea:'苔のまわりに入れられる石の最大数が苔の数と同じなら、どこにも余裕がないので、置き場所が決まります。',
    N:6,K:1,st:'.....x/....xx/xx2xxO/....xx/.....x/.....x',stones:[4,7,17,21,24,32],
    want:{'6二':2,'6四':2},lit1:k=>[k.idx('4三'),...k.ring('4三')],lit2:k=>[k.idx('4三'),...k.ring('4三'),...k.row(1),...k.row(3)],
    focus:'4三の苔「2」と、二・三・四の行に注目してみましょう。',
    why:'三の行はもう1三で揃っているので、苔のまわりに入れられる石は、二の行から1つと四の行から1つの最大2つ。苔の数と同じなので、どちらの行も石を苔のまわりに入れるしかありません。',
-   act:'二・四の行の残り、6二・6四に印を付けましょう。'},
+   act:'二・四の行の残り、6二・6四に砂紋を引きましょう。'},
   {title:'いくつかの行が、同じ数の列を取り合う',idea:'同じ2列にしか石を置けない行が2つあれば、その2列の石はその2行で使い切られます。',
    N:6,K:1,st:'x.1.xx/xxxx../....x2/xxx2../....xx/1.....',stones:[1,11,14,22,24,33],
    want:{'2六':2,'1六':2},lit1:k=>[...k.row(1),...k.row(3)],lit2:k=>[...k.row(1),...k.row(3),...k.col(4),...k.col(5)],
    focus:'二の行と四の行に注目してみましょう。どちらも、石を置けるマスが2つしかありません。',
    why:'二の行の石は2二か1二、四の行の石は2四か1四。どちらも2の列か1の列に入るので、2列の石はこの2行で使い切られます。',
-   act:'2の列と1の列の残り、2六・1六に印を付けましょう。'},
+   act:'2の列と1の列の残り、2六・1六に砂紋を引きましょう。'},
   {title:'どの2×2にも、石は1つまで',idea:'石2の盤面では、隣り合う2列（2行）を2×2のかたまり5つに分け、石が1つまでであることを使います。',
    N:10,K:2,st:'....x.xOx./..xxxxxx2./xxx1OxO1xx/..xxx4xx../xxx2OxOxx2/.2.2xxxx../....2.x..2/....x.x.../....x.x2../..2.x.x...',
    stones:[2,7,10,19,24,26,31,39,44,46,52,58,60,65,73,78,81,85,93,97],
@@ -2214,9 +2249,9 @@ const TDRILL=[
    N:6,K:1,st:'....../....../..a.2./....../..2.../......',stones:[0,9,17,19,28,32],
    want:{'6三':2,'5三':2,'3三':2,'4一':2,'4二':2,'4四':2},lit1:(k,c)=>tLit(k,c,'4三'),lit2:(k,c)=>[...tLit(k,c,'4三'),k.idx('2三'),k.idx('4五')],
    tap:'4三',
-   focus:'4三の灯籠には「0」と書かれています。これは、その灯籠が照らすマスに入る石の合計の数を示しています。\nこの場合、照らすマスには石が0個、つまり無いということなので、照らすマス全てに印を付けましょう。',
+   focus:'4三の灯籠には「0」と書かれています。これは、その灯籠が照らすマスに入る石の合計の数を示しています。\nこの場合、照らすマスには石が0個、つまり無いということなので、照らすマス全てに砂紋を引きましょう。',
    why:'光は2三と4五の苔で止まるので、照らすのは6三・5三・3三と4一・4二・4四。「0」なので、どこにも石はありません。',
-   act:'6三・5三・3三・4一・4二・4四に印を付けましょう。'},
+   act:'6三・5三・3三・4一・4二・4四に砂紋を引きましょう。'},
   {title:'照らすマスの数＝灯籠の数なら、全部石',idea:'照らすマスが灯籠の数と同じだけしかなければ、そのマスはすべて石です。',
    N:6,K:1,st:'b2..../....../1...../...1../....../......',stones:[2,6,15,23,25,34],
    want:{'6二':1},lit1:(k,c)=>tLit(k,c,'6一'),lit2:(k,c)=>[...tLit(k,c,'6一'),k.idx('5一'),k.idx('6三')],
@@ -2228,19 +2263,19 @@ const TDRILL=[
    want:{'4一':2,'4二':2,'4四':2},lit1:k=>[k.idx('4三'),...k.row(2)],lit2:(k,c)=>tLit(k,c,'4三'),
    focus:'4三の灯籠「1」と、三の行に注目してみましょう。',
    why:'横の光は三の行の端から端まで届くので、三の行の石1つは必ず光の中にあります。これで「1」が埋まります。',
-   act:'縦の光の4一・4二・4四に印を付けましょう。'},
+   act:'縦の光の4一・4二・4四に砂紋を引きましょう。'},
   {title:'行・列の石が1つの庭で「2」なら、光の外は空き',idea:'行の石と列の石は1つずつ。灯籠が「2」なら、どちらも光の中にあるので、光の外は空きです。',
    N:6,K:1,st:'....../..1.../.1c.../....../....../......',stones:[0,9,17,19,28,32],
    want:{'6三':2,'4一':2},lit1:k=>[...new Set([...k.row(2),...k.col(2)])],lit2:(k,c)=>[...tLit(k,c,'4三'),k.idx('6三'),k.idx('4一')],
    focus:'4三の灯籠「2」と、三の行・4の列に注目してみましょう。',
    why:'横の光に入る石は三の行の1つまで、縦の光は4の列の1つまで。「2」なので、行の石も列の石も光の中にあります。',
-   act:'光の外の6三・4一に印を付けましょう。'},
+   act:'光の外の6三・4一に砂紋を引きましょう。'},
   {title:'灯籠の縦の隣と横の隣は、同時に石にならない',idea:'灯籠の縦の隣と横の隣は斜めに隣り合うので、片方が石なら、もう片方は空きです。',
    N:6,K:1,st:'...1../....../.1.c../...1../....../......',stones:[0,9,17,19,28,32],
    want:{'3二':1,'4三':2,'2三':2,'1三':1},lit1:(k,c)=>tLit(k,c,'3三'),lit2:(k,c)=>tLit(k,c,'3三'),
    focus:'3三の灯籠「2」に注目してみましょう。',
    why:'照らすのは上の3二と、横の4三・2三・1三。横の光（三の行）に石は1つまでなので、もう1つは3二です。',
-   act:'3二に石を置き、斜めに隣り合う4三・2三に印を。横の石は残る1三です。'}].map(drillCh);
+   act:'3二に石を置き、斜めに隣り合う4三・2三に砂紋を。横の石は残る1三です。'}].map(drillCh);
 const LESSONS={
   basic:{N:6,clue:{'4一':0,'6二':2,'5四':1},stone:['6一','2二','5三','3四','1五','4六'],marks:[],steps:TSTEPS,title:'練習用の庭',tag:'',
     intro:'光るマスと下の説明に沿って、1手ずつ進めます。<br>分からないときは「教えを乞う」を押してください。説明をもう一度見られます。最後の仕上げでは、次の一手とその理由を教わることができます。'},};
@@ -2279,7 +2314,7 @@ function tutNudge(i,target){const st=LS().steps[tStep()],w=st.want&&st.want[i];
   if(DR()&&w===undefined){setMsg('そのマスは、まだ決まりません。');clearTimeout(nudgeT);
     nudgeT=setTimeout(()=>{if(S&&S.tut&&!S.done){if(tut.hint<3)tut.hint++;tutShow();}},1600);return;}
   let t=st.lit().includes(i)?'そのマスはまだ決まりません。説明をもう一度読んでみましょう。':'光っているマスを見てください。分からないときは「教えを乞う」を押してください。';
-  if(w===2&&target===1)t='印を付けるには、下のボタンで「印」に切り替えます。';
+  if(w===2&&target===1)t='砂紋を引くには、下のボタンで「砂紋」に切り替えます。';
   else if(w===1&&target===2)t='石を置くには、下のボタンで「石」に切り替えます。';
   else if(w!==undefined&&target===0)t='そのマスはもう済んでいます。';
   if(w!==undefined&&target!==0){$('modeBtn').classList.remove('nudge');void $('modeBtn').offsetWidth;$('modeBtn').classList.add('nudge');}
@@ -2310,7 +2345,7 @@ function tutStart(lesson){
   $('tutGo').onclick=()=>{S.started=true;hideVeil();tutShow();};}
 function tutWin(){
   showVeil(`<h3>整いました</h3>
-    <p class="tutgoal">決まりごとを守ったまま、石を${S.N}個置ききりました。これが<b>完成</b>です。印を付けていないマスが残っていても構いません。</p>
+    <p class="tutgoal">決まりごとを守ったまま、石を${S.N}個置ききりました。これが<b>完成</b>です。砂紋を引いていないマスが残っていても構いません。</p>
     <div class="winbtns top"><button type="button" class="btn" id="viewBtn">庭を眺める</button></div>
     <div class="winbtns"><button type="button" class="btn" id="tutAgain">もう一度</button><button type="button" class="btn primary" id="tutEnd">${tut&&tut.first?'庭へ向かう':'庭に戻る'}</button></div>`);
   $('veilCard').classList.add('win');
