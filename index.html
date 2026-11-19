@@ -652,7 +652,12 @@ body.picking .sharefoot{display:none}
 /* the buttons sit just under the garden; on a phone they stay clear of the screen's curved edges */
 @media (min-width:821px){.stage .tools{margin-top:4px}}
 @media (max-width:820px){
-  .stage .tools{width:calc(var(--g) + 18px);max-width:calc(100% - 28px)}
+  /* the buttons keep their own width (not the garden's, which shrinks on short screens), a little in from the curved edges */
+  .stage .tools{width:calc(100% - 20px);max-width:none;gap:4px}
+  .stage .tools .btn{font-size:min(12.5px,3.35vw)}
+  .stage .tools .btn.two small{font-size:min(9px,2.3vw);letter-spacing:-.04em}
+  .stage .tools .msep{margin:0 min(8px,1.3vw)}
+  .stage .tools .btn.mode .mopt{gap:min(5px,1vw)}
   main{padding-bottom:12px}
 }
 /* start card: a strip of raked sand on top, the garden's style as chips, the goal with its pebbles, the rules with small drawings */
