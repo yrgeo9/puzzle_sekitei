@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-nP31DXuqdMXLTvnujp+7nvJ/ExIEZpBf5Jy018kf27I=' 'sha256-XWXvrcWGvW70m/p28POIS+RoRHRv6OC/A5RFutjUUwQ=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-nP31DXuqdMXLTvnujp+7nvJ/ExIEZpBf5Jy018kf27I=' 'sha256-0z0MIVOneDXyptj9zZV7/okTxJ8kf5Rk46A4IHm2e0o=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -448,7 +448,7 @@ aside .intro-rules{margin:0 0 8px}
   /* status + board + hint message form one block, centred in the free height.
      --g is the garden's width: limited by the width (minus the coordinate column) and by the height
      (minus status, hint message and the coordinate row) */
-  .stage{flex:1;min-height:0;container-type:size;justify-content:center;gap:8px;--g:min(100cqw - 42px,100cqh - 198px)}
+  .stage{flex:1;min-height:0;container-type:size;justify-content:center;gap:8px;--g:min(100cqw - 42px,100cqh - 216px)}
   .status{flex-shrink:0;width:calc(var(--g) + 42px)}
   #label{font-size:14px}
   .boardwrap{width:calc(var(--g) + 42px);max-width:none;flex-shrink:0}
@@ -464,7 +464,7 @@ aside .intro-rules{margin:0 0 8px}
   .msep{margin:0 6px}
   .tools .btn.mode{gap:0}
   .msep{margin:0 8px}
-  .hintmsg{flex-shrink:0;font-size:12.5px;line-height:1.45;height:5.8em;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .hintmsg{flex-shrink:0;font-size:12.5px;line-height:1.45;height:7.25em;overflow:hidden;display:flex;align-items:center;justify-content:center}
   .scrim{display:block;position:fixed;inset:0;background:rgba(40,36,28,.3);opacity:0;pointer-events:none;transition:opacity .2s;z-index:29}
   body.sheet-open .scrim{opacity:1;pointer-events:auto}
   aside{position:fixed;left:0;right:0;bottom:0;z-index:30;max-height:80%;overflow:hidden;display:flex;flex-direction:column;
@@ -543,7 +543,7 @@ aside .intro-rules{margin:0 0 8px}
   /* 20 stones: two rows of ten */
   .goal.many{min-height:0}
   .goal.many .gicons{display:grid;grid-template-columns:repeat(10,11px);gap:3px 4px}.goal.many .gs{width:11px;height:11px}
-  .stage{--g:min(100cqw - 42px,100cqh - 228px)}
+  .stage{--g:min(100cqw - 42px,100cqh - 246px)}
 }
 /* very narrow phones: four equal buttons leave little room for the small second line */
 @media (max-width:360px){.tools{gap:4px}.tools .btn{padding:0}.tools .btn.two small{font-size:8px;letter-spacing:-.05em}.tools .msep{margin:0 4px}.tools kbd{display:none}}
@@ -2128,7 +2128,7 @@ const TSTEPS=[
   {want:tWant(['4六'],1),lit:()=>tCol(2),
    text:'光っている4の列を見てください。苔石は石の数として数えず、上に石も置けないので、石を置けるのはもう4六だけです。4六に石を置きましょう。'},
   {free:true,lit:()=>[],
-   text:'仕上げです。これまでの考え方を使って、あなた自身で残り3つの石を置いてみましょう。決まりごとを守って石を6個置ききれば完成です。\n分からないときは、下の「教えを乞う」を押してください。次の一手とその理由を教わることができます。'}];
+   text:'仕上げです。これまでの考え方を使って、あなた自身で残り3つの石を置いてみましょう。決まりごとを守って石を6個置ききれば完成です。\n分からないときは、下の「教えを乞う」を押してください。'}];
 // 手がかり少なめ drill: every kind of step that joins two clues, each on a real position from a garden
 // (the same positions as the コツ pictures, plus No. 97102 and the 十間 2×2 blocks). One guided move per chapter.
 // st: the board as the chapter opens (digit = moss, a–e = lantern 0–4, O = stone, x = mark, . = empty); stones: the answer.
