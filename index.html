@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-nP31DXuqdMXLTvnujp+7nvJ/ExIEZpBf5Jy018kf27I=' 'sha256-yvuLP5m4CFQb5dN1NJcD75bJOeulaujcTyDa0D9SvY0=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-nP31DXuqdMXLTvnujp+7nvJ/ExIEZpBf5Jy018kf27I=' 'sha256-3uRu8C0k45cHEMqsQqySt2cfwhO7GdA/8jry61x0PaQ=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -1609,7 +1609,8 @@ function rakeSvg(N,seed,clue){
   const mm=el('mask',{id:id+'k',maskUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2});defs.appendChild(mm);
   mm.appendChild(el('rect',{class:'all',x:-1,y:-1,width:N+2,height:N+2,fill:'#fff'}));
   const marks=[];for(let i=0;i<N*N;i++){if(clue[i]>=0){marks.push(null);continue;}const x=i%N,y=Math.floor(i/N);
-    const r=el('rect',{class:'mc',x:x-(x?.01:1),y:y-(y?.01:1),width:1+(x?.01:1)+(x===N-1?1:.01),height:1+(y?.01:1)+(y===N-1?1:.01),fill:'#fff'});mm.appendChild(r);marks.push(r);}
+    const x0=x?x-.01:0,y0=y?y-.01:0,x1=x===N-1?N:x+1.01,y1=y===N-1?N:y+1.01;   // inside the board only (Safari mishandles parts outside it)
+    const r=el('rect',{class:'mc',x:x0,y:y0,width:x1-x0,height:y1-y0,fill:'#fff'});mm.appendChild(r);marks.push(r);}
   const raked=el('g',{mask:`url(#${id}k)`});raked.appendChild(field);svg.append(raked,rings);
   const items=[];
   const add=(g,pts)=>{const e=el('path',{});g.appendChild(e);items.push({e,pts});};
@@ -1629,7 +1630,7 @@ function rakeSvg(N,seed,clue){
   pick(.24,.5);pick(0,9);   // (keeps the random sequence as before)
   lines(base,q=>q,()=>0);   // test: straight lines across the garden, left to right
   // test: roughen them — a little unevenness along each line, and grain that breaks it up here and there
-  const gr=el('filter',{id:id+'g',filterUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2,'color-interpolation-filters':'sRGB'});
+  const gr=el('filter',{id:id+'g',filterUnits:'userSpaceOnUse',x:0,y:0,width:N,height:N,'color-interpolation-filters':'sRGB'});
   gr.innerHTML=`<feTurbulence type="fractalNoise" baseFrequency="7 1.2" numOctaves="2" seed="${(seed>>>0)%97}" result="n"/>`+
     `<feDisplacementMap in="SourceGraphic" in2="n" scale="0.04" xChannelSelector="R" yChannelSelector="G" result="d"/>`+
     `<feTurbulence type="fractalNoise" baseFrequency="24 30" numOctaves="1" seed="${(seed>>>0)%89+1}" result="g"/>`+
