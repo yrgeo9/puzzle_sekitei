@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-d7IDhcA1x+jUsiw6Pn+ebK6Nx/mVi2vdxQcZBLitFN0=' 'sha256-nP31DXuqdMXLTvnujp+7nvJ/ExIEZpBf5Jy018kf27I=' 'sha256-yn/DHhAuKAZTsRnequo1DqAS84ASeaeEjGBdXYMdkbc=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-qQP2xWmbqvm8ZEZbaENgcgWVwuss1/7cNxo7ePzLqyM=' 'sha256-3/c2X41/eTqGhjyyLbqp/kZtKp2W+VTSRU0uf4dQe6s=' 'sha256-skIZrPyNbKc6fEgnCDf8x+kMNeMFKRC6y8QCN8v7l9o=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -79,12 +79,12 @@ header.top{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justi
 
 /* ---- status line ---- */
 main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
-.status{width:100%;max-width:560px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:12.5px;color:var(--muted);letter-spacing:.06em}
+.status{width:100%;max-width:560px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12.5px;color:var(--muted);letter-spacing:.06em}
 #label{font-family:var(--display);font-weight:700;font-size:15px;color:var(--ink);letter-spacing:.12em}
 /* the puzzle number is bookkeeping: tiny and pale in the bottom-right corner */
 .tutgo2{display:inline-flex;flex-direction:column;align-items:center;gap:2px;line-height:1.2}
 .tutgo2 small{font-size:10.5px;letter-spacing:.06em;opacity:.75;font-weight:400}
-.seedno{grid-column:1;grid-row:3;justify-self:end;margin:6px2px00;font-size:13px;line-height:1;color:#b3aea3;letter-spacing:.08em;font-variant-numeric:tabular-nums;user-select:all}
+.seedno{grid-column:1;grid-row:3;justify-self:end;align-self:start;margin:5px 1px 0;font-size:10.5px;line-height:1;color:#b3aea3;letter-spacing:.08em;font-variant-numeric:tabular-nums;user-select:all}
 /* shogi-style coordinates: column numbers on top (counted from the right), kanji row numbers on the right */
 .boardwrap{display:grid;grid-template-columns:minmax(0,1fr) 38px;grid-template-rows:30px auto auto;column-gap:4px;width:100%;max-width:602px}
 .coords{display:grid;font-family:var(--display);font-size:11px;color:var(--muted);line-height:1}
@@ -99,7 +99,6 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .coords-right .edge{justify-content:flex-start;padding-left:4px;gap:5px}
 .coords-right .pips{flex-direction:column}
 .boardwrap .garden{grid-column:1;grid-row:2;max-width:none}
-.status .time{font-family:var(--display);font-variant-numeric:tabular-nums;font-size:17px;color:var(--ink);letter-spacing:.06em}
 
 /* ---- the garden: white gravel in a stone curb ---- */
 .garden{box-sizing:border-box;width:100%;max-width:560px;position:relative;padding:9px;border-radius:3px;
@@ -184,7 +183,7 @@ body{word-break:keep-all;word-break:auto-phrase;overflow-wrap:anywhere}
 .pips.short .pip:not(.on){border-color:var(--err)}   /* short: the stones placed stay filled, the missing ones stay hollow */
 
 /* ---- buttons: thin-lined, mincho lettering ---- */
-.tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%;max-width:602px}
+.tools{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;width:100%;max-width:602px}
 .tools .btn{justify-content:center;min-width:0}
 .tools .btn{padding-inline:12px;white-space:nowrap}
 .btn{font-family:var(--display);font-weight:500;font-size:14px;letter-spacing:.06em;border:1px solid var(--line);background:var(--panel);color:var(--ink);
@@ -365,7 +364,7 @@ aside .intro-rules{margin:0 0 8px}
 /* 庭の様式: each heading in ink, led by a small vermilion dot */
 .pick .sublabel{color:var(--ink);font-weight:700;display:flex;align-items:center;gap:7px}
 .pick .sublabel::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--shu);flex-shrink:0}
-.pick .picklead{margin:-6px 0 2px;color:var(--muted)}
+
 .pick .seg{display:flex;width:100%;box-sizing:border-box;border-bottom:1px solid var(--line)}
 .pick .seg button{flex:1;padding:9px 2px;font-size:13.5px;margin-bottom:-1px;white-space:nowrap;letter-spacing:0}
 .pick .segnote{margin:6px 0 0!important}
@@ -448,8 +447,8 @@ aside .intro-rules{margin:0 0 8px}
   /* status + board + hint message form one block, centred in the free height.
      --g is the garden's width: limited by the width (minus the coordinate column) and by the height
      (minus status, hint message and the coordinate row) */
-  .stage{flex:1;min-height:0;container-type:size;justify-content:center;gap:8px;--g:min(100cqw - 42px,100cqh - 216px)}
-  .status{flex-shrink:0;width:calc(var(--g) + 42px)}
+  .stage{flex:1;min-height:0;container-type:size;justify-content:center;gap:8px;--g:min(100cqw - 42px,(100cqh - 239px) / 1.085)}
+  .status{flex-shrink:0;width:max(calc(var(--g) + 42px),min(calc(100cqw - 20px),280px))}
   #label{font-size:14px}
   .boardwrap{width:calc(var(--g) + 42px);max-width:none;flex-shrink:0}
   .garden{padding:6px}
@@ -494,7 +493,7 @@ aside .intro-rules{margin:0 0 8px}
 .gs{width:16px;height:16px;border-radius:50%;flex:none;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%);box-shadow:0 1px 1.5px rgba(40,30,10,.25);transition:background .15s}
 .gs.e{background:transparent;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 14%,transparent)}
 .goal.many{min-height:37px}
-.goal.many .gicons{display:grid;grid-template-columns:repeat(10,16px);gap:5px}
+.goal.many .gicons{display:grid}
 .gs.x{background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--err) 55%,white),var(--err) 66%)}
 .goal.ok .gs.e{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--moss) 70%,transparent)}
 .goalfig{display:flex;align-items:center;justify-content:flex-start;gap:14px;margin:10px 0 4px}
@@ -505,8 +504,29 @@ aside .intro-rules{margin:0 0 8px}
 .goalnote{margin:0;font-size:13.5px;line-height:1.75}
 .goalnote span{display:block;margin-top:2px;font-size:12.5px;color:var(--muted);line-height:1.65}
 /* ---- 練習用の庭 ---- */
-.tutquit{font:inherit;font-size:12.5px;color:var(--shu);background:transparent;border:1px solid var(--shu);border-radius:2px;padding:3px 9px;cursor:pointer;letter-spacing:.04em}
-.tutquit:hover{color:#fff;background:var(--shu)}
+/* the row above the garden: its name on the left; the time and one red button (砂利を均す, or 練習をやめる in a 練習用の庭) together on the right */
+.status #label{flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-align:center}
+.status .gstyle{flex:0 1 auto}
+#label>span:not(.sep),.gstyle>span>span:not(.sep){white-space:nowrap}   /* a long style breaks only at its dots */
+@media (max-width:820px){
+  /* tall phones: the garden block sits high and the buttons go to the bottom, under the thumb */
+  .stage::before{content:"";flex:1 1 0}
+  .stage>.hintmsg{flex:3 1 auto;height:auto;min-height:7.25em;align-items:flex-start}
+}
+/* the same make as the buttons under the garden (mincho lettering, thin line, square corners), only in red */
+.tutquit,.resetbtn{font-family:var(--display);font-weight:500;color:var(--shu);background:var(--panel);border:1px solid var(--shu);border-radius:2px;cursor:pointer;flex-shrink:0;white-space:nowrap;
+  min-height:40px;padding:3px 12px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1.25;letter-spacing:.06em;transition:border-color .15s,background .15s}
+.tutquit{font-size:14px}
+.resetbtn span{font-size:14px}
+.resetbtn small{display:block;font-family:var(--body);font-weight:400;font-size:10.5px;letter-spacing:0;color:color-mix(in srgb,var(--shu) 50%,var(--muted));opacity:.85}
+.tutquit:hover,.resetbtn:hover{border-color:color-mix(in srgb,var(--shu) 70%,#000)}
+.tutquit:active,.resetbtn:active{background:color-mix(in srgb,var(--shu) 8%,var(--panel))}
+/* phone: they grow and shrink with the screen width, as the buttons under the garden do */
+@media (max-width:820px){
+  .tutquit,.resetbtn{min-height:min(40px,10.5vw);padding:min(3px,.8vw) min(12px,2.6vw)}
+  .tutquit,.resetbtn span{font-size:min(13.5px,3.6vw)}
+  .resetbtn small{font-size:min(9.5px,2.45vw);letter-spacing:-.04em}
+}
 /* 練習用の庭へ向かう: filled in the brown of an old wooden veranda */
 .tutgo{justify-content:center;width:100%;margin-top:10px;background:#7a5b3f;border-color:#7a5b3f;color:#fbf7ef;font-weight:700}
 .tutgo:hover{background:#684c33;border-color:#684c33}
@@ -538,22 +558,67 @@ aside .intro-rules{margin:0 0 8px}
 .startrules>b::before,.startgoal b.sh::before{content:"";width:5px;height:5px;background:var(--shu);flex-shrink:0}
 .startgoal.lft{text-align:left;align-self:stretch}.startgoal .kw{color:var(--shu)}.card.start .startrules{align-self:stretch}.startgoal.lft ul{margin:2px 0 0;padding-left:1.9em}
 @media (max-width:820px){
-  .goal{width:calc(var(--g) + 42px);max-width:none;margin:-2px 0 0;height:26px;min-height:0}
-  .gicons{gap:4px}.gs{width:15px;height:15px}
+  .goal{width:calc(var(--g) + 42px);max-width:none;margin:-2px 0 0;height:26px;min-height:0;flex-shrink:0}
   /* 20 stones: two rows of ten */
   .goal.many{min-height:0}
-  .goal.many .gicons{display:grid;grid-template-columns:repeat(10,11px);gap:3px 4px}.goal.many .gs{width:11px;height:11px}
-  .stage{--g:min(100cqw - 42px,100cqh - 246px)}
+  .goal.many .gicons{display:grid}
+  .stage{--g:min(100cqw - 42px,(100cqh - 271px) / 1.085)}
 }
 /* very narrow phones: four equal buttons leave little room for the small second line */
 @media (max-width:360px){.tools{gap:4px}.tools .btn{padding:0}.tools .btn.two small{font-size:8px;letter-spacing:-.05em}.tools .msep{margin:0 4px}.tools kbd{display:none}}
 /* PC: the garden shrinks with the window height, so status, garden, stones left and the buttons all fit on one screen */
 @media (min-width:821px){
-  main{--bw:min(602px,max(440px,100vh - 300px))}
+  main{--bw:min(602px,max(340px,100vh - 325px))}
   .status{max-width:calc(var(--bw) - 42px)}
   .boardwrap,.goal,.tools{max-width:var(--bw)}
+  .tools{max-width:max(var(--bw),430px)}
   .hintmsg{max-width:calc(var(--bw) - 42px)}
   aside section[id]{scroll-margin-top:16px}
+}
+.segnote u{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;color:var(--ink)}
+/* the garden's style: plain text, the dots between its parts a little paler */
+.gstyle{display:flex;align-items:center;justify-content:center;min-width:0;font-family:var(--display);font-weight:700;color:var(--ink);text-align:center;line-height:1.3}
+.gstyle .sep{margin:0 .3em;color:var(--muted);font-weight:400}
+#label .sep{color:var(--muted);font-weight:400}
+.sthead{display:flex;justify-content:center}
+.sthead .gstyle{font-size:13px;letter-spacing:.06em}
+@media (max-width:820px){.sthead .gstyle{font-size:12px;letter-spacing:.02em}}
+/* test: the four parts around the board, paired by what they are about
+   — above the board, the game: its style (left) and the time spent, with the 鹿威し that knocks each minute (right)
+   — below the board, what is on it: the stones still to place (left) and 砂利を均す, which clears them (right) */
+.clock{display:flex;align-items:center;gap:5px;margin-left:auto;flex-shrink:0}
+.clock:has(#time[hidden]){display:none}
+.clock .time{font-family:var(--display);font-variant-numeric:tabular-nums;font-size:17px;line-height:1;color:var(--ink);letter-spacing:.04em;white-space:nowrap}
+.clock .time.long{font-size:14px;letter-spacing:0}
+.sozuart{display:block;flex-shrink:0;width:60px;height:42px;margin:-3px -3px -3px 0;overflow:visible;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.sozuart .tube{transform-box:view-box;transform-origin:50px 40px;transform:rotate(17deg)}
+.sozuart .stream{opacity:0;transition:opacity .3s}
+.sozuart.run .stream{opacity:1;animation:sozuDrip .6s linear infinite}   /* water runs into the tube only while the clock runs */
+@keyframes sozuDrip{to{stroke-dashoffset:-11}}
+/* tip forward (0–.4 s), swing back and strike the stone at .5 s — the 「カ」 —, bounce once for the 「コン」 */
+.sozuart.go .tube{animation:sozuTip 1.1s linear}
+@keyframes sozuTip{0%{transform:rotate(17deg);animation-timing-function:ease-in}30%{transform:rotate(-14deg)}36%{transform:rotate(-14deg);animation-timing-function:cubic-bezier(.5,0,1,.6)}
+  45.5%{transform:rotate(17deg);animation-timing-function:ease-out}50%{transform:rotate(11.5deg);animation-timing-function:ease-in}54.2%{transform:rotate(17deg)}100%{transform:rotate(17deg)}}
+.goal{margin-top:-8px}   /* the seed number now sits under the garden's right edge, so the stones come up a little; */ /* the stones left sit a little below the garden, centred under the garden (the right padding is the row-number column) */
+/* the row above lines up with the garden's edges, like the row below */
+@media (min-width:821px){.stage>.status{max-width:var(--bw);padding-right:42px;box-sizing:border-box}}
+@media (max-width:820px){
+  .sozuart{width:54px;height:38px}.clock .time{font-size:15px}.clock .time.long{font-size:12.5px}
+  .goal,.goal.many{height:auto;min-height:0;margin-top:-2px}
+  .stage>.status{max-width:none}
+}
+@media (prefers-reduced-motion:reduce){.sozuart .stream,.sozuart.go .tube{animation:none}}
+/* stones left: the icons grow and shrink in step with the garden (no upper or lower limit) */
+.goal .gicons .gs{width:var(--gs);height:var(--gs)}
+.goal .gicons{gap:calc(var(--gs) * .3)}
+.goal.many .gicons{grid-template-columns:repeat(10,var(--gs));gap:calc(var(--gs) * .22) calc(var(--gs) * .3)}
+@media (min-width:821px){
+  .goal{--gs:calc((var(--bw) - 42px) * .032)}
+  .goal.many{min-height:calc(var(--gs) * 2.3 + 2px)}
+}
+@media (max-width:820px){
+  .goal{--gs:calc(var(--g) * .05)}
+  .goal.many{--gs:calc(var(--g) * .038)}
 }
 /* phone: the garden label stays on one line (the dots lose their spaces, the type steps down a little) */
 #label .sep{margin:0 .4em}
@@ -562,12 +627,12 @@ aside .intro-rules{margin:0 0 8px}
 }
 @media (max-width:400px){#label{font-size:12.5px;letter-spacing:.04em}}
 /* 青紅葉: sprays of fresh green maple reaching in from the left of the garden (decoration only, never in the way) */
-.momiji{position:absolute;z-index:3;pointer-events:none;overflow:visible;width:96px;height:96px;filter:drop-shadow(0 3px 3px rgba(40,50,20,.25))}
-.momiji.tr{right:-66px;top:-52px}
+.momiji{display:none;position:absolute;z-index:3;pointer-events:none;overflow:visible;width:96px;height:96px;filter:drop-shadow(0 3px 3px rgba(40,50,20,.25))}
+.momiji.tr{right:-62px;bottom:-60px;transform:scaleY(-1);filter:drop-shadow(0 -3px 3px rgba(40,50,20,.25))}
 .momiji.bl{left:-71px;bottom:-66px}
 html,body{overflow-x:clip}
 /* phone: the leaves fit the small gaps — above the row numbers beside the timer, and below the garden left of the stones */
-@media (max-width:820px){.momiji{width:46px;height:46px}.momiji.tr{right:-42px;top:-37px}.momiji.bl{left:2px;bottom:-40px}}
+@media (max-width:820px){.momiji{width:46px;height:46px}.momiji.tr{right:-40px;bottom:-34px}.momiji.bl{left:2px;bottom:-40px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 .cntfig{display:grid;grid-template-columns:auto auto;justify-self:center;column-gap:3px;row-gap:2px;font-family:var(--display);font-size:10px;line-height:1;color:var(--muted)}
 .cntfig .cf-c{display:grid;grid-template-columns:repeat(3,1fr);text-align:center}
@@ -661,11 +726,7 @@ body.picking .sharefoot{display:none}
   main{padding-bottom:12px}
 }
 /* start card: a strip of raked sand on top, the garden's style as chips, the goal with its pebbles, the rules with small drawings */
-.veil .card.start{--cp:22px;padding:0 var(--cp) 18px;overflow:hidden;gap:12px}
-.veil .card.start::before{content:"";display:block;align-self:stretch;height:12px;margin:0 calc(-1 * var(--cp)) 2px;
-  background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 2px,var(--curb) 2px 3px);border-bottom:1px solid var(--curb)}
-.stchips{display:flex;flex-wrap:wrap;justify-content:center;gap:5px}
-.stchips span{font-family:var(--display);font-weight:700;font-size:12.5px;letter-spacing:.06em;line-height:1;padding:5px 8px;border:1px solid var(--line);border-radius:2px;color:var(--ink);background:var(--panel);white-space:nowrap}
+.veil .card.start{--cp:22px;padding:18px var(--cp) 18px;overflow:hidden;gap:12px}
 .stgoal{align-self:stretch;text-align:left;background:var(--sand);border-left:3px solid var(--shu);border-radius:0 2px 2px 0;padding:9px 12px 10px}
 .stgoal p{margin:3px 0 0;font-size:13px;line-height:1.6;color:var(--ink)}
 .stgoal .kw{color:var(--shu);font-weight:700}
@@ -681,9 +742,7 @@ body.picking .sharefoot{display:none}
 .veil .card.start .startgo.guidego:not(.guideskip){background:#7a5b3f;border-color:#7a5b3f;color:#fbf7ef}
 .veil .card.start .startgo.guidego:not(.guideskip):hover{background:#684c33;border-color:#684c33}
 @media (max-width:820px){
-  .veil .card.start{--cp:14px;padding:0 var(--cp) 13px;gap:9px}
-  .veil .card.start::before{height:9px}
-  .stchips span{font-size:11.5px;padding:4px 6px}
+  .veil .card.start{--cp:14px;padding:13px var(--cp) 13px;gap:9px}
   .stgoal{padding:7px 10px 8px}
   .stgoal p{font-size:12px;line-height:1.5}
   .stpebbles{margin-top:5px}
@@ -714,7 +773,12 @@ body.picking .sharefoot{display:none}
 .rake .rough path{stroke:color-mix(in srgb,var(--rake) 75%,#a99d86);stroke-width:calc(var(--px,.03)*1.7)}
 /* test: the four buttons share the row by what they hold ([石｜砂紋] and 教えを乞う need more than 休憩), and none is
    ever narrower than its own words; on narrow phones the type steps down with the screen */
-.tools,.stage .tools{grid-template-columns:minmax(min-content,1.35fr) minmax(min-content,1fr) minmax(min-content,.85fr) minmax(min-content,1.1fr)}
+.tools,.stage .tools{grid-template-columns:minmax(min-content,1.35fr) minmax(min-content,1fr) minmax(min-content,.85fr) minmax(min-content,.85fr) minmax(min-content,.85fr)}
+.tools:has(#resetBtn[hidden]),.stage .tools:has(#resetBtn[hidden]){grid-template-columns:minmax(min-content,1.35fr) minmax(min-content,1fr) minmax(min-content,.85fr) minmax(min-content,.85fr)}
+/* 均す: the one button that clears the board, set apart in red */
+.tools .btn.danger{color:var(--shu);border-color:color-mix(in srgb,var(--shu) 70%,var(--line))}
+.tools .btn.danger small{color:color-mix(in srgb,var(--shu) 50%,var(--muted));opacity:.85}
+.tools .btn.danger:hover{border-color:var(--shu);background:color-mix(in srgb,var(--shu) 5%,var(--panel))}
 .tools .btn{padding-inline:6px}
 @media (max-width:820px){.stage .tools .btn{padding-inline:3px}}
 .rakecv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
@@ -752,13 +816,12 @@ button{touch-action:manipulation}
   <button type="button" class="close intro-x" id="pickX" aria-label="閉じる">×</button>
   <div class="intro-body">
     <h2 id="pickTitle">庭の様式</h2>
-    <p class="small picklead">盤面の設定を選択してください。</p>
     <div>
       <p class="sublabel">広さ・石の数</p>
       <div class="seg sizeSeg" role="group" aria-label="広さ・石の数">
-        <button data-size="6" aria-pressed="false">六間 ・ 石6</button>
-        <button data-size="8" aria-pressed="true">八間 ・ 石8</button>
-        <button data-size="10" aria-pressed="false">十間 ・ 石20</button>
+        <button data-size="6" aria-pressed="false">六間（石6）</button>
+        <button data-size="8" aria-pressed="true">八間（石8）</button>
+        <button data-size="10" aria-pressed="false">十間（石20）</button>
       </div>
       <p class="small segnote" data-note="size"></p>
       <p class="sublabel">追加の決まりごと</p>
@@ -767,10 +830,10 @@ button{touch-action:manipulation}
         <button data-toro="1" aria-pressed="false">灯籠あり</button>
       </div>
       <p class="small segnote" data-note="toro"></p>
-      <p class="sublabel">手がかりの数</p>
-      <div class="seg diffSeg" role="group" aria-label="手がかりの数">
-        <button data-diff="0" aria-pressed="false">手がかり多め</button>
-        <button data-diff="1" aria-pressed="true">手がかり少なめ</button>
+      <p class="sublabel">難易度</p>
+      <div class="seg diffSeg" role="group" aria-label="難易度">
+        <button data-diff="0" aria-pressed="false">普通</button>
+        <button data-diff="1" aria-pressed="true">難しい</button>
       </div>
       <p class="small segnote" data-note="diff"></p>
       <div class="pickrow">
@@ -786,8 +849,22 @@ button{touch-action:manipulation}
   <main>
     <div class="stage">
       <div class="status">
-        <span id="label"></span>
-        <span class="time" id="time">0:00</span>
+        <div class="gstyle"><span id="label"></span></div>
+        <span class="clock"><span class="time" id="time" title="経過時間">0:00</span><svg class="sozuart" id="sozuArt" viewBox="0 0 100 70" role="button" aria-label="鹿威し（押すと鳴ります）"><title>鹿威し</title>
+          <rect x="0" y="62" width="100" height="2" rx="1" fill="#d3cdc0"/>
+          <path d="M66 63 Q69 54 82 54 Q95 55 98 63 Z" fill="#8d8a80"/><path d="M71 58 Q76 55 84 55.5" stroke="#b5b1a6" stroke-width="1.2" fill="none"/>
+          <rect x="0" y="7" width="27" height="7" rx="3.5" fill="#86985a"/><rect x="11" y="7" width="1.4" height="7" fill="#5f7240"/><ellipse cx="27" cy="10.5" rx="1.7" ry="3.5" fill="#43532a"/>
+          <line class="stream" x1="25.5" y1="14" x2="25.5" y2="31" stroke="#8fb9c7" stroke-width="1.5" stroke-dasharray="3 2.5" stroke-linecap="round"/>
+          <rect x="45.5" y="38" width="3" height="25" rx="1" fill="#7a6a4f"/><rect x="51.5" y="38" width="3" height="25" rx="1" fill="#6a5b42"/>
+          <!-- the mouth is cut at 17°, the tube's resting tilt, so at rest the opening lies level with the ground -->
+          <g class="tube">
+            <path d="M36.7 35 L85 35.5 Q87 40 85 44.5 L4 45 Z" fill="#9aab68"/>
+            <path d="M4 45 L36.7 35 L36.7 37 L8 45 Z" fill="#6c7f45" opacity=".55"/><path d="M4 45 L36.7 35" stroke="#5f7240" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M39 37.3 L83 37.6" stroke="#c4d19a" stroke-width="1.6" stroke-linecap="round"/>
+            <rect x="44" y="35" width="1.6" height="10" fill="#6c7f45"/><rect x="68" y="35.3" width="1.6" height="9.6" fill="#6c7f45"/>
+            <circle cx="50" cy="40" r="1.7" fill="#3c3b37"/>
+          </g>
+        </svg></span>
         <button type="button" class="tutquit" id="tutQuit" hidden>練習をやめる</button>
       </div>
       <div class="boardwrap">
@@ -801,13 +878,14 @@ button{touch-action:manipulation}
         <div class="coords coords-right" id="rowLabels" aria-hidden="true"></div>
         <p class="seedno" id="no" title="盤面の番号"></p>
       </div>
-      <div class="goal" id="goal" role="img"></div>
+      <div class="goal" id="goal"><span class="gicons" id="gicons" role="img"></span></div>
       <p class="hintmsg" id="hintMsg" aria-live="polite"></p>
       <div class="tools">
         <button class="btn mode" id="modeBtn" aria-pressed="false" title="置くものを切り替え (Q)"><span class="mopt on" id="optStone"><i class="modeicon"></i>石</span><span class="msep" aria-hidden="true"></span><span class="mopt" id="optMark"><i class="modeicon ring"></i>砂紋</span><kbd>Q</kbd></button>
         <button class="btn" id="undoBtn" title="一手戻す (Z)">一手戻す <kbd>Z</kbd></button>
         <button class="btn two" id="pauseBtn" title="タイマーを一時停止 (P)"><span>休憩</span><small>一時停止</small></button>
-        <button class="btn two" id="hintBtn" title="次に推理できる一手を教わる"><span>教えを乞う</span><small>ヒントをもらう</small></button>
+        <button class="btn two" id="hintBtn" title="次に推理できる一手を教わる"><span>洞察</span><small>ヒント</small></button>
+        <button type="button" class="btn two danger" id="resetBtn" title="置いた石と砂紋をすべて取り除く" hidden><span>均す</span><small>リセット</small></button>
       </div>
     </div>
   </main>
@@ -863,7 +941,8 @@ button{touch-action:manipulation}
         <div class="sw"><div class="d"></div></div><span>「砂紋」モードでタップ（または右クリック）で「石なし」のマスに砂紋を引く・消す<br>なぞると続けて引いたり消したりできます</span>
         <span class="minibtn" aria-hidden="true">一手戻す</span><span>直前の操作を元に戻せます</span>
         <span class="minibtn" aria-hidden="true">休憩</span><span>タイマーを一時停止できます</span>
-        <span class="minibtn" aria-hidden="true">教えを乞う</span><span>次の一手とその理由を示します</span>
+        <span class="minibtn" aria-hidden="true">洞察</span><span>次の一手とその理由を示します</span>
+        <span class="minibtn" aria-hidden="true">均す</span><span>置いた石と砂紋をすべて取り除きます（下に並ぶボタンの右端）</span>
       </div>
     </section>
     <section data-tab="rules">
@@ -871,7 +950,7 @@ button{touch-action:manipulation}
     </section>
     <section data-tab="tips" id="tipsTop">
       <h2>解き方のコツ（基本）</h2>
-      <p class="small">どちらの盤面でも使う、1つの行・列・苔だけを見れば決まる形です。「手がかり多め」の盤面は、この形だけで最後まで解けます。図は、形だけを取り出した簡単な例です。</p>
+      <p class="small">どちらの盤面でも使う、1つの行・列・苔だけを見れば決まる形です。「普通」の盤面は、この形だけで最後まで解けます。図は、形だけを取り出した簡単な例です。</p>
       <div class="pats">
         <div class="patrow"><b>石のまわり8マスには、石を置けない</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:5"><div class="patcols"><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i class="h"></i><i class="s"></i><i class="h"></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:5"><div class="patcols"><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i class="k c"></i><i class="s"></i><i class="k c"></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div></div>
         <div class="patrow"><b>揃った行・列・苔の残りは空き</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:1;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="h"></i><i class="h"></i><i class="h"></i><i class="s h"></i><i class="h"></i><i class="h"></i></div><div class="patrows"><span>三</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:1;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k c"></i><i class="k c"></i><i class="k c"></i><i class="s"></i><i class="k c"></i><i class="k c"></i></div><div class="patrows"><span>三</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="s h"></i><i class="k h"></i><i class="k h"></i><i></i><i></i><i></i><i class="k h"></i><i class="m h">1</i><i class="k h"></i><i></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="s"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="m">1</i><i class="k"></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">行・列の石が揃ったら、その行・列の残りのマスに砂紋を引く。苔の数だけ石が入ったら、苔のまわりの残りのマスに砂紋を引く。</p></div>
@@ -896,8 +975,8 @@ button{touch-action:manipulation}
       <button class="btn tutgo" type="button" data-tuttoro>「灯籠あり」を学ぶ</button>
     </section>
     <section data-tab="tips">
-      <h2>解き方のコツ（手がかり少なめ）</h2>
-      <p class="small">「手がかり少なめ」の盤面は、1つの行・列・苔だけを見ても次の一手が決まらない場面があります。<b>2つの手がかり（行と行、行と苔、苔と苔）の置き方の組み合わせを全部考え、どの組み合わせでも同じになるマスを確定する</b>のが基本です。候補が2〜3マスしかない行・列・苔を探し、隣の行や重なる苔と組み合わせてみてください。砂紋をこまめに付けると候補が見えやすくなります。図の多くは実際の盤面から取っています。</p>
+      <h2>解き方のコツ（難しい）</h2>
+      <p class="small">「難しい」の盤面は、1つの行・列・苔だけを見ても次の一手が決まらない場面があります。<b>2つの手がかり（行と行、行と苔、苔と苔）の置き方の組み合わせを全部考え、どの組み合わせでも同じになるマスを確定する</b>のが基本です。候補が2〜3マスしかない行・列・苔を探し、隣の行や重なる苔と組み合わせてみてください。砂紋をこまめに付けると候補が見えやすくなります。図の多くは実際の盤面から取っています。</p>
       <div class="pats">
         <div class="patrow"><b>片方の石が、もう片方の中に必ず入る</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="m">0</i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k h"></i><i class="k h"></i><i></i><i></i><i></i><i></i><i class="m h">1</i><i class="m h">1</i><i></i><i></i><i></i><i class="m">1</i><i class="h"></i><i class="h"></i><i class="m h">1</i><i class="h"></i><i class="h"></i><i class="h"></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="m">0</i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="m">1</i><i class="m">1</i><i></i><i></i><i></i><i class="m">1</i><i></i><i></i><i class="m">1</i><i class="k c"></i><i class="k c"></i><i class="k c"></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">6五の苔「1」の石は六の行（6六か5六）に入るので、<b>3六・2六・1六は空き</b>。</p><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="m h">1</i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k c"></i><i class="m">1</i><i class="k c"></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">一の行の候補は6一か5一で、どちらも5二の苔「1」のまわり。「1」は一の行の石で埋まるので、<b>6二・4二・6三・5三・4三は空き</b>。</p><p class="patsub">例3</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:4"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span></div><div class="pat"><i class="h"></i><i class="h"></i><i></i><i></i><i class="m h">1</i><i class="m h">2</i><i class="k"></i><i></i><i class="h"></i><i class="h"></i><i class="k"></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:4"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span></div><div class="pat"><i></i><i></i><i class="s c"></i><i></i><i class="m">1</i><i class="m">2</i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">6三の苔「1」の候補（6二・5二・6四・5四）は、すべて5三の苔「2」のまわり。「2」の1つはここで埋まるので、残り1つは<b>4二</b>。</p><p class="patsub">例4</p><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="m h">2</i><i class="blkf et el er"></i><i></i><i></i><i class="m">0</i><i class="k"></i><i class="blkf et eb el"></i><i class="blkf eb er"></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="m">1</i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i class="k c"></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k"></i><i class="k"></i><i class="m">2</i><i></i><i></i><i></i><i class="m">0</i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="m">1</i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">4二の苔「2」の候補は、一の行の5一・4一・3一と、はみ出した3二・4三・3三（枠）の3行・3列。枠の3マスは互いに隣り合うので、石は1つまで。もう1つは必ず一の行に入るので、<b>6一・2一・1一は空き</b>。</p><p class="small">片方の石が必ずもう片方の中に入るなら、もう片方の残りの石はそのぶん減り、0になればほかの候補は空き。候補がはみ出していても、はみ出したマスに石が1つしか入らなければ使える（例4）。</p></div>
         <div class="patrow"><b>どの置き方でも隣になるマスは空き</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span><span class="tag">十間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">三の行の石は4三か3三。どちらに置いても隣になる<b>4二・3二・4四・3四は空き</b>。苔の候補でも同じ考え方が使えます。</p><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i class="m">0</i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="k h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="k h"></i><i class="m h">0</i><i class="k h"></i><i class="h"></i><i class="h"></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="m">1</i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i class="m">0</i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="s c"></i><i class="k"></i><i class="m">0</i><i class="k"></i><i class="k c"></i><i class="k c"></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="m">1</i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">二の行の石は2二か1二。2三・1三はどちらとも隣り合うので、<b>三の行の石は6三</b>。</p><p class="patsub">例3</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">三の行は残り2つで、候補は7三〜4三の4マス続き。隣り合わない置き方は「7三と5三」「7三と4三」「6三と4三」の3通りで、どれも<b>7三・6三のどちらかに1つ、5三・4三のどちらかに1つ</b>石が入る。だから、その上下の<b>7二〜4二と7四〜4四は空き</b>。</p></div>
@@ -906,18 +985,18 @@ button{touch-action:manipulation}
         <div class="patrow"><b>苔の数が「入れられる最大数」と等しいなら、余裕なく入る</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:4;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i class="h"></i><i class="m h">2</i><i class="h"></i><i></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:4;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k c"></i><i></i><i class="m">2</i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i class="k c"></i><i></i><i class="k c"></i><i class="k c"></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i class="k c"></i><i></i><i class="k c"></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">石は「5一と3二」か「3一と5二」。どちらでも<b>一・二の行と5・3の列を使い切る</b>ので、その残りと4二・4三は空き。</p><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:8"><div class="patcols"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k h"></i><i class="m h">2</i><i class="k h"></i><i class="k"></i><i class="k"></i><i class="s"></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i class="k"></i><i class="k"></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:8"><div class="patcols"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i class="k c"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="m">2</i><i class="k"></i><i class="k"></i><i class="k"></i><i class="s"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i class="k c"></i><i class="k"></i><i class="k"></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">三の行はもう1三で揃っているので、5三の苔「2」のまわりに入れられる石は、二の行から1つと四の行から1つの<b>最大2つ</b>。これが苔の数と同じなので、どちらの行も石を苔のまわりに入れるしかなく、<b>二・四の行の残りは空き</b>。</p><p class="small">苔のまわりに入れられる石の最大数を、行・列の残りや「2×2には1つまで」から数える。苔の数と同じなら、置き場所が決まる。</p></div>
         <div class="patrow"><b>いくつかの行が、同じ数の列を取り合う</b><span class="tags"><span class="tag">六間</span><span class="tag">八間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat" style="--c:6"><i></i><i></i><i></i><i></i><i class="k c u"></i><i class="k c u"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="u"></i><i class="u"></i><i></i><i></i><i></i><i></i><i class="k c u"></i><i class="k c u"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="u"></i><i class="u"></i><i></i><i></i><i></i><i></i><i class="k c u"></i><i class="k c u"></i><i></i><i></i><i></i><i></i><i class="k c u"></i><i class="k c u"></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">二と四の行の候補は、どちらも2か1の列。2行の石2つで<b>2・1の列を使い切る</b>（赤い列）ので、ほかの行の2・1の列は空き。</p><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:6;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="h"></i><i class="k"></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="k"></i><i class="h"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:6;--c:6"><div class="patcols"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="u"></i><i class="k"></i><i class="u"></i><i class="k"></i><i class="k u"></i><i class="k"></i><i class="k c u"></i><i></i><i class="k c u"></i><i></i><i class="k c u"></i><i></i><i class="k u"></i><i class="k"></i><i class="u"></i><i class="k"></i><i class="u"></i><i class="k"></i><i class="k c u"></i><i></i><i class="k c u"></i><i></i><i class="k c u"></i><i></i><i class="u"></i><i class="k"></i><i class="k u"></i><i class="k"></i><i class="u"></i><i class="k"></i><i class="k c u"></i><i></i><i class="k c u"></i><i></i><i class="k c u"></i><i></i></div><div class="patrows"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">一・三・五の行の候補は、どれも6・4・2の列の中。3つの行の石3つで<b>6・4・2の列を使い切る</b>（赤い列）ので、二・四・六の行の6・4・2の列は空き。</p><p class="small">行の候補が、行と同じ数の列に収まっていたら、その列はその行で使い切られる。行と列を入れ替えても同じ。</p></div>
       </div>
-      <button class="btn tutgo" type="button" data-tutadv>「手がかり少なめ」を学ぶ</button>
+      <button class="btn tutgo" type="button" data-tutadv>「難しい」を学ぶ</button>
     </section>
     <section data-tab="tips">
-      <h2>解き方のコツ（手がかり少なめ・十間）</h2>
-      <p class="small">十間（石20）の「手がかり少なめ」の盤面で使う形です。十間では行・列に石が2つ入るので、<b>候補が何マス続きで、どう分かれているか</b>から、その行の中だけでなく、隣の行・列や苔のまわりまで決まることがあります。石がまだ入っていない行・列の候補の並び方に注目してください。図は、形だけを取り出した簡単な例です。</p>
+      <h2>解き方のコツ（十間・難しい）</h2>
+      <p class="small">十間（石20）の「難しい」の盤面で使う形です。十間では行・列に石が2つ入るので、<b>候補が何マス続きで、どう分かれているか</b>から、その行の中だけでなく、隣の行・列や苔のまわりまで決まることがあります。石がまだ入っていない行・列の候補の並び方に注目してください。図は、形だけを取り出した簡単な例です。</p>
       <div class="pats">
         <div class="patrow"><b>候補が5マス幅に収まる行は、2番目と4番目の上下が空き</b><span class="tags"><span class="tag">十間</span></span><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i></i><i class="k c"></i><i></i><i class="k c"></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i class="k c"></i><i></i><i class="k c"></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">三の行は残り2つで、候補は8三〜4三の5マス続き。8三〜6三に1つも入らないと、残りの5三・4三に2つ入って隣り合ってしまう。だから<b>8三〜6三に必ず1つ</b>、同じように<b>6三〜4三にも必ず1つ</b>入る。8三〜6三のどれにも隣り合う7二・7四と、6三〜4三のどれにも隣り合う5二・5四は、<b>空き</b>。</p><p class="small">候補が「8三・6三〜4三」や「8三・6三・4三」のように飛び飛びでも、5マス幅に収まっていれば同じ。</p></div>
         <div class="patrow"><b>片方に1つしか入らないなら、もう片方に必ず1つ</b><span class="tags"><span class="tag">十間</span></span><p class="patsub">例1</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i class="k c"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="k c"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">三の行は残り2つ。3三には1つしか入らないので、<b>9三〜7三に必ず1つ</b>入る。3マスのどれにも隣り合う<b>8二・8四は空き</b>。</p><p class="patsub">例2</p><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i class="k"></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="k"></i><i class="k"></i><i></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">2マス続きには石が1つまでなので、9三・8三に1つ、4三・3三に1つ。それぞれの<b>上下の2マスは空き</b>。</p></div>
         <div class="patrow"><b>必ず1つ入るマスが苔「1」のまわりに収まれば、苔の残りは空き</b><span class="tags"><span class="tag">十間</span></span><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="h"></i><i class="m h">1</i><i class="h"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="k c"></i><i class="m">1</i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">二の行の候補は8二〜4二の5マス続きなので、8二〜6二に必ず1つ入る（5マス幅の形）。この3マスは7三の苔のまわりに収まるので、<b>苔の「1」はそれで使い切る</b>。苔のまわりの残り、8三・6三・8四・7四・6四は空き（5三も5マス幅の形で空き）。</p><p class="small">4マス続きの端、2マス続きの組、「3マス続き＋離れた候補」の真ん中のマスの隣にある苔「1」でも同じ。5マス続きの真ん中の隣にある苔では決まらない。</p></div>
         <div class="patrow"><b>4マス続きの2番目の隣に苔「1」なら、反対の端が石</b><span class="tags"><span class="tag">十間</span></span><div class="patpair" aria-hidden="true"><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k"></i><i class="k"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="h"></i><i class="m h">1</i><i class="h"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="h"></i><i class="h"></i><i class="h"></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解く前</figcaption></figure><span class="patarrow">→</span><figure><div class="patb patw" style="--r:3;--c:10"><div class="patcols"><span>10</span><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="pat"><i class="k"></i><i class="k"></i><i></i><i></i><i class="k c"></i><i class="s c"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="k c"></i><i class="m">1</i><i class="k c"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="k c"></i><i class="k c"></i><i class="k c"></i><i></i><i></i><i></i><i></i><i></i></div><div class="patrows"><span>二</span><span>三</span><span>四</span></div></div><figcaption>解いた後</figcaption></figure></div><p class="small">二の行の置き方は「8二と6二」「8二と5二」「7二と5二」の3通り。「8二と6二」は苔のまわりに2つ入るので使えない。残る2通りはどちらも<b>5二が石、6二は空き</b>。どちらでも苔のまわりに1つ入るので、苔のまわりの残りも空き。</p></div>
       </div>
-      <button class="btn tutgo" type="button" data-tutadv10>「手がかり少なめの十間」を学ぶ</button>
+      <button class="btn tutgo" type="button" data-tutadv10>「十間・難しい」を学ぶ</button>
     </section>
     <section data-tab="records">
       <h2 id="recTop">記録</h2>
@@ -947,7 +1026,7 @@ button{touch-action:manipulation}
 
 <dialog class="intro ask" id="hintAsk" aria-labelledby="askTitle">
   <div class="intro-body">
-    <h2 id="askTitle">教えを乞う</h2>
+    <h2 id="askTitle">洞察</h2>
     <p class="intro-lead" id="askText"></p>
     <p class="small" id="askNote"></p>
     <div class="askbtns"><button class="btn" type="button" id="askNo">やめる</button><button class="btn primary" type="button" id="askYes">教わる</button></div>
@@ -991,7 +1070,8 @@ button{touch-action:manipulation}
       <div class="sw"><div class="d"></div></div><span>「砂紋」モードでタップ（または右クリック）で「石なし」のマスに砂紋を引く・消す<br>なぞると続けて引いたり消したりできます</span>
       <span class="minibtn" aria-hidden="true">一手戻す</span><span>直前の操作を元に戻せます</span>
       <span class="minibtn" aria-hidden="true">休憩</span><span>タイマーを一時停止できます</span>
-      <span class="minibtn" aria-hidden="true">教えを乞う</span><span>次の一手とその理由を示します</span>
+      <span class="minibtn" aria-hidden="true">洞察</span><span>次の一手とその理由を示します</span>
+      <span class="minibtn" aria-hidden="true">均す</span><span>置いた石と砂紋をすべて取り除きます（下に並ぶボタンの右端）</span>
     </div>
       </div>
     </div>
@@ -1132,7 +1212,7 @@ function generate(N,K,seed,hard,toro){
     shuffle(used,rnd);
     // with lanterns, moss goes first so the lanterns tend to stay
     if(toro)used.sort((a,b)=>lamp[a]-lamp[b]);
-    // "手がかり多め": level 1–2 reasoning only, keeps about a third of the spare clues.
+    // "普通": level 1–2 reasoning only, keeps about a third of the spare clues.
     // "じっくり": level 3 allowed, removes every clue it can.
     // a 灯籠あり garden keeps its last lantern
     const nT=()=>{let n=0;for(let k=0;k<N*N;k++)if(clue[k]>=TORO)n++;return n;};
@@ -1272,7 +1352,7 @@ const Sound=(function(){
   const IN=[0,2,5,7,9];
   const deg=d=>50+12*Math.floor(d/5)+IN[((d%5)+5)%5]; // d=0 -> D3 (melody spans about A2–B4)
   const pick=a=>a[Math.floor(Math.random()*a.length)];
-  let nextT=0,voices=[],nextSozu=0;const SOZU_EVERY=45;
+  let nextT=0,voices=[];
   const ksCache={};
   // soft=true: plucked with the flesh of the finger instead of a pick: a rounder burst, so fewer bright overtones
   function ksBuf(m,soft){
@@ -1367,8 +1447,9 @@ const Sound=(function(){
     });
     return t;
   }
-  // 鹿威し: only the knock of the tube striking the stone, at a steady interval in the BGM.
-  function sozu(k,lv=1,dry=bgmDry,rin=revIn){
+  // 鹿威し: only the knock of the tube striking the stone. A sound effect of its own (not part of the BGM):
+  // the game plays it each time the timer passes a whole minute.
+  function sozu(k,lv=.5,dry=seBus,rin=seRevIn){
     const out=ctx.createGain();out.gain.value=.2*lv;out.connect(dry);
     // a wide garden: a touch of open-air reverb, a faint echo coming back off the far side about 0.3 s
     // later, a little duller, and a second, very small and duller still, about 0.3 s after that
@@ -1398,15 +1479,13 @@ const Sound=(function(){
   }
   function schedule(){
     if(!ctx||ctx.state!=='running')return;
-    // 鹿威し: every SOZU_EVERY seconds, on a steady clock (the first one soon after the music starts)
-    if(nextSozu&&ctx.currentTime+.3>=nextSozu){sozu(Math.max(nextSozu,ctx.currentTime+.05));nextSozu+=SOZU_EVERY;}
     if(nextT<ctx.currentTime)nextT=ctx.currentTime+.2;
     while(nextT<ctx.currentTime+1){const end=phrase(nextT);nextT=end+BEAT*(3.5+fGap()*1.5);}   // the rest between phrases: 1/f
     // the leaves rise and fall with the wind: 1/f, once the bed has faded in
     if(leafLv&&ctx.currentTime>leafFrom)leafLv.gain.setTargetAtTime(.063*(1+fLeaf()*.35),ctx.currentTime,1.2);
   }
   function startSynth(){
-    if(timer)return;nextT=ctx.currentTime+1;nextSozu=ctx.currentTime+12;
+    if(timer)return;nextT=ctx.currentTime+1;
     const t=ctx.currentTime;
     for(const [f,a] of [[hz(38),.05],[hz(45),.03],[hz(50),.018]]){
       const o=ctx.createOscillator();o.type='sine';o.frequency.value=f;const g=ctx.createGain();g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(a,t+5);
@@ -1424,6 +1503,7 @@ const Sound=(function(){
     timer=setInterval(schedule,250);schedule();
   }
   function stopSynth(){leafLv=null;if(timer){clearInterval(timer);timer=null;}drone.concat(voices).forEach(n=>{try{n.stop();}catch(e){}});drone=[];voices=[];}
+  SYN.sozu=t=>sozu(t);
   function startBgm(){
     if(!prefs.bgm||!ensure())return;clearTimeout(stopTimer);
     const t=ctx.currentTime;bgmBus.gain.cancelScheduledValues(t);bgmBus.gain.setValueAtTime(Math.max(bgmBus.gain.value,.0001),t);
@@ -1478,7 +1558,7 @@ const Sound=(function(){
   // read-only snapshot, handy when checking which sounds come from files
   const status=()=>({ctx:ctx?ctx.state:'none',bgmOn,source:bgmEl?'file':timer?'synth':'off',files:Object.assign({},files),loaded:Object.keys(buffers)});
   // hold(true) fades the music out without touching the BGM setting; hold(false) brings it back if BGM is on
-  const hold=on=>{if(on)stopBgm();else if(prefs.bgm)startBgm();};
+  const hold=on=>{if(on)stopBgm();else if(prefs.bgm&&ctx)startBgm();};   // (before the first tap, unlock() starts it)
   return {play,set,status,hold,prefs:()=>Object.assign({},prefs),available:!!AC};
 })();
 </script>
@@ -1528,13 +1608,16 @@ const randomSeed=()=>Math.floor(Math.random()*99999)+1;   // 1–99999, the same
 const newSeed=()=>walk?randomSeed():todaySeed();
 let pend=null;   // choices made in 庭の種類 that are not applied yet
 // 広さ・石・灯籠・手がかり; 今日の庭 / 漫ろ歩き goes beside the garden's number under the board
-const labelText=()=>`${SIZES[size].name} ・ 石${size*SIZES[size].K} ・ ${(S?S.toro:toro)?'灯籠あり':'灯籠なし'} ・ ${diff?'手がかり少なめ':'手がかり多め'}`;
+// a garden's style, as written on the scroll: 「六間（石6）・普通」
+// (no lanterns is the plain garden, so it goes unsaid: 「六間（石6）・普通」)
+const styleParts=(N,t,d)=>[`${SIZES[N].name}（石${N*SIZES[N].K}）`,...(t?['灯籠あり']:[]),d?'難しい':'普通'];
+const labelText=()=>styleParts(size,S?S.toro:toro,diff).join(' ・ ');
 // fresh: a 漫ろ歩き garden drawn anew (or chosen by number); one already solved starts over from an empty board
 function start(N,d,seed,fresh){
   N=SIZES[N]?N:8;d=d===1?1:0;seed=int(seed,1,99999,todaySeed());
   size=N;diff=d;pend={walk,size,diff,toro};syncSeg();tutOff();
   const K=SIZES[N].K;
-  stopClock();if(S)S.started=false;setMode(0);   // a new garden starts with 石 chosen
+  stopClock();Sound.hold(false);if(S)S.started=false;setMode(0);   // a new garden starts with 石 chosen
   $('time').style.visibility='hidden';
   showVeil('<div class="spinner"></div><div class="small">砂を整えています…<br>推理だけで解けるか確かめています</div>',true);
   let saved=store.get(keyOf(N,seed,d));if(fresh&&saved&&saved.done===true)saved=null;
@@ -1561,12 +1644,13 @@ const SICON={
   toro:'<span class="storo"><svg viewBox="0 0 40 40"><g transform="translate(20 20) scale(1.05) translate(-20 -23.4)"><path d="M.8 16.2C3 12.6 10 7 20 6.4C30 7 37 12.6 39.2 16.2C39.4 16.8 39 17.2 38.4 17.2H1.6C1 17.2 .6 16.8 .8 16.2Z" fill="url(#toroK)"/><path d="M9.6 18.2H30.4V29.4H9.6Z" fill="url(#toroC)"/><path d="M12.2 29.3V22.64A10 10 0 0 1 27.8 22.64V29.3Z" fill="url(#toroO)"/><path d="M7.6 29.4H32.4L31.4 31.4H8.6Z" fill="url(#toroC)"/><path d="M10 31.4H14L11 38.8H6.4Z" fill="#b6b3ad"/><path d="M26 31.4H30L33.6 38.8H29Z" fill="#6a6661"/><text x="20" y="29" text-anchor="middle">1</text></g></svg></span>'};
 const startRules=(K,t)=>`<div class="startrules"><b>決まりごと</b><ul class="sicons"><li><i>${SICON.line(K)}</i>どの行にも、どの列にも、石を${K}つだけ置く</li><li><i>${SICON.apart}</i>石どうしは縦・横・斜めのどれでも隣り合わない</li><li><i>${SICON.moss}</i>苔の上の数は、まわり8マスにある石の数</li>${t?`<li><i>${SICON.toro}</i>灯籠の上の数は、その灯籠の光の中にある石の数</li>`:''}</ul></div>`;
 // the garden's style as small chips (the size in ink), and the goal with one pebble for each stone to set
-const startHead=parts=>`<div class="stchips">${parts.map((x,i)=>`<span class="${i?'':'on'}">${x}</span>`).join('')}</div>`;
+const styleHtml=parts=>`<div class="gstyle"><span>${parts.map(x=>`<span>${x}</span>`).join('<span class="sep">・</span>')}</span></div>`;
+const startHead=parts=>`<div class="sthead">${styleHtml(parts)}</div>`;
 const startGoal=n=>`<div class="stgoal"><b class="sh">完成条件</b><p><span class="kw">決まりごと</span>を守りながら、石を${n}個置ききる</p><div class="stpebbles${n>10?' many':''}">${'<i></i>'.repeat(n)}</div></div>`;
-// the first 手がかり少なめ / 灯籠あり garden: a card offering its 練習用の庭 first (once each).
+// the first 難しい / 灯籠あり garden: a card offering its 練習用の庭 first (once each).
 // Someone who has already played that kind of garden (a save exists) is not asked.
 const GUIDE={toro:{name:'灯籠あり',text:'苔に加えて灯籠が手がかりになります。'},
-  adv:{name:'手がかり少なめ',text:'2つの行や苔を合わせて考える一手が必要になります。'}};
+  adv:{name:'難しい',text:'2つの行や苔を合わせて考える一手が必要になります。'}};
 function playedKind(k,cur){try{for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);
   if(key===cur||!/^sekitei2:/.test(key))continue;if(k==='toro'?/:toro$/.test(key):/^sekitei2:\d+:1:/.test(key))return true;}}catch(e){}return false;}
 function guideKinds(){const cur=keyOf(S.N,S.seed,S.diff,S.toro),out=[];
@@ -1577,7 +1661,7 @@ function showGuide(ks){ks.forEach(k=>store.set('sekitei:met:'+k,1));
   const names=ks.map(k=>`「${GUIDE[k].name}」`).join('');
   showVeil(`<p class="vlabel">はじめての${names}</p>
     <div class="small guidetext">${ks.map(k=>`「${GUIDE[k].name}」の庭では、${GUIDE[k].text}`).join('<br>')}<br>先に練習用の庭で、考え方を練習してみませんか。</div>
-    ${ks.map(k=>`<button class="btn primary startgo guidego" type="button" data-guide="${k==='adv'&&S.N===10?'adv10':k}">「${k==='adv'&&S.N===10?'手がかり少なめの十間':GUIDE[k].name}」を学ぶ</button>`).join('')}
+    ${ks.map(k=>`<button class="btn primary startgo guidego" type="button" data-guide="${k==='adv'&&S.N===10?'adv10':k}">「${k==='adv'&&S.N===10?'十間・難しい':GUIDE[k].name}」を学ぶ</button>`).join('')}
     <button class="btn startgo guidego guideskip" type="button" id="guideSkip">このまま庭に入る</button>`,true);
   $('veilCard').classList.add('start');
   $('veilCard').querySelectorAll('[data-guide]').forEach(b=>b.onclick=()=>tutStart(b.dataset.guide));
@@ -1585,7 +1669,7 @@ function showGuide(ks){ks.forEach(k=>store.set('sekitei:met:'+k,1));
 function showStart(){
   const resumed=S.time>0||S.cells.some(v=>v);
   if(!resumed&&!S.tut){const ks=guideKinds();if(ks.length){showGuide(ks);return;}}
-  showVeil(`${startHead([SIZES[size].name,`石${S.N*S.K}`,S.toro?'灯籠あり':'灯籠なし',S.diff?'手がかり少なめ':'手がかり多め'])}
+  showVeil(`${startHead(styleParts(S.N,S.toro,S.diff))}
     ${startGoal(S.N*S.K)}
     ${startRules(S.K,S.toro)}
     <button class="btn primary startgo" id="startBtn" type="button">${resumed?'つづける':'はじめる'}</button>`,true);
@@ -1782,7 +1866,7 @@ function stoneStyle(h){const r=k=>(h>>>k)&15,k=STONE_KINDS[(h>>>3)%3],rot=n=>((h
   if(k==='fuse')return `border-radius:${48+r(0)%6}% ${44+r(4)%8}% ${46+r(8)%6}% ${50+r(12)%6}% / ${58+r(0)%10}% ${62+r(4)%10}% ${40+r(8)%8}% ${38+r(12)%8}%;rotate:${rot(8)}deg`;
   if(k==='yama')return `border-radius:${42+r(0)%10}% ${50+r(4)%10}% ${40+r(8)%8}% ${44+r(12)%8}% / ${72+r(0)%10}% ${68+r(4)%10}% ${28+r(8)%6}% ${30+r(12)%6}%;rotate:${rot(6)}deg`;
   const rr=n=>40+r(n);return `border-radius:${rr(0)}% ${100-rr(0)}% ${rr(4)}% ${100-rr(4)}% / ${rr(8)}% ${rr(12)}% ${100-rr(12)}% ${100-rr(8)}%;rotate:${(h%40)-20}deg`;}
-function build(){
+function build(){$('resetBtn').hidden=!!(S&&S.tut);
   const {N,K}=S;const b=$('board');b.innerHTML='';
   b.style.gridTemplateColumns=`repeat(${N},1fr)`;
   b.style.setProperty('--cols',String(N));
@@ -1858,8 +1942,8 @@ function render(){
   // put on the board; an empty slot stays where it was. Stones placed beyond the need show as red.
   const need=N*K,gl=$('goal'),left=Math.max(0,need-placed);let ic='';
   for(let k=0;k<Math.max(need,placed);k++)ic+=`<i class="${k>=need?'gs x':k<left?'gs':'gs e'}"></i>`;
-  gl.innerHTML=`<span class="gicons">${ic}</span>`;gl.classList.toggle('ok',allOk);gl.classList.toggle('many',need>12);
-  gl.setAttribute('aria-label',`残りの石 ${left}`);
+  $('gicons').innerHTML=ic;gl.classList.toggle('ok',allOk);gl.classList.toggle('many',need>12);
+  $('gicons').setAttribute('aria-label',`残りの石 ${left}`);
   return allOk;
 }
 
@@ -1942,11 +2026,11 @@ function undo(){if(!S||S.done||!S.started||!S.hist.length)return;clearFocus();S.
 $('undoBtn').onclick=undo;
 function pauseGame(){
   if(!S||S.done||!S.started||S.tut)return;
-  S.started=false;stopClock();save();Sound.hold(true);
+  S.started=false;stopClock();save();Sound.hold(true);   // the music rests only during 休憩
   showVeil(`<p class="vlabel">休憩中</p>
     <button class="btn primary startgo" id="resumeBtn" type="button">つづける</button>
     <div class="small">押すと盤面とタイマーが戻ります。</div>`,true);
-  $('resumeBtn').onclick=()=>{S.started=true;hideVeil();startClock();Sound.hold(false);};
+  $('resumeBtn').onclick=()=>{S.started=true;hideVeil();startClock();};
 }
 $('pauseBtn').onclick=pauseGame;
 let msgTimer=null;
@@ -1972,7 +2056,9 @@ function phrase(el,t,flat){
   for(const sen of line.match(/[^。]+。?/g)||[]){
     // flat: phrases only, packed line after line (a long message would waste room keeping sentences whole)
     const sp=flat?wrap:document.createElement('span');
-    for(const c of sen.match(/[^、：]+[、：]?/g)){const cs=document.createElement('span');cs.textContent=c;sp.appendChild(cs);}
+    for(const c of sen.match(/[^、：]+[、：]?/g)){const cs=document.createElement('span');
+      c.split(/__(.+?)__/).forEach((x,i)=>{if(!x)return;if(i%2){const u=document.createElement('u');u.textContent=x;cs.appendChild(u);}else cs.appendChild(document.createTextNode(x));});   // __…__ → underline
+      sp.appendChild(cs);}
     if(!flat)wrap.appendChild(sp);}});
   el.replaceChildren(wrap);}
 // On a phone the hint line has room for four lines. A message that does not fit is first packed phrase by
@@ -2072,13 +2158,30 @@ $('hintBtn').onclick=()=>{
   if(S&&S.tut){if(S.started&&!S.done){if(!DR()&&LS().steps[tStep()].free){giveHint();return;}   // 仕上げ: the next move and its reason, as in a real garden
     if(tut.tapNext)tut.tapNext=false;else if(DR()&&tut.hint<3&&tut.tap==null)tut.hint++;tutShow();Sound.play(DR()?'hint':'tap');}return;}
   if(!S||S.done||!S.started)return;
+  $('askTitle').textContent='洞察';askDo=giveHint;
   phrase($('askText'),'次に推理できる一手とその理由を見て、盤に置きますか？');
   $('askYes').textContent='教わる';
-  $('askNote').textContent=S.hints?`これまでに${S.hints}回教えを乞いました。`:'教えを乞うと、この庭は「手助けなしの最短記録」には残りません。';
+  $('askNote').textContent=S.hints?`これまでに${S.hints}回洞察を使いました。`:'洞察を使うと、この庭は「手助けなしの最短記録」には残りません。';
   try{hintAsk.showModal();}catch(e){hintAsk.setAttribute('open','');}
   Sound.play('tap');};
 $('askNo').onclick=closeAsk;
-$('askYes').onclick=()=>{closeAsk();giveHint();};
+let askDo=null;   // what 教わる / 均す does
+$('askYes').onclick=()=>{closeAsk();(askDo||giveHint)();};
+// 砂利を均す: take every stone and 砂紋 off the board, after asking once (一手戻す brings them back)
+// (down to 13px on a PC, 11px on a phone; then it takes two or three short lines, no taller than the button beside it)
+function fitLabel(){const L=$('label');L.style.fontSize=L.style.letterSpacing=L.style.whiteSpace=L.style.lineHeight='';let f=parseFloat(getComputedStyle(L).fontSize),n=0;
+  const fmin=innerWidth>820?13:11;
+  while(L.scrollWidth>L.clientWidth+1&&f>fmin&&n++<40){f-=.5;L.style.fontSize=f+'px';if(n===3)L.style.letterSpacing='.04em';}
+  if(L.scrollWidth>L.clientWidth+1){L.style.whiteSpace='normal';L.style.lineHeight='1.3';
+    const B=[$('resetBtn'),$('tutQuit')].find(b=>!b.hidden),pad=L.parentElement.getBoundingClientRect().height-L.getBoundingClientRect().height,lim=Math.max(24,(B?B.getBoundingClientRect().height:40)-pad);
+    while(L.getBoundingClientRect().height>lim+1&&f>10){f-=.5;L.style.fontSize=f+'px';}}}   // no taller than the button beside it
+try{new MutationObserver(fitLabel).observe($('label'),{childList:true,characterData:true,subtree:true});const ro=new ResizeObserver(fitLabel);ro.observe(document.querySelector('.status'));ro.observe(document.querySelector('.clock'));/* the clock widens as the minutes pass */}catch(e){}
+$('resetBtn').onclick=()=>{if(!S||S.tut||S.done||!S.started)return;
+  if(!S.cells.some(v=>v)){toast('盤面はもう均されています');return;}
+  $('askTitle').textContent='均す';phrase($('askText'),'置いた石と砂紋をすべて取り除き、盤面をはじめの状態に戻しますか？');
+  $('askYes').textContent='均す';$('askNote').textContent='経過時間はそのままです。「一手戻す」で元に戻せます。';
+  askDo=()=>{apply(S.cells.map((v,i)=>[i,0]));Sound.play('unmark');};
+  try{hintAsk.showModal();}catch(e){hintAsk.setAttribute('open','');}Sound.play('tap');};
 // a short note that floats over the page for a moment; it takes no room, so nothing around it moves
 let toastTimer=null;
 function toast(msg){let el=$('toast');if(!el){el=document.createElement('div');el.id='toast';el.className='toast';el.setAttribute('role','status');el.setAttribute('aria-live','polite');document.body.appendChild(el);}
@@ -2113,13 +2216,14 @@ document.querySelectorAll('.toroSeg').forEach(s=>s.onclick=e=>{const b=e.target.
 // the notes under each choice; the popup keeps room for the longest of each, so nothing moves when you choose
 const NOTES={
   walk:['日付ごとに決まる庭です。誰が訪れても同じ盤面になります。','気の向くままに庭を巡ります。毎回違う盤面になります。'],
-  size:{6:'6×6マスの小さな盤面。各行・各列に石を1つずつ置きます。はじめての方に。',
-    8:'8×8マスの盤面。各行・各列に石を1つずつ置きます。決まりに慣れたら。',
-    10:'10×10マスの広い盤面。各行・各列に石を2つずつ置きます。じっくり腰を据えて。'},
-  diff:['苔の手がかりが多めの盤面です。1つの行・列・苔を見るだけで解き進められます。',
-    '苔の手がかりを外せるだけ外した上級者向けの盤面です。2つの行や苔を合わせて考える一手が必要になります。'],
-  toro:['苔だけを手がかりにする、いつもの庭です。',
-    '苔に加えて灯籠が置かれる中級者向けの盤面です。']};
+  // __…__ is underlined (the number of stones per row and column, the part that differs)
+  size:{6:'6×6マスの小さめの庭です。6個の石を、各行・各列に__1つずつ__置いてください。',
+    8:'8×8マスの庭です。8個の石を、各行・各列に__1つずつ__置いてください。',
+    10:'10×10マスの広い庭です。20個の石を、各行・各列に__2つずつ__置いてください。'},
+  diff:['普通の盤面です。1つの行・列・手がかりを見るだけで、次の一手が決まります。',
+    '手がかりを外せるだけ外した上級者向けの盤面です。2つの行や手がかりを合わせて考える一手が必要になります。'],
+  toro:['苔が置いてある、いつもの庭です。',
+    '苔に加えて灯籠も置いてある、中級者向けの庭です。']};
 function syncSeg(){
   const P=pend||{walk,size,diff,toro};
   if(document.getElementById('pick').open)noField();   // 今日の庭 turns the number off
@@ -2214,8 +2318,8 @@ const TSTEPS=[
   {want:tWant(['4六'],1),lit:()=>tCol(2),
    text:'光っている4の列を見てください。苔石は石の数として数えず、上に石も置けないので、石を置けるのはもう4六だけです。4六に石を置きましょう。'},
   {free:true,lit:()=>[],
-   text:'仕上げです。これまでの考え方を使って、あなた自身で残り3つの石を置いてみましょう。決まりごとを守って石を6個置ききれば完成です。\n分からないときは、下の「教えを乞う」を押してください。'}];
-// 手がかり少なめ drill: every kind of step that joins two clues, each on a real position from a garden
+   text:'仕上げです。これまでの考え方を使って、あなた自身で残り3つの石を置いてみましょう。決まりごとを守って石を6個置ききれば完成です。\n分からないときは、下の「洞察」を押してください。'}];
+// 難しい drill: every kind of step that joins two clues, each on a real position from a garden
 // (the same positions as the コツ pictures, plus No. 97102). One guided move per chapter. The 十間 ones are in DRILL10.
 // st: the board as the chapter opens (digit = moss, a–e = lantern 0–4, O = stone, x = mark, . = empty); stones: the answer.
 function drillCh(c){const k=tKit(c.N),rows=c.st.split('/');c.cells=[];c.clue=[];
@@ -2284,7 +2388,7 @@ const DRILL=[
    focus:'二の行と四の行に注目してみましょう。どちらも、石を置けるマスが2つしかありません。',
    why:'二の行の石は2二か1二、四の行の石は2四か1四。どちらも2の列か1の列に入るので、2列の石はこの2行で使い切られます。',
    act:'2の列と1の列の残り、2六・1六に砂紋を引きましょう。'}].map(drillCh);
-// 手がかり少なめ・十間 drill: how a row's candidates decide its neighbours and the moss round them (the 十間 コツ), on real positions
+// 難しい・十間 drill: how a row's candidates decide its neighbours and the moss round them (the 十間 コツ), on real positions
 const DRILL10=[
   {title:'候補が4マス続きなら、上下の4マスずつが空き',idea:'十間で石があと2つ、候補が4マス続きなら、上下の行の同じ4マスはすべて空きです。',
    N:10,K:2,st:'........../2x......x2/.......2../22x....2xx/1Ox......./xxx......./...2....../.2......../....x...../....2.....',
@@ -2372,25 +2476,25 @@ const TDRILL=[
    act:'3二に石を置き、斜めに隣り合う4三・2三に砂紋を。横の石は残る1三です。'}].map(drillCh);
 const LESSONS={
   basic:{N:6,clue:{'4一':0,'6二':2,'5四':1},stone:['6一','2二','5三','3四','1五','4六'],marks:[],steps:TSTEPS,title:'練習用の庭',tag:'',
-    intro:'光るマスと下の説明に沿って、1手ずつ進めます。<br>分からないときは「教えを乞う」を押してください。説明をもう一度見られます。最後の仕上げでは、次の一手とその理由を教わることができます。'},};
+    intro:'光るマスと下の説明に沿って、1手ずつ進めます。<br>分からないときは「洞察」を押してください。説明をもう一度見られます。最後の仕上げでは、次の一手とその理由を教わることができます。'},};
 let tut=null;   // {lesson, back:{N,d,seed,walk}|null, first:bool} while a 練習用の庭 is open
 // the drills: one guided move per chapter
 const DRILLS={
-  adv:{list:DRILL,short:'練習（手がかり少なめ）',name:'練習用の庭（手がかり少なめ・六間または八間）',seed:900,
-    intro:'「手がかり少なめ」で使う、2つの手がかりを組み合わせる考え方を、実際の盤面で1問ずつ練習します。<br>はじめに、どの手がかりを合わせて考えるかが示されます。<br>わからないときは「教えを乞う」を押してください。',
-    end:n=>`「手がかり少なめ」で使う${n}の考え方を、すべて練習しました。実際の盤面でも、候補が2〜3マスしかない行・列・苔を探し、隣や重なる手がかりと組み合わせてみてください。`},
-  adv10:{list:DRILL10,short:'練習（少なめ・十間）',name:'練習用の庭（手がかり少なめ・十間）',seed:920,
-    intro:'「手がかり少なめ」の十間で使う、行の候補の並び方から隣の行や苔のまわりを決める考え方を、実際の盤面で1問ずつ練習します。<br>はじめに、どの行や苔に注目するかが示されます。<br>わからないときは「教えを乞う」を押してください。',
-    end:n=>`十間の「手がかり少なめ」で使う${n}の考え方を、すべて練習しました。実際の盤面でも、石がまだ入っていない行・列の候補の並び方を見て、隣の行・列や苔のまわりに決まるマスがないか探してみてください。`},
+  adv:{list:DRILL,short:'練習（難しい）',name:'練習用の庭（難しい・六間または八間）',seed:900,
+    intro:'「難しい」で使う、2つの手がかりを組み合わせる考え方を、実際の盤面で1問ずつ練習します。<br>はじめに、どの手がかりを合わせて考えるかが示されます。<br>わからないときは「洞察」を押してください。',
+    end:n=>`「難しい」で使う${n}の考え方を、すべて練習しました。実際の盤面でも、候補が2〜3マスしかない行・列・苔を探し、隣や重なる手がかりと組み合わせてみてください。`},
+  adv10:{list:DRILL10,short:'練習（十間・難しい）',name:'練習用の庭（十間・難しい）',seed:920,
+    intro:'「難しい」の十間で使う、行の候補の並び方から隣の行や苔のまわりを決める考え方を、実際の盤面で1問ずつ練習します。<br>はじめに、どの行や苔に注目するかが示されます。<br>わからないときは「洞察」を押してください。',
+    end:n=>`十間の「難しい」で使う${n}の考え方を、すべて練習しました。実際の盤面でも、石がまだ入っていない行・列の候補の並び方を見て、隣の行・列や苔のまわりに決まるマスがないか探してみてください。`},
   toro:{list:TDRILL,short:'練習（灯籠あり）',name:'練習用の庭（灯籠あり）',seed:950,
-    intro:'「灯籠あり」の庭で使う、灯籠の数から石や空きを決める考え方を、実際の盤面で1問ずつ練習します。<br>わからないときは「教えを乞う」を押してください。',
+    intro:'「灯籠あり」の庭で使う、灯籠の数から石や空きを決める考え方を、実際の盤面で1問ずつ練習します。<br>わからないときは「洞察」を押してください。',
     end:n=>`「灯籠あり」で使う${n}の考え方を、すべて練習しました。実際の盤面でも、灯籠をタップして照らすマスを確かめ、光の中に入る石の数を数えてみてください。`}};
 const DR=()=>tut&&DRILLS[tut.lesson];
 const LS=()=>{const D=DR();return D?{steps:[D.list[tut.ch]],short:D.short,drill:true}:LESSONS[tut?tut.lesson:'basic'];};
 const tDone=st=>st.free?false:Object.entries(st.want).every(([i,v])=>S.cells[i]===v);
 const tStep=()=>{const T=LS().steps;let k=0;while(k<T.length-1&&tDone(T[k]))k++;return k;};
 function tutAllow(i,target){const st=LS().steps[tStep()];if(st.free)return true;return st.want[i]===target;}
-const DRILL_START='この盤面で、次に決まる一手を探してみましょう。わからないときは「教えを乞う」を押すと、少しずつヒントが出ます。';
+const DRILL_START='この盤面で、次に決まる一手を探してみましょう。わからないときは「洞察」を押すと、少しずつヒントが出ます。';
 function drillMsg(c){const h=tut.hint;return h===0?DRILL_START:h===1?c.focus:h===2?c.focus+c.why:c.why+c.act;}
 // a drill's 2×2 blocks, tinted and framed once the hint explains them
 function drillBlocks(st){cellEls.forEach(e=>e.classList.remove('blk','blkf','et','eb','el','er'));if(!st||!st.blocks||!tut||tut.hint<2)return;
@@ -2410,7 +2514,7 @@ let nudgeT=null;
 function tutNudge(i,target){const st=LS().steps[tStep()],w=st.want&&st.want[i];
   if(DR()&&w===undefined){setMsg('そのマスは、まだ決まりません。');clearTimeout(nudgeT);
     nudgeT=setTimeout(()=>{if(S&&S.tut&&!S.done){if(tut.hint<3)tut.hint++;tutShow();}},1600);return;}
-  let t=st.lit().includes(i)?'そのマスはまだ決まりません。説明をもう一度読んでみましょう。':'光っているマスを見てください。分からないときは「教えを乞う」を押してください。';
+  let t=st.lit().includes(i)?'そのマスはまだ決まりません。説明をもう一度読んでみましょう。':'光っているマスを見てください。分からないときは「洞察」を押してください。';
   if(w===2&&target===1)t='砂紋を引くには、下のボタンで「砂紋」に切り替えます。';
   else if(w===1&&target===2)t='石を置くには、下のボタンで「石」に切り替えます。';
   else if(w!==undefined&&target===0)t='そのマスはもう済んでいます。';
@@ -2425,7 +2529,7 @@ function tutStart(lesson){
   if(typeof lesson!=='string')lesson=tut?tut.lesson:'basic';
   const back=S&&!S.tut?{N:S.N,d:S.diff,seed:S.seed,walk}:tut&&tut.back;
   const first=!!(tut&&tut.first)||introThenPick;introThenPick=false;
-  stopClock();closeSheet();if(intro.open)intro.close();if(pick.open)closePick();
+  stopClock();Sound.hold(false);closeSheet();if(intro.open)intro.close();if(pick.open)closePick();
   if(DRILLS[lesson]){tut={lesson,ch:0,back,first};clearTimeout(nudgeT);drillChapter(0,false);return;}
   const L=LESSONS[lesson],TN=L.N,k=tKit(TN),clue=new Int8Array(TN*TN).fill(-1),stone=new Uint8Array(TN*TN),cells=new Array(TN*TN).fill(0);
   for(const [n,v] of Object.entries(L.clue))clue[k.idx(n)]=v;L.stone.forEach(n=>stone[k.idx(n)]=1);L.marks.forEach(n=>cells[k.idx(n)]=2);
@@ -2434,7 +2538,7 @@ function tutStart(lesson){
   build();setMode(0);$('time').hidden=true;$('tutQuit').hidden=false;
   // the button may sit far down the side panel: bring the garden into view
   toGame();$('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent=L.short||L.title;setMsg('');
-  showVeil(`<p class="vlabel">練習用の庭（${L.tag}${TN}×${TN}・石${TN}）</p>
+  showVeil(`<p class="vlabel">練習用の庭（${L.tag}${TN}×${TN}、石${TN}）</p>
     ${startGoal(TN)}${startRules(1)}
     <div class="small">${L.intro}</div>
     <button class="btn primary startgo" id="tutGo" type="button">はじめる</button>`,true);
@@ -2451,7 +2555,7 @@ function tutWin(){
 function tutView(card){S.reshow=card;$('viewBtn').onclick=()=>{hideVeil();setMsg('盤面をタップすると、結果の画面に戻ります。');};}
 // one chapter of a drill: its board, then a card naming the pattern (after a solved chapter: お見事)
 function drillChapter(ch,go){
-  const D=DR(),c=D.list[ch];tut.ch=ch;tut.hint=1;clearTimeout(nudgeT);
+  Sound.hold(false);const D=DR(),c=D.list[ch];tut.ch=ch;tut.hint=1;clearTimeout(nudgeT);
   const stone=new Uint8Array(c.N*c.N);c.stones.forEach(i=>stone[i]=1);
   S={N:c.N,K:c.K,seed:D.seed+ch,diff:1,clue:Int8Array.from(c.clue),stone,cells:c.cells.slice(),hist:[],time:0,hints:0,done:false,started:false,tut:true};
   build();if(ch===0)setMode(0);   // 石｜砂紋 stays as the player left it from one problem to the next
@@ -2509,7 +2613,7 @@ $('introTut').onclick=()=>{store.set('sekitei:intro',1);tutStart('basic');};
 // every button sounds like setting a mark; board cells, 教えを乞う and the 庭の種類 choices keep their own sounds.
 // Bubble phase, so a press that turns 効果音 on is already heard.
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('button');
-  if(b&&!b.closest('.cell,#hintBtn,#askYes,.walkSeg,.sizeSeg,.diffSeg,.toroSeg'))Sound.play('mark');});$('introX').onclick=closeIntro;
+  if(b&&!b.closest('.cell,#hintBtn,#resetBtn,#askYes,.walkSeg,.sizeSeg,.diffSeg,.toroSeg'))Sound.play('mark');});$('introX').onclick=closeIntro;
 // 庭を変える: opens with the page, over the garden that loaded behind it. Closing it keeps that garden.
 const pick=$('pick');
 let pickOnLoad=false;   // opened with the page (keep the garden behind it when nothing changes) or from 庭を変える
@@ -2572,9 +2676,15 @@ document.addEventListener('keydown',e=>{
 
 // ---- clock ----
 function fmt(s){s=Math.floor(s);const h=Math.floor(s/3600),m=Math.floor(s/60)%60,x=s%60;return (h?h+':'+String(m).padStart(2,'0'):m)+':'+String(x).padStart(2,'0');}
-function startClock(){stopClock();lastTs=performance.now();$('time').textContent=fmt(S.time);
-  tick=setInterval(()=>{const now=performance.now();if(!document.hidden&&!intro.open&&!pick.open){S.time+=(now-lastTs)/1000;$('time').textContent=fmt(S.time);if(Math.floor(S.time)%5===0)save();}lastTs=now;},500);}
-function stopClock(){if(tick)clearInterval(tick);tick=null;}
+function setTime(){const t=$('time');t.textContent=fmt(S.time);t.classList.toggle('long',t.textContent.length>5);}
+// test: the 鹿威し drawing tips and swings back; its tail strikes the stone 0.5 s in, when the sound plays
+function sozuKnock(){const el=$('sozuArt');if(!el)return;el.classList.remove('go');void el.getBoundingClientRect();el.classList.add('go');Sound.play('sozu',.5);}
+try{$('sozuArt').addEventListener('click',sozuKnock);$('sozuArt').addEventListener('animationend',e=>{if(e.animationName==='sozuTip')e.currentTarget.classList.remove('go');});}catch(e){}
+function startClock(){stopClock();lastTs=performance.now();setTime();Sound.hold(false);$('sozuArt').classList.add('run');
+  tick=setInterval(()=>{const now=performance.now(),on=!document.hidden&&!intro.open&&!pick.open;$('sozuArt').classList.toggle('run',on);if(on){const m0=Math.floor(S.time/60);S.time+=(now-lastTs)/1000;setTime();
+    if(Math.floor(S.time/60)>m0&&!S.tut&&!S.done)sozuKnock();   // 鹿威し at 1:00, 2:00, 3:00 …
+    if(Math.floor(S.time)%5===0)save();}lastTs=now;},500);}
+function stopClock(){if(tick)clearInterval(tick);tick=null;$('sozuArt').classList.remove('run');}
 
 // ---- veil / win ----
 // solid = the garden is covered completely (loading / before start); otherwise the board shows through
@@ -2588,12 +2698,12 @@ function shareUrl(){
   return `${SITE_URL}?n=${S.N}&d=${S.diff}&s=${S.seed}&w=${walk?1:0}${S.toro?'&t=1':''}`;
 }
 function shareText(){
-  const t=new Date(),kind=`${SIZES[S.N].name}・${S.diff?'手がかり少なめ':'手がかり多め'}${S.toro?'・灯籠あり':''}`;
-  return `${kind}の庭を${S.hints?`、教えを${S.hints}回乞いつつ`:''} ${fmt(S.time)} で整えました #パズル石庭`;
+  const t=new Date(),kind=styleParts(S.N,S.toro,S.diff).join('・');
+  return `${kind}の庭を${S.hints?`、洞察を${S.hints}回使いつつ`:''} ${fmt(S.time)} で整えました #パズル石庭`;
 }
 function showWin(again){
-  $('time').textContent=fmt(S.time);
-  showVeil(`<h3>整いました</h3><div class="small winmeta">${SIZES[S.N].name}・${S.diff?'手がかり少なめ':'手がかり多め'}${S.toro?'・灯籠':''}<br>${fmt(S.time)}${S.hints?` ・ ${S.hints}回教えを乞うた`:''}</div>
+  setTime();
+  showVeil(`<h3>整いました</h3><div class="sthead">${styleHtml(styleParts(S.N,S.toro,S.diff))}</div><div class="small winmeta">${fmt(S.time)}${S.hints?` ・ 洞察${S.hints}回`:''}</div>
     <div class="winbtns top"><button type="button" class="btn" id="viewBtn">庭を眺める</button><button type="button" class="btn" id="shareBtn">共有</button></div>
     <div class="winbtns"><button type="button" class="btn primary" id="sameBtn">同じ様式の庭へ</button><button type="button" class="btn primary" id="nextBtn">異なる様式の庭へ</button></div>`);
   $('veilCard').classList.add('win');
@@ -2628,7 +2738,7 @@ function renderRecords(){
   // one table per rule set: rows are sizes, columns the two difficulties. The 灯籠 table appears once one has been finished.
   const hasToro=Object.keys(rec).some(k=>k.endsWith(':t'));
   const cell=r=>r?`<td><b>${r.best!==null?fmt(r.best):'―'}</b><small>${r.n}局</small></td>`:'<td class="none">―</td>';
-  const table=(t,cap)=>`<div class="recblk"><table class="rectab"><thead><tr><th class="cap">${cap}</th><th>手がかり多め</th><th>手がかり少なめ</th></tr></thead><tbody>`
+  const table=(t,cap)=>`<div class="recblk"><table class="rectab"><thead><tr><th class="cap">${cap}</th><th>普通</th><th>難しい</th></tr></thead><tbody>`
     +[6,8,10].map(N=>`<tr><th>${SIZES[N].name}</th>${cell(rec[N+':0'+t])}${cell(rec[N+':1'+t])}</tr>`).join('')+'</tbody></table></div>';
   $('records').innerHTML=table('',hasToro?'灯籠なし':'')+(hasToro?table(':t','灯籠あり'):'')
     +'<p class="small recnote">上段は手助けなしの最短時間、下段は解いた数です。記録はこの端末にだけ保存されます。</p>';
@@ -2642,7 +2752,7 @@ try{const q=new URLSearchParams(location.search);
     if(SIZES[N]&&sd)shared={N,d,sd,w:q.get('w')==='1',t:q.get('t')==='1'};
     history.replaceState(null,'',location.pathname);}}catch(e){}
 const firstVisit=store.get('sekitei:intro')!==1;
-// 管理者テスト用: ?tut=adv opens the 手がかり少なめ lesson directly (not linked from anywhere yet)
+// 管理者テスト用: ?tut=adv opens the 難しい lesson directly (not linked from anywhere yet)
 let adminTut=null;try{const q=new URLSearchParams(location.search);if(['adv','adv10','toro'].includes(q.get('tut'))){adminTut=q.get('tut');history.replaceState(null,'',location.pathname);}}catch(e){}
 // a shared link goes straight to its garden (after the welcome, on a first visit)
 if(shared){setWalk(shared.w||shared.sd!==todaySeed());setToro(shared.t);start(shared.N,shared.d,shared.sd);if(firstVisit)openIntro();}
