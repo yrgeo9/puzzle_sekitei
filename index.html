@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-qQP2xWmbqvm8ZEZbaENgcgWVwuss1/7cNxo7ePzLqyM=' 'sha256-XdyG4ukPxbZU5cILzQOMI6wMaLsxjKfTApY4lC3in9E=' 'sha256-1w5zmkYwYVifbrRRLBP33NmFOYltHT7vZYt8tszsR1g=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-qQP2xWmbqvm8ZEZbaENgcgWVwuss1/7cNxo7ePzLqyM=' 'sha256-XdyG4ukPxbZU5cILzQOMI6wMaLsxjKfTApY4lC3in9E=' 'sha256-T/TsyQGxzFgKrZtfI/nPcdV8dhEp1LUOLaepXp1pqxQ=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔石の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -772,12 +772,28 @@ body.picking .sharefoot{display:none}
 }
 @media (max-width:400px){.topbtns .btn{padding:6px 4px}.topbtns .btn.em{padding:6px 6px}}
 .brand h1{white-space:nowrap}
-/* 「石庭ぱずる」 and the five header buttons don't fit on one phone row: the name gets its own row above them */
+/* the menu: one row on wider screens; on a phone 遊び方・コツ・記録・音 fold into ☰, 庭を変える stays beside it */
+.topmenu{display:contents}
+.menubtn{display:none}
 @media (max-width:480px){
-  header.top{flex-wrap:wrap;justify-content:center;row-gap:4px}
-  .brand{width:100%;justify-content:center}
-  .topbtns{margin:0 auto}
+  /* above the pages of 遊び方・コツ・記録・音 (aside, z-index 30), below the toast and the first-visit screen */
+  header.top{position:relative;z-index:40;justify-content:space-between}
+  .menubtn{display:grid;align-content:center;gap:4px;width:36px;height:32px;padding:0 9px;margin-left:4px;border:1px solid var(--line);border-radius:2px;
+    background:transparent;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .menubtn i{display:block;height:1.6px;background:currentColor;border-radius:1px;transition:transform .2s,opacity .2s}
+  header.top.menuopen .menubtn i:nth-child(1){transform:translateY(5.6px) rotate(45deg)}
+  header.top.menuopen .menubtn i:nth-child(2){opacity:0}
+  header.top.menuopen .menubtn i:nth-child(3){transform:translateY(-5.6px) rotate(-45deg)}
+  .topmenu{display:none;position:absolute;top:calc(100% + 2px);right:0;min-width:168px;flex-direction:column;
+    background:var(--paper);border:1px solid var(--line);border-radius:3px;box-shadow:0 10px 28px rgba(40,32,20,.18);padding:4px 0}
+  header.top.menuopen .topmenu{display:flex;animation:menuin .16s ease-out}
+  .topbtns .topmenu .btn{display:block;width:100%;text-align:left;padding:13px 20px;font-size:15px;letter-spacing:.06em;box-shadow:none}
+  .topbtns .topmenu .btn + .btn{border-top:1px solid var(--line)}
+  /* a tap outside the open menu only closes it */
+  header.top.menuopen::after{content:"";position:fixed;inset:0;z-index:-1;background:rgba(40,32,20,.06)}
 }
+@keyframes menuin{from{opacity:0;transform:translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){header.top.menuopen .topmenu{animation:none}.menubtn i{transition:none}}
 @media (max-width:360px){.brand h1{font-size:22px;letter-spacing:.12em}}
 /* はじめての方へ on phones: the three tabs share the row by their text, the welcome line stays on one line, the buttons keep one line */
 @media (max-width:400px){
@@ -936,7 +952,7 @@ button{touch-action:manipulation}
       <span class="seal" aria-hidden="true">石</span>
       <h1>石庭ぱずる</h1>
     </div>
-    <div class="topbtns"><button class="btn" type="button" data-jump="rulesTop">遊び方</button><button class="btn" type="button" id="tipsDesk">コツ</button><button class="btn" type="button" data-jump="recTop">記録</button><button class="btn" type="button" data-jump="soundTop">音</button><button class="btn em" type="button" id="gardenBtn">庭を変える</button></div>
+    <div class="topbtns"><div class="topmenu" id="topMenu"><button class="btn" type="button" data-jump="rulesTop">遊び方</button><button class="btn" type="button" id="tipsDesk">コツ</button><button class="btn" type="button" data-jump="recTop">記録</button><button class="btn" type="button" data-jump="soundTop">音</button></div><button class="btn em" type="button" id="gardenBtn">庭を変える</button><button class="menubtn" type="button" id="menuBtn" aria-label="メニュー" aria-expanded="false" aria-controls="topMenu"><i></i><i></i><i></i></button></div>
   </header>
 <dialog class="intro pick" id="pick" aria-labelledby="pickTitle">
   <button type="button" class="close intro-x" id="pickX" aria-label="閉じる">×</button>
@@ -2445,6 +2461,17 @@ const widthChanged=()=>{if(!PHONE.matches)toGame();lockPage();};PHONE.addEventLi
 // on a tab page, 庭へ戻る goes back to the garden (not to 庭を変える)
 document.querySelector('header.top').addEventListener('click',e=>{const b=e.target.closest('button');
   if(b&&b.id==='gardenBtn'&&view!=='game'){e.stopPropagation();Sound.play('mark');toGame();}},true);
+// phone menu (☰): opens 遊び方・コツ・記録・音; any choice, a tap outside, Esc or a wider screen closes it
+{const hdr=document.querySelector('header.top'),mb=$('menuBtn'),NARROW=matchMedia('(max-width:480px)');
+  const isOpen=()=>hdr.classList.contains('menuopen');
+  const setMenu=on=>{hdr.classList.toggle('menuopen',on);mb.setAttribute('aria-expanded',on?'true':'false');mb.setAttribute('aria-label',on?'メニューを閉じる':'メニュー');};
+  hdr.addEventListener('click',e=>{const b=e.target.closest('button');
+    if(b===mb){e.stopImmediatePropagation();Sound.play('tap');setMenu(!isOpen());return;}
+    if(!isOpen())return;
+    if(!b){e.stopImmediatePropagation();setMenu(false);return;}   // the veil behind the menu
+    setMenu(false);},true);
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&isOpen()){e.preventDefault();e.stopImmediatePropagation();setMenu(false);mb.focus();}},true);
+  NARROW.addEventListener&&NARROW.addEventListener('change',()=>setMenu(false));}
 lockPage();
 
 // ---- sound settings ----
