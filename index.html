@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-qQP2xWmbqvm8ZEZbaENgcgWVwuss1/7cNxo7ePzLqyM=' 'sha256-XdyG4ukPxbZU5cILzQOMI6wMaLsxjKfTApY4lC3in9E=' 'sha256-rMDy2OxqhyFCEWESTj5A/3YspW7huRH+8/l+i1nodG0=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https: 'unsafe-inline'; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https:; frame-src https:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-H+92Y4MRO9nL3qzmj/OcqaRROI0AQzJrpnRqYUYPk/8=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https: 'unsafe-inline'; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https:; frame-src https:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="google-adsense-account" content="ca-pub-5888401648545585">
 <meta name="description" content="苔石の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
@@ -49,7 +49,7 @@
   --stone:#3c3b37;
   --stone-hi:#8d8a80;
   --moss:#5b6d3c;
-  --hl:#d08a2c;          /* test: 洞察 highlight (amber) */
+  --hl:#d08a2c;          /* 洞察 highlight (amber) */
   --moss-dk:#43532a;
   --moss-ink:#f7f6ef;
   --shu:#b4432d;         /* vermilion seal */
@@ -76,7 +76,7 @@ header.top{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justi
   box-shadow:inset 0 0 0 2px var(--shu),inset 0 0 0 3px rgba(255,255,255,.55)}
 .brand h1{font-family:var(--display);font-weight:700;font-size:40px;line-height:1;margin:0;letter-spacing:.22em}
 .brand p{margin:0;color:var(--muted);font-size:12.5px;letter-spacing:.1em}
-.picker{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center}
+
 /* segmented choice: plain words, the chosen one underlined in sumi */
 .seg{display:inline-flex;gap:2px}
 .seg button{border:0;background:transparent;color:var(--muted);font-family:var(--display);font-weight:500;font-size:14px;letter-spacing:.04em;
@@ -218,22 +218,16 @@ aside .seg button{flex:1;padding:9px 2px;font-size:13px;margin-bottom:-1px;white
 /* sub-headings inside 庭の種類: quiet labels, no seal mark */
 .sublabel{margin:30px 0 0;font-size:12px;color:var(--muted);letter-spacing:.14em}
 .segnote{margin-top:8px!important}
-.rulenote{display:block;margin-top:3px;font-size:12.5px;line-height:1.5;color:color-mix(in srgb,var(--ink) 58%,var(--muted));letter-spacing:.02em}
-.rulenote::before{content:"";display:inline-block;width:10px;height:1px;background:currentColor;opacity:.6;vertical-align:.32em;margin-right:6px}
-kbd{font-family:var(--body);font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:2px;padding:0 4px}
-.btn.mode kbd{margin-left:8px}
-/* mouse hint in the mode button (PC only): left button = 石, right button = 砂紋 */
-@media (hover:none){kbd{display:none}}
 
 /* ---- side panel ---- */
 aside{min-width:0;width:100%;max-width:582px;justify-self:center;display:flex;flex-direction:column;margin-top:20px}
 .sheet-body{display:flex;flex-direction:column;gap:34px}
 /* PC: the big groups (遊び方 / コツ / 記録 / 音) are parted by a double line, the parts within each by a hairline */
-@media (min-width:821px){aside section + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}}
+@media (min-width:821px){aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}}
 aside section + section{border-top:1px solid var(--line);padding-top:30px}
 /* the lantern rule: what its light reaches, and how it counts, each on its own line */
 .intro-rules span.tonote{margin-top:2px;font-size:11.5px;opacity:.85}
-.intro-rules .torohow b{display:inline;font-size:inherit;font-weight:700;color:var(--ink);letter-spacing:0;margin:0}
+
 /* the lantern to tap in the first 灯籠 lesson: a gentle pulse */
 .cell.tapme svg{animation:tapme 1.2s ease-in-out infinite}
 @keyframes tapme{50%{transform:scale(1.14)}}
@@ -348,30 +342,27 @@ html.noterms :is([data-jump="termsTop"],#termsTop,#footAbout,.footnav[aria-label
 .sitefoot a + a::before{content:"\FF5C";display:inline-block;margin:0 10px;color:var(--line);text-decoration:none}
 @media (max-width:820px){html:not(.tabview) .sitefoot{display:none}}
 body.picking .sitefoot{display:none}
-.policy{margin-top:10px;scroll-margin-top:64px}   /* clear of the phone header that stays on top */
+.policy{margin-top:36px;scroll-margin-top:64px}   /* separate documents: a wider gap between them; the scroll margin clears the phone header */
 .policy h4{scroll-margin-top:64px;font-family:var(--display);font-size:13.5px;margin:16px 0 4px;letter-spacing:.08em}
 .policy p{margin:0 0 6px}
-.policylist{margin:0 0 6px;padding-left:1.4em}
+
 .policy a,.about a{color:var(--ink);text-underline-offset:3px}
 .policy em{font-style:normal;font-weight:700;color:var(--ink);margin-right:.6em}
 .docdate{margin-top:14px!important}
-.about{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;margin:4px 0 14px;font-size:12.5px;line-height:1.7}
+.about{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;margin:4px 0 0;font-size:12.5px;line-height:1.7}
 .about dt{font-weight:700;white-space:nowrap}.about dd{margin:0;color:var(--muted)}
 .extlist{display:grid;gap:10px;margin:6px 0 8px}
 .ext{border:1px solid var(--line);border-radius:3px;padding:8px 12px}
 .ext>b{font-size:13px;letter-spacing:.04em}
-.extstate{display:inline-block;margin-left:8px;padding:0 7px;border-radius:2px;font-size:10.5px;background:var(--ink);color:var(--paper)}
-.extstate.off{background:var(--sand);color:var(--muted)}
+
 .ext p{margin:3px 0 0}
-.policylist li{margin:2px 0}
+
 .kou{margin:0 0 6px;padding-left:1.5em}
 .kou>li{margin:0 0 4px;padding-left:.2em}
 .go{list-style:none;counter-reset:go;margin:0 0 6px;padding-left:2.6em}
 .go>li{counter-increment:go;position:relative;margin:2px 0}
 .go>li::before{content:"（" counter(go) "）";position:absolute;right:100%;white-space:nowrap}
 .kou .go{margin:4px 0 2px;padding-left:2.4em}
-.policy summary{cursor:pointer;font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.1em;padding:6px 0}
-.draftnote{display:inline-block;margin-top:4px;padding:1px 8px;border-radius:2px;background:var(--sand);font-size:11px;color:var(--muted)}
 
 /* ---- first-visit rules popup ---- */
 .intro{border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--ink);padding:0;
@@ -385,9 +376,7 @@ body.picking .sitefoot{display:none}
 .intro-eyebrow{margin:0;font-size:11.5px;letter-spacing:.2em;color:var(--shu)}
 .intro h2{font-family:var(--display);font-weight:700;font-size:28px;line-height:1.2;margin:0;letter-spacing:.16em}
 .intro-lead{margin:0;color:var(--muted);font-size:13.5px;line-height:1.75}
-.intro-sub{margin:6px 0 -4px;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.14em;display:flex;align-items:center;gap:8px}
-.intro-sub::before{content:"";width:5px;height:5px;background:var(--shu);flex-shrink:0}
-.rules-after{margin:0}
+
 aside .intro-rules{margin:0 0 8px}
 .ipagetabs{display:flex;border-bottom:1px solid var(--line);margin-top:2px}
 .ipagetabs button{flex:1 1 0;font-family:var(--display);font-weight:500;font-size:13.5px;border:0;background:transparent;color:var(--muted);padding:8px 0;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;white-space:nowrap}
@@ -472,7 +461,8 @@ aside .intro-rules{margin:0 0 8px}
 .replaynote{margin:0;align-self:stretch;font-size:12px;line-height:1.55;color:var(--shu);text-align:center}
 .askbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
 .askbtns .btn{justify-content:center;padding:11px;font-size:14px;letter-spacing:.12em}
-.pats{display:flex;flex-direction:column;gap:30px;margin-top:14px}
+.pats{display:flex;flex-direction:column;gap:22px;margin-top:14px}
+.patrow+.patrow{border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent);padding-top:20px}   /* one tip from the next, as in 遊び方 */
 .patrow{display:flex;flex-direction:column;gap:6px}
 .patrow > b{font-family:var(--display);font-size:14px;letter-spacing:.04em}
 .patrow p b{color:var(--ink)}
@@ -484,8 +474,7 @@ aside .intro-rules{margin:0 0 8px}
 .patarrow{color:var(--muted);font-size:14px;margin-bottom:16px}
 .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:-2px}
 .tag{padding:1px 6px;font-family:var(--body);font-size:10px;letter-spacing:.04em;color:var(--shu);border:1px solid color-mix(in srgb,var(--shu) 45%,transparent);border-radius:2px;line-height:1.5;background:var(--panel)}
-.tiph.first{margin-top:14px;padding-top:0;border-top:0}
-.tiph{font-family:var(--display);font-weight:700;font-size:14.5px;letter-spacing:.06em;margin:22px 0 6px;padding-top:16px;border-top:1px solid var(--line)}
+
 .patw .patcols{grid-template-columns:repeat(var(--c),15px)}
 .patw .patrows{grid-template-rows:repeat(var(--r),15px);line-height:15px}
 .patw .pat i{width:15px;height:15px;font-size:9.5px}
@@ -517,7 +506,7 @@ aside .intro-rules{margin:0 0 8px}
 
 /* ---- phone: one screen, no page scroll; side panels become a bottom sheet ---- */
 .stage{width:100%;display:flex;flex-direction:column;align-items:center;gap:12px}
-.mnav,.sheet-head,.mob-only,.scrim{display:none}
+.sheet-head,.scrim{display:none}
 .tabs{display:flex;gap:2px;flex:1;min-width:0}
 .tabs button{flex:1 1 auto;min-width:0;font-family:var(--display);font-weight:500;font-size:13.5px;letter-spacing:0;border:0;background:transparent;color:var(--muted);padding:9px 0;border-bottom:1.5px solid transparent;cursor:pointer;white-space:nowrap}
 .sheet-head .close{flex-shrink:0;width:36px}
@@ -531,13 +520,12 @@ aside .intro-rules{margin:0 0 8px}
   .brand{gap:9px}
   .seal{width:22px;height:22px;font-size:13px}
   .brand h1{font-size:24px;letter-spacing:.16em}
-  .brand p,.desk-only{display:none}
-  /* menu as words divided by hairlines; 庭を変える stands out in sumi */
-  .mnav{display:flex;flex-shrink:0;align-items:center}
-  .mnav .btn{border:0;background:transparent;border-radius:0;padding:6px 6px;font-size:13px;letter-spacing:0}
-  .mnav .btn + .btn{box-shadow:-1px 0 0 var(--line)}
-  .mnav .btn.em{background:var(--ink);color:var(--paper);border-radius:2px;padding:6px 8px;margin-right:3px}
-  .mnav .btn.em + .btn{box-shadow:none}
+  .brand p{display:none}
+  
+  
+  
+  
+  
   main{flex:1;min-height:0;gap:8px}
   /* status + board + hint message form one block, centred in the free height.
      --g is the garden's width: limited by the width (minus the coordinate column) and by the height
@@ -579,6 +567,7 @@ aside .intro-rules{margin:0 0 8px}
   aside[data-tab="records"] section[data-tab="records"],
   aside[data-tab="sound"] section[data-tab="sound"],
   aside[data-tab="terms"] section[data-tab="terms"]{display:block}
+  aside[data-tab="terms"] .adslot[data-ad="sheet"]{display:none!important}
   aside .seg{display:flex;width:100%;box-sizing:border-box;border-bottom:1px solid var(--line)}
   aside .seg button{flex:1;padding:10px 4px;font-size:14px;margin-bottom:-1px}
 }
@@ -632,18 +621,17 @@ aside .intro-rules{margin:0 0 8px}
   .stage>.hintmsg{flex:3 1 0;height:auto;min-height:7.25em;align-items:flex-start;overflow-y:auto;overscroll-behavior:contain}
 }
 /* the same make as the buttons under the garden (mincho lettering, thin line, square corners), only in red */
-.tutquit,.resetbtn{font-family:var(--display);font-weight:500;color:var(--shu);background:var(--panel);border:1px solid var(--shu);border-radius:2px;cursor:pointer;flex-shrink:0;white-space:nowrap;
+.tutquit{font-family:var(--display);font-weight:500;color:var(--shu);background:var(--panel);border:1px solid var(--shu);border-radius:2px;cursor:pointer;flex-shrink:0;white-space:nowrap;
   min-height:40px;padding:3px 12px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1.25;letter-spacing:.06em;transition:border-color .15s,background .15s}
 .tutquit{font-size:14px}
-.resetbtn span{font-size:14px}
-.resetbtn small{display:block;font-family:var(--body);font-weight:400;font-size:10.5px;letter-spacing:0;color:color-mix(in srgb,var(--shu) 50%,var(--muted));opacity:.85}
-.tutquit:hover,.resetbtn:hover{border-color:color-mix(in srgb,var(--shu) 70%,#000)}
-.tutquit:active,.resetbtn:active{background:color-mix(in srgb,var(--shu) 8%,var(--panel))}
+
+.tutquit:hover{border-color:color-mix(in srgb,var(--shu) 70%,#000)}
+.tutquit:active{background:color-mix(in srgb,var(--shu) 8%,var(--panel))}
 /* phone: they grow and shrink with the screen width, as the buttons under the garden do */
 @media (max-width:820px){
-  .tutquit,.resetbtn{min-height:min(40px,10.5vw);padding:min(3px,.8vw) min(12px,2.6vw)}
-  .tutquit,.resetbtn span{font-size:min(13.5px,3.6vw)}
-  .resetbtn small{font-size:min(9.5px,2.45vw);letter-spacing:-.04em}
+  .tutquit{min-height:min(40px,10.5vw);padding:min(3px,.8vw) min(12px,2.6vw)}
+  .tutquit{font-size:min(13.5px,3.6vw)}
+  
 }
 /* 練習用の庭へ向かう: filled in the brown of an old wooden veranda */
 .tutgo{justify-content:center;width:100%;margin-top:10px;background:#7a5b3f;border-color:#7a5b3f;color:#fbf7ef;font-weight:700}
@@ -653,7 +641,7 @@ aside .intro-rules{margin:0 0 8px}
 .introbtns .intro-go{margin-top:0}
 .btn.nudge{animation:nudge .9s ease 2}
 @keyframes nudge{0%,100%{box-shadow:none}40%{box-shadow:0 0 0 3px color-mix(in srgb,var(--shu) 55%,transparent)}}
-.card .mossnote{margin:0;font-size:12px;line-height:1.5;color:var(--moss);font-weight:700;text-align:center}
+
 .card .tutgoal{text-align:left;font-size:13px;line-height:1.7;color:var(--ink);margin:0}
 .card .tutgoal b{color:var(--shu);font-weight:700}
 .startgoal{margin:2px 0 0;font-size:13px;line-height:1.7;color:var(--ink)}
@@ -668,7 +656,7 @@ aside .intro-rules{margin:0 0 8px}
   .card.start .startrules{font-size:11.5px;line-height:1.55}
   .card.start .startgo{padding:9px 30px;font-size:15px;margin-top:2px}
 }
-/* test: the short guide before the first lesson — one idea per page */
+/* the short guide before the first lesson — one idea per page */
 .card.primer{gap:12px}
 .primer .pm-dots{display:flex;justify-content:center;gap:6px}
 .primer .pm-dots i{width:6px;height:6px;border-radius:50%;background:color-mix(in srgb,var(--ink) 18%,transparent)}
@@ -683,11 +671,11 @@ aside .intro-rules{margin:0 0 8px}
 .msgnext:hover{background:#3a372f}
 .veil .card .vlabel.tuttitle{font-size:18px;letter-spacing:.06em;line-height:1.45}
 @media (max-width:820px){.veil .card .vlabel.tuttitle{font-size:16px}}
-/* test: in a practice garden the message box keeps one height, so 次へ always sits in the same place */
+/* in a practice garden the message box keeps one height, so 次へ always sits in the same place */
 .hintmsg{position:relative}
 .hintmsg.hasnext{padding-bottom:40px;box-sizing:border-box}
 @media (min-width:821px){body.tutmode .hintmsg{height:8.2em;box-sizing:border-box;display:flex;align-items:center;justify-content:center}}
-/* test: what the practice step is talking about */
+/* what the practice step is talking about */
 .tuthl,.idlehl{position:relative;z-index:3;border-radius:3px;box-shadow:0 0 0 2px var(--shu),0 0 0 6px color-mix(in srgb,var(--shu) 22%,transparent);animation:tuthl 1.6s ease-in-out infinite}
 .idlehl{border-radius:3px}
 @keyframes tuthl{0%,100%{box-shadow:0 0 0 2px var(--shu),0 0 0 6px color-mix(in srgb,var(--shu) 22%,transparent)}50%{box-shadow:0 0 0 2px var(--shu),0 0 0 10px color-mix(in srgb,var(--shu) 6%,transparent)}}
@@ -714,7 +702,7 @@ aside .intro-rules{margin:0 0 8px}
 .startrules li{margin:1px 0}
 .startgoal b{display:block;color:var(--shu);font-weight:700;font-family:var(--display);letter-spacing:.1em}
 .startrules>b::before,.startgoal b.sh::before{content:"";width:5px;height:5px;background:var(--shu);flex-shrink:0}
-.startgoal.lft{text-align:left;align-self:stretch}.startgoal .kw{color:var(--shu)}.card.start .startrules{align-self:stretch}.startgoal.lft ul{margin:2px 0 0;padding-left:1.9em}
+.startgoal .kw{color:var(--shu)}.card.start .startrules{align-self:stretch}
 @media (max-width:820px){
   .goal{width:calc(var(--g) + 42px);max-width:none;margin:-2px 0 0;height:26px;min-height:0;flex-shrink:0}
   /* 20 stones: two rows of ten */
@@ -723,7 +711,7 @@ aside .intro-rules{margin:0 0 8px}
   .stage{--g:min(100cqw - 42px,(100cqh - 271px) / 1.085)}
 }
 /* very narrow phones: four equal buttons leave little room for the small second line */
-@media (max-width:360px){.tools{gap:4px}.tools .btn{padding:0}.tools .btn.two small{font-size:8px;letter-spacing:-.05em}.tools .msep{margin:0 4px}.tools kbd{display:none!important}}
+@media (max-width:360px){.tools{gap:4px}.tools .btn{padding:0}.tools .btn.two small{font-size:8px;letter-spacing:-.05em}.tools .msep{margin:0 4px}}
 /* PC: the garden shrinks with the window height, so status, garden, stones left and the buttons all fit on one screen */
 @media (min-width:821px){
   main{--bw:min(602px,max(340px,100vh - 325px))}
@@ -743,7 +731,7 @@ aside .intro-rules{margin:0 0 8px}
 .sthead{display:flex;justify-content:center}
 .sthead .gstyle{font-size:13px;letter-spacing:.06em}
 @media (max-width:820px){.sthead .gstyle{font-size:12px;letter-spacing:.02em}}
-/* test: the four parts around the board, paired by what they are about
+/* the four parts around the board, paired by what they are about
    — above the board, the game: its style (left) and the time spent (right)
    — below the board, what is on it: the stones still to place (left) and 砂利を均す, which clears them (right) */
 .clock{display:flex;align-items:center;gap:5px;margin-left:auto;flex-shrink:0}
@@ -798,7 +786,7 @@ html,body{overflow-x:clip}
 .snd .sndsep{grid-column:1/-1;border-top:1px solid var(--line);margin:2px 0}
 .snd.muted > :not(#allToggle):not(#allVol):not(.sndsep){opacity:.45}
 /* narrow phones: the speaker icon takes a little room, so the words sit a little closer */
-@media (max-width:420px){.mnav .btn{padding:6px 4px}.mnav .btn.em{padding:6px 6px}}
+
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);z-index:60;transform:translate(-50%,6px);opacity:0;pointer-events:none;
   background:var(--ink);color:var(--paper);font-family:var(--display);font-size:13px;letter-spacing:.06em;padding:8px 16px;border-radius:2px;box-shadow:0 10px 24px -12px rgba(40,30,10,.5);
   transition:opacity .2s ease,transform .2s ease;white-space:nowrap}
@@ -821,13 +809,12 @@ body.picking main,body.picking aside,body.picking .scrim{display:none!important}
 .topbtns .btn:hover{color:var(--shu)}
 .topbtns .btn.em{background:var(--ink);color:var(--paper);border-radius:2px;padding:7px 14px;margin-left:6px;box-shadow:none}
 .topbtns .btn.em:hover{color:var(--paper);opacity:.88}
-/* 庭を変える at the right end of the menu, on the phone as well */
-.mnav .btn.em{margin:0 0 0 3px;box-shadow:none}
+
 /* every width works the same way: the garden first, then 遊び方・コツ・記録・音・共有 below; the menu scrolls to them */
 aside section[id]{scroll-margin-top:16px}
-aside section + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}
+aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}
 .sharebtn{margin-top:14px;padding:8px 26px}
-body.picking .sharefoot{display:none}
+
 @media (max-width:820px){
   html,body{height:auto;overflow:visible;overscroll-behavior:auto}
   body{padding-block:8px 40px}
@@ -840,7 +827,7 @@ body.picking .sharefoot{display:none}
   .sheet-body{overflow:visible;padding:0;gap:34px}
   aside section,aside[data-tab] section{display:block}
   aside section + section{border-top:1px solid var(--line);padding-top:30px}
-  aside section + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}
+  aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}
   .topbtns{flex-shrink:0}
   .topbtns .btn{padding:6px 7px;font-size:13px;letter-spacing:0}
   .topbtns .btn.em{padding:6px 9px;margin-left:3px}
@@ -898,6 +885,7 @@ body.picking .sharefoot{display:none}
   html.tabview aside[data-tab="records"] section[data-tab="records"],
   html.tabview aside[data-tab="sound"] section[data-tab="sound"],
   html.tabview aside[data-tab="terms"] section[data-tab="terms"]{display:block!important}
+  html.tabview aside[data-tab="terms"] .adslot[data-ad="sheet"]{display:none!important}
   html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:0!important;padding-top:0!important;margin-top:0!important}
   .topbtns .btn[aria-current="page"]{color:var(--shu);font-weight:700}
 }
@@ -946,9 +934,7 @@ body.picking .sharefoot{display:none}
 .sicons .storo svg{display:block;width:100%;height:100%;overflow:visible}
 .sicons .storo text{font-family:var(--display);font-weight:700;font-size:14px;fill:#f5f0e4}
 @media (max-width:820px){.sicons .smoss{font-size:10.5px}}
-/* test: no marks; the sand starts plain and is raked where a stone cannot go; when solved the whole garden is raked */
-.rake mask rect.mc{opacity:0;transition:opacity .45s ease}
-.rake mask rect.mc.on{opacity:1}
+
 .rake mask rect.all{opacity:0;transition:opacity 1.4s ease}
 .board.solved .rake mask rect.all{opacity:1}
 .cell .dot{display:none!important}
@@ -957,10 +943,10 @@ body.picking .sharefoot{display:none}
 .sw:has(.d){background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='4' viewBox='0 0 28 4' preserveAspectRatio='none'%3E%3Cpath d='M0 -8.5Q7 -11.7 14 -8.5T28 -8.5M0 -4.5Q7 -7.7 14 -4.5T28 -4.5M0 -0.5Q7 -3.7 14 -0.5T28 -0.5M0 3.5Q7 0.3 14 3.5T28 3.5M0 7.5Q7 4.3 14 7.5T28 7.5M0 11.5Q7 8.3 14 11.5T28 11.5M0 15.5Q7 12.3 14 15.5T28 15.5' fill='none' stroke='%23bdb6a7' stroke-width='1'/%3E%3C/svg%3E");background-size:28px 4px}
 .sw .d{display:none}
 @media (prefers-reduced-motion:reduce){.rake mask rect{transition:none}}
-/* test: the rough lines are a little bolder, so the grain reads */
+/* the rough lines are a little bolder, so the grain reads */
 .rake .ripples .rr path{stroke:color-mix(in srgb,var(--rake) 75%,#a99d86);stroke-width:calc(var(--px,.03)*1.7)}
 .rake .rough path{stroke:color-mix(in srgb,var(--rake) 75%,#a99d86);stroke-width:calc(var(--px,.03)*1.7)}
-/* test: the four buttons share the row by what they hold ([石｜砂紋] and 教えを乞う need more than 休憩), and none is
+/* the four buttons share the row by what they hold ([石｜砂紋] and 教えを乞う need more than 休憩), and none is
    ever narrower than its own words; on narrow phones the type steps down with the screen */
 .tools,.stage .tools{grid-template-columns:minmax(min-content,1.35fr) minmax(min-content,1fr) minmax(min-content,.85fr) minmax(min-content,.85fr) minmax(min-content,.85fr)}
 .tools:has(#resetBtn[hidden]),.stage .tools:has(#resetBtn[hidden]){grid-template-columns:minmax(min-content,1.35fr) minmax(min-content,1fr) minmax(min-content,.85fr) minmax(min-content,.85fr)}
@@ -991,15 +977,15 @@ body.picking .sharefoot{display:none}
 .gate-sep{width:100%;border:0;border-top:1px solid var(--line);margin:2px 0}
 .gate-new{padding:12px;font-size:15px;letter-spacing:.16em}
 .gate-menu.solo .gate-new{padding:14px;font-size:17px;font-weight:700;background:var(--ink);color:var(--paper);border-color:var(--ink)}
-/* test: the first visit: the same garden, then two doors — はじめての方へ (the lesson) or すぐに遊ぶ (a garden) */
+/* the first visit: the same garden, then two doors — はじめての方へ (the lesson) or すぐに遊ぶ (a garden) */
 .gate-menu .gf-b{flex-direction:column;gap:3px;padding:13px 12px 12px}
 .gate-menu .gf-b .gc-h{font-size:17px;font-weight:700;letter-spacing:.18em}
 .gate-menu .gf-b .gc-s{font-family:var(--body);font-size:11.5px;letter-spacing:.04em;opacity:.78}
 .gate-menu .gf-b.primary{box-shadow:0 6px 18px -8px rgba(40,30,10,.45)}
-.gate-links{display:flex;justify-content:center;gap:18px;margin-top:2px}
+
 .gate-link{border:0;background:none;padding:4px 2px;font:inherit;font-size:12.5px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .gate-link:hover{color:var(--ink)}
-.gate-link.testonly{font-size:11px;opacity:.7}
+
 .gate.leave{opacity:0;transition:opacity .4s ease;pointer-events:none}
 @media (prefers-reduced-motion:reduce){.gate-in,.gate-menu{animation:none}}
 </style>
@@ -1256,6 +1242,8 @@ button{touch-action:manipulation}
           <p class="small">切にすると、石を置き終えたときだけ示します。</p></div>
       </div>
     </section>
+    <!-- no ad on 規約等: it sits above that section, and the tab views hide it there -->
+    <div class="adslot" data-ad="sheet"><span class="adlabel">広告</span><div class="adbox"></div></div>
     <section data-tab="terms" id="termsTop">
       <h2>規約等</h2>
       <p class="small">最終更新日：2026年11月22日</p>
@@ -1267,8 +1255,7 @@ button{touch-action:manipulation}
         <dt>動作環境</dt><dd>スマートフォン・パソコンに対応しています。Chrome、Safari、Edge、Firefox の各最新版で、JavaScript を有効にしてご利用ください。</dd>
         <dt>広告</dt><dd>本サービスでは、Google AdSense による広告の掲載を予定しています。現在は審査中のため、「広告準備中」と表示している場所に広告は掲載していません。掲載を開始した際は、広告枠に「広告」と明記します。商品やサービスを広告として紹介する場合も、そのことが分かるように表示します。</dd>
         <dt>特定商取引法</dt><dd>現在、商品の販売や有料サービスの提供は行っていないため、特定商取引法に基づく表記は掲載していません。今後、有料機能などを設ける場合は、申込受付の開始までに必要な事項を掲載します。</dd>
-        <dt>運営者</dt><dd>かがり</dd>
-        <dt>お問い合わせ</dt><dd><a href="https://forms.gle/8PzQznwaLtBYLGqs6" target="_blank" rel="noopener noreferrer">お問い合わせフォーム</a>からご連絡ください（Google フォームが開きます）。</dd>
+        <dt>お問い合わせ</dt><dd><a href="https://forms.gle/8PzQznwaLtBYLGqs6" target="_blank" rel="noopener noreferrer">お問い合わせフォーム</a>からご連絡ください。</dd>
       </dl>
 
       <div class="policy" id="terms">
@@ -1312,15 +1299,12 @@ button{touch-action:manipulation}
           <li>運営者、他の利用者または第三者の著作権その他の権利・利益を侵害する行為</li>
           <li>本サービスのサーバーまたはネットワークに過度な負荷をかける行為</li>
           <li>本サービスへの不正アクセス、プログラムの改ざんその他の運営を妨げる行為</li>
-          <li>本サービスの内容またはプログラムを無断で複製、転載、再配布、改変または販売する行為。ただし、次条第2項に定める共有、法令により認められる利用、および権利者が許可した利用を除きます。</li>
+          <li>本サービスの内容またはプログラムを無断で複製、転載、再配布、改変または販売する行為。ただし、法令により認められる利用および権利者が許可した利用を除きます。</li>
           <li>前各号に準じる行為</li>
         </ol>
 
-        <h4>第6条（権利の帰属と共有）</h4>
-        <ol class="small kou">
-          <li>本サービスに含まれる文章、画像、音声、プログラムその他の著作物に関する権利は、運営者または各著作物の正当な権利者に帰属します。</li>
-          <li>利用者は、庭コードおよび本サービスの画面のスクリーンショットを自由に共有できます。共有にあたり、運営者への事前の連絡は不要です。</li>
-        </ol>
+        <h4>第6条（権利の帰属）</h4>
+        <p class="small">本サービスに含まれる文章、画像、音声、プログラムその他の著作物に関する権利は、運営者または各著作物の正当な権利者に帰属します。</p>
 
         <h4>第7条（広告）</h4>
         <ol class="small kou">
@@ -1370,7 +1354,7 @@ button{touch-action:manipulation}
 
         <h4>1. 取り扱う情報</h4>
         <p class="small"><em>ゲームの利用時</em>会員登録は不要です。ゲームを遊ぶために、氏名やメールアドレスを入力する必要はありません。ゲームの進行状況、記録および設定は、お使いのブラウザの保存領域（ローカルストレージ）にのみ保存され、運営者のサーバーには送信されません。ページや文字の表示、利用状況の分析および広告の配信に伴って外部の事業者に送信される情報は、「5. 外部への情報の送信」に記載しています。</p>
-        <p class="small"><em>お問い合わせ時</em>運営者は、お問い合わせの際にご記入いただいたお名前（ニックネーム可）、メールアドレス、お問い合わせ内容および送信日時を取得します。お使いの端末やブラウザの種類は、ご記入いただいた場合に取得します。</p>
+        <p class="small"><em>お問い合わせ時</em>運営者は、お問い合わせの際にご記入いただいたお名前、メールアドレス、お問い合わせ内容および送信日時を取得します。お使いの端末やブラウザの種類は、ご記入いただいた場合に取得します。</p>
         <p class="small">未成年の方がお問い合わせをする際は、保護者の同意を得たうえでお送りください。</p>
 
         <h4>2. 利用目的</h4>
@@ -1409,7 +1393,7 @@ button{touch-action:manipulation}
             <p class="small"><em>利用目的</em>画面に表示する文字の書体を読み込むため</p></div>
           <div class="ext"><b>Google アナリティクス</b>
             <p class="small"><em>送信先</em>Google LLC</p>
-            <p class="small"><em>送信される主な情報</em>閲覧したページ、滞在時間、参照元、おおよその地域、ブラウザや端末の情報、Cookie などの識別子、庭を整えたときの様式・時間・洞察の回数</p>
+            <p class="small"><em>送信される主な情報</em>閲覧したページ、滞在時間、参照元、おおよその地域、ブラウザや端末の情報、Cookie などの識別子、ゲームの設定や利用状況</p>
             <p class="small"><em>利用目的</em>利用状況の把握と、本サービスの改善</p></div>
           <div class="ext"><b>Google AdSense</b>
             <p class="small"><em>送信先</em>Google LLC および Google が認定する第三者配信事業者</p>
@@ -1440,11 +1424,10 @@ button{touch-action:manipulation}
 
         <h4>10. お問い合わせ窓口</h4>
         <p class="small">利用者の情報の取り扱いに関するご質問、苦情および開示等のご請求は、以下の窓口で受け付けます。</p>
-        <p class="small">運営者：かがり<br>住所：上記運営者の住所は、下記窓口にご請求いただければ、遅滞なくお知らせします。<br>連絡先：<a href="https://forms.gle/8PzQznwaLtBYLGqs6" target="_blank" rel="noopener noreferrer">お問い合わせフォーム</a>（Google フォーム）</p>
+        <p class="small">運営者の氏名および住所の取り扱いについては、個人情報の保護に関する法律に準じて対応します。<br>連絡先：<a href="https://forms.gle/8PzQznwaLtBYLGqs6" target="_blank" rel="noopener noreferrer">お問い合わせフォーム</a></p>
         <p class="small docdate">以上<br>制定日：2026年11月22日</p>
       </div>
     </section>
-    <div class="adslot" data-ad="sheet"><span class="adlabel">広告</span><div class="adbox"></div></div>
     </div>
   </aside>
   <footer class="sitefoot"><nav class="footnav" aria-label="サイト内の案内"><a href="rules/" id="footRules">遊び方</a><a href="tips/" id="footTips">解き方のコツ</a><a href="about/" id="footAbout">このサイトについて</a></nav><nav class="footnav" aria-label="規約"><a href="terms/" id="footTerms">利用規約</a><a href="privacy/" id="footPolicy">プライバシーポリシー</a><a href="privacy/#extsend" id="footExt">外部送信について</a></nav><div style="margin-top:8px">© 石庭ぱずる</div></footer>
@@ -1694,8 +1677,8 @@ function generate(N,K,seed,hard,toro){
     shuffle(used,rnd);
     // with lanterns, moss goes first so the lanterns tend to stay
     if(toro)used.sort((a,b)=>lamp[a]-lamp[b]);
-    // "普通": level 1–2 reasoning only, keeps about a third of the spare clues.
-    // "じっくり": level 3 allowed, removes every clue it can.
+    // 普通: level 1–2 reasoning only, keeps about a third of the spare clues.
+    // 難しい: level 3 allowed, removes every clue it can.
     // a 灯籠あり garden keeps its last lantern
     const nT=()=>{let n=0;for(let k=0;k<N*N;k++)if(clue[k]>=TORO)n++;return n;};
     for(const i of used){if(toro&&clue[i]>=TORO&&nT()===1)continue;const v=clue[i];clue[i]=-1;fix();
@@ -1705,7 +1688,7 @@ function generate(N,K,seed,hard,toro){
     const p={N,K,clue:Array.from(clue),stone:Array.from(stone),level:r.used,steps:r.steps,solved:r.solved};
     last=p;if(toro&&nT()===0)continue;   // no lantern in it: draw another answer
     if(!best||p.level>best.level)best=p;
-    if(!hard||p.level>=3)break; // じっくり prefers puzzles that need two-unit reasoning
+    if(!hard||p.level>=3)break; // 難しい prefers puzzles that need two-unit reasoning
   }
   return best||last;
 }
@@ -2017,11 +2000,9 @@ const Sound=(function(){
     else if(k==='mute'||k==='vol'){if(k==='mute')prefs.mute=!!v;else prefs.vol=vol(v,prefs.vol);if(ctx)master.gain.setTargetAtTime(prefs.mute?0:prefs.vol,ctx.currentTime,.03);}
     savePrefs();
   }
-  // read-only snapshot, handy when checking which sounds come from files
-  const status=()=>({ctx:ctx?ctx.state:'none',bgmOn,source:bgmEl?'file':timer?'synth':'off',files:Object.assign({},files),loaded:Object.keys(buffers)});
   // hold(true) fades the music out without touching the BGM setting; hold(false) brings it back if BGM is on
   const hold=on=>{held=!!on;if(on)stopBgm();else if(prefs.bgm&&ctx)startBgm();};   // (before the first tap, unlock() starts it)
-  return {play,set,status,hold,prefs:()=>Object.assign({},prefs),available:!!AC};
+  return {play,set,hold,prefs:()=>Object.assign({},prefs),available:!!AC};
 })();
 </script>
 
@@ -2080,24 +2061,20 @@ function seedOfCode(t){t=normCode(t);
   if(!/^[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{6}$/.test(t))return 0;
   let v=0;for(const ch of t)v=v*32+CODE_ABC.indexOf(ch);return codePerm(v,true)%99999+1;}
 function keyOf(N,seed,d,t){return 'sekitei2:'+N+':'+d+':'+seed+((t===undefined?toro:t)?':toro':'');}
-// 今日の庭: a number drawn from the date, out of the same 1–99999 as 漫ろ歩き (the same for everyone on that day)
+// a garden number drawn from the date (1–99999): the garden a new visitor starts on, the same for everyone that day
 function todaySeed(){const d=new Date(),r=rngFrom(Math.imul(d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate(),0x9E3779B1)>>>0);r();
   return Math.floor(r()*99999)+1;}
 
-// 今日の庭: one puzzle per day (same for everyone); 漫ろ歩き: a random garden each time
-let walk=true;   // 今日の庭 is gone: every garden is a 漫ろ歩き
-const randomSeed=()=>Math.floor(Math.random()*99999)+1;   // 1–99999, the same range as a garden chosen by number
-const newSeed=()=>walk?randomSeed():todaySeed();
-let pend=null;   // choices made in 庭の種類 that are not applied yet
-// 広さ・石・灯籠・手がかり; 今日の庭 / 漫ろ歩き goes beside the garden's number under the board
+const randomSeed=()=>Math.floor(Math.random()*99999)+1;   // 1–99999, the same range as a garden chosen by code
+let pend=null;   // choices made in 庭を変える that are not applied yet
 // a garden's style, as written on the scroll: 「六間（石6）・普通」
 // (no lanterns is the plain garden, so it goes unsaid: 「六間（石6）・普通」)
 const styleParts=(N,t,d)=>[`${SIZES[N].name}（石${N*SIZES[N].K}）`,...(t?['灯籠あり']:[]),d?'難しい':'普通'];
 const labelText=()=>styleParts(size,S?S.toro:toro,diff).join(' ・ ');
-// fresh: a 漫ろ歩き garden drawn anew (or chosen by number); one already solved starts over from an empty board
+// fresh: a garden drawn anew (or chosen by code); one already solved starts over from an empty board
 function start(N,d,seed,fresh){
   N=SIZES[N]?N:8;d=d===1?1:0;seed=int(seed,1,99999,todaySeed());
-  size=N;diff=d;pend={walk,size,diff,toro};syncSeg();tutOff();
+  size=N;diff=d;pend={size,diff,toro};syncSeg();tutOff();
   const K=SIZES[N].K;
   stopClock();Sound.hold(false);if(S)S.started=false;setMode(0);   // a new garden starts with 石 chosen
   $('time').style.visibility='hidden';
@@ -2165,69 +2142,34 @@ const KAN=['','一','二','三','四','五','六','七','八','九','十','十�
 const colName=c=>String(S.N-c);          // 1 is the rightmost column, as on a shogi board
 const rowName=r=>KAN[r+1];               // 一 is the top row
 const cellName=i=>colName(i%S.N)+rowName((i/S.N)|0);   // e.g. 1二
-// 枯山水: each garden gets its own raking, drawn from its seed so it stays the same when you come back.
-// For now the ground is one pattern only: gently rippling lines running across the whole garden
-// (the ripple is made of arcs of RAKE_BEND cells in radius, so it never bends sharply).
-// An upper area always wins: the lines beneath stop short of its edge, so no two lines ever cross.
+// 枯山水: the raked lines are drawn on a canvas (rakeCanvas); the SVG carries the ripples and the grid's knots.
 // Every moss island and every placed stone sits in smoothed sand with ripples round it. The ripples are
 // lines of equal distance from the nearest island or stone, so where two are close their rings fuse into
 // one outline round both (like a matryoshka's), and no ripple ever runs over a stone or moss.
 let RK=null;
-const RAKE_BEND=2;
 function rakeSvg(N,seed,clue){
-  const R=rngFrom((seed^0x5eed5a1d)>>>0),pick=(a,b)=>a+R()*(b-a),NS='http://www.w3.org/2000/svg';
-  const sp=1/9,step=.08;   // gap between rake lines (9 to a cell at every size, so a cell looks the same) / sampling, in cells
+  const NS='http://www.w3.org/2000/svg';
+  const sp=1/9;   // gap between rake lines (9 to a cell at every size, so a cell looks the same), in cells
   const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
   const f=x=>Math.round(x*1000)/1000;
   const svg=el('svg',{class:'rake',viewBox:`0 0 ${N} ${N}`,preserveAspectRatio:'none','aria-hidden':'true'});
   const defs=el('defs',{});svg.appendChild(defs);
-  const id='rk'+(seed>>>0).toString(36);let uid=0;
-  const mk=el('mask',{id:id+'f',maskUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2});
-  mk.appendChild(el('rect',{x:-1,y:-1,width:N+2,height:N+2,fill:'#fff'}));defs.appendChild(mk);
-  const field=el('g',{mask:`url(#${id}f)`}),rings=el('g',{class:'ripples'});
-  svg.append(field,rings);field.setAttribute('display','none');   // the straight raked lines are drawn on a canvas (rakeCanvas)
-  const items=[];
-  const add=(g,pts)=>{const e=el('path',{});g.appendChild(e);items.push({e,pts});};
-  const inView=([x,y])=>x>-.6&&x<N+.6&&y>-.6&&y<N+.6;
-  const addRuns=(g,pts)=>{let run=[];for(const q of pts){if(inView(q))run.push(q);else{if(run.length>1)add(g,run);run=[];}}if(run.length>1)add(g,run);};
-  // ---- whole-garden patterns (the bottom layer) ----
-  function lines(g,P,wv){               // parallel lines; wv(b) bends them (all by the same amount, so they never meet)
-    for(let a=sp/2;a<N;a+=sp){const pts=[];
-      for(let b=-.5;b<=N+.5;b+=step)pts.push(P([b,a+wv(b)]));add(g,pts);}}
-  // a wave made of circular arcs of radius r (= RAKE_BEND), crest and trough by turns, each turning
-  // through ±th; the arcs meet smoothly, so the line never bends tighter or wider than r
-  const arcWave=(r,th,ph)=>{const L=2*r*Math.sin(th),c=r*Math.cos(th);
-    return b=>{const z=b+ph,k=Math.round(z/L),u=z-k*L;return (k%2?-1:1)*(Math.sqrt(r*r-u*u)-c);};};
-  // ---- compose ----
-  const layers=[];
-  const base=el('g',{});field.appendChild(base);layers.push({g:base});
-  pick(.24,.5);pick(0,9);   // (keeps the random sequence as before)
-  lines(base,q=>q,()=>0);   // test: straight lines across the garden, left to right
-  // test: roughen them — a little unevenness along each line, and grain that breaks it up here and there
+  const id='rk'+(seed>>>0).toString(36);
+  // each stone's patch of smoothed sand, kept as a circle whose radius rakeDraw reads to clear the raked lines
+  const mk=el('g',{});defs.appendChild(mk);
+  const rings=el('g',{class:'ripples'});svg.appendChild(rings);
+  // the ripples are a little uneven along each line, and broken up here and there by grain
   const gr=el('filter',{id:id+'g',filterUnits:'userSpaceOnUse',x:0,y:0,width:N,height:N,'color-interpolation-filters':'sRGB'});
   gr.innerHTML=`<feTurbulence type="fractalNoise" baseFrequency="7 1.2" numOctaves="2" seed="${(seed>>>0)%97}" result="n"/>`+
     `<feDisplacementMap in="SourceGraphic" in2="n" scale="0.04" xChannelSelector="R" yChannelSelector="G" result="d"/>`+
     `<feTurbulence type="fractalNoise" baseFrequency="24 30" numOctaves="1" seed="${(seed>>>0)%89+1}" result="g"/>`+
     `<feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  3.2 0 0 0 -0.95" result="ga"/>`+
     `<feComposite in="d" in2="ga" operator="in"/>`;
-  defs.appendChild(gr);base.setAttribute('filter',`url(#${id}g)`);base.setAttribute('class','rough');
-  rings.setAttribute('filter',`url(#${id}g)`);   // test: the ripples round stones and moss are rough too
-  // each layer is hidden under every layer above it, plus half a line's gap so its lines end cleanly
-  layers.forEach((L,i)=>{const above=layers.slice(i+1);if(!above.length)return;
-    const m=el('mask',{id:`${id}m${uid}`,maskUnits:'userSpaceOnUse',x:-1,y:-1,width:N+2,height:N+2});
-    m.appendChild(el('rect',{x:-1,y:-1,width:N+2,height:N+2,fill:'#fff'}));
-    for(const {sh} of above){const e=el('path',{d:sh.d,fill:'#000',stroke:'#000','stroke-width':f(sp)});
-      if(sh.tf)e.setAttribute('transform',sh.tf);if(sh.evenodd)e.setAttribute('fill-rule','evenodd');m.appendChild(e);}
-    defs.appendChild(m);const w=el('g',{mask:`url(#${id}m${uid++})`});field.insertBefore(w,L.g);w.appendChild(L.g);});
-
-  // moss islands: smoothed sand round each, for good
-  const moss=[];clue.forEach((v,i)=>{if(v>=0){moss.push([i%N+.5,Math.floor(i/N)+.5]);
-    mk.appendChild(el('circle',{cx:i%N+.5,cy:Math.floor(i/N)+.5,r:f(RAKE_CORE+RAKE_RINGS*sp),fill:'#000'}));}});
-  const caps=el('path',{fill:'#000',d:''});mk.appendChild(caps);   // the waists of side-by-side pairs (rakeStones)
-  const kn=el('g',{});for(let y=1;y<N;y++)for(let x=1;x<N;x++)kn.appendChild(el('circle',{class:'knot',cx:x,cy:y,r:N<=6?.04:N<=8?.05:.06}));
+  defs.appendChild(gr);rings.setAttribute('filter',`url(#${id}g)`);
+  const moss=[];clue.forEach((v,i)=>{if(v>=0)moss.push([i%N+.5,Math.floor(i/N)+.5]);});
+    const kn=el('g',{});for(let y=1;y<N;y++)for(let x=1;x<N;x++)kn.appendChild(el('circle',{class:'knot',cx:x,cy:y,r:N<=6?.04:N<=8?.05:.06}));
   svg.appendChild(kn);
-  for(const it of items){let d='';for(const [x,y] of it.pts)d+=(d?'L':'M')+f(x)+','+f(y);it.e.setAttribute('d',d);}
-  RK={N,svg,sp,el,f,mk,caps,rings,moss,capsList:[],cur:null,key:null,nodes:new Map(),str:new Map(),target:new Map(),raf:0};
+  RK={N,svg,sp,el,f,mk,rings,moss,capsList:[],cur:null,key:null,nodes:new Map(),str:new Map(),target:new Map(),raf:0};
   return svg;
 }
 // Ripples: RAKE_RINGS lines round every stone and moss island, starting just outside its body (RAKE_CORE,
@@ -2317,7 +2259,7 @@ function rakeContours(bodies){
 function rakeSet(i,s){
   let n=RK.nodes.get(i);
   if(s<=0){if(n){n.remove();RK.nodes.delete(i);rakeDrawSoon();}return;}
-  if(!n){const N=RK.N;n=RK.el('circle',{cx:i%N+.5,cy:Math.floor(i/N)+.5,r:0,fill:'#000'});RK.mk.appendChild(n);RK.nodes.set(i,n);}
+  if(!n){const N=RK.N;n=RK.el('circle',{cx:i%N+.5,cy:Math.floor(i/N)+.5,r:0});RK.mk.appendChild(n);RK.nodes.set(i,n);}
   const e=s*s*(3-2*s);n.setAttribute('r',String(Math.round((RAKE_CORE+RAKE_RINGS*RK.sp)*e*1000)/1000));rakeDrawSoon();}
 // follow the stones on the board: the ripples are traced again and fade across, the stones' patches open and close
 function rakeStones(cells,instant){
@@ -2325,9 +2267,7 @@ function rakeStones(cells,instant){
   cells.forEach((v,i)=>{if(v===1){want.set(i,1);bodies.push([i%N+.5,Math.floor(i/N)+.5]);}});
   const key=[...want.keys()].join(',');
   if(key!==RK.key){RK.key=key;const g=rakeContours(bodies),old=RK.cur;RK.cur=g;
-    const Z=RAKE_CORE+RAKE_RINGS*RK.sp,f=RK.f;   // smooth the sand along each capsule's waist too
-    RK.capsList=rakePairs(bodies);
-    RK.caps.setAttribute('d',RK.capsList.map(([ax,ay,bx,by])=>ax===bx?`M${f(ax-Z)},${ay}H${f(ax+Z)}V${by}H${f(ax-Z)}Z`:`M${ax},${f(ay-Z)}V${f(ay+Z)}H${bx}V${f(ay-Z)}Z`).join(''));
+    RK.capsList=rakePairs(bodies);   // smooth the sand along each capsule's waist too (rakeDraw)
     const still=instant||matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(still){if(old)old.remove();RK.rings.appendChild(g);}
     else{g.style.opacity='0';RK.rings.appendChild(g);g.getBoundingClientRect();
@@ -2367,7 +2307,7 @@ function build(){$('resetBtn').hidden=!!(S&&S.tut);
         el.setAttribute('aria-label',`灯籠 ${v}`);el.tabIndex=-1;}
       else if(S.clue[i]>=0){el.classList.add('clue');const h=(i*2654435761>>>0),q=k=>45+((h>>>k)&15)%8;el.innerHTML=`<div class="mo" style="border-radius:${q(0)}% ${100-q(0)}% ${q(4)}% ${100-q(4)}% / ${q(8)}% ${q(12)}% ${100-q(12)}% ${100-q(8)}%;rotate:${(h%16)-8}deg"></div><span>${S.clue[i]}</span>`;el.setAttribute('aria-label',`苔石 ${S.clue[i]}`);el.tabIndex=-1;}
       else{
-        const h=(i*2654435761>>>0);const rr=k=>40+((h>>>k)&15);
+        const h=(i*2654435761>>>0);
         el.innerHTML=`<div class="st ${stoneLook(h)}" style="${stoneStyle(h)}"></div><div class="dot"></div>`;
       }
       if(c===N-1)el.classList.add('edgeR');if(r===N-1)el.classList.add('edgeB');if(r===0)el.classList.add('top');if(c===0)el.classList.add('left');
@@ -2492,7 +2432,7 @@ board.addEventListener('pointermove',e=>{
 // sound for one cell change; a newly placed stone that breaks a rule gets a soft low tone after the click
 function cellSound(i,from,to){
   if(to===1){Sound.play('place');if(cellEls[i].classList.contains('bad'))Sound.play('error',.08);}
-  else if(to===2)Sound.play('unmark');   // test: raking = the sweep that cleared a mark
+  else if(to===2)Sound.play('unmark');   // raking = the sweep that cleared a mark
   else Sound.play(from===1?'remove':'unmark');
 }
 function endDrag(){if(!drag)return;const d=drag;drag=null;
@@ -2684,27 +2624,22 @@ $('resetBtn').onclick=()=>{if(!S||S.tut||S.done||!S.started)return;
 let toastTimer=null;
 function toast(msg){let el=$('toast');if(!el){el=document.createElement('div');el.id='toast';el.className='toast';el.setAttribute('role','status');el.setAttribute('aria-live','polite');document.body.appendChild(el);}
   el.textContent=msg;el.classList.remove('show');void el.offsetWidth;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2000);}
-// 共有 in the top menu passes the game itself on (not a result): share sheet, or copy the link
-function shareApp(btn){
-  const url=SITE_URL;
-  const text='石庭ぱずる ― 石庭に石を据える、安らぎの和風ロジックパズル';
-  if(typeof navigator.share==='function'){navigator.share({title:'石庭ぱずる',text:text+'\n'+url}).catch(()=>{});return;}
-  const done=()=>toast('リンクをコピーしました');
-  const all=text+'\n'+url;
+// the phone's share sheet (X, LINE, …); where there is none, the text is copied and done() tells so
+function shareOrCopy(all,done){
+  if(typeof navigator.share==='function'){navigator.share({title:'石庭ぱずる',text:all}).catch(()=>{});return;}
   const fallback=()=>{const ta=document.createElement('textarea');ta.value=all;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';
     document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){}ta.remove();};
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(all).then(done,fallback);else fallback();
 }
-$('appShare').onclick=()=>shareApp($('appShare'));
+// 共有 in the menu passes the game itself on (not a result)
+$('appShare').onclick=()=>shareOrCopy('石庭ぱずる ― 石庭に石を据える、安らぎの和風ロジックパズル\n'+SITE_URL,()=>toast('リンクをコピーしました'));
 // on a phone the garden and its buttons fill the first screen; the sections follow below, as on a PC
 const fitMain=()=>{const h=document.querySelector('header.top');if(h)document.documentElement.style.setProperty('--hh',(h.offsetHeight+24)+'px');};
 fitMain();addEventListener('resize',fitMain);if(document.fonts)document.fonts.ready.then(fitMain);
-function setWalk(v){walk=true;if(pend)pend.walk=true;syncSeg();}
-function choose(k,v){if(!pend)pend={walk,size,diff,toro};if(pend[k]===v)return;pend[k]=v;store.set('sekitei:pick',pend);Sound.play('unmark');syncSeg();}
+function choose(k,v){if(!pend)pend={size,diff,toro};if(pend[k]===v)return;pend[k]=v;store.set('sekitei:pick',pend);Sound.play('unmark');syncSeg();}
 // what was last chosen in 庭の種類, even if the popup was closed without going: it opens with that again
 function savedPick(){const q=store.get('sekitei:pick');
-  return q&&typeof q==='object'&&SIZES[q.size]&&(q.diff===0||q.diff===1)?{walk:true,size:q.size,diff:q.diff,toro:q.toro===undefined?toro:q.toro===true}:null;}
-document.querySelectorAll('.walkSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('walk',b.dataset.walk==='1');});
+  return q&&typeof q==='object'&&SIZES[q.size]&&(q.diff===0||q.diff===1)?{size:q.size,diff:q.diff,toro:q.toro===undefined?toro:q.toro===true}:null;}
 // 庭を変える (desktop and phone) opens the 庭を変える popup
 $('gardenBtn').onclick=()=>openPick(false);
 // changing any 庭の種類 setting sweeps the sand: same sound as clearing a mark
@@ -2713,7 +2648,6 @@ document.querySelectorAll('.diffSeg').forEach(s=>s.onclick=e=>{const b=e.target.
 document.querySelectorAll('.toroSeg').forEach(s=>s.onclick=e=>{const b=e.target.closest('button');if(b)choose('toro',b.dataset.toro==='1');});
 // the notes under each choice; the popup keeps room for the longest of each, so nothing moves when you choose
 const NOTES={
-  walk:['日付ごとに決まる庭です。誰が訪れても同じ盤面になります。','気の向くままに庭を巡ります。毎回違う盤面になります。'],
   // __…__ is underlined (the number of stones per row and column, the part that differs)
   size:{6:'6×6マスの小さめの庭です。6個の石を、各行・各列に__1つずつ__置いてください。',
     8:'8×8マスの庭です。8個の石を、各行・各列に__1つずつ__置いてください。',
@@ -2723,11 +2657,9 @@ const NOTES={
   toro:['苔石が置いてある、いつもの庭です。',
     '苔石に加えて灯籠も置いてある、中級者向けの庭です。']};
 function syncSeg(){
-  const P=pend||{walk,size,diff,toro};
-  if(document.getElementById('pick').open)noField();   // 今日の庭 turns the number off
-  document.querySelectorAll('.walkSeg button').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.walk==='1')===P.walk?'true':'false'));
+  const P=pend||{size,diff,toro};
+  if(document.getElementById('pick').open)noField();   // the note under the code depends on the settings chosen
   const note=(k,t)=>document.querySelectorAll(`[data-note="${k}"]`).forEach(e=>phrase(e,t));
-  note('walk',NOTES.walk[P.walk?1:0]);
   document.querySelectorAll('.sizeSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.size===P.size?'true':'false'));
   document.querySelectorAll('.diffSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.diff===P.diff?'true':'false'));
   note('size',NOTES.size[P.size]);
@@ -2738,7 +2670,7 @@ function syncSeg(){
 // ---- bottom sheet (phone) ----
 function setTab(t){$('sheet').dataset.tab=t;document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t?'true':'false'));$('sheetBody').scrollTop=0;}
 setTimeout(()=>document.body.classList.add('ready'),400);
-function openSheet(t){pend={walk,size,diff,toro};syncSeg();setTab(t);document.body.classList.add('sheet-open');setTimeout(()=>$('sheetClose').focus({preventScroll:true}),50);}
+function openSheet(t){pend={size,diff,toro};syncSeg();setTab(t);document.body.classList.add('sheet-open');setTimeout(()=>$('sheetClose').focus({preventScroll:true}),50);}
 function closeSheet(){document.body.classList.remove('sheet-open');}
 document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>b.dataset.open==='garden'?openPick(false):openSheet(b.dataset.open));
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
@@ -2826,12 +2758,12 @@ if(GA_ID&&LIVE){window.dataLayer=window.dataLayer||[];window.gtag=function(){win
       sl.querySelector('.adbox').innerHTML=`<ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${u}" data-ad-format="auto" data-full-width-responsive="true"></ins>`;
       try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}});};
   if(ADS.on&&LIVE){const tryAds=()=>{if($('gate').hidden)window.sekiteiAds();else setTimeout(tryAds,2000);};setTimeout(tryAds,1500);}
-  const openDoc=id=>e=>{e.preventDefault();$(id).open=true;goSection('termsTop','terms');setTimeout(()=>$(id).scrollIntoView({block:'start',behavior:'smooth'}),60);};
+  const openDoc=id=>e=>{e.preventDefault();goSection('termsTop','terms');setTimeout(()=>$(id).scrollIntoView({block:'start',behavior:'smooth'}),60);};
   $('footRules').onclick=e=>{e.preventDefault();goSection('rulesTop','rules');};
   $('footTips').onclick=e=>{e.preventDefault();goSection('tipsTop','tips');};
   $('footAbout').onclick=e=>{e.preventDefault();goSection('termsTop','terms');setTimeout(()=>$('aboutTop').scrollIntoView({block:'start',behavior:'smooth'}),60);};
   $('footTerms').onclick=openDoc('terms');$('footPolicy').onclick=openDoc('policy');
-  $('footExt').onclick=e=>{e.preventDefault();$('policy').open=true;goSection('termsTop','terms');setTimeout(()=>$('extsend').scrollIntoView({block:'start',behavior:'smooth'}),60);};}document.querySelectorAll('.sndico').forEach(b=>b.onclick=toggleMute);
+  $('footExt').onclick=e=>{e.preventDefault();goSection('termsTop','terms');setTimeout(()=>$('extsend').scrollIntoView({block:'start',behavior:'smooth'}),60);};}document.querySelectorAll('.sndico').forEach(b=>b.onclick=toggleMute);
 $('allVol').oninput=e=>Sound.set('vol',e.target.value);
 $('allVol').onchange=()=>Sound.play('place');
 if(!Sound.available)$('soundNote').textContent='このブラウザでは音を鳴らせません。';
@@ -2847,7 +2779,7 @@ function tKit(N){const idx=nm=>'一二三四五六七八九十'.indexOf(nm.slice
     ring:nm=>{const i=idx(nm),r=(i/N)|0,c=i%N,o=[];for(let rr=r-1;rr<=r+1;rr++)for(let cc=c-1;cc<=c+1;cc++)if((rr!==r||cc!==c)&&rr>=0&&cc>=0&&rr<N&&cc<N)o.push(rr*N+cc);return o;},
     want:(names,v)=>Object.fromEntries(names.map(n=>[idx(n),v]))};}
 const {idx:tIdx,row:tRow,col:tCol,ring:tRing,want:tWant}=tKit(6);
-// test: one idea per screen. info steps only explain, and go on with 次へ (or a tap on the garden);
+// one idea per screen. info steps only explain, and go on with 次へ (or a tap on the garden);
 // hl: buttons and labels to make stand out. A step that wants marks or stones also lights 石｜砂紋 until it is set right.
 const TSTEPS=[
   {info:true,lit:()=>[],hl:['board'],text:'上にあるのが「庭」です。\nここに、石を置いていきます。'},
@@ -3013,7 +2945,7 @@ const TDRILL=[
    N:6,K:1,st:'....../....../..a.2./....../..2.../......',stones:[0,9,17,19,28,32],
    want:{'6三':2,'5三':2,'3三':2,'4一':2,'4二':2,'4四':2},lit1:(k,c)=>tLit(k,c,'4三'),lit2:(k,c)=>[...tLit(k,c,'4三'),k.idx('2三'),k.idx('4五')],
    tap:'4三',
-   // test: one idea per screen. info: 次へ; tap: the lantern to tap; do: the move itself (the chapter ends when it is made)
+   // one idea per screen. info: 次へ; tap: the lantern to tap; do: the move itself (the chapter ends when it is made)
    guide:[
      {kind:'info',lit:k=>[k.idx('4三')],text:'4三にあるのが「灯籠」です。\n灯籠は、上下左右に光を伸ばします。'},
      {kind:'tap',text:'灯籠をタップすると、光の届くマスが光ります。\n4三の灯籠をタップしてみましょう。'},
@@ -3052,7 +2984,7 @@ const TDRILL=[
 const LESSONS={
   basic:{N:6,clue:{'4一':0,'6二':2,'5四':1},stone:['6一','2二','5三','3四','1五','4六'],marks:[],steps:TSTEPS,title:'練習用の庭',tag:'',
     intro:'光るマスと下の説明に沿って、1手ずつ進めます。'},};
-let tut=null;   // {lesson, back:{N,d,seed,walk}|null, first:bool} while a 練習用の庭 is open
+let tut=null;   // {lesson, back:{N,d,seed}|null, first:bool} while a 練習用の庭 is open
 // the drills: one guided move per chapter
 const DRILLS={
   adv:{list:DRILL,short:'練習（難しい）',name:'練習用の庭（難しい・六間または八間）',seed:900,
@@ -3077,24 +3009,24 @@ function drillBlocks(st){cellEls.forEach(e=>e.classList.remove('blk','blkf','et'
     e.classList.add('blk','blkf');if(!has(i-N))e.classList.add('et');if(!has(i+N))e.classList.add('eb');
     if(c===0||!has(i-1))e.classList.add('el');if(c===N-1||!has(i+1))e.classList.add('er');}));}
 // the lantern step: its light is lit up, and the lantern waits to be tapped
-function tapShow(){const t=tut.tap,v=S.clue[t]-TORO;
+function tapShow(){const t=tut.tap;
   setMsg(`まずは灯籠の光が照らすマスを見てみましょう。${cellName(t)}の灯籠をタップしてみてください。`);
   drillBlocks(null);focusCells([t],0);cellEls[t].classList.add('tapme');}
 function tapDone(){const t=tut.tap,v=S.clue[t]-TORO;tut.tap=null;cellEls[t].classList.remove('tapme');Sound.play('hint');
-  if(tutG()){tut.g++;tutShow();return;}   // test: the guide goes on
+  if(tutG()){tut.g++;tutShow();return;}   // the guide goes on
   lampCells(t,0);
   setMsg(`いま光っているのが、${cellName(t)}の灯籠「${v}」が照らすマスです。光は上・下・左・右へまっすぐ伸び、苔石に当たると止まります。\n盤面をタップすると、次へ進みます。`);
   clearTimeout(nudgeT);tut.tapNext=true;}
 function tutShow(){tutIdle();const L=LS(),k=tStep(),st=L.steps[k];if(L.drill){$('label').textContent=`${L.short} ${tut.ch+1}/${DR().list.length}`;if(tutG()){guideShow();return;}if(tut.tap!=null){tapShow();return;}setMsg(drillMsg(st));focusCells(st.lit(),0);drillBlocks(st);return;}$('label').textContent=L.short||L.title;setMsg(st.text,st.info?tutSeen:null);focusCells(st.lit(),0);tutHl();}
-// test: an info step read: on to the next
+// an info step read: on to the next
 function tutSeen(){if(!tut||DR())return;const st=LS().steps[tStep()];if(!st.info)return;tut.seen.add(st);Sound.play('tap');tutShow();}
-// test: make the buttons the step talks about stand out (石｜砂紋 only while it is not yet set as the step needs)
+// make the buttons the step talks about stand out (石｜砂紋 only while it is not yet set as the step needs)
 function tutHl(){document.querySelectorAll('.tuthl').forEach(e=>e.classList.remove('tuthl'));if(!tut||!S||!S.tut||S.done||!S.started)return;   // nothing stands out while a card is still in front
   let st;if(DR()){const g=tutG();if(!g)return;st=g.kind==='do'?{hl:g.hl,want:LS().steps[0].want}:g;}else st=LS().steps[tStep()];if(!st)return;const ids=[...(st.hl||[])];
   if(st.want){const v=new Set(Object.values(st.want));if(v.size===1){const need=v.has(1)?0:1;if(mode!==need)ids.push('modeBtn');}}
   ids.forEach(id=>{const e=$(id);if(e)e.classList.add('tuthl');});}
 let nudgeT=null;
-// test: a drill chapter's guided steps (灯籠あり 1/5, 2/5)
+// a drill chapter's guided steps (灯籠あり 1/5, 2/5)
 function tutG(){const D=DR();if(!D||!tut||tut.g==null)return null;const c=D.list[tut.ch];return c.guide&&c.guide[tut.g]||null;}
 function cellOf(nm){return [...Array(S.N*S.N).keys()].find(i=>cellName(i)===nm);}
 function guideShow(){const g=tutG(),c=DR().list[tut.ch],k=tKit(c.N);drillBlocks(null);
@@ -3112,7 +3044,7 @@ function tutHintMove(){const st=LS().steps[tStep()];if(!st||!st.want)return;
   if(!S.done&&$('veil').hidden)setMsg(`${cellName(i)}に${v===1?'石を置きました':'砂紋を引きました'}。`+(msgText?'\n'+msgText:''));}
 // a practice garden left untouched for a while: a reminder that 洞察 is there
 const IDLE_MS=20000;let idleT=null;
-// test: no words; 洞察 stands out instead, until the next move (any tap or key) or for IDLE_HL_MS
+// no words; 洞察 stands out instead, until the next move (any tap or key) or for IDLE_HL_MS
 const IDLE_HL_MS=12000;let idleOffT=null;
 function idleHlOff(){clearTimeout(idleOffT);$('hintBtn').classList.remove('idlehl');}
 function tutIdle(){clearTimeout(idleT);idleHlOff();if(!tut||!S||!S.tut)return;
@@ -3135,25 +3067,25 @@ function tutCheck(){
   tutShow();}
 function tutStart(lesson,again){
   if(typeof lesson!=='string')lesson=tut?tut.lesson:'basic';
-  const back=S&&!S.tut?{N:S.N,d:S.diff,seed:S.seed,walk}:tut&&tut.back;
+  const back=S&&!S.tut?{N:S.N,d:S.diff,seed:S.seed}:tut&&tut.back;
   const first=!!(tut&&tut.first)||introThenPick;introThenPick=false;
   stopClock();Sound.hold(false);closeSheet();if(intro.open)intro.close();if(pick.open)closePick();document.body.classList.add('tutmode');
   if(DRILLS[lesson]){tut={lesson,ch:0,back,first};clearTimeout(nudgeT);drillChapter(0,false);return;}
   const L=LESSONS[lesson],TN=L.N,k=tKit(TN),clue=new Int8Array(TN*TN).fill(-1),stone=new Uint8Array(TN*TN),cells=new Array(TN*TN).fill(0);
   for(const [n,v] of Object.entries(L.clue))clue[k.idx(n)]=v;L.stone.forEach(n=>stone[k.idx(n)]=1);L.marks.forEach(n=>cells[k.idx(n)]=2);
   tut={lesson,back,first,seen:new Set()};clearTimeout(nudgeT);
-  S={N:TN,K:1,seed:lesson==='adv'?97102:4242,diff:lesson==='adv'?1:0,clue,stone,cells,hist:[],time:0,hints:0,done:false,started:false,tut:true};
+  S={N:TN,K:1,seed:4242,diff:0,clue,stone,cells,hist:[],time:0,hints:0,done:false,started:false,tut:true};
   build();setMode(0);$('time').hidden=true;$('tutQuit').hidden=false;
   // the button may sit far down the side panel: bring the garden into view
   toGame();$('board').closest('.stage').scrollIntoView({block:'start'});$('label').textContent=L.short||L.title;setMsg('');
-  if(lesson==='basic'&&!again){tutPrimer(0);return;}   // test: the short guide comes first
+  if(lesson==='basic'&&!again){tutPrimer(0);return;}   // the short guide comes first
   showVeil(`<p class="vlabel tuttitle">練習用の庭（${L.tag}${TN}×${TN}、石${TN}）</p>
     ${startGoal(TN)}${startRules(1)}
     <div class="small">${L.intro}</div>
     <button class="btn primary startgo" id="tutGo" type="button">はじめる</button>`,true);
   $('veilCard').classList.add('start');
   $('tutGo').onclick=()=>{S.started=true;hideVeil();tutShow();};}
-// test: before the first lesson, a short guide: what the game is, its three rules one by one, then とりあえずやってみましょう
+// before the first lesson, a short guide: what the game is, its three rules one by one, then とりあえずやってみましょう
 function tutPrimer(p){
   const rk=()=>{const f=document.querySelector('#rulesTop .rkfig');return f?f.outerHTML:'';};
   const fig=k=>{const li=document.querySelectorAll('#rulesList>.intro-rules>li')[k];return li?li.firstElementChild.outerHTML:'';};
@@ -3205,7 +3137,7 @@ function drillDone(){S.done=true;tutHl();cellEls.forEach(e=>e.classList.remove('
     <div class="winbtns pair"><button type="button" class="btn" id="viewBtn">庭を眺める</button><button class="btn primary" id="tutGo" type="button">次へ（${n}問目）</button></div>`);
   $('veilCard').classList.add('start');
   $('tutGo').onclick=()=>drillChapter(tut.ch+1,true);tutView(drillDone);}
-function drillWin(again){S.done=true;if(again!==true)Sound.play('clear',.15);const D=DR(),last=D.list[D.list.length-1];
+function drillWin(again){S.done=true;if(again!==true)Sound.play('clear',.15);const D=DR();
   showVeil(`<h3>整いました</h3>
     <p class="tutgoal">お見事です。全${D.list.length}問、すべて解ききりました。<br>${D.end(D.list.length)}</p>
     <div class="winbtns top"><button type="button" class="btn" id="viewBtn">庭を眺める</button></div>
@@ -3214,8 +3146,8 @@ function drillWin(again){S.done=true;if(again!==true)Sound.play('clear',.15);con
   $('tutAgain').onclick=()=>tutStart(tut.lesson);$('tutEnd').onclick=tutLeave;tutView(()=>drillWin(true));}
 // back to the garden that was open before (the first visit then goes on to 庭の様式)
 function tutLeave(){const t=tut;if(!t)return;const b=t.back;
-  if(b){setWalk(b.walk);start(b.N,b.d,b.seed);}else start(6,0,todaySeed());
-  }   // test: after the lesson on a first visit, straight to the 六間・普通 garden's card
+  if(b)start(b.N,b.d,b.seed);else start(6,0,todaySeed());   // after the lesson on a first visit: the 六間・普通 garden's card
+  }
 function tutOff(){if(!tut)return;tut=null;idleHlOff();document.body.classList.remove('tutmode');document.querySelectorAll('.tuthl').forEach(e=>e.classList.remove('tuthl'));clearTimeout(nudgeT);clearTimeout(idleT);focusCells([]);drillBlocks(null);$('time').hidden=false;$('tutQuit').hidden=true;}
 $('tutQuit').onclick=tutLeave;
 document.querySelectorAll('[data-tut]').forEach(b=>b.onclick=()=>tutStart('basic'));
@@ -3237,7 +3169,7 @@ intro.querySelectorAll('.ipagetabs button').forEach(b=>b.onclick=()=>introPage(+
 $('introNext').onclick=()=>{introPage(Math.min(2,(+intro.dataset.page||0)+1));$((+intro.dataset.page===2)?'introTut':'introNext').focus({preventScroll:true});};
 introPage(0);
 let introThenPick=false;   // the very first visit: はじめの説明, then 庭を変える
-function afterIntro(){if(!$('gate').hidden&&!$('gateFirst').hidden)return;   // test: reading 遊び方 from the first screen does not end the first visit
+function afterIntro(){if(!$('gate').hidden&&!$('gateFirst').hidden)return;   // reading 遊び方 from the first screen does not end the first visit
   store.set('sekitei:intro',1);if(introThenPick){introThenPick=false;$('introGo').textContent='庭に入る';openPick(true);}}
 intro.addEventListener('close',afterIntro);
 // the close event comes later (and may wait while the page is in the background), so go on at once;
@@ -3248,11 +3180,11 @@ $('introTut').onclick=()=>{store.set('sekitei:intro',1);const g=$('gate');if(!g.
 // every button sounds like setting a mark; board cells, 教えを乞う and the 庭の種類 choices keep their own sounds.
 // Bubble phase, so a press that turns 効果音 on is already heard.
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('button');
-  if(b&&!b.closest('.cell,#hintBtn,#resetBtn,#askYes,.walkSeg,.sizeSeg,.diffSeg,.toroSeg'))Sound.play('mark');});$('introX').onclick=closeIntro;
+  if(b&&!b.closest('.cell,#hintBtn,#resetBtn,#askYes,.sizeSeg,.diffSeg,.toroSeg'))Sound.play('mark');});$('introX').onclick=closeIntro;
 // 庭を変える: opens with the page, over the garden that loaded behind it. Closing it keeps that garden.
 const pick=$('pick');
 let pickOnLoad=false;   // opened with the page (keep the garden behind it when nothing changes) or from 庭を変える
-function openPick(onLoad){if(pick.open)return;$('pickNo').value='';pickOnLoad=!!onLoad;closeSheet();pend=savedPick()||{walk,size,diff,toro};syncSeg();noField();try{pick.show();}catch(e){pick.setAttribute('open','');}gardenLabel(true);scrollTo(0,0);if(!onLoad)try{history.pushState({sekiteiPick:1},'');pickPushed=true;}catch(e){}holdPickHeights();}
+function openPick(onLoad){if(pick.open)return;$('pickNo').value='';pickOnLoad=!!onLoad;closeSheet();pend=savedPick()||{size,diff,toro};syncSeg();noField();try{pick.show();}catch(e){pick.setAttribute('open','');}gardenLabel(true);scrollTo(0,0);if(!onLoad)try{history.pushState({sekiteiPick:1},'');pickPushed=true;}catch(e){}holdPickHeights();}
 let pickPushed=false;   // 庭を変える added a history entry, so the browser's back button returns to the garden
 function popPick(){if(pickPushed){pickPushed=false;try{history.back();}catch(e){}}}
 // while this page is open, 庭を変える in the menu reads 庭へ戻る and takes you back
@@ -3271,20 +3203,18 @@ document.querySelector('header.top').addEventListener('click',e=>{const b=e.targ
   closePick();},true);
 try{history.scrollRestoration='manual';}catch(e){}
 $('pickX').onclick=closePick;
-const NO_NOTE='庭コードで盤面を指定できます。コードは盤面の右下に表示されます。',NO_BAD='庭コードは英数字6文字で入れてください（0・1・I・O は使いません）。',NO_TODAY='今日の庭では庭コードを指定できません。',NO_SOLVED='このコードの庭は解いたことがあるため、記録には残りません。';
+const NO_NOTE='庭コードで盤面を指定できます。コードは盤面の右下に表示されます。',NO_BAD='庭コードは英数字6文字で入れてください（0・1・I・O は使いません）。',NO_SOLVED='このコードの庭は解いたことがあるため、記録には残りません。';
 // give every note in the popup the height of its longest text (measured at the current width)
 function holdPickHeights(){if(!pick.open)return;
   const hold=(el,texts)=>{el.style.minHeight='';let h=0;for(const t of texts){phrase(el,t);h=Math.max(h,el.getBoundingClientRect().height);}el.style.minHeight=Math.ceil(h)+'px';};
   pick.querySelectorAll('[data-note]').forEach(el=>hold(el,Object.values(NOTES[el.dataset.note])));
-  hold($('pickNoNote'),[NO_NOTE,NO_BAD,NO_TODAY,NO_SOLVED]);
+  hold($('pickNoNote'),[NO_NOTE,NO_BAD,NO_SOLVED]);
   syncSeg();noField();}
 addEventListener('resize',holdPickHeights);
 // the web font can arrive after the popup opened and change line heights: measure again then
 if(document.fonts){document.fonts.ready.then(holdPickHeights);document.fonts.addEventListener&&document.fonts.addEventListener('loadingdone',holdPickHeights);}
-// 今日の庭 is the day's own garden, so a number can only be given for 漫ろ歩き
-function noField(){const el=$('pickNo'),today=!(pend||{walk}).walk;
-  el.disabled=today;el.closest('.pickrow').classList.toggle('off',today);
-  if(today){el.classList.remove('bad');$('pickNoNote').classList.remove('bad');phrase($('pickNoNote'),NO_TODAY);return 0;}
+// the 庭コード field: 0 = empty, -1 = not a code, otherwise the garden's number
+function noField(){const el=$('pickNo');
   const t=el.value.trim(),sd=t?seedOfCode(t):0;
   // while the code is still being typed (fewer than six signs, all usable) it is not flagged yet
   const partial=!sd&&/^[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{1,5}$/.test(t.normalize('NFKC').toUpperCase().replace(/[\s\-ー－・]/g,''));
@@ -3297,18 +3227,15 @@ function noField(){const el=$('pickNo'),today=!(pend||{walk}).walk;
   return ok?sd:-1;}
 $('pickNo').addEventListener('input',noField);
 $('pickNo').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('pickGo').click();}});
-$('pickGo').onclick=()=>{const P=pend||{walk,size,diff,toro},no=P.walk?noField():0;
+$('pickGo').onclick=()=>{const P=pend||{size,diff,toro},no=noField();
   if(no<0){const el=$('pickNo');el.classList.add('bad');$('pickNoNote').classList.add('bad');phrase($('pickNoNote'),NO_BAD);el.focus();return;}
-  if(no){   // a garden by its number (漫ろ歩き only)
-    useCode($('pickNo').value);closePick();$('pickNo').value='';setWalk(true);setToro(P.toro);start(P.size,P.diff,no,true);return;}
-  // the same 今日の庭 is the garden already open; the same 漫ろ歩き goes on to a new garden, unless the page just opened
-  const same=P.size===size&&P.diff===diff&&P.walk===walk&&!!P.toro===toro&&(!P.walk||pickOnLoad);
-  closePick();setWalk(P.walk);setToro(P.toro);
-  if(!same)start(P.size,P.diff,P.walk?randomSeed():todaySeed(),P.walk);};
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'&&document.body.classList.contains('sheet-open')){closeSheet();return;}
-  if(document.body.classList.contains('sheet-open')||intro.open||pick.open)return;
-});
+  if(no){   // a garden by its code
+    useCode($('pickNo').value);closePick();$('pickNo').value='';setToro(P.toro);start(P.size,P.diff,no,true);return;}
+  // the same settings go on to a new garden, unless the page just opened (then the garden behind is kept)
+  const same=P.size===size&&P.diff===diff&&!!P.toro===toro&&pickOnLoad;
+  closePick();setToro(P.toro);
+  if(!same)start(P.size,P.diff,randomSeed(),true);};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('sheet-open'))closeSheet();});
 
 // ---- clock ----
 function fmt(s){s=Math.floor(s);const h=Math.floor(s/3600),m=Math.floor(s/60)%60,x=s%60;return (h?h+':'+String(m).padStart(2,'0'):m)+':'+String(x).padStart(2,'0');}
@@ -3327,14 +3254,13 @@ function hideVeil(){$('veil').hidden=true;$('veil').classList.remove('solid');}
 // the official address: shared links always lead here, wherever the game was opened (GitHub Pages, the Artifact…)
 const SITE_URL='https://puzzle-sekitei.jp/';
 function shareUrl(){
-  return `${SITE_URL}?n=${S.N}&d=${S.diff}&g=${shownCode(S.seed)}&w=${walk?1:0}${S.toro?'&t=1':''}`;
+  return `${SITE_URL}?n=${S.N}&d=${S.diff}&g=${shownCode(S.seed)}${S.toro?'&t=1':''}`;
 }
 // the clear, Wordle-style: a few short lines with marks, never the answer
 function shareText(){
-  const kind=styleParts(S.N,S.toro,S.diff).join('・'),h=S.hints,run=streakNow();
+  const kind=styleParts(S.N,S.toro,S.diff).join('・'),h=S.hints;
   const lines=[`石庭ぱずる ${kind}`,`🪨 ${fmt(S.time)} で整えました`,
     h?`${'💡'.repeat(Math.min(h,5))}${h>5?'＋':''} 洞察${h}回`:'🌿 洞察なし'];
-  if(run>=2)lines.push(`🔥 ${run}日連続`);
   lines.push('#石庭ぱずる');
   return lines.join(String.fromCharCode(10));
 }
@@ -3353,18 +3279,10 @@ function showWin(again){
     <div class="winbtns"><button type="button" class="btn primary" id="sameBtn">同じ様式の庭へ</button><button type="button" class="btn primary" id="nextBtn">異なる様式の庭へ</button></div>`);
   $('veilCard').classList.add('win');
   const text=shareText(),url=shareUrl();
-  // one button: the phone's share sheet (X, LINE, …); where there is none, copy the text and link instead
-  $('shareBtn').onclick=()=>{
-    const b=$('shareBtn'),all=text+'\n'+url;
-    if(typeof navigator.share==='function'){navigator.share({title:'石庭ぱずる',text:text+'\n'+url}).catch(()=>{});return;}
-    const done=()=>{b.textContent='コピーしました';setTimeout(()=>{if(b.isConnected)b.textContent='共有';},2000);};
-    const fallback=()=>{const ta=document.createElement('textarea');ta.value=all;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';
-      document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){}ta.remove();};
-    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(all).then(done,fallback);else fallback();
-  };
-  // 同じ設定の庭へ: no popup, a new garden of the same size and difficulty.
-  // Today's garden has only one puzzle per setting, so from there it goes on as a walk.
-  $('sameBtn').onclick=()=>{setWalk(true);start(S.N,S.diff,randomSeed(),true);};
+  $('shareBtn').onclick=()=>{const b=$('shareBtn');
+    shareOrCopy(text+'\n'+url,()=>{b.textContent='コピーしました';setTimeout(()=>{if(b.isConnected)b.textContent='共有';},2000);});};
+  // 同じ様式の庭へ: no popup, a new garden of the same size and difficulty
+  $('sameBtn').onclick=()=>start(S.N,S.diff,randomSeed(),true);
   $('nextBtn').onclick=()=>openPick(false);   // the same 庭を変える popup as 庭を変える
   $('viewBtn').onclick=hideVeil;
 }
@@ -3381,12 +3299,11 @@ function readRecords(){
 }
 function renderRecords(){
   const rec=readRecords();
-  // one table per rule set: rows are sizes, columns the two difficulties. The 灯籠 table appears once one has been finished.
-  const hasToro=Object.keys(rec).some(k=>k.endsWith(':t'));
+  // one table per rule set (灯籠なし・灯籠あり, both from the start): rows are sizes, columns the two difficulties
   const cell=r=>r?`<td><b>${r.best!==null?fmt(r.best):'―'}</b><small>${r.n}局</small></td>`:'<td class="none">―</td>';
   const table=(t,cap)=>`<div class="recblk"><table class="rectab"><thead><tr><th class="cap">${cap}</th><th>普通</th><th>難しい</th></tr></thead><tbody>`
     +[6,8,10].map(N=>`<tr><th>${SIZES[N].name}</th>${cell(rec[N+':0'+t])}${cell(rec[N+':1'+t])}</tr>`).join('')+'</tbody></table></div>';
-  $('records').innerHTML=table('',hasToro?'灯籠なし':'')+(hasToro?table(':t','灯籠あり'):'')
+  $('records').innerHTML=table('','灯籠なし')+table(':t','灯籠あり')
     +(()=>{const st=store.get('sekitei:days'),run=streakNow();return st?`<p class="small recstreak">連続して庭を整えた日数：<b>${run}日</b>（最長 ${st.best}日）</p>`:'';})()
     +'<p class="small recnote">上段は手助けなしの最短時間、下段は解いた数です。記録はこの端末にだけ保存されます。</p>';
 }
@@ -3395,7 +3312,7 @@ const last=store.get('sekitei2:last');
 // 再訪: a return visit opens with a small garden fading in, then 続きから (the garden left half done) or 新しい庭へ.
 function openGate(){
   let info=null;
-  if(last&&typeof last==='object'&&SIZES[last.N]){const d=last.d===1?1:0,v=store.get(keyOf(last.N,walk?last.seed:todaySeed(),d));
+  if(last&&typeof last==='object'&&SIZES[last.N]){const d=last.d===1?1:0,v=store.get(keyOf(last.N,last.seed,d));
     if(v&&typeof v==='object'&&v.done!==true){const t=num(v.time,0,1e7,0);
       if(t>0||Array.isArray(v.cells)&&v.cells.some(x=>x))info=styleParts(last.N,toro,d).join('・')+'・'+fmt(t);}}
   $('gateCont').hidden=$('gateSep').hidden=!info;$('gateMenu').classList.toggle('solo',!info);
@@ -3406,35 +3323,34 @@ function openGate(){
   $('gateCont').onclick=leave;   // the garden is already open behind, on its card (再開する)
   $('gateNew').onclick=()=>{leave();openPick(true);};
   setTimeout(()=>{if(!g.hidden)(info?$('gateCont'):$('gateNew')).focus({preventScroll:true});},1600);
-  // test: forget the first visit, so its screen can be seen again
 }
-// test: the first visit: the same garden fading in, then はじめての方へ (the guided lesson, then a 六間・普通 garden)
+// the first visit: the same garden fading in, then はじめての方へ (the guided lesson, then a 六間・普通 garden)
 // or すぐに遊ぶ (that garden straight away, on its card). はじめの説明 is not shown by itself; 遊び方を読む opens it.
 function openFirst(){
   $('gateMenu').hidden=true;$('gateFirst').hidden=false;
   const g=$('gate');g.hidden=false;Sound.hold(true);
   const leave=()=>{store.set('sekitei:intro',1);Sound.hold(false);g.classList.add('leave');setTimeout(()=>{g.hidden=true;g.classList.remove('leave');},420);};
   $('gateLearn').onclick=()=>{leave();introThenPick=true;tutStart('basic');};   // first: its card says 庭へ向かう, and leads to the garden
-  $('gatePlay').onclick=()=>{leave();openPick(true);};   // test: straight to 庭の様式
+  $('gatePlay').onclick=()=>{leave();openPick(true);};   // straight to 庭の様式
   setTimeout(()=>{if(!g.hidden)$('gateLearn').focus({preventScroll:true});},1600);
 }
-// a shared link (?n=&d=&g=&w=, or the older ?s= with the number) opens exactly that garden; every value is range-checked
+// a shared link (?n=&d=&g=, or the older ?s= with the number) opens exactly that garden; every value is range-checked
 let shared=null;
 try{const q=new URLSearchParams(location.search);
   if(q.has('g')||q.has('s')){const N=int(q.get('n'),6,12,0),d=int(q.get('d'),0,1,0),sd=q.has('g')?(useCode(q.get('g')),seedOfCode(q.get('g'))):int(q.get('s'),1,99999,0);
-    if(SIZES[N]&&sd)shared={N,d,sd,w:q.get('w')==='1',t:q.get('t')==='1'};
+    if(SIZES[N]&&sd)shared={N,d,sd,t:q.get('t')==='1'};
     history.replaceState(null,'',location.pathname);}}catch(e){}
 const firstVisit=store.get('sekitei:intro')!==1;
 // ?tut=basic|toro|adv|adv10 opens that lesson directly (linked from the 遊び方・コツ pages of the site)
 let adminTut=null;try{const q=new URLSearchParams(location.search);if(['basic','adv','adv10','toro'].includes(q.get('tut'))){adminTut=q.get('tut');history.replaceState(null,'',location.pathname);}}catch(e){}
 // a shared link goes straight to its garden (after the welcome, on a first visit)
-if(shared){setWalk(shared.w||shared.sd!==todaySeed());setToro(shared.t);start(shared.N,shared.d,shared.sd);if(firstVisit)openIntro();}
+if(shared){setToro(shared.t);start(shared.N,shared.d,shared.sd);if(firstVisit)openIntro();}
 else{
-  // 今日の庭 always opens today's puzzle (a new day brings a new one); 漫ろ歩き resumes the last walk
-  if(last&&typeof last==='object'&&SIZES[last.N]){if(last.t===1&&!toro)setToro(true);start(last.N,last.d,walk?last.seed:todaySeed());}else start(6,0,todaySeed());
+  // the garden left last time opens again (a new visitor gets the day's 六間・普通 garden)
+  if(last&&typeof last==='object'&&SIZES[last.N]){if(last.t===1&&!toro)setToro(true);start(last.N,last.d,last.seed);}else start(6,0,todaySeed());
   // then the choice of garden: straight away, or after はじめの説明 on a first visit
   if(adminTut)tutStart(adminTut);
-  else if(firstVisit)openFirst();else openGate();}   // test: the first visit opens on two doors
+  else if(firstVisit)openFirst();else openGate();}   // the first visit opens on two doors
 })();
 </script>
 <script>

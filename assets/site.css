@@ -15,7 +15,7 @@
   --stone:#3c3b37;
   --stone-hi:#8d8a80;
   --moss:#5b6d3c;
-  --hl:#d08a2c;          /* test: 洞察 highlight (amber) */
+  --hl:#d08a2c;          /* 洞察 highlight (amber) */
   --moss-dk:#43532a;
   --moss-ink:#f7f6ef;
   --shu:#b4432d;         /* vermilion seal */
@@ -42,7 +42,7 @@ header.top{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justi
   box-shadow:inset 0 0 0 2px var(--shu),inset 0 0 0 3px rgba(255,255,255,.55)}
 .brand h1{font-family:var(--display);font-weight:700;font-size:40px;line-height:1;margin:0;letter-spacing:.22em}
 .brand p{margin:0;color:var(--muted);font-size:12.5px;letter-spacing:.1em}
-.picker{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center}
+
 /* segmented choice: plain words, the chosen one underlined in sumi */
 .seg{display:inline-flex;gap:2px}
 .seg button{border:0;background:transparent;color:var(--muted);font-family:var(--display);font-weight:500;font-size:14px;letter-spacing:.04em;
@@ -184,22 +184,16 @@ aside .seg button{flex:1;padding:9px 2px;font-size:13px;margin-bottom:-1px;white
 /* sub-headings inside 庭の種類: quiet labels, no seal mark */
 .sublabel{margin:30px 0 0;font-size:12px;color:var(--muted);letter-spacing:.14em}
 .segnote{margin-top:8px!important}
-.rulenote{display:block;margin-top:3px;font-size:12.5px;line-height:1.5;color:color-mix(in srgb,var(--ink) 58%,var(--muted));letter-spacing:.02em}
-.rulenote::before{content:"";display:inline-block;width:10px;height:1px;background:currentColor;opacity:.6;vertical-align:.32em;margin-right:6px}
-kbd{font-family:var(--body);font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:2px;padding:0 4px}
-.btn.mode kbd{margin-left:8px}
-/* mouse hint in the mode button (PC only): left button = 石, right button = 砂紋 */
-@media (hover:none){kbd{display:none}}
 
 /* ---- side panel ---- */
 aside{min-width:0;width:100%;max-width:582px;justify-self:center;display:flex;flex-direction:column;margin-top:20px}
 .sheet-body{display:flex;flex-direction:column;gap:34px}
 /* PC: the big groups (遊び方 / コツ / 記録 / 音) are parted by a double line, the parts within each by a hairline */
-@media (min-width:821px){aside section + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}}
+@media (min-width:821px){aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}}
 aside section + section{border-top:1px solid var(--line);padding-top:30px}
 /* the lantern rule: what its light reaches, and how it counts, each on its own line */
 .intro-rules span.tonote{margin-top:2px;font-size:11.5px;opacity:.85}
-.intro-rules .torohow b{display:inline;font-size:inherit;font-weight:700;color:var(--ink);letter-spacing:0;margin:0}
+
 /* the lantern to tap in the first 灯籠 lesson: a gentle pulse */
 .cell.tapme svg{animation:tapme 1.2s ease-in-out infinite}
 @keyframes tapme{50%{transform:scale(1.14)}}
@@ -314,30 +308,27 @@ html.noterms :is([data-jump="termsTop"],#termsTop,#footAbout,.footnav[aria-label
 .sitefoot a + a::before{content:"\FF5C";display:inline-block;margin:0 10px;color:var(--line);text-decoration:none}
 @media (max-width:820px){html:not(.tabview) .sitefoot{display:none}}
 body.picking .sitefoot{display:none}
-.policy{margin-top:10px;scroll-margin-top:64px}   /* clear of the phone header that stays on top */
+.policy{margin-top:36px;scroll-margin-top:64px}   /* separate documents: a wider gap between them; the scroll margin clears the phone header */
 .policy h4{scroll-margin-top:64px;font-family:var(--display);font-size:13.5px;margin:16px 0 4px;letter-spacing:.08em}
 .policy p{margin:0 0 6px}
-.policylist{margin:0 0 6px;padding-left:1.4em}
+
 .policy a,.about a{color:var(--ink);text-underline-offset:3px}
 .policy em{font-style:normal;font-weight:700;color:var(--ink);margin-right:.6em}
 .docdate{margin-top:14px!important}
-.about{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;margin:4px 0 14px;font-size:12.5px;line-height:1.7}
+.about{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;margin:4px 0 0;font-size:12.5px;line-height:1.7}
 .about dt{font-weight:700;white-space:nowrap}.about dd{margin:0;color:var(--muted)}
 .extlist{display:grid;gap:10px;margin:6px 0 8px}
 .ext{border:1px solid var(--line);border-radius:3px;padding:8px 12px}
 .ext>b{font-size:13px;letter-spacing:.04em}
-.extstate{display:inline-block;margin-left:8px;padding:0 7px;border-radius:2px;font-size:10.5px;background:var(--ink);color:var(--paper)}
-.extstate.off{background:var(--sand);color:var(--muted)}
+
 .ext p{margin:3px 0 0}
-.policylist li{margin:2px 0}
+
 .kou{margin:0 0 6px;padding-left:1.5em}
 .kou>li{margin:0 0 4px;padding-left:.2em}
 .go{list-style:none;counter-reset:go;margin:0 0 6px;padding-left:2.6em}
 .go>li{counter-increment:go;position:relative;margin:2px 0}
 .go>li::before{content:"（" counter(go) "）";position:absolute;right:100%;white-space:nowrap}
 .kou .go{margin:4px 0 2px;padding-left:2.4em}
-.policy summary{cursor:pointer;font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.1em;padding:6px 0}
-.draftnote{display:inline-block;margin-top:4px;padding:1px 8px;border-radius:2px;background:var(--sand);font-size:11px;color:var(--muted)}
 
 /* ---- first-visit rules popup ---- */
 .intro{border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--ink);padding:0;
@@ -351,9 +342,7 @@ body.picking .sitefoot{display:none}
 .intro-eyebrow{margin:0;font-size:11.5px;letter-spacing:.2em;color:var(--shu)}
 .intro h2{font-family:var(--display);font-weight:700;font-size:28px;line-height:1.2;margin:0;letter-spacing:.16em}
 .intro-lead{margin:0;color:var(--muted);font-size:13.5px;line-height:1.75}
-.intro-sub{margin:6px 0 -4px;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.14em;display:flex;align-items:center;gap:8px}
-.intro-sub::before{content:"";width:5px;height:5px;background:var(--shu);flex-shrink:0}
-.rules-after{margin:0}
+
 aside .intro-rules{margin:0 0 8px}
 .ipagetabs{display:flex;border-bottom:1px solid var(--line);margin-top:2px}
 .ipagetabs button{flex:1 1 0;font-family:var(--display);font-weight:500;font-size:13.5px;border:0;background:transparent;color:var(--muted);padding:8px 0;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;white-space:nowrap}
@@ -438,7 +427,8 @@ aside .intro-rules{margin:0 0 8px}
 .replaynote{margin:0;align-self:stretch;font-size:12px;line-height:1.55;color:var(--shu);text-align:center}
 .askbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
 .askbtns .btn{justify-content:center;padding:11px;font-size:14px;letter-spacing:.12em}
-.pats{display:flex;flex-direction:column;gap:30px;margin-top:14px}
+.pats{display:flex;flex-direction:column;gap:22px;margin-top:14px}
+.patrow+.patrow{border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent);padding-top:20px}   /* one tip from the next, as in 遊び方 */
 .patrow{display:flex;flex-direction:column;gap:6px}
 .patrow > b{font-family:var(--display);font-size:14px;letter-spacing:.04em}
 .patrow p b{color:var(--ink)}
@@ -450,8 +440,7 @@ aside .intro-rules{margin:0 0 8px}
 .patarrow{color:var(--muted);font-size:14px;margin-bottom:16px}
 .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:-2px}
 .tag{padding:1px 6px;font-family:var(--body);font-size:10px;letter-spacing:.04em;color:var(--shu);border:1px solid color-mix(in srgb,var(--shu) 45%,transparent);border-radius:2px;line-height:1.5;background:var(--panel)}
-.tiph.first{margin-top:14px;padding-top:0;border-top:0}
-.tiph{font-family:var(--display);font-weight:700;font-size:14.5px;letter-spacing:.06em;margin:22px 0 6px;padding-top:16px;border-top:1px solid var(--line)}
+
 .patw .patcols{grid-template-columns:repeat(var(--c),15px)}
 .patw .patrows{grid-template-rows:repeat(var(--r),15px);line-height:15px}
 .patw .pat i{width:15px;height:15px;font-size:9.5px}
@@ -483,7 +472,7 @@ aside .intro-rules{margin:0 0 8px}
 
 /* ---- phone: one screen, no page scroll; side panels become a bottom sheet ---- */
 .stage{width:100%;display:flex;flex-direction:column;align-items:center;gap:12px}
-.mnav,.sheet-head,.mob-only,.scrim{display:none}
+.sheet-head,.scrim{display:none}
 .tabs{display:flex;gap:2px;flex:1;min-width:0}
 .tabs button{flex:1 1 auto;min-width:0;font-family:var(--display);font-weight:500;font-size:13.5px;letter-spacing:0;border:0;background:transparent;color:var(--muted);padding:9px 0;border-bottom:1.5px solid transparent;cursor:pointer;white-space:nowrap}
 .sheet-head .close{flex-shrink:0;width:36px}
@@ -497,13 +486,12 @@ aside .intro-rules{margin:0 0 8px}
   .brand{gap:9px}
   .seal{width:22px;height:22px;font-size:13px}
   .brand h1{font-size:24px;letter-spacing:.16em}
-  .brand p,.desk-only{display:none}
-  /* menu as words divided by hairlines; 庭を変える stands out in sumi */
-  .mnav{display:flex;flex-shrink:0;align-items:center}
-  .mnav .btn{border:0;background:transparent;border-radius:0;padding:6px 6px;font-size:13px;letter-spacing:0}
-  .mnav .btn + .btn{box-shadow:-1px 0 0 var(--line)}
-  .mnav .btn.em{background:var(--ink);color:var(--paper);border-radius:2px;padding:6px 8px;margin-right:3px}
-  .mnav .btn.em + .btn{box-shadow:none}
+  .brand p{display:none}
+  
+  
+  
+  
+  
   main{flex:1;min-height:0;gap:8px}
   /* status + board + hint message form one block, centred in the free height.
      --g is the garden's width: limited by the width (minus the coordinate column) and by the height
@@ -545,6 +533,7 @@ aside .intro-rules{margin:0 0 8px}
   aside[data-tab="records"] section[data-tab="records"],
   aside[data-tab="sound"] section[data-tab="sound"],
   aside[data-tab="terms"] section[data-tab="terms"]{display:block}
+  aside[data-tab="terms"] .adslot[data-ad="sheet"]{display:none!important}
   aside .seg{display:flex;width:100%;box-sizing:border-box;border-bottom:1px solid var(--line)}
   aside .seg button{flex:1;padding:10px 4px;font-size:14px;margin-bottom:-1px}
 }
@@ -598,18 +587,17 @@ aside .intro-rules{margin:0 0 8px}
   .stage>.hintmsg{flex:3 1 0;height:auto;min-height:7.25em;align-items:flex-start;overflow-y:auto;overscroll-behavior:contain}
 }
 /* the same make as the buttons under the garden (mincho lettering, thin line, square corners), only in red */
-.tutquit,.resetbtn{font-family:var(--display);font-weight:500;color:var(--shu);background:var(--panel);border:1px solid var(--shu);border-radius:2px;cursor:pointer;flex-shrink:0;white-space:nowrap;
+.tutquit{font-family:var(--display);font-weight:500;color:var(--shu);background:var(--panel);border:1px solid var(--shu);border-radius:2px;cursor:pointer;flex-shrink:0;white-space:nowrap;
   min-height:40px;padding:3px 12px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1.25;letter-spacing:.06em;transition:border-color .15s,background .15s}
 .tutquit{font-size:14px}
-.resetbtn span{font-size:14px}
-.resetbtn small{display:block;font-family:var(--body);font-weight:400;font-size:10.5px;letter-spacing:0;color:color-mix(in srgb,var(--shu) 50%,var(--muted));opacity:.85}
-.tutquit:hover,.resetbtn:hover{border-color:color-mix(in srgb,var(--shu) 70%,#000)}
-.tutquit:active,.resetbtn:active{background:color-mix(in srgb,var(--shu) 8%,var(--panel))}
+
+.tutquit:hover{border-color:color-mix(in srgb,var(--shu) 70%,#000)}
+.tutquit:active{background:color-mix(in srgb,var(--shu) 8%,var(--panel))}
 /* phone: they grow and shrink with the screen width, as the buttons under the garden do */
 @media (max-width:820px){
-  .tutquit,.resetbtn{min-height:min(40px,10.5vw);padding:min(3px,.8vw) min(12px,2.6vw)}
-  .tutquit,.resetbtn span{font-size:min(13.5px,3.6vw)}
-  .resetbtn small{font-size:min(9.5px,2.45vw);letter-spacing:-.04em}
+  .tutquit{min-height:min(40px,10.5vw);padding:min(3px,.8vw) min(12px,2.6vw)}
+  .tutquit{font-size:min(13.5px,3.6vw)}
+  
 }
 /* 練習用の庭へ向かう: filled in the brown of an old wooden veranda */
 .tutgo{justify-content:center;width:100%;margin-top:10px;background:#7a5b3f;border-color:#7a5b3f;color:#fbf7ef;font-weight:700}
@@ -619,7 +607,7 @@ aside .intro-rules{margin:0 0 8px}
 .introbtns .intro-go{margin-top:0}
 .btn.nudge{animation:nudge .9s ease 2}
 @keyframes nudge{0%,100%{box-shadow:none}40%{box-shadow:0 0 0 3px color-mix(in srgb,var(--shu) 55%,transparent)}}
-.card .mossnote{margin:0;font-size:12px;line-height:1.5;color:var(--moss);font-weight:700;text-align:center}
+
 .card .tutgoal{text-align:left;font-size:13px;line-height:1.7;color:var(--ink);margin:0}
 .card .tutgoal b{color:var(--shu);font-weight:700}
 .startgoal{margin:2px 0 0;font-size:13px;line-height:1.7;color:var(--ink)}
@@ -634,7 +622,7 @@ aside .intro-rules{margin:0 0 8px}
   .card.start .startrules{font-size:11.5px;line-height:1.55}
   .card.start .startgo{padding:9px 30px;font-size:15px;margin-top:2px}
 }
-/* test: the short guide before the first lesson — one idea per page */
+/* the short guide before the first lesson — one idea per page */
 .card.primer{gap:12px}
 .primer .pm-dots{display:flex;justify-content:center;gap:6px}
 .primer .pm-dots i{width:6px;height:6px;border-radius:50%;background:color-mix(in srgb,var(--ink) 18%,transparent)}
@@ -649,11 +637,11 @@ aside .intro-rules{margin:0 0 8px}
 .msgnext:hover{background:#3a372f}
 .veil .card .vlabel.tuttitle{font-size:18px;letter-spacing:.06em;line-height:1.45}
 @media (max-width:820px){.veil .card .vlabel.tuttitle{font-size:16px}}
-/* test: in a practice garden the message box keeps one height, so 次へ always sits in the same place */
+/* in a practice garden the message box keeps one height, so 次へ always sits in the same place */
 .hintmsg{position:relative}
 .hintmsg.hasnext{padding-bottom:40px;box-sizing:border-box}
 @media (min-width:821px){body.tutmode .hintmsg{height:8.2em;box-sizing:border-box;display:flex;align-items:center;justify-content:center}}
-/* test: what the practice step is talking about */
+/* what the practice step is talking about */
 .tuthl,.idlehl{position:relative;z-index:3;border-radius:3px;box-shadow:0 0 0 2px var(--shu),0 0 0 6px color-mix(in srgb,var(--shu) 22%,transparent);animation:tuthl 1.6s ease-in-out infinite}
 .idlehl{border-radius:3px}
 @keyframes tuthl{0%,100%{box-shadow:0 0 0 2px var(--shu),0 0 0 6px color-mix(in srgb,var(--shu) 22%,transparent)}50%{box-shadow:0 0 0 2px var(--shu),0 0 0 10px color-mix(in srgb,var(--shu) 6%,transparent)}}
@@ -680,7 +668,7 @@ aside .intro-rules{margin:0 0 8px}
 .startrules li{margin:1px 0}
 .startgoal b{display:block;color:var(--shu);font-weight:700;font-family:var(--display);letter-spacing:.1em}
 .startrules>b::before,.startgoal b.sh::before{content:"";width:5px;height:5px;background:var(--shu);flex-shrink:0}
-.startgoal.lft{text-align:left;align-self:stretch}.startgoal .kw{color:var(--shu)}.card.start .startrules{align-self:stretch}.startgoal.lft ul{margin:2px 0 0;padding-left:1.9em}
+.startgoal .kw{color:var(--shu)}.card.start .startrules{align-self:stretch}
 @media (max-width:820px){
   .goal{width:calc(var(--g) + 42px);max-width:none;margin:-2px 0 0;height:26px;min-height:0;flex-shrink:0}
   /* 20 stones: two rows of ten */
@@ -689,7 +677,7 @@ aside .intro-rules{margin:0 0 8px}
   .stage{--g:min(100cqw - 42px,(100cqh - 271px) / 1.085)}
 }
 /* very narrow phones: four equal buttons leave little room for the small second line */
-@media (max-width:360px){.tools{gap:4px}.tools .btn{padding:0}.tools .btn.two small{font-size:8px;letter-spacing:-.05em}.tools .msep{margin:0 4px}.tools kbd{display:none!important}}
+@media (max-width:360px){.tools{gap:4px}.tools .btn{padding:0}.tools .btn.two small{font-size:8px;letter-spacing:-.05em}.tools .msep{margin:0 4px}}
 /* PC: the garden shrinks with the window height, so status, garden, stones left and the buttons all fit on one screen */
 @media (min-width:821px){
   main{--bw:min(602px,max(340px,100vh - 325px))}
@@ -709,7 +697,7 @@ aside .intro-rules{margin:0 0 8px}
 .sthead{display:flex;justify-content:center}
 .sthead .gstyle{font-size:13px;letter-spacing:.06em}
 @media (max-width:820px){.sthead .gstyle{font-size:12px;letter-spacing:.02em}}
-/* test: the four parts around the board, paired by what they are about
+/* the four parts around the board, paired by what they are about
    — above the board, the game: its style (left) and the time spent (right)
    — below the board, what is on it: the stones still to place (left) and 砂利を均す, which clears them (right) */
 .clock{display:flex;align-items:center;gap:5px;margin-left:auto;flex-shrink:0}
@@ -764,7 +752,7 @@ html,body{overflow-x:clip}
 .snd .sndsep{grid-column:1/-1;border-top:1px solid var(--line);margin:2px 0}
 .snd.muted > :not(#allToggle):not(#allVol):not(.sndsep){opacity:.45}
 /* narrow phones: the speaker icon takes a little room, so the words sit a little closer */
-@media (max-width:420px){.mnav .btn{padding:6px 4px}.mnav .btn.em{padding:6px 6px}}
+
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);z-index:60;transform:translate(-50%,6px);opacity:0;pointer-events:none;
   background:var(--ink);color:var(--paper);font-family:var(--display);font-size:13px;letter-spacing:.06em;padding:8px 16px;border-radius:2px;box-shadow:0 10px 24px -12px rgba(40,30,10,.5);
   transition:opacity .2s ease,transform .2s ease;white-space:nowrap}
@@ -787,13 +775,12 @@ body.picking main,body.picking aside,body.picking .scrim{display:none!important}
 .topbtns .btn:hover{color:var(--shu)}
 .topbtns .btn.em{background:var(--ink);color:var(--paper);border-radius:2px;padding:7px 14px;margin-left:6px;box-shadow:none}
 .topbtns .btn.em:hover{color:var(--paper);opacity:.88}
-/* 庭を変える at the right end of the menu, on the phone as well */
-.mnav .btn.em{margin:0 0 0 3px;box-shadow:none}
+
 /* every width works the same way: the garden first, then 遊び方・コツ・記録・音・共有 below; the menu scrolls to them */
 aside section[id]{scroll-margin-top:16px}
-aside section + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}
+aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}
 .sharebtn{margin-top:14px;padding:8px 26px}
-body.picking .sharefoot{display:none}
+
 @media (max-width:820px){
   html,body{height:auto;overflow:visible;overscroll-behavior:auto}
   body{padding-block:8px 40px}
@@ -806,7 +793,7 @@ body.picking .sharefoot{display:none}
   .sheet-body{overflow:visible;padding:0;gap:34px}
   aside section,aside[data-tab] section{display:block}
   aside section + section{border-top:1px solid var(--line);padding-top:30px}
-  aside section + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}
+  aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}
   .topbtns{flex-shrink:0}
   .topbtns .btn{padding:6px 7px;font-size:13px;letter-spacing:0}
   .topbtns .btn.em{padding:6px 9px;margin-left:3px}
@@ -864,6 +851,7 @@ body.picking .sharefoot{display:none}
   html.tabview aside[data-tab="records"] section[data-tab="records"],
   html.tabview aside[data-tab="sound"] section[data-tab="sound"],
   html.tabview aside[data-tab="terms"] section[data-tab="terms"]{display:block!important}
+  html.tabview aside[data-tab="terms"] .adslot[data-ad="sheet"]{display:none!important}
   html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:0!important;padding-top:0!important;margin-top:0!important}
   .topbtns .btn[aria-current="page"]{color:var(--shu);font-weight:700}
 }
@@ -912,9 +900,7 @@ body.picking .sharefoot{display:none}
 .sicons .storo svg{display:block;width:100%;height:100%;overflow:visible}
 .sicons .storo text{font-family:var(--display);font-weight:700;font-size:14px;fill:#f5f0e4}
 @media (max-width:820px){.sicons .smoss{font-size:10.5px}}
-/* test: no marks; the sand starts plain and is raked where a stone cannot go; when solved the whole garden is raked */
-.rake mask rect.mc{opacity:0;transition:opacity .45s ease}
-.rake mask rect.mc.on{opacity:1}
+
 .rake mask rect.all{opacity:0;transition:opacity 1.4s ease}
 .board.solved .rake mask rect.all{opacity:1}
 .cell .dot{display:none!important}
@@ -923,10 +909,10 @@ body.picking .sharefoot{display:none}
 .sw:has(.d){background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='4' viewBox='0 0 28 4' preserveAspectRatio='none'%3E%3Cpath d='M0 -8.5Q7 -11.7 14 -8.5T28 -8.5M0 -4.5Q7 -7.7 14 -4.5T28 -4.5M0 -0.5Q7 -3.7 14 -0.5T28 -0.5M0 3.5Q7 0.3 14 3.5T28 3.5M0 7.5Q7 4.3 14 7.5T28 7.5M0 11.5Q7 8.3 14 11.5T28 11.5M0 15.5Q7 12.3 14 15.5T28 15.5' fill='none' stroke='%23bdb6a7' stroke-width='1'/%3E%3C/svg%3E");background-size:28px 4px}
 .sw .d{display:none}
 @media (prefers-reduced-motion:reduce){.rake mask rect{transition:none}}
-/* test: the rough lines are a little bolder, so the grain reads */
+/* the rough lines are a little bolder, so the grain reads */
 .rake .ripples .rr path{stroke:color-mix(in srgb,var(--rake) 75%,#a99d86);stroke-width:calc(var(--px,.03)*1.7)}
 .rake .rough path{stroke:color-mix(in srgb,var(--rake) 75%,#a99d86);stroke-width:calc(var(--px,.03)*1.7)}
-/* test: the four buttons share the row by what they hold ([石｜砂紋] and 教えを乞う need more than 休憩), and none is
+/* the four buttons share the row by what they hold ([石｜砂紋] and 教えを乞う need more than 休憩), and none is
    ever narrower than its own words; on narrow phones the type steps down with the screen */
 .tools,.stage .tools{grid-template-columns:minmax(min-content,1.35fr) minmax(min-content,1fr) minmax(min-content,.85fr) minmax(min-content,.85fr) minmax(min-content,.85fr)}
 .tools:has(#resetBtn[hidden]),.stage .tools:has(#resetBtn[hidden]){grid-template-columns:minmax(min-content,1.35fr) minmax(min-content,1fr) minmax(min-content,.85fr) minmax(min-content,.85fr)}
@@ -957,15 +943,15 @@ body.picking .sharefoot{display:none}
 .gate-sep{width:100%;border:0;border-top:1px solid var(--line);margin:2px 0}
 .gate-new{padding:12px;font-size:15px;letter-spacing:.16em}
 .gate-menu.solo .gate-new{padding:14px;font-size:17px;font-weight:700;background:var(--ink);color:var(--paper);border-color:var(--ink)}
-/* test: the first visit: the same garden, then two doors — はじめての方へ (the lesson) or すぐに遊ぶ (a garden) */
+/* the first visit: the same garden, then two doors — はじめての方へ (the lesson) or すぐに遊ぶ (a garden) */
 .gate-menu .gf-b{flex-direction:column;gap:3px;padding:13px 12px 12px}
 .gate-menu .gf-b .gc-h{font-size:17px;font-weight:700;letter-spacing:.18em}
 .gate-menu .gf-b .gc-s{font-family:var(--body);font-size:11.5px;letter-spacing:.04em;opacity:.78}
 .gate-menu .gf-b.primary{box-shadow:0 6px 18px -8px rgba(40,30,10,.45)}
-.gate-links{display:flex;justify-content:center;gap:18px;margin-top:2px}
+
 .gate-link{border:0;background:none;padding:4px 2px;font:inherit;font-size:12.5px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .gate-link:hover{color:var(--ink)}
-.gate-link.testonly{font-size:11px;opacity:.7}
+
 .gate.leave{opacity:0;transition:opacity .4s ease;pointer-events:none}
 @media (prefers-reduced-motion:reduce){.gate-in,.gate-menu{animation:none}}
 
