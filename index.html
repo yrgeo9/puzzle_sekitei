@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-qQP2xWmbqvm8ZEZbaENgcgWVwuss1/7cNxo7ePzLqyM=' 'sha256-XdyG4ukPxbZU5cILzQOMI6wMaLsxjKfTApY4lC3in9E=' 'sha256-uBtrkXmA6+MwOAd2JLvcaX+p3oqQhiv/yZJ6xfcXi6I=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-qQP2xWmbqvm8ZEZbaENgcgWVwuss1/7cNxo7ePzLqyM=' 'sha256-XdyG4ukPxbZU5cILzQOMI6wMaLsxjKfTApY4lC3in9E=' 'sha256-gr1zA6tNlYVKh8l5XqQx98EGWn8DSU3+AyOPOWa1D2w=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https: 'unsafe-inline'; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https:; frame-src https:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="苔石の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -275,6 +275,7 @@ aside p{margin:0}
 .rectab td small{font-size:11px;color:var(--muted)}
 .rectab td.none{color:var(--muted)}.rectab tbody tr{height:44px}
 .recnote{margin:0}
+.recstreak{margin:0 0 6px}
 
 /* ---- veil over the garden (loading / solved) ---- */
 .veil{position:absolute;inset:0;display:grid;place-items:center;background:color-mix(in srgb,var(--paper) 72%,transparent);backdrop-filter:blur(2px);z-index:5;text-align:center;padding:16px}
@@ -327,11 +328,11 @@ html.adtest .adslot .adbox{border:1.5px dashed color-mix(in srgb,var(--muted) 55
   color:var(--muted);font-size:12px;line-height:1.5}
 @media (max-width:820px){.adslot.wide{display:none!important}}
 body.picking .adslot.wide{display:none!important}
-/* the garden screen on a phone: a 320×50 banner under the buttons; the garden shrinks to make room (wider screens use the slot below the garden) */
+/* the garden screen on a phone: a 320×50 banner under the buttons, kept well apart from them (no stray taps); the garden shrinks to make room (wider screens use the slot below the garden) */
 .adslot.gardenad{display:none!important}
 /* only on screens tall enough to spare it: on short phones (iPhone SE and the like) the garden would get too small */
 @media (max-width:820px) and (min-height:700px){
-  html:is(.ads,.adtest) .adslot.gardenad{display:block!important;flex-shrink:0;margin:0 auto;--adw:320px;--adh:50px}
+  html:is(.ads,.adtest) .adslot.gardenad{display:block!important;flex-shrink:0;margin:22px auto 0;--adw:320px;--adh:50px}
   .adslot.gardenad .adlabel{font-size:9px;letter-spacing:.2em;margin-bottom:1px;line-height:1.2}
   html:is(.ads,.adtest) body:not(.tutmode) main{padding-bottom:max(6px,env(safe-area-inset-bottom,0px))}
   body.tutmode .adslot.gardenad{display:none!important}   /* not during practice */
@@ -725,8 +726,8 @@ aside .intro-rules{margin:0 0 8px}
 /* PC: the garden shrinks with the window height, so status, garden, stones left and the buttons all fit on one screen */
 @media (min-width:821px){
   main{--bw:min(602px,max(340px,100vh - 325px))}
-  html:is(.ads,.adtest) main{--bw:min(602px,max(300px,100vh - 425px))}   /* leave room so the 728×90 ad below the garden is on screen */
-  .adslot.wide{margin-top:12px}
+  html:is(.ads,.adtest) main{--bw:min(602px,max(285px,100vh - 441px))}   /* leave room so the 728×90 ad below the garden is on screen */
+  .adslot.wide{margin-top:28px}   /* well apart from the buttons above it (no stray clicks) */
   .status{max-width:calc(var(--bw) - 42px)}
   .boardwrap,.goal,.tools{max-width:var(--bw)}
   .tools{max-width:max(var(--bw),430px)}
@@ -1265,8 +1266,8 @@ button{touch-action:manipulation}
         <dt>動作環境</dt><dd>スマートフォン・パソコンに対応しています。Chrome、Safari、Edge、Firefox の各最新版で、JavaScript を有効にしてご利用ください。</dd>
         <dt>広告</dt><dd>現在、「広告準備中」と表示している場所に広告は掲載していません。掲載を開始した際は、広告枠に「広告」と明記します。商品やサービスを広告として紹介する場合も、そのことが分かるように表示します。</dd>
         <dt>特定商取引法</dt><dd>現在、商品の販売や有料サービスの提供は行っていないため、特定商取引法に基づく表記は掲載していません。今後、有料機能などを設ける場合は、申込受付の開始までに必要な事項を掲載します。</dd>
-        <dt>運営者</dt><dd>準備中です。決まりしだい、このページに掲載します。</dd>
-        <dt>お問い合わせ</dt><dd>お問い合わせ窓口は準備中です。開設しだい、このページでお知らせします。</dd>
+        <dt>運営者</dt><dd>かがり</dd>
+        <dt>お問い合わせ</dt><dd><a href="https://forms.gle/8PzQznwaLtBYLGqs6" target="_blank" rel="noopener noreferrer">お問い合わせフォーム</a>からご連絡ください（Google フォームが開きます）。</dd>
       </dl>
 
       <div class="policy" id="terms">
@@ -1367,7 +1368,7 @@ button{touch-action:manipulation}
         <p class="small">運営者は、個人情報の保護に関する法律その他の関係法令を遵守し、本サービスにおける利用者の情報を次のとおり取り扱います。本ポリシーで使用する用語の意味は、利用規約と同じです。</p>
 
         <h4>1. 取り扱う情報</h4>
-        <p class="small"><em>ゲームの利用時</em>会員登録は不要です。ゲームを遊ぶために、氏名やメールアドレスを入力する必要はありません。ゲームの進行状況、記録および設定は、お使いのブラウザの保存領域（ローカルストレージ）にのみ保存され、運営者のサーバーには送信されません。ページや文字の表示に伴って外部の事業者に送信される情報は、「5. 外部への情報の送信」に記載しています。</p>
+        <p class="small"><em>ゲームの利用時</em>会員登録は不要です。ゲームを遊ぶために、氏名やメールアドレスを入力する必要はありません。ゲームの進行状況、記録および設定は、お使いのブラウザの保存領域（ローカルストレージ）にのみ保存され、運営者のサーバーには送信されません。ページや文字の表示、および利用状況の分析に伴って外部の事業者に送信される情報は、「5. 外部への情報の送信」に記載しています。</p>
         <p class="small"><em>お問い合わせ時</em>運営者は、お問い合わせの際にご記入いただいたお名前（ニックネーム可）、メールアドレス、お問い合わせ内容および送信日時を取得します。お使いの端末やブラウザの種類は、ご記入いただいた場合に取得します。</p>
         <p class="small">未成年の方がお問い合わせをする際は、保護者の同意を得たうえでお送りください。</p>
 
@@ -1376,6 +1377,7 @@ button{touch-action:manipulation}
         <ol class="small go">
           <li>お問い合わせに回答し、対応に必要な連絡をするため</li>
           <li>ご報告いただいた不具合を調査し、本サービスを改善するため</li>
+          <li>本サービスの利用状況を把握し、内容や使いやすさを改善するため</li>
           <li>本サービスを安全に提供し、不正アクセスなど、運営を妨げる行為に対応するため</li>
         </ol>
 
@@ -1390,7 +1392,7 @@ button{touch-action:manipulation}
         </ol>
 
         <h4 id="extsend">5. 外部への情報の送信</h4>
-        <p class="small">本サービスでは、ページや文字を表示するために外部サービスを利用しています。利用者のブラウザが各事業者からデータを読み込む際に、接続元を示すIPアドレスなど、通信に必要な情報が送信されます。</p>
+        <p class="small">本サービスでは、ページや文字の表示、および利用状況の分析のために外部サービスを利用しています。利用者のブラウザが各事業者とやり取りする際に、接続元を示すIPアドレスなど通信に必要な情報や、次に掲げる情報が送信されます。</p>
         <div class="extlist">
           <div class="ext"><b>Cloudflare Pages</b>
             <p class="small"><em>送信先</em>Cloudflare, Inc.</p>
@@ -1404,6 +1406,10 @@ button{touch-action:manipulation}
             <p class="small"><em>送信先</em>Google LLC</p>
             <p class="small"><em>送信される主な情報</em>IPアドレス、ブラウザの種類、要求したフォントに関する情報など</p>
             <p class="small"><em>利用目的</em>画面に表示する文字の書体を読み込むため</p></div>
+          <div class="ext"><b>Google アナリティクス</b>
+            <p class="small"><em>送信先</em>Google LLC</p>
+            <p class="small"><em>送信される主な情報</em>閲覧したページ、滞在時間、参照元、おおよその地域、ブラウザや端末の情報、Cookie などの識別子、庭を整えたときの様式・時間・洞察の回数</p>
+            <p class="small"><em>利用目的</em>利用状況の把握と、本サービスの改善</p></div>
         </div>
         <p class="small">各事業者による情報の取り扱いは、それぞれのプライバシーポリシーをご覧ください。</p>
         <p class="small"><a href="https://www.cloudflare.com/ja-jp/privacypolicy/" target="_blank" rel="noopener">Cloudflare プライバシーポリシー</a>／<a href="https://docs.github.com/ja/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub 一般プライバシーステートメント</a>／<a href="https://policies.google.com/privacy?hl=ja" target="_blank" rel="noopener">Google プライバシーポリシー</a></p>
@@ -1413,7 +1419,8 @@ button{touch-action:manipulation}
         <p class="small">広告から移動した先のウェブサイトで入力した情報は、そのウェブサイトの運営者が取り扱います。</p>
 
         <h4>7. 利用状況の分析</h4>
-        <p class="small">現在、本サービスでは Google アナリティクスを使用していません。今後、利用状況の把握やサービスの改善のために導入する場合は、利用を開始する前に、送信される情報、利用目的および情報の送信を停止する方法を本ポリシーに掲載します。</p>
+        <p class="small">本サービスでは、利用状況を把握してサービスを改善するために、Google LLC のアクセス解析ツール「Google アナリティクス」を利用しています。Google アナリティクスは Cookie を使用して、個人を特定しない形で利用状況に関する情報を収集します。収集された情報は、Google のプライバシーポリシーに基づいて管理されます。Google による情報の取り扱いについては、<a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Google のサービスを使用するサイトやアプリから収集した情報の Google による使用</a>をご覧ください。</p>
+        <p class="small">利用者は、ブラウザの設定で Cookie を無効にするか、<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener">Google アナリティクス オプトアウト アドオン</a>を利用することで、情報の送信を停止できます。</p>
 
         <h4>8. 開示等のご請求</h4>
         <p class="small">ご本人は、運営者が保有するご自身の個人データについて、利用目的の通知、開示、訂正・追加・削除、利用停止・消去または第三者への提供の停止を請求できます。第三者への提供に関する記録についても、法令に基づき開示を請求できます。</p>
@@ -1424,8 +1431,7 @@ button{touch-action:manipulation}
 
         <h4>10. お問い合わせ窓口</h4>
         <p class="small">利用者の情報の取り扱いに関するご質問、苦情および開示等のご請求は、以下の窓口で受け付けます。</p>
-        <p class="small">運営者：準備中<br>住所：上記運営者の住所は、下記窓口にご請求いただければ、遅滞なくお知らせします。<br>連絡先：準備中</p>
-        <p class="small">お問い合わせ窓口は現在準備中です。開設しだい、このページでお知らせします。</p>
+        <p class="small">運営者：かがり<br>住所：上記運営者の住所は、下記窓口にご請求いただければ、遅滞なくお知らせします。<br>連絡先：<a href="https://forms.gle/8PzQznwaLtBYLGqs6" target="_blank" rel="noopener noreferrer">お問い合わせフォーム</a>（Google フォーム）</p>
         <p class="small docdate">以上<br>制定日：2026年11月22日</p>
       </div>
     </section>
@@ -2042,7 +2048,7 @@ function setToro(v){toro=!!v;store.set('sekitei:toro',toro?1:0);}
 // 設定 › 盤面: time shown, mistakes shown as they happen
 const OPT=(()=>{const q=store.get('sekitei:opt'),o={time:true,err:true};if(q&&typeof q==='object')for(const k in o)if(typeof q[k]==='boolean')o[k]=q[k];return o;})();
 // 規約等 (このサイトについて・利用規約・プライバシーポリシー) stays hidden until ads are shown; build_seo.py reads this line too
-const TERMS_ON=false;document.documentElement.classList.toggle('noterms',!TERMS_ON);
+const TERMS_ON=true;document.documentElement.classList.toggle('noterms',!TERMS_ON);
 let mode=0;          // 0 stone, 1 mark
 let size=8,diff=0;
 let cellEls=[],rowPips=[],colPips=[];
@@ -2795,16 +2801,22 @@ $('allToggle').onclick=toggleMute;
 // ---- ads: ADS.on stays false until a network is signed up; ADS.test shows the empty frames.
 // When on, the network's script loads once (sekiteiAds()), after the first visit's screen has closed, and each slot gets its unit.
 const ADS={on:false,test:true,client:'ca-pub-0000000000000000',units:{pick:'',mid:'',sheet:'',garden:''}};
+// ---- アクセス解析 (Google Analytics 4): GA_ID stays '' until a property is made. Ads and analytics run only on the official site.
+const GA_ID='G-S6KQF5JLZP';
+const LIVE=location.hostname==='puzzle-sekitei.jp';
+if(GA_ID&&LIVE){window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments);};
+  window.gtag('js',new Date());window.gtag('config',GA_ID);
+  const g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(g);}
 {const root=document.documentElement;root.classList.toggle('adtest',ADS.test&&!ADS.on);root.classList.toggle('ads',ADS.on);
   if(ADS.test&&!ADS.on)document.querySelectorAll('.adslot').forEach(sl=>{const w=sl.classList.contains('wide');sl.querySelector('.adbox').innerHTML=sl.dataset.ad==='garden'?'広告準備中 320×50':`広告準備中<br>${w?'728×90':'336×100'}`;});
   let loaded=false;
-  window.sekiteiAds=()=>{if(!ADS.on||loaded)return;loaded=true;
+  window.sekiteiAds=()=>{if(!ADS.on||!LIVE||loaded)return;loaded=true;
     const sc=document.createElement('script');sc.async=true;sc.crossOrigin='anonymous';
     sc.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+ADS.client;document.head.appendChild(sc);
     document.querySelectorAll('.adslot').forEach(sl=>{const u=ADS.units[sl.dataset.ad];if(!u)return;
       sl.querySelector('.adbox').innerHTML=`<ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${u}" data-ad-format="auto" data-full-width-responsive="true"></ins>`;
       try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}});};
-  if(ADS.on){const tryAds=()=>{if($('gate').hidden)window.sekiteiAds();else setTimeout(tryAds,2000);};setTimeout(tryAds,1500);}
+  if(ADS.on&&LIVE){const tryAds=()=>{if($('gate').hidden)window.sekiteiAds();else setTimeout(tryAds,2000);};setTimeout(tryAds,1500);}
   const openDoc=id=>e=>{e.preventDefault();$(id).open=true;goSection('termsTop','terms');setTimeout(()=>$(id).scrollIntoView({block:'start',behavior:'smooth'}),60);};
   $('footRules').onclick=e=>{e.preventDefault();goSection('rulesTop','rules');};
   $('footTips').onclick=e=>{e.preventDefault();goSection('tipsTop','tips');};
@@ -3308,13 +3320,26 @@ const SITE_URL='https://puzzle-sekitei.jp/';
 function shareUrl(){
   return `${SITE_URL}?n=${S.N}&d=${S.diff}&g=${shownCode(S.seed)}&w=${walk?1:0}${S.toro?'&t=1':''}`;
 }
+// the clear, Wordle-style: a few short lines with marks, never the answer
 function shareText(){
-  const t=new Date(),kind=styleParts(S.N,S.toro,S.diff).join('・');
-  return `${kind}の庭を${S.hints?`、洞察を${S.hints}回使いつつ`:''} ${fmt(S.time)} で整えました #石庭ぱずる`;
+  const kind=styleParts(S.N,S.toro,S.diff).join('・'),h=S.hints,run=streakNow();
+  const lines=[`石庭ぱずる ${kind}`,`🪨 ${fmt(S.time)} で整えました`,
+    h?`${'💡'.repeat(Math.min(h,5))}${h>5?'＋':''} 洞察${h}回`:'🌿 洞察なし'];
+  if(run>=2)lines.push(`🔥 ${run}日連続`);
+  lines.push('#石庭ぱずる');
+  return lines.join(String.fromCharCode(10));
 }
+// 連続: days in a row (by this device's calendar) on which at least one garden was finished
+const dayKey=d=>`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+function streakNow(){const st=store.get('sekitei:days');if(!st)return 0;const t=new Date(),y=new Date(t.getFullYear(),t.getMonth(),t.getDate()-1);
+  return st.last===dayKey(t)||st.last===dayKey(y)?st.run:0;}
+function markDay(){const t=new Date(),today=dayKey(t),y=dayKey(new Date(t.getFullYear(),t.getMonth(),t.getDate()-1));
+  const st=store.get('sekitei:days')||{last:'',run:0,best:0};if(st.last===today)return;
+  st.run=st.last===y?st.run+1:1;st.last=today;st.best=Math.max(st.best||0,st.run);store.set('sekitei:days',st);}
 function showWin(again){
   setTime();
-  showVeil(`<h3>整いました</h3><div class="sthead">${styleHtml(styleParts(S.N,S.toro,S.diff))}</div><div class="small winmeta">${fmt(S.time)}${S.hints?` ・ 洞察${S.hints}回`:''}</div>${S.replay?`<p class="replaynote">${REPLAY_NOTE}</p>`:''}
+  const run=streakNow();
+  showVeil(`<h3>整いました</h3><div class="sthead">${styleHtml(styleParts(S.N,S.toro,S.diff))}</div><div class="small winmeta">${fmt(S.time)}${S.hints?` ・ 洞察${S.hints}回`:''}${run>=2?` ・ ${run}日連続`:''}</div>${S.replay?`<p class="replaynote">${REPLAY_NOTE}</p>`:''}
     <div class="winbtns top"><button type="button" class="btn" id="viewBtn">庭を眺める</button><button type="button" class="btn" id="shareBtn">共有</button></div>
     <div class="winbtns"><button type="button" class="btn primary" id="sameBtn">同じ様式の庭へ</button><button type="button" class="btn primary" id="nextBtn">異なる様式の庭へ</button></div>`);
   $('veilCard').classList.add('win');
@@ -3336,7 +3361,8 @@ function showWin(again){
 }
 function recordWin(){
   const k='sekitei:rec';const rec=readRecords();const id=S.N+':'+S.diff+(S.toro?':t':'');const r=rec[id]||{n:0,best:null};
-  r.n++;if(!S.hints&&(r.best===null||S.time<r.best))r.best=Math.floor(S.time);rec[id]=r;store.set(k,rec);renderRecords();
+  r.n++;if(!S.hints&&(r.best===null||S.time<r.best))r.best=Math.floor(S.time);rec[id]=r;store.set(k,rec);markDay();renderRecords();
+  if(window.gtag)window.gtag('event','garden_clear',{garden_style:styleParts(S.N,S.toro,S.diff).join('・'),hints:S.hints,seconds:Math.floor(S.time)});
 }
 function readRecords(){
   const raw=store.get('sekitei:rec');const out={};
@@ -3352,6 +3378,7 @@ function renderRecords(){
   const table=(t,cap)=>`<div class="recblk"><table class="rectab"><thead><tr><th class="cap">${cap}</th><th>普通</th><th>難しい</th></tr></thead><tbody>`
     +[6,8,10].map(N=>`<tr><th>${SIZES[N].name}</th>${cell(rec[N+':0'+t])}${cell(rec[N+':1'+t])}</tr>`).join('')+'</tbody></table></div>';
   $('records').innerHTML=table('',hasToro?'灯籠なし':'')+(hasToro?table(':t','灯籠あり'):'')
+    +(()=>{const st=store.get('sekitei:days'),run=streakNow();return st?`<p class="small recstreak">連続して庭を整えた日数：<b>${run}日</b>（最長 ${st.best}日）</p>`:'';})()
     +'<p class="small recnote">上段は手助けなしの最短時間、下段は解いた数です。記録はこの端末にだけ保存されます。</p>';
 }
 
