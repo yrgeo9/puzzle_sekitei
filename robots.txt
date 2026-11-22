@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://puzzle-sekitei.pages.dev/sitemap.xml
+Sitemap: https://puzzle-sekitei.jp/sitemap.xml

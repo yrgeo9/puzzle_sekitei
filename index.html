@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-qQP2xWmbqvm8ZEZbaENgcgWVwuss1/7cNxo7ePzLqyM=' 'sha256-XdyG4ukPxbZU5cILzQOMI6wMaLsxjKfTApY4lC3in9E=' 'sha256-0kcbRvknqXkt/eR1n04CE0iIqk2smm59xsOzdSwhsl8=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-qQP2xWmbqvm8ZEZbaENgcgWVwuss1/7cNxo7ePzLqyM=' 'sha256-XdyG4ukPxbZU5cILzQOMI6wMaLsxjKfTApY4lC3in9E=' 'sha256-uBtrkXmA6+MwOAd2JLvcaX+p3oqQhiv/yZJ6xfcXi6I=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8='; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="苔石の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta name="theme-color" content="#fbfaf7">
@@ -14,14 +14,14 @@
 <meta property="og:title" content="石庭ぱずる">
 <meta property="og:description" content="苔石の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://puzzle-sekitei.pages.dev/">
+<meta property="og:url" content="https://puzzle-sekitei.jp/">
 <meta property="og:site_name" content="石庭ぱずる">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://puzzle-sekitei.pages.dev/og.png">
+<meta property="og:image" content="https://puzzle-sekitei.jp/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="canonical" href="https://puzzle-sekitei.pages.dev/">
+<link rel="canonical" href="https://puzzle-sekitei.jp/">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
@@ -1028,7 +1028,7 @@ button{touch-action:manipulation}
   <p>遊ぶには JavaScript を有効にしてください。</p>
 </div></noscript>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":["VideoGame","WebApplication"],"name":"石庭ぱずる","url":"https://puzzle-sekitei.pages.dev/",
+{"@context":"https://schema.org","@type":["VideoGame","WebApplication"],"name":"石庭ぱずる","url":"https://puzzle-sekitei.jp/",
  "description":"苔石の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。",
  "inLanguage":"ja","genre":["パズル","論理パズル"],"applicationCategory":"GameApplication","operatingSystem":"Any",
  "gamePlatform":["Web browser"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}}
@@ -3304,7 +3304,7 @@ function hideVeil(){$('veil').hidden=true;$('veil').classList.remove('solid');}
 // ---- sharing the clear time ----
 // The link carries the garden (size, difficulty, number) so friends can walk the same garden.
 // the official address: shared links always lead here, wherever the game was opened (GitHub Pages, the Artifact…)
-const SITE_URL='https://puzzle-sekitei.pages.dev/';
+const SITE_URL='https://puzzle-sekitei.jp/';
 function shareUrl(){
   return `${SITE_URL}?n=${S.N}&d=${S.diff}&g=${shownCode(S.seed)}&w=${walk?1:0}${S.toro?'&t=1':''}`;
 }
