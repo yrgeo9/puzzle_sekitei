@@ -256,8 +256,6 @@ aside p{margin:0}
 .card.win .small{font-size:12px;line-height:1.5}
 .card .guidetext{text-align:left;line-height:1.7;margin:2px 0 4px}
 .card.start .startgo.guidego{align-self:stretch;justify-content:center;padding:10px 12px;font-size:14px;letter-spacing:.08em}.card .guideskip{margin-top:-2px}
-/* the ad on the 整いました card: well below the buttons (a rule and 30px), so it is not pressed by mistake */
-.card.win .adslot.winad{margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line);--adw:100%;--adh:100px}
 .winbtns{width:100%;display:flex;gap:6px;justify-content:center;flex-wrap:nowrap;padding-top:11px;margin-top:2px;border-top:1px solid var(--line)}
 .winbtns.top{padding-top:0;margin-top:4px;border-top:0}
 .winbtns .btn{flex:1 1 0;min-width:0;padding:8px 4px;font-size:13px;letter-spacing:.02em;justify-content:center;white-space:nowrap}

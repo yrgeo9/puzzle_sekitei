@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-JRIZz5PoTh2+LRDqcZjNReKN8/S3zbEMBjWnpwDVv3g=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-KhADZ5cNeGD5pgAWfX0Hy4x7TypWUx2UeIIbOUPWwSA=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="google-adsense-account" content="ca-pub-5888401648545585">
 <meta name="description" content="苔石の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
@@ -290,8 +290,6 @@ aside p{margin:0}
 .card.win .small{font-size:12px;line-height:1.5}
 .card .guidetext{text-align:left;line-height:1.7;margin:2px 0 4px}
 .card.start .startgo.guidego{align-self:stretch;justify-content:center;padding:10px 12px;font-size:14px;letter-spacing:.08em}.card .guideskip{margin-top:-2px}
-/* the ad on the 整いました card: well below the buttons (a rule and 30px), so it is not pressed by mistake */
-.card.win .adslot.winad{margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line);--adw:100%;--adh:100px}
 .winbtns{width:100%;display:flex;gap:6px;justify-content:center;flex-wrap:nowrap;padding-top:11px;margin-top:2px;border-top:1px solid var(--line)}
 .winbtns.top{padding-top:0;margin-top:4px;border-top:0}
 .winbtns .btn{flex:1 1 0;min-width:0;padding:8px 4px;font-size:13px;letter-spacing:.02em;justify-content:center;white-space:nowrap}
@@ -1064,7 +1062,6 @@ button{touch-action:manipulation}
       </div>
     </div>
     <button class="btn primary intro-go" id="pickGo" type="button" autofocus>庭へ向かう</button>
-    <div class="adslot" data-ad="pick"><span class="adlabel">広告</span><div class="adbox"></div></div>
   </div>
 </dialog>
 
@@ -2746,7 +2743,7 @@ const toggleMute=()=>{Sound.set('mute',!Sound.prefs().mute);syncSound();};
 $('allToggle').onclick=toggleMute;
 // ---- ads: ADS.on stays false until a network is signed up; ADS.test shows the empty frames.
 // When on, the network's script loads once (sekiteiAds()), after the first visit's screen has closed, and each slot gets its unit.
-const ADS={on:false,test:true,client:'ca-pub-5888401648545585',units:{pick:'',mid:'',sheet:'',garden:'',win:'',tips:''}};
+const ADS={on:false,test:true,client:'ca-pub-5888401648545585',units:{mid:'',sheet:'',garden:'',tips:''}};
 // ---- アクセス解析 (Google Analytics 4): GA_ID stays '' until a property is made. Ads and analytics run only on the official site.
 const GA_ID='G-S6KQF5JLZP';
 const LIVE=location.hostname==='puzzle-sekitei.jp';
@@ -2755,7 +2752,7 @@ if(GA_ID&&LIVE){window.dataLayer=window.dataLayer||[];window.gtag=function(){win
   const g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(g);}
 {const root=document.documentElement;root.classList.toggle('adtest',ADS.test&&!ADS.on);root.classList.toggle('ads',ADS.on);
   let loaded=false;
-  const PH={garden:'広告準備中 320×50',win:'広告準備中<br>300×100'};
+  const PH={garden:'広告準備中 320×50'};
   // fills one slot: the empty frame while ads are being prepared, the unit once the network's script is in
   window.adFill=sl=>{const box=sl.querySelector('.adbox');if(!box)return;
     if(ADS.test&&!ADS.on){box.innerHTML=PH[sl.dataset.ad]||`広告準備中<br>${sl.classList.contains('wide')?'728×90':'336×100'}`;return;}
@@ -3286,10 +3283,8 @@ function showWin(again){
   const run=streakNow();
   showVeil(`<h3>整いました</h3><div class="sthead">${styleHtml(styleParts(S.N,S.toro,S.diff))}</div><div class="small winmeta">${fmt(S.time)}${S.hints?` ・ 洞察${S.hints}回`:''}${run>=2?` ・ ${run}日連続`:''}</div>${S.replay?`<p class="replaynote">${REPLAY_NOTE}</p>`:''}
     <div class="winbtns top"><button type="button" class="btn" id="viewBtn">庭を眺める</button><button type="button" class="btn" id="shareBtn">共有</button></div>
-    <div class="winbtns"><button type="button" class="btn primary" id="sameBtn">同じ様式の庭へ</button><button type="button" class="btn primary" id="nextBtn">異なる様式の庭へ</button></div>
-    <div class="adslot winad" data-ad="win"><span class="adlabel">広告</span><div class="adbox"></div></div>`);
+    <div class="winbtns"><button type="button" class="btn primary" id="sameBtn">同じ様式の庭へ</button><button type="button" class="btn primary" id="nextBtn">異なる様式の庭へ</button></div>`);
   $('veilCard').classList.add('win');
-  const wa=$('veilCard').querySelector('.winad');if(wa&&window.adFill)window.adFill(wa);
   const text=shareText(),url=shareUrl();
   $('shareBtn').onclick=()=>{const b=$('shareBtn');
     shareOrCopy(text+'\n'+url,()=>{b.textContent='コピーしました';setTimeout(()=>{if(b.isConnected)b.textContent='共有';},2000);});};
