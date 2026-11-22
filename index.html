@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-degGZRN/47Tt6Inx9Wd2uzF2N9pppj2xMEu8yUn8rjo=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-JRIZz5PoTh2+LRDqcZjNReKN8/S3zbEMBjWnpwDVv3g=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="google-adsense-account" content="ca-pub-5888401648545585">
 <meta name="description" content="苔石の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
@@ -224,7 +224,7 @@ aside{min-width:0;width:100%;max-width:582px;justify-self:center;display:flex;fl
 .sheet-body{display:flex;flex-direction:column;gap:34px}
 /* PC: the big groups (遊び方 / コツ / 記録 / 音) are parted by a double line, the parts within each by a hairline */
 @media (min-width:821px){aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}}
-aside section + section{border-top:1px solid var(--line);padding-top:30px}
+aside :is(section,.adslot) + section{border-top:1px solid var(--line);padding-top:30px}
 /* the lantern rule: what its light reaches, and how it counts, each on its own line */
 .intro-rules span.tonote{margin-top:2px;font-size:11.5px;opacity:.85}
 
@@ -290,6 +290,8 @@ aside p{margin:0}
 .card.win .small{font-size:12px;line-height:1.5}
 .card .guidetext{text-align:left;line-height:1.7;margin:2px 0 4px}
 .card.start .startgo.guidego{align-self:stretch;justify-content:center;padding:10px 12px;font-size:14px;letter-spacing:.08em}.card .guideskip{margin-top:-2px}
+/* the ad on the 整いました card: well below the buttons (a rule and 30px), so it is not pressed by mistake */
+.card.win .adslot.winad{margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line);--adw:100%;--adh:100px}
 .winbtns{width:100%;display:flex;gap:6px;justify-content:center;flex-wrap:nowrap;padding-top:11px;margin-top:2px;border-top:1px solid var(--line)}
 .winbtns.top{padding-top:0;margin-top:4px;border-top:0}
 .winbtns .btn{flex:1 1 0;min-width:0;padding:8px 4px;font-size:13px;letter-spacing:.02em;justify-content:center;white-space:nowrap}
@@ -556,7 +558,7 @@ aside .intro-rules{margin:0 0 8px}
     background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 2px,var(--rake) 2px 3px)}
   .sheet-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;gap:28px;
     padding:18px max(18px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
-  aside section + section{border-top:0;padding-top:0}
+  aside :is(section,.adslot) + section{border-top:0;padding-top:0}
   body.ready aside{transition:transform .25s ease,visibility 0s linear .25s}
   body.sheet-open aside{transform:none;visibility:visible}
   body.ready.sheet-open aside{transition:transform .25s ease}
@@ -568,6 +570,7 @@ aside .intro-rules{margin:0 0 8px}
   aside[data-tab="sound"] section[data-tab="sound"],
   aside[data-tab="terms"] section[data-tab="terms"]{display:block}
   aside[data-tab="terms"] .adslot[data-ad="sheet"]{display:none!important}
+  aside:not([data-tab="tips"]) .adslot[data-ad="tips"]{display:none!important}
   aside .seg{display:flex;width:100%;box-sizing:border-box;border-bottom:1px solid var(--line)}
   aside .seg button{flex:1;padding:10px 4px;font-size:14px;margin-bottom:-1px}
 }
@@ -826,7 +829,7 @@ aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,
   aside::before{display:none}
   .sheet-body{overflow:visible;padding:0;gap:34px}
   aside section,aside[data-tab] section{display:block}
-  aside section + section{border-top:1px solid var(--line);padding-top:30px}
+  aside :is(section,.adslot) + section{border-top:1px solid var(--line);padding-top:30px}
   aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}
   .topbtns{flex-shrink:0}
   .topbtns .btn{padding:6px 7px;font-size:13px;letter-spacing:0}
@@ -886,6 +889,7 @@ aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,
   html.tabview aside[data-tab="sound"] section[data-tab="sound"],
   html.tabview aside[data-tab="terms"] section[data-tab="terms"]{display:block!important}
   html.tabview aside[data-tab="terms"] .adslot[data-ad="sheet"]{display:none!important}
+  html.tabview aside:not([data-tab="tips"]) .adslot[data-ad="tips"]{display:none!important}
   html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:0!important;padding-top:0!important;margin-top:0!important}
   .topbtns .btn[aria-current="page"]{color:var(--shu);font-weight:700}
 }
@@ -1188,6 +1192,7 @@ button{touch-action:manipulation}
       <p class="small" style="margin-top:8px">石20の庭では、灯籠の数は多くて4（行・列に2つずつ）。苔石のまわりと光が重なるマスは、両方の数に関わります。</p>
       <button class="btn tutgo" type="button" data-tuttoro>「灯籠あり」を学ぶ</button>
     </section>
+    <div class="adslot" data-ad="tips"><span class="adlabel">広告</span><div class="adbox"></div></div>
     <section data-tab="tips" id="tipAdv" data-tip="難しい">
       <h2>解き方のコツ（難しい）</h2>
       <p class="small">「難しい」の盤面は、1つの行・列・苔石だけを見ても次の一手が決まらない場面があります。<b>2つの手がかり（行と行、行と苔石、苔石と苔石）の置き方の組み合わせを全部考え、どの組み合わせでも同じになるマスを確定する</b>のが基本です。候補が2〜3マスしかない行・列・苔石を探し、隣の行や重なる苔石と組み合わせてみてください。砂紋をこまめに付けると候補が見えやすくなります。図の多くは実際の盤面から取っています。</p>
@@ -2403,7 +2408,7 @@ const board=$('board');
 board.addEventListener('contextmenu',e=>e.preventDefault());
 board.addEventListener('pointerdown',e=>{
   const el=e.target.closest('.cell');
-  if(el&&S&&S.done&&$('veil').hidden){if(S.tut){if(S.reshow){setMsg('');S.reshow();}}else showWin(true);return;}
+  if(el&&S&&S.done&&$('veil').hidden){if(S.tut){if(S.reshow){setMsg('');S.reshow();}}else{setMsg('');showWin(true);}return;}
   if(!el||!S||S.done||!S.started)return;const i=+el.dataset.i;
   if(S.tut&&tut&&tut.tapNext){tut.tapNext=false;tutShow();return;}   // after the lantern step: a tap on the board goes on
   if(S.tut&&tut&&tut.tap!=null){if(i===tut.tap){Sound.play('lamp');tapDone();}else setMsg(`まず、${cellName(tut.tap)}の灯籠をタップしてみてください。`);return;}
@@ -2741,7 +2746,7 @@ const toggleMute=()=>{Sound.set('mute',!Sound.prefs().mute);syncSound();};
 $('allToggle').onclick=toggleMute;
 // ---- ads: ADS.on stays false until a network is signed up; ADS.test shows the empty frames.
 // When on, the network's script loads once (sekiteiAds()), after the first visit's screen has closed, and each slot gets its unit.
-const ADS={on:false,test:true,client:'ca-pub-5888401648545585',units:{pick:'',mid:'',sheet:'',garden:''}};
+const ADS={on:false,test:true,client:'ca-pub-5888401648545585',units:{pick:'',mid:'',sheet:'',garden:'',win:'',tips:''}};
 // ---- アクセス解析 (Google Analytics 4): GA_ID stays '' until a property is made. Ads and analytics run only on the official site.
 const GA_ID='G-S6KQF5JLZP';
 const LIVE=location.hostname==='puzzle-sekitei.jp';
@@ -2749,14 +2754,19 @@ if(GA_ID&&LIVE){window.dataLayer=window.dataLayer||[];window.gtag=function(){win
   window.gtag('js',new Date());window.gtag('config',GA_ID);
   const g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(g);}
 {const root=document.documentElement;root.classList.toggle('adtest',ADS.test&&!ADS.on);root.classList.toggle('ads',ADS.on);
-  if(ADS.test&&!ADS.on)document.querySelectorAll('.adslot').forEach(sl=>{const w=sl.classList.contains('wide');sl.querySelector('.adbox').innerHTML=sl.dataset.ad==='garden'?'広告準備中 320×50':`広告準備中<br>${w?'728×90':'336×100'}`;});
   let loaded=false;
+  const PH={garden:'広告準備中 320×50',win:'広告準備中<br>300×100'};
+  // fills one slot: the empty frame while ads are being prepared, the unit once the network's script is in
+  window.adFill=sl=>{const box=sl.querySelector('.adbox');if(!box)return;
+    if(ADS.test&&!ADS.on){box.innerHTML=PH[sl.dataset.ad]||`広告準備中<br>${sl.classList.contains('wide')?'728×90':'336×100'}`;return;}
+    const u=ADS.units[sl.dataset.ad];if(!loaded||!u||box.firstChild)return;
+    box.innerHTML=`<ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${u}" data-ad-format="auto" data-full-width-responsive="true"></ins>`;
+    try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}};
   window.sekiteiAds=()=>{if(!ADS.on||!LIVE||loaded)return;loaded=true;
     const sc=document.createElement('script');sc.async=true;sc.crossOrigin='anonymous';
     sc.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+ADS.client;document.head.appendChild(sc);
-    document.querySelectorAll('.adslot').forEach(sl=>{const u=ADS.units[sl.dataset.ad];if(!u)return;
-      sl.querySelector('.adbox').innerHTML=`<ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${u}" data-ad-format="auto" data-full-width-responsive="true"></ins>`;
-      try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}});};
+    document.querySelectorAll('.adslot').forEach(window.adFill);};
+  if(ADS.test&&!ADS.on)document.querySelectorAll('.adslot').forEach(window.adFill);
   if(ADS.on&&LIVE){const tryAds=()=>{if($('gate').hidden)window.sekiteiAds();else setTimeout(tryAds,2000);};setTimeout(tryAds,1500);}
   const openDoc=id=>e=>{e.preventDefault();goSection('termsTop','terms');setTimeout(()=>$(id).scrollIntoView({block:'start',behavior:'smooth'}),60);};
   $('footRules').onclick=e=>{e.preventDefault();goSection('rulesTop','rules');};
@@ -3276,15 +3286,18 @@ function showWin(again){
   const run=streakNow();
   showVeil(`<h3>整いました</h3><div class="sthead">${styleHtml(styleParts(S.N,S.toro,S.diff))}</div><div class="small winmeta">${fmt(S.time)}${S.hints?` ・ 洞察${S.hints}回`:''}${run>=2?` ・ ${run}日連続`:''}</div>${S.replay?`<p class="replaynote">${REPLAY_NOTE}</p>`:''}
     <div class="winbtns top"><button type="button" class="btn" id="viewBtn">庭を眺める</button><button type="button" class="btn" id="shareBtn">共有</button></div>
-    <div class="winbtns"><button type="button" class="btn primary" id="sameBtn">同じ様式の庭へ</button><button type="button" class="btn primary" id="nextBtn">異なる様式の庭へ</button></div>`);
+    <div class="winbtns"><button type="button" class="btn primary" id="sameBtn">同じ様式の庭へ</button><button type="button" class="btn primary" id="nextBtn">異なる様式の庭へ</button></div>
+    <div class="adslot winad" data-ad="win"><span class="adlabel">広告</span><div class="adbox"></div></div>`);
   $('veilCard').classList.add('win');
+  const wa=$('veilCard').querySelector('.winad');if(wa&&window.adFill)window.adFill(wa);
   const text=shareText(),url=shareUrl();
   $('shareBtn').onclick=()=>{const b=$('shareBtn');
     shareOrCopy(text+'\n'+url,()=>{b.textContent='コピーしました';setTimeout(()=>{if(b.isConnected)b.textContent='共有';},2000);});};
   // 同じ様式の庭へ: no popup, a new garden of the same size and difficulty
   $('sameBtn').onclick=()=>start(S.N,S.diff,randomSeed(),true);
   $('nextBtn').onclick=()=>openPick(false);   // the same 庭を変える popup as 庭を変える
-  $('viewBtn').onclick=hideVeil;
+  // 庭を眺める: the card steps aside; the line under the board says how to bring it back
+  $('viewBtn').onclick=()=>{hideVeil();setMsg('庭をタップすると、「整いました」の画面に戻ります。');};
 }
 function recordWin(){
   const k='sekitei:rec';const rec=readRecords();const id=S.N+':'+S.diff+(S.toro?':t':'');const r=rec[id]||{n:0,best:null};

@@ -190,7 +190,7 @@ aside{min-width:0;width:100%;max-width:582px;justify-self:center;display:flex;fl
 .sheet-body{display:flex;flex-direction:column;gap:34px}
 /* PC: the big groups (遊び方 / コツ / 記録 / 音) are parted by a double line, the parts within each by a hairline */
 @media (min-width:821px){aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}}
-aside section + section{border-top:1px solid var(--line);padding-top:30px}
+aside :is(section,.adslot) + section{border-top:1px solid var(--line);padding-top:30px}
 /* the lantern rule: what its light reaches, and how it counts, each on its own line */
 .intro-rules span.tonote{margin-top:2px;font-size:11.5px;opacity:.85}
 
@@ -256,6 +256,8 @@ aside p{margin:0}
 .card.win .small{font-size:12px;line-height:1.5}
 .card .guidetext{text-align:left;line-height:1.7;margin:2px 0 4px}
 .card.start .startgo.guidego{align-self:stretch;justify-content:center;padding:10px 12px;font-size:14px;letter-spacing:.08em}.card .guideskip{margin-top:-2px}
+/* the ad on the 整いました card: well below the buttons (a rule and 30px), so it is not pressed by mistake */
+.card.win .adslot.winad{margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line);--adw:100%;--adh:100px}
 .winbtns{width:100%;display:flex;gap:6px;justify-content:center;flex-wrap:nowrap;padding-top:11px;margin-top:2px;border-top:1px solid var(--line)}
 .winbtns.top{padding-top:0;margin-top:4px;border-top:0}
 .winbtns .btn{flex:1 1 0;min-width:0;padding:8px 4px;font-size:13px;letter-spacing:.02em;justify-content:center;white-space:nowrap}
@@ -522,7 +524,7 @@ aside .intro-rules{margin:0 0 8px}
     background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 2px,var(--rake) 2px 3px)}
   .sheet-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;gap:28px;
     padding:18px max(18px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
-  aside section + section{border-top:0;padding-top:0}
+  aside :is(section,.adslot) + section{border-top:0;padding-top:0}
   body.ready aside{transition:transform .25s ease,visibility 0s linear .25s}
   body.sheet-open aside{transform:none;visibility:visible}
   body.ready.sheet-open aside{transition:transform .25s ease}
@@ -534,6 +536,7 @@ aside .intro-rules{margin:0 0 8px}
   aside[data-tab="sound"] section[data-tab="sound"],
   aside[data-tab="terms"] section[data-tab="terms"]{display:block}
   aside[data-tab="terms"] .adslot[data-ad="sheet"]{display:none!important}
+  aside:not([data-tab="tips"]) .adslot[data-ad="tips"]{display:none!important}
   aside .seg{display:flex;width:100%;box-sizing:border-box;border-bottom:1px solid var(--line)}
   aside .seg button{flex:1;padding:10px 4px;font-size:14px;margin-bottom:-1px}
 }
@@ -792,7 +795,7 @@ aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,
   aside::before{display:none}
   .sheet-body{overflow:visible;padding:0;gap:34px}
   aside section,aside[data-tab] section{display:block}
-  aside section + section{border-top:1px solid var(--line);padding-top:30px}
+  aside :is(section,.adslot) + section{border-top:1px solid var(--line);padding-top:30px}
   aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}
   .topbtns{flex-shrink:0}
   .topbtns .btn{padding:6px 7px;font-size:13px;letter-spacing:0}
@@ -852,6 +855,7 @@ aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,
   html.tabview aside[data-tab="sound"] section[data-tab="sound"],
   html.tabview aside[data-tab="terms"] section[data-tab="terms"]{display:block!important}
   html.tabview aside[data-tab="terms"] .adslot[data-ad="sheet"]{display:none!important}
+  html.tabview aside:not([data-tab="tips"]) .adslot[data-ad="tips"]{display:none!important}
   html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:0!important;padding-top:0!important;margin-top:0!important}
   .topbtns .btn[aria-current="page"]{color:var(--shu);font-weight:700}
 }
