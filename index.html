@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-H+92Y4MRO9nL3qzmj/OcqaRROI0AQzJrpnRqYUYPk/8=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https: 'unsafe-inline'; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https:; frame-src https:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-degGZRN/47Tt6Inx9Wd2uzF2N9pppj2xMEu8yUn8rjo=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="google-adsense-account" content="ca-pub-5888401648545585">
 <meta name="description" content="苔石の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
@@ -1250,7 +1250,7 @@ button{touch-action:manipulation}
       <h3 class="sethead" id="aboutTop">このサイトについて</h3>
       <dl class="about">
         <dt>名称</dt><dd>石庭ぱずる</dd>
-        <dt>ゲーム内容</dt><dd>苔石に書かれた数字を手がかりに、石を置いていく論理パズルです。</dd>
+        <dt>ゲーム内容</dt><dd>苔石に書かれた数字を手がかりに、石を置いていく和風ロジックパズルです。</dd>
         <dt>利用料金</dt><dd>無料です。会員登録やゲーム内課金はありません。通信料は利用者の負担となります。</dd>
         <dt>動作環境</dt><dd>スマートフォン・パソコンに対応しています。Chrome、Safari、Edge、Firefox の各最新版で、JavaScript を有効にしてご利用ください。</dd>
         <dt>広告</dt><dd>本サービスでは、Google AdSense による広告の掲載を予定しています。現在は審査中のため、「広告準備中」と表示している場所に広告は掲載していません。掲載を開始した際は、広告枠に「広告」と明記します。商品やサービスを広告として紹介する場合も、そのことが分かるように表示します。</dd>
@@ -3266,11 +3266,11 @@ function shareText(){
 }
 // 連続: days in a row (by this device's calendar) on which at least one garden was finished
 const dayKey=d=>`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-function streakNow(){const st=store.get('sekitei:days');if(!st)return 0;const t=new Date(),y=new Date(t.getFullYear(),t.getMonth(),t.getDate()-1);
-  return st.last===dayKey(t)||st.last===dayKey(y)?st.run:0;}
+function streakNow(){const st=store.get('sekitei:days');if(!st||typeof st!=='object')return 0;const t=new Date(),y=new Date(t.getFullYear(),t.getMonth(),t.getDate()-1);
+  return st.last===dayKey(t)||st.last===dayKey(y)?int(st.run,0,1e5,0):0;}
 function markDay(){const t=new Date(),today=dayKey(t),y=dayKey(new Date(t.getFullYear(),t.getMonth(),t.getDate()-1));
-  const st=store.get('sekitei:days')||{last:'',run:0,best:0};if(st.last===today)return;
-  st.run=st.last===y?st.run+1:1;st.last=today;st.best=Math.max(st.best||0,st.run);store.set('sekitei:days',st);}
+  let st=store.get('sekitei:days');if(!st||typeof st!=='object')st={last:'',run:0,best:0};if(st.last===today)return;
+  st.run=st.last===y?int(st.run,0,1e5,0)+1:1;st.last=today;st.best=Math.max(int(st.best,0,1e5,0),st.run);store.set('sekitei:days',st);}
 function showWin(again){
   setTime();
   const run=streakNow();
@@ -3304,7 +3304,7 @@ function renderRecords(){
   const table=(t,cap)=>`<div class="recblk"><table class="rectab"><thead><tr><th class="cap">${cap}</th><th>普通</th><th>難しい</th></tr></thead><tbody>`
     +[6,8,10].map(N=>`<tr><th>${SIZES[N].name}</th>${cell(rec[N+':0'+t])}${cell(rec[N+':1'+t])}</tr>`).join('')+'</tbody></table></div>';
   $('records').innerHTML=table('','灯籠なし')+table(':t','灯籠あり')
-    +(()=>{const st=store.get('sekitei:days'),run=streakNow();return st?`<p class="small recstreak">連続して庭を整えた日数：<b>${run}日</b>（最長 ${st.best}日）</p>`:'';})()
+    +(()=>{const st=store.get('sekitei:days'),run=streakNow();return st?`<p class="small recstreak">連続して庭を整えた日数：<b>${run}日</b>（最長 ${int(st.best,0,1e5,0)}日）</p>`:'';})()
     +'<p class="small recnote">上段は手助けなしの最短時間、下段は解いた数です。記録はこの端末にだけ保存されます。</p>';
 }
 

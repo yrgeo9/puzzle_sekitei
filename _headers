@@ -1,0 +1,12 @@
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'; object-src 'none'; base-uri 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), hid=(), bluetooth=(), midi=(), magnetometer=(), gyroscope=(), accelerometer=(), display-capture=(), xr-spatial-tracking=()
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+  Cross-Origin-Resource-Policy: same-site
+  ! Access-Control-Allow-Origin
+/sw.js
+  Cache-Control: no-cache
