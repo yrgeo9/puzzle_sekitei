@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ja" class="doc">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>遊び方｜石庭ぱずる</title>
+<meta name="description" content="石庭ぱずるの遊び方。行と列の石の数、石は隣り合わない、苔石の数字という3つの決まりごとと、石・砂紋の置き方を図で説明します。">
+<meta name="theme-color" content="#fbfaf7">
+<link rel="canonical" href="https://puzzle-sekitei.pages.dev/rules/">
+<meta property="og:title" content="遊び方｜石庭ぱずる">
+<meta property="og:description" content="石庭ぱずるの遊び方。行と列の石の数、石は隣り合わない、苔石の数字という3つの決まりごとと、石・砂紋の置き方を図で説明します。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://puzzle-sekitei.pages.dev/rules/">
+<meta property="og:site_name" content="石庭ぱずる">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://puzzle-sekitei.pages.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "石庭ぱずる", "item": "https://puzzle-sekitei.pages.dev/"}, {"@type": "ListItem", "position": 2, "name": "遊び方", "item": "https://puzzle-sekitei.pages.dev/rules/"}]}</script>
+</head>
+<body class="docpage">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <!-- 灯籠 (丸雪見) -->
+  <radialGradient id="toroJ" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#b6b3ad"/><stop offset="1" stop-color="#6a6661"/></radialGradient>
+  <radialGradient id="toroK" cx=".35" cy=".1" r="1"><stop offset="0" stop-color="#b6b3ad"/><stop offset=".7" stop-color="#97928a"/><stop offset="1" stop-color="#6a6661"/></radialGradient>
+  <linearGradient id="toroC" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b6b3ad"/><stop offset=".55" stop-color="#97928a"/><stop offset="1" stop-color="#6a6661"/></linearGradient>
+  <linearGradient id="toroO" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#33302b"/><stop offset=".45" stop-color="#4a4640"/></linearGradient>
+  <linearGradient id="toroOb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a3530"/><stop offset=".45" stop-color="#9c4b43"/></linearGradient>
+  <radialGradient id="kaedeG" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#a9cd6c"/><stop offset=".6" stop-color="#6f9e3c"/><stop offset="1" stop-color="#4b7829"/></radialGradient>
+  <radialGradient id="kaedeG2" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#c2db86"/><stop offset=".6" stop-color="#88b450"/><stop offset="1" stop-color="#5f8f34"/></radialGradient>
+  <symbol id="kaede" viewBox="0 0 100 100" overflow="visible"><path d="M50,56 Q52,72 47,86" stroke="#6b5a3a" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M47.9,61.6 L44.5,60.6 L41.2,62.9 L40.9,62.7 L37.9,64.2 L37.3,63.8 L35.0,64.0 L36.5,62.2 L36.5,61.5 L39.4,59.8 L39.4,59.4 L43.1,58.0 L36.7,57.9 L37.0,56.5 L30.7,56.0 L28.9,55.1 L24.3,53.8 L22.8,52.1 L19.7,49.6 L23.6,48.5 L25.6,47.6 L30.4,48.3 L32.4,48.1 L38.3,50.3 L36.6,48.0 L35.9,46.9 L30.0,41.8 L28.5,39.0 L25.3,34.1 L24.9,30.7 L24.3,25.4 L29.5,26.9 L32.8,27.9 L37.0,31.9 L39.5,33.9 L43.4,40.5 L44.3,40.4 L44.6,38.3 L43.2,30.0 L43.9,26.4 L44.6,20.2 L46.7,16.9 L50.0,12.0 L53.3,16.9 L55.4,20.2 L56.1,26.4 L56.8,30.0 L55.4,38.3 L55.3,41.3 L56.6,40.5 L60.5,33.9 L63.0,31.9 L67.2,27.9 L70.5,26.9 L75.7,25.4 L75.1,30.7 L74.7,34.1 L71.5,39.0 L70.0,41.8 L64.1,46.9 L61.5,49.1 L61.7,50.3 L67.6,48.1 L69.6,48.3 L74.4,47.6 L76.4,48.5 L80.3,49.6 L77.2,52.1 L75.7,53.8 L71.1,55.1 L69.3,56.0 L63.0,56.5 L60.0,57.4 L56.9,58.0 L60.6,59.4 L60.6,59.8 L63.5,61.5 L63.5,62.2 L65.0,64.0 L62.7,63.8 L62.1,64.2 L59.1,62.7 L58.8,62.9 L55.5,60.6 L52.1,61.6Z" fill="url(#kaedeG)" stroke="#456d25" stroke-width=".7" stroke-linejoin="round"/><path d="M50,56 L37.2,62.8M50,56 L24.2,50.5M50,56 L28.1,30.0M50,56 L50.0,18.6M50,56 L71.9,30.0M50,56 L75.8,50.5M50,56 L62.8,62.8" stroke="#dcebb0" stroke-width=".8" opacity=".65" fill="none"/></symbol>
+  <symbol id="kaedeL" viewBox="0 0 100 100" overflow="visible"><path d="M50,56 Q52,72 47,86" stroke="#6b5a3a" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M47.9,61.6 L44.5,60.6 L41.2,62.9 L40.9,62.7 L37.9,64.2 L37.3,63.8 L35.0,64.0 L36.5,62.2 L36.5,61.5 L39.4,59.8 L39.4,59.4 L43.1,58.0 L36.7,57.9 L37.0,56.5 L30.7,56.0 L28.9,55.1 L24.3,53.8 L22.8,52.1 L19.7,49.6 L23.6,48.5 L25.6,47.6 L30.4,48.3 L32.4,48.1 L38.3,50.3 L36.6,48.0 L35.9,46.9 L30.0,41.8 L28.5,39.0 L25.3,34.1 L24.9,30.7 L24.3,25.4 L29.5,26.9 L32.8,27.9 L37.0,31.9 L39.5,33.9 L43.4,40.5 L44.3,40.4 L44.6,38.3 L43.2,30.0 L43.9,26.4 L44.6,20.2 L46.7,16.9 L50.0,12.0 L53.3,16.9 L55.4,20.2 L56.1,26.4 L56.8,30.0 L55.4,38.3 L55.3,41.3 L56.6,40.5 L60.5,33.9 L63.0,31.9 L67.2,27.9 L70.5,26.9 L75.7,25.4 L75.1,30.7 L74.7,34.1 L71.5,39.0 L70.0,41.8 L64.1,46.9 L61.5,49.1 L61.7,50.3 L67.6,48.1 L69.6,48.3 L74.4,47.6 L76.4,48.5 L80.3,49.6 L77.2,52.1 L75.7,53.8 L71.1,55.1 L69.3,56.0 L63.0,56.5 L60.0,57.4 L56.9,58.0 L60.6,59.4 L60.6,59.8 L63.5,61.5 L63.5,62.2 L65.0,64.0 L62.7,63.8 L62.1,64.2 L59.1,62.7 L58.8,62.9 L55.5,60.6 L52.1,61.6Z" fill="url(#kaedeG2)" stroke="#5a8433" stroke-width=".7" stroke-linejoin="round"/><path d="M50,56 L37.2,62.8M50,56 L24.2,50.5M50,56 L28.1,30.0M50,56 L50.0,18.6M50,56 L71.9,30.0M50,56 L75.8,50.5M50,56 L62.8,62.8" stroke="#eef6d2" stroke-width=".8" opacity=".6" fill="none"/></symbol>
+</defs></svg>
+<header class="top">
+  <a class="brand" href="../"><span class="seal" aria-hidden="true">石</span><span class="brandname">石庭ぱずる</span></a>
+  <nav class="topbtns" aria-label="メニュー"><a class="btn" href="../rules/">遊び方</a><a class="btn" href="../tips/">コツ</a><a class="btn em" href="../">遊ぶ</a></nav>
+</header>
+<nav class="crumbs" aria-label="現在地"><ol><li><a href="../">石庭ぱずる</a></li><li aria-current="page">遊び方</li></ol></nav>
+<main class="doc">
+<h1>遊び方</h1>
+
+    <section id="rulesTop">
+      <h2>「石庭ぱずる」とは</h2>
+      <p class="goalnote">庭に石を置いていくパズルゲームです。<br>3つの<b>決まりごと</b>を守りながら、石<i class="ico-stone" aria-hidden="true"></i>をすべて置ききれば完成です。</p>
+      <div class="goalfig" aria-hidden="true"><figure><div class="mini" style="--c:4"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="tray"><i class="gs"></i><i class="gs"></i><i class="gs"></i><i class="gs"></i></div><figcaption>はじめ</figcaption></figure><span class="goalarrow">→</span><figure><div class="mini" style="--c:4"><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i></div><div class="tray"><i class="gs e"></i><i class="gs e"></i><i class="gs e"></i><i class="gs e"></i></div><figcaption>完成</figcaption></figure></div>
+      <div class="tiprow"><p class="goaltip">石を置けないと分かったマスには「砂紋」を引くと解きやすいです。<br>引かなくても完成できます。</p>
+      <div class="goalfig rkfig" aria-hidden="true"><figure><div class="mini plain" style="--c:4"><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><figcaption>石を1つ置く</figcaption></figure><span class="goalarrow">→</span><figure><div class="mini plain" style="--c:4"><i class="k"></i><i class="s"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i><i class="k"></i><i></i><i></i><i></i><i class="k"></i><i></i><i></i></div><figcaption>置けないマスに砂紋</figcaption></figure></div></div>
+    </section>
+    <section id="rulesList">
+      <h2>決まりごと</h2>
+      <ol class="intro-rules">
+        <li>
+          <div class="cntfig" aria-hidden="true"><div class="cf-c"><div>3<i class="pip on"></i></div><div>2<i class="pip on"></i></div><div>1<i class="pip"></i></div></div><div class="mini" style="--c:3"><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i></div><div class="cf-r"><div><i class="pip on"></i>一</div><div><i class="pip"></i>二</div><div><i class="pip on"></i>三</div></div></div>
+          <div><b>どの行にも、どの列にも、石を決まった数だけ置きます</b><span>置く数は、盤の端の○の数で示されます。</span></div>
+        </li>
+        <li>
+          <div class="mini" style="--c:3" aria-hidden="true"><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="s"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i></div>
+          <div><b>石のまわりに石は置かれません</b></div>
+        </li>
+        <li>
+          <div class="mini lit" style="--c:3" aria-hidden="true"><i class="s"></i><i></i><i></i><i></i><i class="m">2</i><i></i><i></i><i></i><i class="s"></i></div>
+          <div><b>苔石に書いてある数は、まわりにある石の数です</b><span>苔石は、石<i class="ico-stone" aria-hidden="true"></i>として数えません。</span></div>
+        </li>
+
+      </ol>
+      <div class="addrule">
+        <p class="addlabel">追加の決まりごと（灯籠ありの庭）</p>
+        <ol class="intro-rules">
+        <li class="torule">
+          <div class="mini toro" style="--c:4" aria-hidden="true"><i></i><i class="s r"></i><i></i><i></i><i class="r"></i><i class="l"><svg viewBox="0 0 40 40" aria-hidden="true"><g transform="translate(20 20) scale(1.05) translate(-20 -23.4)"><path d="M.8 16.2C3 12.6 10 7 20 6.4C30 7 37 12.6 39.2 16.2C39.4 16.8 39 17.2 38.4 17.2H1.6C1 17.2 .6 16.8 .8 16.2Z" fill="url(#toroK)"/><path d="M9.6 18.2H30.4V29.4H9.6Z" fill="url(#toroC)"/><path d="M12.2 29.3V22.64A10 10 0 0 1 27.8 22.64V29.3Z" fill="url(#toroO)"/><path d="M7.6 29.4H32.4L31.4 31.4H8.6Z" fill="url(#toroC)"/><path d="M10 31.4H14L11 38.8H6.4Z" fill="#b6b3ad"/><path d="M26 31.4H30L33.6 38.8H29Z" fill="#6a6661"/><text x="20" y="29" text-anchor="middle">1</text></g></svg></i><i class="m">1</i><i></i><i></i><i class="r"></i><i></i><i></i></div>
+          <div><b>灯籠に書いてある数は、光の中にある石の数です</b><span>光は上下左右へまっすぐ伸び、苔石や灯籠で止まります。</span><span class="tonote">灯籠は、石<i class="ico-stone" aria-hidden="true"></i>として数えません。タップすると光の範囲が見えます。</span></div>
+        </li>
+        </ol>
+      </div>
+    </section>
+    <section>
+      <h2>所作</h2>
+      <div class="legend">
+        <div class="sw"><div class="s"></div></div><span>「石」モードでタップして石を置く・取る</span>
+        <div class="sw"><div class="d"></div></div><span>「砂紋」モードでタップ（または右クリック）で「石なし」のマスに砂紋を引く・消す<br>なぞると続けて引いたり消したりできます</span>
+        <span class="pm-mode" aria-hidden="true"><span class="mopt on"><i class="modeicon"></i>石</span><span class="msep"></span><span class="mopt"><i class="modeicon ring"></i>砂紋</span></span><span>押すたびに、「石」モードと「砂紋」モードが切り替わります</span>
+        <span class="minibtn" aria-hidden="true">一手戻す</span><span>直前の操作を元に戻せます</span>
+        <span class="minibtn" aria-hidden="true">休憩</span><span>タイマーを一時停止できます</span>
+        <span class="minibtn" aria-hidden="true">洞察</span><span>次の一手とその理由を示します</span>
+        <span class="minibtn" aria-hidden="true">均す</span><span>置いた石と砂紋をすべて取り除きます</span>
+      </div>
+    </section>
+    <section>
+      <a class="btn tutgo" href="../?tut=basic">基本を学ぶ</a>
+    </section>
+<p class="doccta"><a class="btn em" href="../">石庭ぱずるで遊ぶ</a></p>
+</main>
+<footer class="sitefoot"><nav class="footnav" aria-label="サイト内の案内"><a href="../rules/">遊び方</a><a href="../tips/">解き方のコツ</a></nav><div style="margin-top:8px">© 石庭ぱずる</div></footer>
+</body>
+</html>
