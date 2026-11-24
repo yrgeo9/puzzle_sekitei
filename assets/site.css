@@ -205,6 +205,7 @@ aside h2{font-family:var(--display);font-weight:700;font-size:17px;margin:0 0 8p
 aside h2::before{content:"";width:5px;height:5px;background:var(--shu);flex-shrink:0}
 /* 解き方のコツ: table of contents */
 .tipnav{list-style:none;margin:4px 0 0;padding:0;border-top:1px solid var(--line)}
+.tipslead{margin:12px 0 0}
 .tipnav li{border-bottom:1px solid var(--line)}
 .tipnav button{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:baseline;gap:12px;padding:11px 4px;cursor:pointer;color:var(--ink);font-size:14px;letter-spacing:.06em}
 .tipnav button:hover .tt,.tipnav button:focus-visible .tt{color:var(--shu)}
@@ -415,6 +416,7 @@ aside .intro-rules{margin:0 0 8px}
 .pick .seg{display:flex;width:100%;box-sizing:border-box;border-bottom:1px solid var(--line)}
 .pick .seg button{flex:1;padding:9px 2px;font-size:13.5px;margin-bottom:-1px;white-space:nowrap;letter-spacing:0}
 .pick .segnote{margin:6px 0 0!important}
+.seg button.locked{opacity:.4;cursor:default}
 /* laid out like the choices above: an underlined row in the same lettering (16px keeps iPhone from zooming in) */
 .pickno{display:block;width:100%;box-sizing:border-box;padding:7px 2px 8px;border:0;border-bottom:1px solid var(--line);border-radius:0;
   background:transparent;color:var(--ink);font:500 16px var(--display);letter-spacing:.06em;text-align:center}
@@ -448,6 +450,9 @@ aside .intro-rules{margin:0 0 8px}
 @media (max-width:360px){.basics .bfig .mini{grid-template-columns:repeat(var(--c),17px)}}
 .card .drillnote{margin-top:8px;padding-top:8px;border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent)}
 .patrow+.patrow{border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent);padding-top:20px}   /* one tip from the next, as in 遊び方 */
+.patgroup{margin:0;font-family:var(--display);font-size:13px;letter-spacing:.08em;color:var(--shu)}
+.patgroup+.small{margin:2px 0 0}
+.patrow+.patgroup{border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent);padding-top:20px}
 .patrow{display:flex;flex-direction:column;gap:6px}
 .patrow > b{font-family:var(--display);font-size:14px;letter-spacing:.04em}
 .patrow p b{color:var(--ink)}
@@ -457,8 +462,9 @@ aside .intro-rules{margin:0 0 8px}
 .patpair figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:3px}
 .patpair figcaption{font-size:10.5px;color:var(--muted);letter-spacing:.1em}
 .patarrow{color:var(--muted);font-size:14px;margin-bottom:16px}
-.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:-2px}
+.tags{display:flex;flex-wrap:wrap;gap:4px}
 .tag{padding:1px 6px;font-family:var(--body);font-size:10px;letter-spacing:.04em;color:var(--shu);border:1px solid color-mix(in srgb,var(--shu) 45%,transparent);border-radius:2px;line-height:1.5;background:var(--panel)}
+.tag.hard{color:#fff;background:var(--shu);border-color:var(--shu)}
 
 .patw .patcols{grid-template-columns:repeat(var(--c),15px)}
 .patw .patrows{grid-template-rows:repeat(var(--r),15px);line-height:15px}
@@ -574,7 +580,6 @@ aside .intro-rules{margin:0 0 8px}
 .tray{display:flex;gap:4px}.tray .gs{width:10px;height:10px}
 .goalnote{margin:0;font-size:13.5px;line-height:1.75}.goalnote b{font-weight:700}
 .goaltip{margin:10px 0 0;color:var(--muted);font-size:12px;line-height:1.7}
-.goaltip.oknote{margin-top:14px;padding-top:12px;border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent)}
 .goalfig figcaption small{display:block;margin-top:1px;font-size:10px;letter-spacing:.04em;opacity:.85;text-align:center}
 .tiprow{margin-top:14px;padding-top:12px;border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent)}
 .ipage .tiprow{margin-top:4px;padding-top:10px}
@@ -587,12 +592,17 @@ aside .intro-rules{margin:0 0 8px}
 .rkfig figcaption{white-space:nowrap}
 /* はじめの説明: the 砂紋 note sits beside its drawing, so the page stays short */
 .tiprow{display:flex;align-items:center;gap:12px}
+/* wording: タップ on touch screens, クリック on a PC-width screen with a mouse */
+span.w-pc.w-pc{display:none}
+@media (min-width:821px) and (hover:hover){span.w-pc.w-pc{display:inline}span.w-touch.w-touch{display:none}}
 .tiprow .goaltip{margin:0;flex:1;min-width:0}
-.tiprow .rkfig{margin:0;gap:6px;flex-shrink:0}
+.tiprow .rkfig{margin:0;gap:6px;flex-shrink:0;order:-1}
 .tiprow .rkfig .mini{grid-template-columns:repeat(var(--c),13px)}
+.tiprow .rkfig .mini i.m{font-size:9px;line-height:1}
+@media (min-width:521px){#rulesTop .tiprow .rkfig{min-width:180px}}
 .tiprow .rkfig figcaption{font-size:10px;letter-spacing:.04em}
 .tiprow .rkfig .goalarrow{margin-bottom:16px;font-size:13px}
-@media (max-width:520px){.tiprow{flex-direction:column;align-items:stretch;gap:6px}.tiprow .rkfig{justify-content:center}}
+@media (max-width:520px){.tiprow{flex-direction:column;align-items:stretch;gap:6px}.tiprow .rkfig{justify-content:center;order:1}}
 .goalnote span{display:block;margin-top:2px;font-size:12.5px;color:var(--muted);line-height:1.65}
 /* ---- 練習用の庭 ---- */
 /* the row above the garden: its name on the left; the time and one red button (砂利を均す, or 練習をやめる in a 練習用の庭) together on the right */
@@ -656,13 +666,20 @@ aside .intro-rules{margin:0 0 8px}
 .primer .pm-sub{margin:0;font-size:12px;line-height:1.6;color:var(--muted);text-align:center}
 .msgnext{display:block;position:absolute;left:50%;bottom:4px;translate:-50% 0;margin:0;min-width:120px;padding:3px 14px;border:0;border-radius:2px;background:var(--ink);color:#fbf7ef;font-family:var(--display);font-size:.9em;font-weight:700;letter-spacing:.1em;line-height:1.5;cursor:pointer;vertical-align:baseline}
 .msgnext:hover{background:#3a372f}
+/* 戻る and 次へ side by side under the words: 戻る plain on the left, 次へ (the usual way on) dark on the right */
+.msgbtns{position:absolute;left:50%;bottom:4px;translate:-50% 0;display:flex;gap:8px;white-space:nowrap}
+.msgbtns .msgnext{position:static;translate:none}
+.msgbtns>button{width:120px;min-width:0;box-sizing:border-box}
+.msgbtns>button.off{visibility:hidden}
+.msgback{display:block;margin:0;min-width:84px;padding:2px 12px;border:1px solid color-mix(in srgb,var(--ink) 35%,transparent);border-radius:2px;background:transparent;color:var(--ink);font-family:var(--display);font-size:.9em;font-weight:700;letter-spacing:.1em;line-height:1.5;cursor:pointer}
+.msgback:hover{background:color-mix(in srgb,var(--ink) 6%,var(--panel))}
 .veil .card .vlabel.tuttitle{font-size:18px;letter-spacing:.06em;line-height:1.45}
 @media (max-width:820px){.veil .card .vlabel.tuttitle{font-size:16px}}
 /* in a practice garden the message box keeps one height, so 次へ always sits in the same place */
 .hintmsg{position:relative}
 .hintmsg.hasnext{padding-bottom:40px;box-sizing:border-box}
 /* a practice garden on a wide screen: room for a few lines, and more when an explanation runs long (never over the buttons) */
-@media (min-width:821px){body.tutmode .hintmsg{min-height:115px;max-height:210px;height:auto;overflow-y:auto;overscroll-behavior:contain;box-sizing:border-box;display:flex;align-items:safe center;justify-content:center}}
+@media (min-width:821px){body.tutmode .hintmsg{height:210px;overflow-y:auto;overscroll-behavior:contain;box-sizing:border-box;display:flex;align-items:safe center;justify-content:center}}
 /* what the practice step is talking about */
 .tuthl,.idlehl{position:relative;z-index:3;border-radius:3px;box-shadow:0 0 0 2px var(--shu),0 0 0 6px color-mix(in srgb,var(--shu) 22%,transparent);animation:tuthl 1.6s ease-in-out infinite}
 .idlehl{border-radius:3px}
@@ -672,6 +689,7 @@ aside .intro-rules{margin:0 0 8px}
 .pm-mode{display:inline-flex;align-items:center;vertical-align:middle;margin:0 .3em;padding:3px 9px;border:1px solid var(--line);border-radius:2px;background:var(--panel);font-family:var(--display);font-size:12px;line-height:1.3;color:var(--ink)}
 .pm-mode .msep{margin:0 7px;height:12px}
 .primer .pm-lead{margin:0;font-size:13.5px;line-height:2.15;color:var(--ink);text-align:center}
+.primer .pm-plain{margin:0;font-size:13.5px;line-height:1.8;color:var(--ink);text-align:center}
 .veil .card.primer .vlabel{font-size:18px;letter-spacing:.08em}
 @media (max-width:820px){.veil .card.primer .vlabel{font-size:17px}}
 .ico-stone{display:inline-block;width:1.15em;height:1.15em;margin:0 .12em;vertical-align:-.22em;border-radius:50%;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%);box-shadow:0 2px 3px -1px rgba(30,25,15,.35)}
