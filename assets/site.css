@@ -38,10 +38,10 @@ header.top{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justi
   border-bottom:1px solid var(--line);padding-bottom:16px}
 .brand{display:flex;align-items:center;gap:14px;min-width:0}
 .seal{flex-shrink:0;width:30px;height:30px;display:grid;place-items:center;background:var(--shu);color:#fff;
-  font-family:var(--display);font-weight:700;font-size:17px;line-height:1;border-radius:3px;
+  font-family:var(--display);font-weight:700;font-size:17px;line-height:1;border-radius:4px;
   box-shadow:inset 0 0 0 2px var(--shu),inset 0 0 0 3px rgba(255,255,255,.55)}
-.brand h1{font-family:var(--display);font-weight:700;font-size:40px;line-height:1;margin:0;letter-spacing:.22em}
-.brand p{margin:0;color:var(--muted);font-size:12.5px;letter-spacing:.1em}
+.brand h1{font-family:var(--display);font-weight:700;font-size:40px;line-height:1;margin:0;letter-spacing:.2em}
+.brand p{margin:0;color:var(--muted);font-size:13px;letter-spacing:.08em}
 
 /* segmented choice: plain words, the chosen one underlined in sumi */
 .seg{display:inline-flex;gap:2px}
@@ -53,19 +53,19 @@ header.top{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justi
 
 /* ---- status line ---- */
 main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
-.status{width:100%;max-width:560px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12.5px;color:var(--muted);letter-spacing:.06em}
-#label{font-family:var(--display);font-weight:700;font-size:15px;color:var(--ink);letter-spacing:.12em}
+.status{width:100%;max-width:560px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;color:var(--muted);letter-spacing:.06em}
+#label{font-family:var(--display);font-weight:700;font-size:15px;color:var(--ink);letter-spacing:.14em}
 /* the puzzle number is bookkeeping: tiny and pale in the bottom-right corner */
 .tutgo2{display:inline-flex;flex-direction:column;align-items:center;gap:2px;line-height:1.2}
-.tutgo2 small{font-size:10.5px;letter-spacing:.06em;opacity:.75;font-weight:400}
-.seedno{grid-column:1;grid-row:3;justify-self:end;align-self:start;margin:5px 1px 0;font-size:10.5px;line-height:1;color:#b3aea3;letter-spacing:.08em;font-variant-numeric:tabular-nums;user-select:all}
+.tutgo2 small{font-size:11px;letter-spacing:.06em;opacity:.75;font-weight:400}
+.seedno{grid-column:1;grid-row:3;justify-self:end;align-self:start;margin:5px 1px 0;font-size:11px;line-height:1;color:#b3aea3;letter-spacing:.08em;font-variant-numeric:tabular-nums;user-select:all}
 /* shogi-style coordinates: column numbers on top (counted from the right), kanji row numbers on the right */
 .boardwrap{display:grid;grid-template-columns:minmax(0,1fr) 38px;grid-template-rows:30px auto auto;column-gap:4px;width:100%;max-width:602px}
 .coords{display:grid;font-family:var(--display);font-size:11px;color:var(--muted);line-height:1}
 .coords b{font-weight:500}
 .edge{display:flex;align-items:center;justify-content:center;gap:4px}
 /* a row or column whose stone count can no longer be right: its number turns red and bold too */
-.edge b{display:inline-grid;place-items:center;min-width:1.5em;height:1.5em;border-radius:3px;line-height:1}
+.edge b{display:inline-grid;place-items:center;min-width:1.5em;height:1.5em;border-radius:4px;line-height:1}
 .edge.bad b{background:var(--err);color:#fff;font-weight:700}
 .coords-top{grid-column:1;grid-row:1;padding-inline:9px}
 .coords-top .edge{flex-direction:column;justify-content:flex-end;padding-bottom:5px}
@@ -75,7 +75,7 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .boardwrap .garden{grid-column:1;grid-row:2;max-width:none}
 
 /* ---- the garden: white gravel in a stone curb ---- */
-.garden{box-sizing:border-box;width:100%;max-width:560px;position:relative;padding:9px;border-radius:3px;
+.garden{box-sizing:border-box;width:100%;max-width:560px;position:relative;padding:9px;border-radius:4px;
   background:linear-gradient(160deg,var(--curb),var(--curb-dk));
   box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 1px 0 rgba(0,0,0,.04),0 24px 40px -30px rgba(50,40,20,.5)}
 .board{position:relative;display:grid;gap:0;touch-action:none;container-type:inline-size;user-select:none;-webkit-user-select:none;
@@ -134,7 +134,7 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .cell.clue.bad .mo{background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--err) 60%,white),var(--err) 70%)}
 .cell.toro .to{position:absolute;inset:3%;width:94%;height:94%;overflow:visible}
 .cell.toro .to .op{fill:url(#toroO)}.cell.toro.bad .to .op{fill:url(#toroOb)}
-.cell.toro .to text{font-family:var(--display);font-weight:700;font-size:11.6px;fill:#f5f0e4}
+.cell.toro .to text{font-family:var(--display);font-weight:700;font-size:12px;fill:#f5f0e4}
 .cell.toro.done .to text{opacity:.55}
 .cell.toro.focus .to{filter:drop-shadow(0 0 1.5px var(--hl)) drop-shadow(0 0 1px var(--hl))}
 .cell.hint{animation:hint 1.2s ease 2}
@@ -148,7 +148,7 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .ph span{display:inline-block}
 /* 改行: Japanese text breaks only between phrases (auto-phrase where the browser has it) or after 、。 (the <wbr> added by addWbr) */
 body{word-break:keep-all;word-break:auto-phrase;overflow-wrap:anywhere}
-.hintmsg{margin:0;min-height:1.75em;width:100%;max-width:560px;text-align:center;font-size:14px;color:var(--ink);letter-spacing:.02em}
+.hintmsg{margin:0;min-height:1.75em;width:100%;max-width:560px;text-align:center;font-size:14px;color:var(--ink);letter-spacing:.04em}
 @keyframes hint{50%{background-color:rgba(236,158,52,.4)}}
 .pips{display:flex;align-items:center;justify-content:center;gap:3px}
 .pipmore{display:block;width:6px;height:6px;position:relative;font-style:normal;color:var(--stone)}
@@ -179,7 +179,7 @@ body{word-break:keep-all;word-break:auto-phrase;overflow-wrap:anywhere}
 .msep{width:1px;height:14px;background:var(--line);margin:0 9px;flex-shrink:0}
 /* two-line button: action word + what it does */
 .btn.two{flex-direction:column;gap:1px;line-height:1.25;padding-block:6px}
-.btn.two small{font-family:var(--body);font-size:10.5px;color:var(--muted);letter-spacing:0;font-weight:400}
+.btn.two small{font-family:var(--body);font-size:11px;color:var(--muted);letter-spacing:0;font-weight:400}
 .btn.em{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .btn.em:hover{background:#34342f}
 .topbtns{display:flex;gap:8px;align-items:center}
@@ -196,7 +196,7 @@ aside{min-width:0;width:100%;max-width:582px;justify-self:center;display:flex;fl
 @media (min-width:821px){aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}}
 aside :is(section,.adslot) + section{border-top:1px solid var(--line);padding-top:30px}
 /* the lantern rule: what its light reaches, and how it counts, each on its own line */
-.intro-rules span.tonote{margin-top:2px;font-size:11.5px;opacity:.85}
+.intro-rules span.tonote{margin-top:2px;font-size:12px;opacity:.85}
 
 /* the lantern to tap in the first 灯籠 lesson: a gentle pulse */
 .cell.tapme svg{animation:tapme 1.2s ease-in-out infinite}
@@ -212,17 +212,24 @@ aside h2::before{content:"";width:5px;height:5px;background:var(--shu);flex-shri
 .tipnav button:focus-visible{outline:2px solid var(--shu);outline-offset:-2px}
 .tipnav .tn{font-family:var(--display);color:var(--shu);width:1.4em;text-align:center}
 .tipnav .tt{flex:1;font-family:var(--display);font-weight:700}
-.tipnav .tc{font-size:11.5px;color:var(--muted)}
+.tipnav .tc{font-size:12px;color:var(--muted)}
 .tipnav .tc::after{content:"›";margin-left:8px;font-size:15px}
-.tipup{all:unset;display:block;margin:12px 0 0 auto;font-size:12px;color:var(--muted);cursor:pointer;letter-spacing:.06em}
-.tipup::before{content:"↑ "}
-.tipup:hover,.tipup:focus-visible{color:var(--shu)}
+/* 解き方のコツ: the table of contents and each part are pages of their own; the one not shown carries [hidden] */
+aside section[data-tab="tips"][hidden][hidden][hidden]{display:none!important}
+/* a コツ page has its own ad at its foot: the menu pages' shared ad stays out (one ad per page) */
+aside.tippage .adslot[data-ad="sheet"]{display:none!important}
+.tippager{display:flex}
+.tippager.top{margin:0 0 10px}
+.tippager.foot{justify-content:center;margin:24px 0 0}
+.tippager .up{all:unset;cursor:pointer;font-size:12px;color:var(--muted);letter-spacing:.06em;padding:6px 2px}
+.tippager .up::before{content:"‹ "}
+.tippager .up:hover,.tippager .up:focus-visible{color:var(--shu);text-decoration:underline;text-underline-offset:3px}
 aside ol{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px}
 aside p{margin:0}
-.small{font-size:12.5px;color:var(--muted);line-height:1.7}
+.small{font-size:13px;color:var(--muted);line-height:1.7}
 .legend{display:grid;grid-template-columns:auto 1fr;gap:10px 12px;align-items:center;font-size:13px}
 .legend .sw{justify-self:center}
-.minibtn{justify-self:stretch;text-align:center;font-family:var(--display);font-weight:500;font-size:11px;letter-spacing:.02em;white-space:nowrap;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:5px 7px;line-height:1.2}
+.minibtn{justify-self:stretch;text-align:center;font-family:var(--display);font-weight:500;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:5px 7px;line-height:1.2}
 .sw{width:28px;height:28px;position:relative;background:var(--sand);background-image:repeating-linear-gradient(0deg,transparent 0 5px,var(--rake) 5px 6px);
   border-radius:2px;box-shadow:inset 0 0 0 1px var(--line)}
 .sw.c{background:transparent;box-shadow:none;display:grid;place-items:center;color:var(--moss-ink);font-family:var(--display);font-weight:700}
@@ -233,21 +240,20 @@ aside p{margin:0}
   border:1.5px solid rgba(110,98,76,.58);box-shadow:inset 0 1px 1.5px rgba(80,70,50,.22),0 1px 0 rgba(255,255,255,.85),0 0 0 3px var(--sand)}
 .records{display:flex;flex-direction:column;gap:16px}
 .rectab{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;table-layout:fixed}
-.rectab thead th.cap{text-align:left;font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.1em;color:var(--ink);white-space:nowrap}
+.rectab thead th.cap{text-align:left;font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.08em;color:var(--ink);white-space:nowrap}
 .rectab th,.rectab td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:center;line-height:1.3}
-.rectab thead th{font-weight:400;font-size:11.5px;color:var(--muted);letter-spacing:.06em;border-bottom-color:var(--curb)}
+.rectab thead th{font-weight:400;font-size:12px;color:var(--muted);letter-spacing:.06em;border-bottom-color:var(--curb)}
 .rectab tbody th{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.08em;text-align:left;width:22%}
 .rectab td b{display:block;font-family:var(--display);font-weight:700;font-size:15px}
 .rectab td small{font-size:11px;color:var(--muted)}
 .rectab td.none{color:var(--muted)}.rectab tbody tr{height:44px}
 .recnote{margin:0}
-.recstreak{margin:0 0 6px}
 
 /* ---- veil over the garden (loading / solved) ---- */
 .veil{position:absolute;inset:0;display:grid;place-items:center;background:color-mix(in srgb,var(--paper) 72%,transparent);backdrop-filter:blur(2px);z-index:5;text-align:center;padding:16px}
-.veil .card{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:24px 28px 22px;display:flex;flex-direction:column;gap:10px;align-items:center;max-width:320px;
+.veil .card{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:24px 28px 22px;display:flex;flex-direction:column;gap:10px;align-items:center;max-width:320px;
   box-shadow:0 20px 40px -24px rgba(40,30,10,.35)}
-.veil h3{font-family:var(--display);font-weight:700;font-size:28px;margin:0;letter-spacing:.24em;padding-left:.24em}
+.veil h3{font-family:var(--display);font-weight:700;font-size:28px;margin:0;letter-spacing:.2em;padding-left:.24em}
 .veil h3::after{content:"";display:block;width:20px;height:20px;margin:10px auto 0;background:var(--shu);border-radius:2px;
   box-shadow:inset 0 0 0 2px var(--shu),inset 0 0 0 3px rgba(255,255,255,.55)}
 .veil.solid{inset:9px;background:var(--sand);backdrop-filter:none}   /* the garden before it starts is plain sand */
@@ -263,7 +269,7 @@ aside p{margin:0}
 .card.start .startgo.guidego{align-self:stretch;justify-content:center;padding:10px 12px;font-size:14px;letter-spacing:.08em}.card .guideskip{margin-top:-2px}
 .winbtns{width:100%;display:flex;gap:6px;justify-content:center;flex-wrap:nowrap;padding-top:11px;margin-top:2px;border-top:1px solid var(--line)}
 .winbtns.top{padding-top:0;margin-top:4px;border-top:0}
-.winbtns .btn{flex:1 1 0;min-width:0;padding:8px 4px;font-size:13px;letter-spacing:.02em;justify-content:center;white-space:nowrap}
+.winbtns .btn{flex:1 1 0;min-width:0;padding:8px 4px;font-size:13px;letter-spacing:.04em;justify-content:center;white-space:nowrap}
 .spinner{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);border-top-color:var(--ink);animation:spin 1.1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -276,7 +282,7 @@ aside p{margin:0}
 .toggle[aria-pressed="true"] b{background:var(--ink);color:var(--paper)}
 .snd input[type=range]{width:100%;accent-color:var(--ink)}
 /* 設定: 音 and 盤面, each under a small heading */
-.sethead{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.12em;margin:22px 0 10px;padding-bottom:4px;border-bottom:1px solid var(--line);color:var(--ink)}
+.sethead{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.14em;margin:22px 0 10px;padding-bottom:4px;border-bottom:1px solid var(--line);color:var(--ink)}
 .sethead:first-of-type{margin-top:6px}
 .opts{display:grid;gap:14px}
 .optrow .toggle{min-width:180px}
@@ -287,7 +293,7 @@ html.notime .clock{visibility:hidden}
    Never on the one-screen garden, never inside a dialog card or over the board. ---- */
 .adslot{display:none;box-sizing:border-box;width:100%;margin:28px auto 0;text-align:center}
 html.ads .adslot,html.adtest .adslot{display:block}
-.adslot .adlabel{display:block;font-size:10.5px;letter-spacing:.18em;color:var(--muted);margin-bottom:4px}
+.adslot .adlabel{display:block;font-size:11px;letter-spacing:.2em;color:var(--muted);margin-bottom:4px}
 .adslot .adbox{display:grid;place-items:center;min-height:var(--adh,100px);max-width:var(--adw,336px);margin:0 auto;overflow:hidden}
 .adslot.wide{--adw:728px;--adh:90px}
 html.adtest .adslot .adbox{border:1.5px dashed color-mix(in srgb,var(--muted) 55%,transparent);background:repeating-linear-gradient(135deg,transparent 0 9px,rgba(120,110,90,.05) 9px 10px);
@@ -311,19 +317,36 @@ body.picking .adslot.wide{display:none!important}
 html.noterms :is([data-jump="termsTop"],#termsTop,#footAbout,.footnav[aria-label="規約"]){display:none!important}
 .footnav + .footnav{margin-top:4px}
 .sitefoot a + a::before{content:"\FF5C";display:inline-block;margin:0 10px;color:var(--line);text-decoration:none}
-@media (max-width:820px){html:not(.tabview) .sitefoot{display:none}}
 body.picking .sitefoot{display:none}
+/* the garden page: the site map is one small block under the garden, so the whole page fits on one screen */
+html:not(.tabview):not(.doc) body{padding-bottom:10px}
+html:not(.tabview):not(.doc) .sitefoot{margin-top:0;padding:7px 0 0;font-size:11px;line-height:1.55;letter-spacing:.02em}
+html:not(.tabview):not(.doc) .sitefoot a+a::before{margin:0 6px}
+html:not(.tabview):not(.doc) .sitefoot .footnav{display:inline}
+html:not(.tabview):not(.doc) .sitefoot .footnav+.footnav{margin:0}
+html:not(.tabview):not(.doc) .sitefoot .footnav+.footnav::before{content:"\FF5C";display:inline-block;margin:0 6px;color:var(--line)}
+html:not(.tabview):not(.doc) .sitefoot>div{display:inline;margin:0 0 0 12px!important}
+@media (min-width:821px){
+  html:not(.tabview):not(.doc) body{padding-top:12px}
+  html:not(.tabview):not(.doc) .wrap{gap:14px}
+  html:not(.tabview):not(.doc) .sitefoot{margin-top:2px}
+}
+/* a short PC window: the ad under the garden is the 320×50 one, so the garden keeps a fair size */
+@media (min-width:821px) and (max-height:800px){
+  .adslot.wide{--adw:320px;--adh:50px;margin-top:22px}
+  .adslot.wide .adlabel{font-size:9px;margin-bottom:1px;line-height:1.2}
+}
 .policy{margin-top:36px;scroll-margin-top:64px}   /* separate documents: a wider gap between them; the scroll margin clears the phone header */
-.policy h4{scroll-margin-top:64px;font-family:var(--display);font-size:13.5px;margin:16px 0 4px;letter-spacing:.08em}
+.policy h4{scroll-margin-top:64px;font-family:var(--display);font-size:14px;margin:16px 0 4px;letter-spacing:.08em}
 .policy p{margin:0 0 6px}
 
 .policy a,.about a{color:var(--ink);text-underline-offset:3px}
 .policy em{font-style:normal;font-weight:700;color:var(--ink);margin-right:.6em}
 .docdate{margin-top:14px!important}
-.about{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;margin:4px 0 0;font-size:12.5px;line-height:1.7}
+.about{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;margin:4px 0 0;font-size:13px;line-height:1.7}
 .about dt{font-weight:700;white-space:nowrap}.about dd{margin:0;color:var(--muted)}
 .extlist{display:grid;gap:10px;margin:6px 0 8px}
-.ext{border:1px solid var(--line);border-radius:3px;padding:8px 12px}
+.ext{border:1px solid var(--line);border-radius:4px;padding:8px 12px}
 .ext>b{font-size:13px;letter-spacing:.04em}
 
 .ext p{margin:3px 0 0}
@@ -344,13 +367,13 @@ body.picking .sitefoot{display:none}
 .intro-x:hover{color:var(--ink)}
 .intro::backdrop{background:rgba(40,36,28,.35)}
 .intro-body{padding:20px 22px 20px;display:flex;flex-direction:column;gap:12px}
-.intro-eyebrow{margin:0;font-size:11.5px;letter-spacing:.2em;color:var(--shu)}
-.intro h2{font-family:var(--display);font-weight:700;font-size:28px;line-height:1.2;margin:0;letter-spacing:.16em}
-.intro-lead{margin:0;color:var(--muted);font-size:13.5px;line-height:1.75}
+.intro-eyebrow{margin:0;font-size:12px;letter-spacing:.2em;color:var(--shu)}
+.intro h2{font-family:var(--display);font-weight:700;font-size:28px;line-height:1.2;margin:0;letter-spacing:.14em}
+.intro-lead{margin:0;color:var(--muted);font-size:14px;line-height:1.75}
 
 aside .intro-rules{margin:0 0 8px}
 .ipagetabs{display:flex;border-bottom:1px solid var(--line);margin-top:2px}
-.ipagetabs button{flex:1 1 0;font-family:var(--display);font-weight:500;font-size:13.5px;border:0;background:transparent;color:var(--muted);padding:8px 0;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;white-space:nowrap}
+.ipagetabs button{flex:1 1 0;font-family:var(--display);font-weight:500;font-size:14px;border:0;background:transparent;color:var(--muted);padding:8px 0;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;white-space:nowrap}
 .ipagetabs button[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--shu)}
 /* every page sits in the same cell, so the popup keeps the height of the tallest one */
 .ipages{display:grid}
@@ -367,28 +390,28 @@ aside .intro-rules{margin:0 0 8px}
   #intro .intro-body{padding:16px 18px 16px;gap:8px}
   #intro h2{font-size:22px}
   #intro .intro-eyebrow{font-size:11px}
-  #intro .intro-lead{font-size:12.5px;line-height:1.6}
+  #intro .intro-lead{font-size:13px;line-height:1.6}
   #intro .intro-x{top:10px}
   .ipage .intro-rules{gap:10px;padding:4px 0}
   .ipage .intro-rules li{grid-template-columns:58px minmax(0,1fr);gap:12px}
   .ipage .intro-rules .mini{grid-template-columns:repeat(var(--c),calc(54px / var(--c)))}
   .ipage .intro-rules .mini.toro{grid-template-columns:repeat(var(--c),18px)}
   .ipage .intro-rules li.torule{grid-template-columns:72px minmax(0,1fr)}
-  .ipage .intro-rules b{font-size:13.5px;line-height:1.45}
-  .ipage .intro-rules span{font-size:11.5px;line-height:1.5}
-  .ipage .legend{font-size:12.5px}
+  .ipage .intro-rules b{font-size:14px;line-height:1.45}
+  .ipage .intro-rules span{font-size:12px;line-height:1.5}
+  .ipage .legend{font-size:13px}
 }
 .intro-rules{list-style:none;margin:4px 0;padding:6px 0;display:flex;flex-direction:column;gap:14px}
 .addrule{border-top:1px dashed var(--line);margin:6px 0 8px;padding-top:12px}
 .addlabel{margin:0 0 2px;font-size:12px;color:var(--muted);letter-spacing:.14em}
 .intro-rules li{display:grid;grid-template-columns:72px minmax(0,1fr);gap:14px;align-items:center}
 .intro-rules b{display:block;font-family:var(--display);font-weight:700;font-size:15px;line-height:1.5;letter-spacing:.04em}
-.intro-rules span{display:block;font-size:12.5px;color:var(--muted);line-height:1.65}
+.intro-rules span{display:block;font-size:13px;color:var(--muted);line-height:1.65}
 .mini{display:grid;grid-template-columns:repeat(var(--c),calc(66px / var(--c)));justify-self:center;
   background:var(--sand);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='5' viewBox='0 0 44 5' preserveAspectRatio='none'%3E%3Cpath d='M0 -10.5Q11 -16 22 -10.5T44 -10.5M0 -5.5Q11 -11 22 -5.5T44 -5.5M0 -0.5Q11 -6 22 -0.5T44 -0.5M0 4.5Q11 -1 22 4.5T44 4.5M0 9.5Q11 4 22 9.5T44 9.5M0 14.5Q11 9 22 14.5T44 14.5M0 19.5Q11 14 22 19.5T44 19.5' fill='none' stroke='%23e2ddd1' stroke-width='1'/%3E%3C/svg%3E");background-size:44px 5px;
   border:3px solid var(--curb);border-radius:2px}
 /* the 8 cells round a stone (up, down, sideways and diagonal) can take no stone: a red cross on each */
-.mini i.x::before,.mini i.x::after{content:"";position:absolute;left:50%;top:50%;width:44%;height:1.6px;border-radius:1px;background:color-mix(in srgb,var(--err) 85%,transparent);translate:-50% -50%;rotate:45deg}
+.mini i.x::before,.mini i.x::after{content:"";position:absolute;left:50%;top:50%;width:44%;height:1.6px;border-radius:2px;background:color-mix(in srgb,var(--err) 85%,transparent);translate:-50% -50%;rotate:45deg}
 .mini i.x::after{rotate:-45deg}
 .mini.lit i.m{background:var(--sand);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='5' viewBox='0 0 44 5' preserveAspectRatio='none'%3E%3Cpath d='M0 -10.5Q11 -16 22 -10.5T44 -10.5M0 -5.5Q11 -11 22 -5.5T44 -5.5M0 -0.5Q11 -6 22 -0.5T44 -0.5M0 4.5Q11 -1 22 4.5T44 4.5M0 9.5Q11 4 22 9.5T44 9.5M0 14.5Q11 9 22 14.5T44 14.5M0 19.5Q11 14 22 19.5T44 19.5' fill='none' stroke='%23e2ddd1' stroke-width='1'/%3E%3C/svg%3E");background-size:44px 5px}
 .mini.lit{background-image:linear-gradient(color-mix(in srgb,var(--moss) 20%,transparent),color-mix(in srgb,var(--moss) 20%,transparent)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='5' viewBox='0 0 44 5' preserveAspectRatio='none'%3E%3Cpath d='M0 -10.5Q11 -16 22 -10.5T44 -10.5M0 -5.5Q11 -11 22 -5.5T44 -5.5M0 -0.5Q11 -6 22 -0.5T44 -0.5M0 4.5Q11 -1 22 4.5T44 4.5M0 9.5Q11 4 22 9.5T44 9.5M0 14.5Q11 9 22 14.5T44 14.5M0 19.5Q11 14 22 19.5T44 19.5' fill='none' stroke='%23e2ddd1' stroke-width='1'/%3E%3C/svg%3E");background-size:auto,44px 5px}
@@ -406,7 +429,7 @@ aside .intro-rules{margin:0 0 8px}
 .intro.ask{width:min(340px,calc(100vw - 32px))}
 .intro.ask h2{font-size:21px;letter-spacing:.14em}
 .intro.pick{width:min(420px,calc(100vw - 32px))}
-.intro.pick h2{font-size:22px;letter-spacing:.16em}
+.intro.pick h2{font-size:22px;letter-spacing:.14em}
 .pick .sublabel{margin-top:22px}
 .pick .sublabel:first-child{margin-top:0}
 /* 庭の様式: each heading in ink, led by a small vermilion dot */
@@ -414,13 +437,13 @@ aside .intro-rules{margin:0 0 8px}
 .pick .sublabel::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--shu);flex-shrink:0}
 
 .pick .seg{display:flex;width:100%;box-sizing:border-box;border-bottom:1px solid var(--line)}
-.pick .seg button{flex:1;padding:9px 2px;font-size:13.5px;margin-bottom:-1px;white-space:nowrap;letter-spacing:0}
+.pick .seg button{flex:1;padding:9px 2px;font-size:14px;margin-bottom:-1px;white-space:nowrap;letter-spacing:0}
 .pick .segnote{margin:6px 0 0!important}
 .seg button.locked{opacity:.4;cursor:default}
 /* laid out like the choices above: an underlined row in the same lettering (16px keeps iPhone from zooming in) */
 .pickno{display:block;width:100%;box-sizing:border-box;padding:7px 2px 8px;border:0;border-bottom:1px solid var(--line);border-radius:0;
   background:transparent;color:var(--ink);font:500 16px var(--display);letter-spacing:.06em;text-align:center}
-.pickno{text-transform:uppercase;letter-spacing:.12em}
+.pickno{text-transform:uppercase;letter-spacing:.14em}
 .pickno::placeholder{text-transform:none;letter-spacing:normal;color:var(--muted);opacity:.7}
 .pickno:focus{outline:0;border-bottom-color:var(--ink)}
 .pickno.bad{border-color:var(--err)}
@@ -432,7 +455,7 @@ aside .intro-rules{margin:0 0 8px}
 /* a garden solved before, played again: it does not count in 記録 */
 .replaynote{margin:0;align-self:stretch;font-size:12px;line-height:1.55;color:var(--shu);text-align:center}
 .askbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
-.askbtns .btn{justify-content:center;padding:11px;font-size:14px;letter-spacing:.12em}
+.askbtns .btn{justify-content:center;padding:11px;font-size:14px;letter-spacing:.14em}
 .pats{display:flex;flex-direction:column;gap:22px;margin-top:14px}
 .basics{margin:14px 0 22px;padding:12px 14px;border:1px solid var(--line);border-radius:4px;background:color-mix(in srgb,var(--ink) 3%,transparent)}
 .basics .basicshead{margin:0;font-size:13px;font-weight:700;letter-spacing:.06em}
@@ -445,22 +468,24 @@ aside .intro-rules{margin:0 0 8px}
 .basics .bfig .mini{grid-template-columns:repeat(var(--c),20px)}
 .basics .bfig .mini i{box-shadow:inset 0 0 0 .5px color-mix(in srgb,var(--ink) 16%,transparent)}
 .basics .bfig .mini i.r{background:color-mix(in srgb,var(--shu) 14%,var(--sand));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--shu) 70%,transparent)}
-.basics .bfig figcaption{font-size:10px;letter-spacing:.02em}
+.basics .bfig figcaption{font-size:10px;letter-spacing:.04em}
 .basics .bfig .goalarrow{margin-bottom:16px;font-size:13px}
 @media (max-width:360px){.basics .bfig .mini{grid-template-columns:repeat(var(--c),17px)}}
 .card .drillnote{margin-top:8px;padding-top:8px;border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent)}
 .patrow+.patrow{border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent);padding-top:20px}   /* one tip from the next, as in 遊び方 */
-.patgroup{margin:0;font-family:var(--display);font-size:13px;letter-spacing:.08em;color:var(--shu)}
+.patgroup{width:fit-content;margin:0;padding:3px 10px 2px;border-radius:2px;background:var(--shu);color:#fff;font-family:var(--display);font-size:13px;letter-spacing:.08em}
 .patgroup+.small{margin:2px 0 0}
-.patrow+.patgroup{border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent);padding-top:20px}
+.tipsep{margin:22px 0 0;border-top:1.5px dashed color-mix(in srgb,var(--ink) 26%,transparent)}   /* the tips above, the lesson button below */
+.tipsep+.tutgo{margin-top:18px}
+.patrow:has(+.patgroup){border-bottom:1px dashed color-mix(in srgb,var(--ink) 14%,transparent);padding-bottom:22px}   /* the line goes above the next group's label */
 .patrow{display:flex;flex-direction:column;gap:6px}
 .patrow > b{font-family:var(--display);font-size:14px;letter-spacing:.04em}
 .patrow p b{color:var(--ink)}
 .patrow p{margin:0}
-.patrow p.patsub{font-size:11.5px;color:var(--muted);letter-spacing:.06em;margin-top:4px}
+.patrow p.patsub{font-size:12px;color:var(--muted);letter-spacing:.06em;margin-top:4px}
 .patpair{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .patpair figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:3px}
-.patpair figcaption{font-size:10.5px;color:var(--muted);letter-spacing:.1em}
+.patpair figcaption{font-size:11px;color:var(--muted);letter-spacing:.08em}
 .patarrow{color:var(--muted);font-size:14px;margin-bottom:16px}
 .tags{display:flex;flex-wrap:wrap;gap:4px}
 .tag{padding:1px 6px;font-family:var(--body);font-size:10px;letter-spacing:.04em;color:var(--shu);border:1px solid color-mix(in srgb,var(--shu) 45%,transparent);border-radius:2px;line-height:1.5;background:var(--panel)}
@@ -468,11 +493,11 @@ aside .intro-rules{margin:0 0 8px}
 
 .patw .patcols{grid-template-columns:repeat(var(--c),15px)}
 .patw .patrows{grid-template-rows:repeat(var(--r),15px);line-height:15px}
-.patw .pat i{width:15px;height:15px;font-size:9.5px}
+.patw .pat i{width:15px;height:15px;font-size:10px}
 .patw .pat{grid-template-columns:repeat(var(--c),15px)}
 .patt .patcols{grid-template-columns:repeat(var(--c),22px)}.patt .pat{grid-template-columns:repeat(var(--c),22px)}
 .patt .patrows{grid-template-rows:repeat(var(--r),22px);line-height:22px}
-.patt .pat i{width:22px;height:22px;font-size:12px}.patt .pat i.m{font-size:12.5px}
+.patt .pat i{width:22px;height:22px;font-size:12px}.patt .pat i.m{font-size:13px}
 .pat i.l svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .pat i.l text{font-family:var(--display);font-weight:700;font-size:14px;fill:#f5f0e4}
 .patb{display:grid;grid-template-columns:auto 12px;grid-template-rows:12px auto;column-gap:2px}
@@ -480,7 +505,7 @@ aside .intro-rules{margin:0 0 8px}
 .patrows{grid-row:2;grid-column:2;display:grid;grid-template-rows:repeat(6,17px);padding:4px 0 2px;font-size:8.5px;color:var(--muted);line-height:17px}
 .patcols span,.patrows span{display:block}
 .pat{grid-row:2;grid-column:1;display:grid;grid-template-columns:repeat(var(--c),17px);background:var(--sand);border:2px solid var(--curb);border-radius:2px;margin-top:2px}
-.pat i{width:17px;height:17px;position:relative;display:grid;place-items:center;font-style:normal;font-size:10.5px;line-height:1;color:var(--muted);
+.pat i{width:17px;height:17px;position:relative;display:grid;place-items:center;font-style:normal;font-size:11px;line-height:1;color:var(--muted);
   box-shadow:inset -1px -1px 0 var(--groove),inset 1px 1px 0 var(--ridge)}
 .pat i.h{background:rgba(236,158,52,.26)}
 .pat i.blkf{--bw:1.5px;background:rgba(236,158,52,.26)}
@@ -499,7 +524,7 @@ aside .intro-rules{margin:0 0 8px}
 .stage{width:100%;display:flex;flex-direction:column;align-items:center;gap:12px}
 .sheet-head,.scrim{display:none}
 .tabs{display:flex;gap:2px;flex:1;min-width:0}
-.tabs button{flex:1 1 auto;min-width:0;font-family:var(--display);font-weight:500;font-size:13.5px;letter-spacing:0;border:0;background:transparent;color:var(--muted);padding:9px 0;border-bottom:1.5px solid transparent;cursor:pointer;white-space:nowrap}
+.tabs button{flex:1 1 auto;min-width:0;font-family:var(--display);font-weight:500;font-size:14px;letter-spacing:0;border:0;background:transparent;color:var(--muted);padding:9px 0;border-bottom:1.5px solid transparent;cursor:pointer;white-space:nowrap}
 .sheet-head .close{flex-shrink:0;width:36px}
 .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink);font-weight:700}
 .close{font:inherit;font-size:22px;line-height:1;border:0;background:transparent;color:var(--muted);width:40px;height:40px;cursor:pointer;border-radius:2px}
@@ -510,7 +535,7 @@ aside .intro-rules{margin:0 0 8px}
   header.top{flex-wrap:nowrap;align-items:center;padding-bottom:8px;gap:8px}
   .brand{gap:9px}
   .seal{width:22px;height:22px;font-size:13px}
-  .brand h1{font-size:24px;letter-spacing:.16em}
+  .brand h1{font-size:24px;letter-spacing:.14em}
   .brand p{display:none}
   
   
@@ -530,14 +555,14 @@ aside .intro-rules{margin:0 0 8px}
   .coords-top{padding-inline:6px}
   .coords-right{padding-block:6px}
   .tools{flex-shrink:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
-  .tools .btn{font-size:13px;padding:0 2px;min-height:46px;justify-content:center;gap:5px;white-space:nowrap;letter-spacing:.02em}
+  .tools .btn{font-size:13px;padding:0 2px;min-height:46px;justify-content:center;gap:5px;white-space:nowrap;letter-spacing:.04em}
   .tools .btn.two{gap:1px}
-  .tools .btn{font-size:12.5px;letter-spacing:0}
+  .tools .btn{font-size:13px;letter-spacing:0}
   .tools .btn.two small{font-size:9px;letter-spacing:-.02em}
   .msep{margin:0 6px}
   .tools .btn.mode{gap:0}
   .msep{margin:0 8px}
-  .hintmsg{flex-shrink:0;font-size:12.5px;line-height:1.45;height:7.25em;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .hintmsg{flex-shrink:0;font-size:13px;line-height:1.45;height:7.25em;overflow:hidden;display:flex;align-items:center;justify-content:center}
   .scrim{display:block;position:fixed;inset:0;background:rgba(40,36,28,.3);opacity:0;pointer-events:none;transition:opacity .2s;z-index:29}
   body.sheet-open .scrim{opacity:1;pointer-events:auto}
   aside{position:fixed;left:0;right:0;bottom:0;z-index:30;max-height:80%;overflow:hidden;display:flex;flex-direction:column;
@@ -575,10 +600,10 @@ aside .intro-rules{margin:0 0 8px}
 .goal.ok .gs.e{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--moss) 70%,transparent)}
 .goalfig{display:flex;align-items:center;justify-content:flex-start;gap:14px;margin:10px 0 4px}
 .goalfig figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px}
-.goalfig figcaption{text-align:center;font-size:11px;color:var(--muted);letter-spacing:.12em}
+.goalfig figcaption{text-align:center;font-size:11px;color:var(--muted);letter-spacing:.14em}
 .goalarrow{color:var(--muted);font-size:15px;margin-bottom:18px}
 .tray{display:flex;gap:4px}.tray .gs{width:10px;height:10px}
-.goalnote{margin:0;font-size:13.5px;line-height:1.75}.goalnote b{font-weight:700}
+.goalnote{margin:0;font-size:14px;line-height:1.75}.goalnote b{font-weight:700}
 .goaltip{margin:10px 0 0;color:var(--muted);font-size:12px;line-height:1.7}
 .goalfig figcaption small{display:block;margin-top:1px;font-size:10px;letter-spacing:.04em;opacity:.85;text-align:center}
 .tiprow{margin-top:14px;padding-top:12px;border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent)}
@@ -603,7 +628,7 @@ span.w-pc.w-pc{display:none}
 .tiprow .rkfig figcaption{font-size:10px;letter-spacing:.04em}
 .tiprow .rkfig .goalarrow{margin-bottom:16px;font-size:13px}
 @media (max-width:520px){.tiprow{flex-direction:column;align-items:stretch;gap:6px}.tiprow .rkfig{justify-content:center;order:1}}
-.goalnote span{display:block;margin-top:2px;font-size:12.5px;color:var(--muted);line-height:1.65}
+.goalnote span{display:block;margin-top:2px;font-size:13px;color:var(--muted);line-height:1.65}
 /* ---- 練習用の庭 ---- */
 /* the row above the garden: its name on the left; the time and one red button (砂利を均す, or 練習をやめる in a 練習用の庭) together on the right */
 .status #label{flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-align:center}
@@ -644,13 +669,16 @@ span.w-pc.w-pc{display:none}
 .startgoal{margin:2px 0 0;font-size:13px;line-height:1.7;color:var(--ink)}
 /* start card: on a phone the garden can be smaller than the card, which then spills over the edges a little */
 .veil .card.start{gap:9px}
+/* the start card sits in front of everything on the page (header, footer, ads); an opened header menu, toasts and the gate stay above it */
+.veil:has(.card.start){z-index:50}
+header.top.menuopen{z-index:55}
 .card.start .vlabel{white-space:normal}
 @media (max-width:820px){
   .veil:has(.card.start){padding:0;overflow:visible}
   .veil .card.start{position:absolute;left:calc(50% + 21px);top:50%;translate:-50% -50%;width:min(320px,calc(100vw - 24px));max-width:none;box-sizing:border-box;padding:14px 14px 13px;gap:7px;z-index:6}
   .card.start .vlabel{font-size:13px}
   .card.start .startgoal{font-size:12px;line-height:1.55}
-  .card.start .startrules{font-size:11.5px;line-height:1.55}
+  .card.start .startrules{font-size:12px;line-height:1.55}
   .card.start .startgo{padding:9px 30px;font-size:15px;margin-top:2px}
 }
 /* the short guide before the first lesson — one idea per page */
@@ -664,14 +692,14 @@ span.w-pc.w-pc{display:none}
 @media (max-width:820px){.primer .pm-fig.wide>*{zoom:.8}}
 .primer .pm-rule{margin:0;font-family:var(--display);font-weight:700;font-size:15px;line-height:1.6;color:var(--ink);text-align:center}
 .primer .pm-sub{margin:0;font-size:12px;line-height:1.6;color:var(--muted);text-align:center}
-.msgnext{display:block;position:absolute;left:50%;bottom:4px;translate:-50% 0;margin:0;min-width:120px;padding:3px 14px;border:0;border-radius:2px;background:var(--ink);color:#fbf7ef;font-family:var(--display);font-size:.9em;font-weight:700;letter-spacing:.1em;line-height:1.5;cursor:pointer;vertical-align:baseline}
+.msgnext{display:block;position:absolute;left:50%;bottom:4px;translate:-50% 0;margin:0;min-width:120px;padding:3px 14px;border:0;border-radius:2px;background:var(--ink);color:#fbf7ef;font-family:var(--display);font-size:.9em;font-weight:700;letter-spacing:.08em;line-height:1.5;cursor:pointer;vertical-align:baseline}
 .msgnext:hover{background:#3a372f}
 /* 戻る and 次へ side by side under the words: 戻る plain on the left, 次へ (the usual way on) dark on the right */
 .msgbtns{position:absolute;left:50%;bottom:4px;translate:-50% 0;display:flex;gap:8px;white-space:nowrap}
 .msgbtns .msgnext{position:static;translate:none}
 .msgbtns>button{width:120px;min-width:0;box-sizing:border-box}
 .msgbtns>button.off{visibility:hidden}
-.msgback{display:block;margin:0;min-width:84px;padding:2px 12px;border:1px solid color-mix(in srgb,var(--ink) 35%,transparent);border-radius:2px;background:transparent;color:var(--ink);font-family:var(--display);font-size:.9em;font-weight:700;letter-spacing:.1em;line-height:1.5;cursor:pointer}
+.msgback{display:block;margin:0;min-width:84px;padding:2px 12px;border:1px solid color-mix(in srgb,var(--ink) 35%,transparent);border-radius:2px;background:transparent;color:var(--ink);font-family:var(--display);font-size:.9em;font-weight:700;letter-spacing:.08em;line-height:1.5;cursor:pointer}
 .msgback:hover{background:color-mix(in srgb,var(--ink) 6%,var(--panel))}
 .veil .card .vlabel.tuttitle{font-size:18px;letter-spacing:.06em;line-height:1.45}
 @media (max-width:820px){.veil .card .vlabel.tuttitle{font-size:16px}}
@@ -681,15 +709,15 @@ span.w-pc.w-pc{display:none}
 /* a practice garden on a wide screen: room for a few lines, and more when an explanation runs long (never over the buttons) */
 @media (min-width:821px){body.tutmode .hintmsg{height:210px;overflow-y:auto;overscroll-behavior:contain;box-sizing:border-box;display:flex;align-items:safe center;justify-content:center}}
 /* what the practice step is talking about */
-.tuthl,.idlehl{position:relative;z-index:3;border-radius:3px;box-shadow:0 0 0 2px var(--shu),0 0 0 6px color-mix(in srgb,var(--shu) 22%,transparent);animation:tuthl 1.6s ease-in-out infinite}
-.idlehl{border-radius:3px}
+.tuthl,.idlehl{position:relative;z-index:3;border-radius:4px;box-shadow:0 0 0 2px var(--shu),0 0 0 6px color-mix(in srgb,var(--shu) 22%,transparent);animation:tuthl 1.6s ease-in-out infinite}
+.idlehl{border-radius:4px}
 @keyframes tuthl{0%,100%{box-shadow:0 0 0 2px var(--shu),0 0 0 6px color-mix(in srgb,var(--shu) 22%,transparent)}50%{box-shadow:0 0 0 2px var(--shu),0 0 0 10px color-mix(in srgb,var(--shu) 6%,transparent)}}
 .legend .pm-mode{margin:0;justify-self:stretch;justify-content:center;font-size:11px;padding:4px 6px}
 .primer .pm-how{line-height:1.85}
 .pm-mode{display:inline-flex;align-items:center;vertical-align:middle;margin:0 .3em;padding:3px 9px;border:1px solid var(--line);border-radius:2px;background:var(--panel);font-family:var(--display);font-size:12px;line-height:1.3;color:var(--ink)}
 .pm-mode .msep{margin:0 7px;height:12px}
-.primer .pm-lead{margin:0;font-size:13.5px;line-height:2.15;color:var(--ink);text-align:center}
-.primer .pm-plain{margin:0;font-size:13.5px;line-height:1.8;color:var(--ink);text-align:center}
+.primer .pm-lead{margin:0;font-size:14px;line-height:2.15;color:var(--ink);text-align:center}
+.primer .pm-plain{margin:0;font-size:14px;line-height:1.8;color:var(--ink);text-align:center}
 .veil .card.primer .vlabel{font-size:18px;letter-spacing:.08em}
 @media (max-width:820px){.veil .card.primer .vlabel{font-size:17px}}
 .ico-stone{display:inline-block;width:1.15em;height:1.15em;margin:0 .12em;vertical-align:-.22em;border-radius:50%;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%);box-shadow:0 2px 3px -1px rgba(30,25,15,.35)}
@@ -703,10 +731,10 @@ span.w-pc.w-pc{display:none}
 .primer .gate-link{align-self:center;margin-top:-4px}
 @media (max-width:820px){.primer .pm-rule{font-size:14px}.primer .pm-fig>*{zoom:1.3}}
 .startrules{font-size:12px;line-height:1.6;color:var(--ink);text-align:left}
-.startrules>b,.startgoal b.sh{display:flex;align-items:center;gap:7px;text-align:left;color:var(--shu);font-weight:700;font-family:var(--display);letter-spacing:.1em;font-size:13px}
+.startrules>b,.startgoal b.sh{display:flex;align-items:center;gap:7px;text-align:left;color:var(--shu);font-weight:700;font-family:var(--display);letter-spacing:.08em;font-size:13px}
 .startrules ul{margin:2px 0 0;padding-left:1.9em}
 .startrules li{margin:1px 0}
-.startgoal b{display:block;color:var(--shu);font-weight:700;font-family:var(--display);letter-spacing:.1em}
+.startgoal b{display:block;color:var(--shu);font-weight:700;font-family:var(--display);letter-spacing:.08em}
 .startrules>b::before,.startgoal b.sh::before{content:"";width:5px;height:5px;background:var(--shu);flex-shrink:0}
 .startgoal .kw{color:var(--shu)}.card.start .startrules{align-self:stretch}
 @media (max-width:820px){
@@ -735,8 +763,10 @@ span.w-pc.w-pc{display:none}
 .gstyle .sep{margin:0 .3em;color:var(--muted);font-weight:400}
 #label .sep{color:var(--muted);font-weight:400}
 .sthead{display:flex;justify-content:center}
+.sthead.day{flex-direction:column;align-items:center;gap:6px}
+.daytag{display:inline-block;padding:2px 10px 1px;border-radius:2px;background:var(--shu);color:#fff;font-family:var(--display);font-size:12px;font-weight:700;letter-spacing:.14em}
 .sthead .gstyle{font-size:13px;letter-spacing:.06em}
-@media (max-width:820px){.sthead .gstyle{font-size:12px;letter-spacing:.02em}}
+@media (max-width:820px){.sthead .gstyle{font-size:12px;letter-spacing:.04em}}
 /* the four parts around the board, paired by what they are about
    — above the board, the game: its style (left) and the time spent (right)
    — below the board, what is on it: the stones still to place (left) and 砂利を均す, which clears them (right) */
@@ -748,7 +778,7 @@ span.w-pc.w-pc{display:none}
 /* the row above lines up with the garden's edges, like the row below */
 @media (min-width:821px){.stage>.status{max-width:var(--bw);padding-right:42px;box-sizing:border-box}}
 @media (max-width:820px){
-  .clock .time{font-size:15px}.clock .time.long{font-size:12.5px}
+  .clock .time{font-size:15px}.clock .time.long{font-size:13px}
   .goal,.goal.many{height:auto;min-height:0;margin-top:-2px}
   .stage>.status{max-width:none;width:calc(var(--g) + 42px);padding-right:42px;box-sizing:border-box}   /* the time ends at the garden's right edge, as on a PC */
 }
@@ -769,7 +799,7 @@ span.w-pc.w-pc{display:none}
 @media (max-width:820px){
   #label .sep{margin:0 .1em}
 }
-@media (max-width:400px){#label{font-size:12.5px;letter-spacing:.04em}}
+@media (max-width:400px){#label{font-size:13px;letter-spacing:.04em}}
 /* 青紅葉: sprays of fresh green maple reaching in from the left of the garden (decoration only, never in the way) */
 .momiji{display:none;position:absolute;z-index:3;pointer-events:none;overflow:visible;width:96px;height:96px;filter:drop-shadow(0 3px 3px rgba(40,50,20,.25))}
 .momiji.tr{right:-62px;bottom:-60px;transform:scaleY(-1);filter:drop-shadow(0 -3px 3px rgba(40,50,20,.25))}
@@ -816,7 +846,7 @@ body.picking main,body.picking aside,body.picking .scrim{display:none!important}
 .topbtns .btn.em{background:var(--ink);color:var(--paper);border-radius:2px;padding:7px 14px;margin-left:6px;box-shadow:none}
 .topbtns .btn.em:hover{color:var(--paper);opacity:.88}
 
-/* every width works the same way: the garden first, then 遊び方・コツ・記録・音・共有 below; the menu scrolls to them */
+/* the sections' own spacing (each menu item opens them as a page of its own, at every width) */
 aside section[id]{scroll-margin-top:16px}
 aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:4px double var(--curb-dk);padding-top:38px;margin-top:8px}
 .sharebtn{margin-top:14px;padding:8px 26px}
@@ -825,7 +855,7 @@ aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,
   html,body{height:auto;overflow:visible;overscroll-behavior:auto}
   body{padding-block:8px 40px}
   .wrap{height:auto}
-  main{flex:none;height:calc(100vh - var(--hh,66px));height:calc(100svh - var(--hh,66px));min-height:430px}
+  main{flex:none;height:calc(100vh - var(--hh,66px) - var(--fh,0px));height:calc(100svh - var(--hh,66px) - var(--fh,0px));min-height:400px}   /* --fh: the site map below (set by fitGarden) */
   .scrim,.sheet-head{display:none!important}
   aside{position:static;transform:none!important;visibility:visible!important;transition:none!important;max-height:none;overflow:visible;display:flex;flex-direction:column;
     background:transparent;border-radius:0;box-shadow:none;width:100%;max-width:582px;align-self:center;margin-top:28px;padding:0}
@@ -840,6 +870,13 @@ aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,
 }
 @media (max-width:400px){.topbtns .btn{padding:6px 4px}.topbtns .btn.em{padding:6px 6px}}
 .brand h1{white-space:nowrap}
+/* phone: the title takes the room the buttons leave and never runs under them (fitTitle steps its size down when the
+   text comes out wider: a narrow phone, a larger system text size, a late web font) */
+@media (max-width:820px){
+  .brand{flex:1 1 auto;min-width:0;overflow:hidden}
+  .topbtns{flex-shrink:0}
+}
+.sitefoot a{white-space:nowrap}   /* a link never breaks in the middle */
 /* the menu: one row on wider screens; up to 560px 遊び方・コツ・記録・設定・規約等 fold into ☰, 庭を変える stays beside it */
 .topmenu{display:contents}
 .menubtn{display:none}
@@ -850,12 +887,12 @@ aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,
   html:not(.lock) header.top{position:sticky;top:8px;background:var(--paper);box-shadow:0 -8px 0 var(--paper)}   /* the shadow fills the gap above it */
   .menubtn{display:grid;align-content:center;gap:4px;width:36px;height:32px;padding:0 9px;margin-left:4px;border:1px solid var(--line);border-radius:2px;
     background:transparent;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
-  .menubtn i{display:block;height:1.6px;background:currentColor;border-radius:1px;transition:transform .2s,opacity .2s}
+  .menubtn i{display:block;height:1.6px;background:currentColor;border-radius:2px;transition:transform .2s,opacity .2s}
   header.top.menuopen .menubtn i:nth-child(1){transform:translateY(5.6px) rotate(45deg)}
   header.top.menuopen .menubtn i:nth-child(2){opacity:0}
   header.top.menuopen .menubtn i:nth-child(3){transform:translateY(-5.6px) rotate(-45deg)}
   .topmenu{display:none;position:absolute;top:calc(100% + 2px);right:0;min-width:168px;flex-direction:column;
-    background:var(--paper);border:1px solid var(--line);border-radius:3px;box-shadow:0 10px 28px rgba(40,32,20,.18);padding:4px 0}
+    background:var(--paper);border:1px solid var(--line);border-radius:4px;box-shadow:0 10px 28px rgba(40,32,20,.18);padding:4px 0}
   header.top.menuopen .topmenu{display:flex;animation:menuin .16s ease-out}
   .topbtns .topmenu .btn{display:block;width:100%;text-align:left;padding:13px 20px;font-size:15px;letter-spacing:.06em;box-shadow:none}
   .topbtns .topmenu .btn + .btn{border-top:1px solid var(--line)}
@@ -864,25 +901,35 @@ aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,
 }
 @keyframes menuin{from{opacity:0;transform:translateY(-4px)}}
 @media (prefers-reduced-motion:reduce){header.top.menuopen .topmenu{animation:none}.menubtn i{transition:none}}
-@media (max-width:360px){.brand h1{font-size:22px;letter-spacing:.12em}}
+@media (max-width:360px){.brand h1{font-size:22px;letter-spacing:.14em}}
 /* はじめての方へ on phones: the three tabs share the row by their text, the welcome line stays on one line, the buttons keep one line */
 @media (max-width:400px){
-  .ipagetabs button{flex:1 1 auto;padding:8px 4px;font-size:12.5px;white-space:nowrap}
-  #intro h2{font-size:19px;letter-spacing:.1em}
-  .introbtns .intro-go{font-size:13.5px;letter-spacing:.08em;padding:12px 6px;white-space:nowrap}
+  .ipagetabs button{flex:1 1 auto;padding:8px 4px;font-size:13px;white-space:nowrap}
+  #intro h2{font-size:19px;letter-spacing:.08em}
+  .introbtns .intro-go{font-size:14px;letter-spacing:.08em;padding:12px 6px;white-space:nowrap}
   /* 所作: a slimmer ［石｜砂紋］ chip keeps the first column narrow, so the words get the width */
   .legend{gap:8px 9px}
-  .legend .pm-mode{padding:4px 4px;font-size:10.5px}
+  .legend .pm-mode{padding:4px 4px;font-size:11px}
   .legend .pm-mode .msep{margin:0 4px}
   .ipage .legend{font-size:12px;line-height:1.5}
 }
-/* phone: the garden is one screen without scrolling; 遊び方・コツ・記録・音 are pages of their own */
+/* every width: 遊び方・コツ・記録・設定・規約等 are pages of their own (the garden page shows none of them) */
+html:not(.tabview):not(.doc) aside{display:none!important}
+html.tabview main,html.tabview .adslot[data-ad="mid"]{display:none!important}
+html.tabview aside{margin-top:14px}
+html.tabview aside section{display:none!important}
+html.tabview aside[data-tab="rules"] section[data-tab="rules"],
+html.tabview aside[data-tab="tips"] section[data-tab="tips"],
+html.tabview aside[data-tab="records"] section[data-tab="records"],
+html.tabview aside[data-tab="sound"] section[data-tab="sound"],
+html.tabview aside[data-tab="terms"] section[data-tab="terms"]{display:block!important}
+html.tabview aside[data-tab="terms"] .adslot[data-ad="sheet"]{display:none!important}
+html.tabview aside:not([data-tab="tips"]) .adslot[data-ad="tips"]{display:none!important}
+html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,#termsTop){border-top:0!important;padding-top:0!important;margin-top:0!important}
+.topbtns .btn[aria-current="page"]{color:var(--shu);font-weight:700}
+/* phone: the garden fills the first screen; the site map (sitefoot) follows below it, as on the other pages */
 @media (max-width:820px){
-  html.lock,html.lock body{height:100%;overflow:hidden;overscroll-behavior:none}
-  /* the 40px under the pages is not wanted on the one-screen garden: with it the body is taller than the screen,
-     and anything brought into view scrolls the header off the top */
-  html.lock body{padding-bottom:8px}
-  html:not(.tabview) aside{display:none!important}
+  html:not(.tabview):not(.doc) aside{display:none!important}
   html.tabview main{display:none!important}
   html.tabview aside{margin-top:14px}
   html.tabview aside section{display:none!important}
@@ -914,7 +961,7 @@ aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,
 .stgoal{align-self:stretch;text-align:left;background:var(--sand);border-left:3px solid var(--shu);border-radius:0 2px 2px 0;padding:9px 12px 10px}
 .stgoal p{margin:3px 0 0;font-size:13px;line-height:1.6;color:var(--ink)}
 .stgoal .kw{color:var(--shu);font-weight:700}
-.stgoal b.sh{display:flex;align-items:center;gap:7px;color:var(--shu);font-weight:700;font-family:var(--display);letter-spacing:.1em;font-size:13px}
+.stgoal b.sh{display:flex;align-items:center;gap:7px;color:var(--shu);font-weight:700;font-family:var(--display);letter-spacing:.08em;font-size:13px}
 .stgoal b.sh::before{content:"";width:5px;height:5px;background:var(--shu);flex-shrink:0}
 .stpebbles{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
 .stpebbles i{width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%);box-shadow:0 1px 1.5px rgba(40,30,10,.25)}
@@ -940,12 +987,12 @@ aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,
 .sicons .storo{display:block;width:100%;height:100%;border-radius:2px;background:rgba(246,206,72,.36);box-shadow:inset 0 0 0 1px rgba(200,160,40,.25)}
 .sicons .storo svg{display:block;width:100%;height:100%;overflow:visible}
 .sicons .storo text{font-family:var(--display);font-weight:700;font-size:14px;fill:#f5f0e4}
-@media (max-width:820px){.sicons .smoss{font-size:10.5px}}
+@media (max-width:820px){.sicons .smoss{font-size:11px}}
 
 .rake mask rect.all{opacity:0;transition:opacity 1.4s ease}
 .board.solved .rake mask rect.all{opacity:1}
 .cell .dot{display:none!important}
-.modeicon.ring{border:0!important;width:12px!important;height:9px!important;border-radius:1px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='3' viewBox='0 0 12 3' preserveAspectRatio='none'%3E%3Cpath d='M0 -8.5Q3 -9.9 6 -8.5T12 -8.5M0 -5.5Q3 -6.9 6 -5.5T12 -5.5M0 -2.5Q3 -3.9 6 -2.5T12 -2.5M0 0.5Q3 -0.9 6 0.5T12 0.5M0 3.5Q3 2.1 6 3.5T12 3.5M0 6.5Q3 5.1 6 6.5T12 6.5M0 9.5Q3 8.1 6 9.5T12 9.5' fill='none' stroke='%233c3b37' stroke-width='1'/%3E%3C/svg%3E") 0 0/12px 3px!important}
+.modeicon.ring{border:0!important;width:12px!important;height:9px!important;border-radius:2px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='3' viewBox='0 0 12 3' preserveAspectRatio='none'%3E%3Cpath d='M0 -8.5Q3 -9.9 6 -8.5T12 -8.5M0 -5.5Q3 -6.9 6 -5.5T12 -5.5M0 -2.5Q3 -3.9 6 -2.5T12 -2.5M0 0.5Q3 -0.9 6 0.5T12 0.5M0 3.5Q3 2.1 6 3.5T12 3.5M0 6.5Q3 5.1 6 6.5T12 6.5M0 9.5Q3 8.1 6 9.5T12 9.5' fill='none' stroke='%233c3b37' stroke-width='1'/%3E%3C/svg%3E") 0 0/12px 3px!important}
 .sw{background-image:none}
 .sw:has(.d){background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='4' viewBox='0 0 28 4' preserveAspectRatio='none'%3E%3Cpath d='M0 -8.5Q7 -11.7 14 -8.5T28 -8.5M0 -4.5Q7 -7.7 14 -4.5T28 -4.5M0 -0.5Q7 -3.7 14 -0.5T28 -0.5M0 3.5Q7 0.3 14 3.5T28 3.5M0 7.5Q7 4.3 14 7.5T28 7.5M0 11.5Q7 8.3 14 11.5T28 11.5M0 15.5Q7 12.3 14 15.5T28 15.5' fill='none' stroke='%23bdb6a7' stroke-width='1'/%3E%3C/svg%3E");background-size:28px 4px}
 .sw .d{display:none}
@@ -973,7 +1020,7 @@ aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,
 @keyframes gateIn{0%{transform:scale(1.04);opacity:0}100%{transform:none;opacity:1}}
 .gate-art{width:100%;height:auto;display:block}
 .gate-brand{gap:12px;margin-bottom:-6px}.gate-brand .seal{width:30px;height:30px;font-size:17px}
-.gate .gate-name{display:block;margin:0;font-family:var(--display);font-weight:700;font-size:34px;line-height:1;letter-spacing:.22em;margin-right:-.22em;color:var(--ink)}
+.gate .gate-name{display:block;margin:0;font-family:var(--display);font-weight:700;font-size:34px;line-height:1;letter-spacing:.2em;margin-right:-.22em;color:var(--ink)}
 .gate-menu{width:100%;display:flex;flex-direction:column;align-items:stretch;gap:14px;animation:gateMenu .8s ease-out 1.5s both}
 @keyframes gateMenu{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
 .gate-menu .btn{justify-content:center;width:100%;box-sizing:border-box}
@@ -982,19 +1029,42 @@ aside :is(section,.adslot) + section:is(#tipsTop,[data-tab="records"],#soundTop,
 .gate-cont .gc-h{font-size:18px;font-weight:700;letter-spacing:.2em}
 .gate-cont .gc-s{font-family:var(--body);font-size:12px;letter-spacing:.04em;opacity:.78;font-variant-numeric:tabular-nums}
 .gate-sep{width:100%;border:0;border-top:1px solid var(--line);margin:2px 0}
-.gate-new{padding:12px;font-size:15px;letter-spacing:.16em}
+.gate-new{padding:12px;font-size:15px;letter-spacing:.14em}
 .gate-menu.solo .gate-new{padding:14px;font-size:17px;font-weight:700;background:var(--ink);color:var(--paper);border-color:var(--ink)}
 /* the first visit: the same garden, then two doors — はじめての方へ (the lesson) or すぐに遊ぶ (a garden) */
 .gate-menu .gf-b{flex-direction:column;gap:3px;padding:13px 12px 12px}
-.gate-menu .gf-b .gc-h{font-size:17px;font-weight:700;letter-spacing:.18em}
-.gate-menu .gf-b .gc-s{font-family:var(--body);font-size:11.5px;letter-spacing:.04em;opacity:.78}
+.gate-menu .gf-b .gc-h{font-size:17px;font-weight:700;letter-spacing:.2em}
+.gate-menu .gf-b .gc-s{font-family:var(--body);font-size:12px;letter-spacing:.04em;opacity:.78}
 .gate-menu .gf-b.primary{box-shadow:0 6px 18px -8px rgba(40,30,10,.45)}
 
-.gate-link{border:0;background:none;padding:4px 2px;font:inherit;font-size:12.5px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.gate-link{border:0;background:none;padding:4px 2px;font:inherit;font-size:13px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .gate-link:hover{color:var(--ink)}
 
 .gate.leave{opacity:0;transition:opacity .4s ease;pointer-events:none}
 @media (prefers-reduced-motion:reduce){.gate-in,.gate-menu{animation:none}}
+
+/* ===== デザイン改善テスト ===== */
+/* 庭の様式: each choice a button of its own, the chosen one in vermilion; a choice not open yet carries a lock */
+.pick .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:0;width:100%;border:1px solid var(--curb);border-radius:2px;background:var(--panel);overflow:hidden;margin-top:10px}
+.pick .seg button{position:relative;display:flex;align-items:center;justify-content:center;gap:5px;min-height:44px;padding:8px 4px;margin:0;border:0;border-left:1px solid var(--line);
+  border-bottom:0;font-size:14px;color:var(--ink);font-weight:500;transition:background .15s,color .15s}
+.pick .seg button:first-child{border-left:0}
+.pick .seg button:hover{background:rgba(60,50,30,.05)}
+.pick .seg button[aria-pressed="true"]{background:var(--shu);color:#fff;font-weight:700;border-left-color:var(--shu)}
+.pick .seg button[aria-pressed="true"]+button{border-left-color:var(--shu)}
+.pick .seg button.locked{opacity:1;color:var(--muted);background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(60,50,30,.035) 6px 7px);cursor:not-allowed}
+.pick .seg button.locked::before{content:"";width:11px;height:11px;flex-shrink:0;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3.5 5V3.6a2.5 2.5 0 0 1 5 0V5' fill='none' stroke='%23000' stroke-width='1.3'/%3E%3Crect x='2' y='5' width='8' height='6' rx='1.2'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3.5 5V3.6a2.5 2.5 0 0 1 5 0V5' fill='none' stroke='%23000' stroke-width='1.3'/%3E%3Crect x='2' y='5' width='8' height='6' rx='1.2'/%3E%3C/svg%3E") center/contain no-repeat}
+.pick .seg button.locked:hover{background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(60,50,30,.035) 6px 7px)}
+.pick .segnote{margin:8px 0 0!important;padding-left:2px}
+.pick .sublabel{margin-top:26px;font-size:13px;letter-spacing:.08em}
+.pick .sublabel:first-child{margin-top:4px}
+.pick #pickNo{min-height:44px;box-sizing:border-box;margin-top:10px;padding:9px 8px;border:1px solid var(--curb);border-radius:2px;background:var(--panel)}
+.pick #pickNo:focus{border-color:var(--ink);box-shadow:0 0 0 2px color-mix(in srgb,var(--ink) 12%,transparent)}
+.pick #pickNo.bad{border-color:var(--err)}
+.pick #pickGo{min-height:48px;margin-top:28px}
+/* small print: never below 11px; lines a touch roomier on phones */
+.small{font-size:13px}
+@media (max-width:480px){.small{line-height:1.75}}
 
 /* ==== static pages (遊び方・コツ・規約等) ==== */
 :root{color-scheme:light}
