@@ -15,7 +15,7 @@
   --stone:#3c3b37;
   --stone-hi:#8d8a80;
   --moss:#5b6d3c;
-  --hl:#d08a2c;          /* 洞察 highlight (amber) */
+  --hl:#6f9a4a;          /* 洞察 highlight (若竹) */
   --moss-dk:#43532a;
   --moss-ink:#f7f6ef;
   --shu:#b4432d;         /* vermilion seal */
@@ -138,9 +138,9 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .cell.toro.done .to text{opacity:.55}
 .cell.toro.focus .to{filter:drop-shadow(0 0 1.5px var(--hl)) drop-shadow(0 0 1px var(--hl))}
 .cell.hint{animation:hint 1.2s ease 2}
-.cell.focus:not(.clue){background:rgba(236,158,52,.24)}
+.cell.focus:not(.clue){background:rgba(111,154,74,.28)}
 .cell.focus.lamp:not(.clue){background:rgba(246,206,72,.36)}
-.cell.blk:not(.clue),.cell.blk.focus:not(.clue){background:rgba(236,158,52,.26)}
+.cell.blk:not(.clue),.cell.blk.focus:not(.clue){background:rgba(111,154,74,.30)}
 /* a 2×2 block: the same tint for all, a frame on its outer sides (et/eb/el/er) */
 .blkf{--bt:0;--bb:0;--bl:0;--br:0;--bw:2px;box-shadow:inset 0 calc(var(--bt)*var(--bw)) 0 var(--hl),inset 0 calc(var(--bb)*-1*var(--bw)) 0 var(--hl),inset calc(var(--bl)*var(--bw)) 0 0 var(--hl),inset calc(var(--br)*-1*var(--bw)) 0 0 var(--hl),inset -1px -1px 0 var(--groove),inset 1px 1px 0 var(--ridge)!important}
 .blkf.et{--bt:1}.blkf.eb{--bb:1}.blkf.el{--bl:1}.blkf.er{--br:1}
@@ -149,7 +149,7 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 /* 改行: Japanese text breaks only between phrases (auto-phrase where the browser has it) or after 、。 (the <wbr> added by addWbr) */
 body{word-break:keep-all;word-break:auto-phrase;overflow-wrap:anywhere}
 .hintmsg{margin:0;min-height:1.75em;width:100%;max-width:560px;text-align:center;font-size:14px;color:var(--ink);letter-spacing:.04em}
-@keyframes hint{50%{background-color:rgba(236,158,52,.4)}}
+@keyframes hint{50%{background-color:rgba(111,154,74,.46)}}
 .pips{display:flex;align-items:center;justify-content:center;gap:3px}
 .pipmore{display:block;width:6px;height:6px;position:relative;font-style:normal;color:var(--stone)}
 .pipmore::before{content:"…";position:absolute;left:50%;top:50%;translate:-50% -58%;font-size:10px;line-height:1;font-weight:700}
@@ -507,8 +507,8 @@ aside .intro-rules{margin:0 0 8px}
 .pat{grid-row:2;grid-column:1;display:grid;grid-template-columns:repeat(var(--c),17px);background:var(--sand);border:2px solid var(--curb);border-radius:2px;margin-top:2px}
 .pat i{width:17px;height:17px;position:relative;display:grid;place-items:center;font-style:normal;font-size:11px;line-height:1;color:var(--muted);
   box-shadow:inset -1px -1px 0 var(--groove),inset 1px 1px 0 var(--ridge)}
-.pat i.h{background:rgba(236,158,52,.26)}
-.pat i.blkf{--bw:1.5px;background:rgba(236,158,52,.26)}
+.pat i.h{background:rgba(111,154,74,.30)}
+.pat i.blkf{--bw:1.5px;background:rgba(111,154,74,.30)}
 .pat i.u{background:color-mix(in srgb,var(--shu) 6%,transparent);box-shadow:inset 1.5px 0 0 color-mix(in srgb,var(--shu) 55%,transparent),inset -1.5px 0 0 color-mix(in srgb,var(--shu) 55%,transparent)}
 .pat i.c{background:color-mix(in srgb,var(--shu) 13%,transparent)}
 .pat i.s::after{content:"";position:absolute;inset:16%;border-radius:50%;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%)}
@@ -668,7 +668,7 @@ span.w-pc.w-pc{display:none}
 .card .tutgoal b{color:var(--shu);font-weight:700}
 .startgoal{margin:2px 0 0;font-size:13px;line-height:1.7;color:var(--ink)}
 /* start card: on a phone the garden can be smaller than the card, which then spills over the edges a little */
-.veil .card.start{gap:9px}
+.veil .card.start{gap:9px;transform:none!important}
 /* the start card sits in front of everything on the page (header, footer, ads); an opened header menu, toasts and the gate stay above it */
 .veil:has(.card.start){z-index:50}
 header.top.menuopen{z-index:55}
@@ -754,7 +754,7 @@ header.top.menuopen{z-index:55}
   .status{max-width:calc(var(--bw) - 42px)}
   .boardwrap,.goal,.tools{max-width:var(--bw)}
   .tools{max-width:max(var(--bw),430px)}
-  .hintmsg{max-width:calc(var(--bw) - 42px)}
+  .hintmsg{max-width:max(calc(var(--bw) - 42px),360px)}   /* never narrower than its 戻る・次へ row */
   aside section[id]{scroll-margin-top:16px}
 }
 .segnote u{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;color:var(--ink)}
@@ -1065,6 +1065,29 @@ html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,
 /* small print: never below 11px; lines a touch roomier on phones */
 .small{font-size:13px}
 @media (max-width:480px){.small{line-height:1.75}}
+
+
+/* mistakes: the line under the garden turns vermilion, led by a ！ mark, and shakes once for each new mistake */
+.hintmsg.err{color:var(--err);font-weight:700}
+.hintmsg .errmark{font-style:normal;display:inline-grid;place-items:center;width:1.35em;height:1.35em;margin-right:.35em;border-radius:50%;background:var(--err);color:#fff;font-size:.85em;font-weight:700;vertical-align:.08em;flex-shrink:0}
+.hintmsg.errnew{animation:errpulse .5s ease-out}
+@keyframes errpulse{0%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-2px)}80%{transform:translateX(1px)}100%{transform:none}}
+/* a tapped moss stone: the 8 cells it counts, in moss green */
+.cell.focus.moss:not(.clue){background:rgba(111,154,74,.28)}
+.cell.clue.focus.moss .mo{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--hl)}
+/* 整いました: the two ways on */
+#sameBtn,#nextBtn{white-space:normal;line-height:1.35;padding:8px 6px}   /* a long style name (with 灯籠あり) may take two lines */
+
+
+/* the first 十間 garden: two stones in every row and column */
+.tenfig{display:flex;justify-content:center;margin:2px 0}
+.mini.tenmini{grid-template-columns:repeat(10,13px);border-width:2px}
+.tenrule{margin:2px 0 0;font-family:var(--display);font-weight:700;font-size:15px;line-height:1.6;text-align:center;color:var(--ink)}
+.tenrule b{color:var(--shu);font-size:1.15em}
+.card .tensub{margin:0;text-align:center;line-height:1.7}
+.tennote{margin-top:2px;font-size:12px!important;color:var(--muted);opacity:.85}
+@media (max-width:820px){.tenrule{font-size:14px}.mini.tenmini{grid-template-columns:repeat(10,12px)}}
+.torofig .mini.toro{grid-template-columns:repeat(4,30px)}
 
 /* ==== static pages (遊び方・コツ・規約等) ==== */
 :root{color-scheme:light}

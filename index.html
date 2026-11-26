@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-m4Jd/kQJRUh8HLvA85xCjXS/9Wdk2AunRbuyNAP3O2k=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-RGqmjJGewKaqW7QJtReQtXHpQKSz54VgF2qXt30Er+Q=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="google-adsense-account" content="ca-pub-5888401648545585">
 <meta name="description" content="苔石の数字を手がかりに、盤面に石を据える論理パズル。どの盤面も推理だけで解けます。">
@@ -49,7 +49,7 @@
   --stone:#3c3b37;
   --stone-hi:#8d8a80;
   --moss:#5b6d3c;
-  --hl:#d08a2c;          /* 洞察 highlight (amber) */
+  --hl:#6f9a4a;          /* 洞察 highlight (若竹) */
   --moss-dk:#43532a;
   --moss-ink:#f7f6ef;
   --shu:#b4432d;         /* vermilion seal */
@@ -172,9 +172,9 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 .cell.toro.done .to text{opacity:.55}
 .cell.toro.focus .to{filter:drop-shadow(0 0 1.5px var(--hl)) drop-shadow(0 0 1px var(--hl))}
 .cell.hint{animation:hint 1.2s ease 2}
-.cell.focus:not(.clue){background:rgba(236,158,52,.24)}
+.cell.focus:not(.clue){background:rgba(111,154,74,.28)}
 .cell.focus.lamp:not(.clue){background:rgba(246,206,72,.36)}
-.cell.blk:not(.clue),.cell.blk.focus:not(.clue){background:rgba(236,158,52,.26)}
+.cell.blk:not(.clue),.cell.blk.focus:not(.clue){background:rgba(111,154,74,.30)}
 /* a 2×2 block: the same tint for all, a frame on its outer sides (et/eb/el/er) */
 .blkf{--bt:0;--bb:0;--bl:0;--br:0;--bw:2px;box-shadow:inset 0 calc(var(--bt)*var(--bw)) 0 var(--hl),inset 0 calc(var(--bb)*-1*var(--bw)) 0 var(--hl),inset calc(var(--bl)*var(--bw)) 0 0 var(--hl),inset calc(var(--br)*-1*var(--bw)) 0 0 var(--hl),inset -1px -1px 0 var(--groove),inset 1px 1px 0 var(--ridge)!important}
 .blkf.et{--bt:1}.blkf.eb{--bb:1}.blkf.el{--bl:1}.blkf.er{--br:1}
@@ -183,7 +183,7 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 /* 改行: Japanese text breaks only between phrases (auto-phrase where the browser has it) or after 、。 (the <wbr> added by addWbr) */
 body{word-break:keep-all;word-break:auto-phrase;overflow-wrap:anywhere}
 .hintmsg{margin:0;min-height:1.75em;width:100%;max-width:560px;text-align:center;font-size:14px;color:var(--ink);letter-spacing:.04em}
-@keyframes hint{50%{background-color:rgba(236,158,52,.4)}}
+@keyframes hint{50%{background-color:rgba(111,154,74,.46)}}
 .pips{display:flex;align-items:center;justify-content:center;gap:3px}
 .pipmore{display:block;width:6px;height:6px;position:relative;font-style:normal;color:var(--stone)}
 .pipmore::before{content:"…";position:absolute;left:50%;top:50%;translate:-50% -58%;font-size:10px;line-height:1;font-weight:700}
@@ -541,8 +541,8 @@ aside .intro-rules{margin:0 0 8px}
 .pat{grid-row:2;grid-column:1;display:grid;grid-template-columns:repeat(var(--c),17px);background:var(--sand);border:2px solid var(--curb);border-radius:2px;margin-top:2px}
 .pat i{width:17px;height:17px;position:relative;display:grid;place-items:center;font-style:normal;font-size:11px;line-height:1;color:var(--muted);
   box-shadow:inset -1px -1px 0 var(--groove),inset 1px 1px 0 var(--ridge)}
-.pat i.h{background:rgba(236,158,52,.26)}
-.pat i.blkf{--bw:1.5px;background:rgba(236,158,52,.26)}
+.pat i.h{background:rgba(111,154,74,.30)}
+.pat i.blkf{--bw:1.5px;background:rgba(111,154,74,.30)}
 .pat i.u{background:color-mix(in srgb,var(--shu) 6%,transparent);box-shadow:inset 1.5px 0 0 color-mix(in srgb,var(--shu) 55%,transparent),inset -1.5px 0 0 color-mix(in srgb,var(--shu) 55%,transparent)}
 .pat i.c{background:color-mix(in srgb,var(--shu) 13%,transparent)}
 .pat i.s::after{content:"";position:absolute;inset:16%;border-radius:50%;background:radial-gradient(circle at 34% 28%,var(--stone-hi),var(--stone) 64%)}
@@ -702,7 +702,7 @@ span.w-pc.w-pc{display:none}
 .card .tutgoal b{color:var(--shu);font-weight:700}
 .startgoal{margin:2px 0 0;font-size:13px;line-height:1.7;color:var(--ink)}
 /* start card: on a phone the garden can be smaller than the card, which then spills over the edges a little */
-.veil .card.start{gap:9px}
+.veil .card.start{gap:9px;transform:none!important}
 /* the start card sits in front of everything on the page (header, footer, ads); an opened header menu, toasts and the gate stay above it */
 .veil:has(.card.start){z-index:50}
 header.top.menuopen{z-index:55}
@@ -788,7 +788,7 @@ header.top.menuopen{z-index:55}
   .status{max-width:calc(var(--bw) - 42px)}
   .boardwrap,.goal,.tools{max-width:var(--bw)}
   .tools{max-width:max(var(--bw),430px)}
-  .hintmsg{max-width:calc(var(--bw) - 42px)}
+  .hintmsg{max-width:max(calc(var(--bw) - 42px),360px)}   /* never narrower than its 戻る・次へ row */
   aside section[id]{scroll-margin-top:16px}
 }
 .segnote u{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;color:var(--ink)}
@@ -1100,6 +1100,28 @@ html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,
 .small{font-size:13px}
 @media (max-width:480px){.small{line-height:1.75}}
 
+
+/* mistakes: the line under the garden turns vermilion, led by a ！ mark, and shakes once for each new mistake */
+.hintmsg.err{color:var(--err);font-weight:700}
+.hintmsg .errmark{font-style:normal;display:inline-grid;place-items:center;width:1.35em;height:1.35em;margin-right:.35em;border-radius:50%;background:var(--err);color:#fff;font-size:.85em;font-weight:700;vertical-align:.08em;flex-shrink:0}
+.hintmsg.errnew{animation:errpulse .5s ease-out}
+@keyframes errpulse{0%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-2px)}80%{transform:translateX(1px)}100%{transform:none}}
+/* a tapped moss stone: the 8 cells it counts, in moss green */
+.cell.focus.moss:not(.clue){background:rgba(111,154,74,.28)}
+.cell.clue.focus.moss .mo{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--hl)}
+/* 整いました: the two ways on */
+#sameBtn,#nextBtn{white-space:normal;line-height:1.35;padding:8px 6px}   /* a long style name (with 灯籠あり) may take two lines */
+
+
+/* the first 十間 garden: two stones in every row and column */
+.tenfig{display:flex;justify-content:center;margin:2px 0}
+.mini.tenmini{grid-template-columns:repeat(10,13px);border-width:2px}
+.tenrule{margin:2px 0 0;font-family:var(--display);font-weight:700;font-size:15px;line-height:1.6;text-align:center;color:var(--ink)}
+.tenrule b{color:var(--shu);font-size:1.15em}
+.card .tensub{margin:0;text-align:center;line-height:1.7}
+.tennote{margin-top:2px;font-size:12px!important;color:var(--muted);opacity:.85}
+@media (max-width:820px){.tenrule{font-size:14px}.mini.tenmini{grid-template-columns:repeat(10,12px)}}
+.torofig .mini.toro{grid-template-columns:repeat(4,30px)}
 </style>
 <style>
 :root{color-scheme:light}
@@ -1124,7 +1146,7 @@ button{touch-action:manipulation}
 </defs></svg>
 <noscript><div style="max-width:640px;margin:24px auto;padding:0 16px;line-height:1.8">
   <h1>石庭ぱずる</h1>
-  <p>苔石の数字を手がかりに、庭に石を置いていく無料の論理パズルです。どの行・どの列にも決まった数の石を置き、石どうしは隣り合わず、苔石の数字はまわりにある石の数を表します。どの盤面も、推理だけで解けます。</p>
+  <p>苔石の数字を手がかりに、庭に石を置いていく無料の論理パズルです。どの行・どの列にも石を1個ずつ置き、石どうしは隣り合わず、苔石の数字はまわりにある石の数を表します。どの盤面も、推理だけで解けます。</p>
   <p>遊ぶには JavaScript を有効にしてください。</p>
 </div></noscript>
 <script type="application/ld+json">
@@ -1171,7 +1193,8 @@ button{touch-action:manipulation}
         <button data-diff="1" aria-pressed="true">難しい</button>
       </div>
       <p class="small segnote" data-note="diff"></p>
-      <div class="pickrow">
+      <!-- 庭コードで選ぶ: hidden for now (links with ?g= still open a garden by its code) -->
+      <div class="pickrow" hidden>
       <p class="sublabel"><label for="pickNo">庭コードで選ぶ（任意）</label></p>
       <input class="pickno" id="pickNo" type="text" inputmode="latin" autocapitalize="characters" autocorrect="off" spellcheck="false" maxlength="9" autocomplete="off" placeholder="例：K7QM2X">
       <p class="small segnote" id="pickNoNote"></p>
@@ -1240,7 +1263,7 @@ button{touch-action:manipulation}
       <ol class="intro-rules">
         <li>
           <div class="cntfig" aria-hidden="true"><div class="cf-c"><div>3<i class="pip on"></i></div><div>2<i class="pip on"></i></div><div>1<i class="pip"></i></div></div><div class="mini" style="--c:3"><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i></div><div class="cf-r"><div><i class="pip on"></i>一</div><div><i class="pip"></i>二</div><div><i class="pip on"></i>三</div></div></div>
-          <div><b>どの行にも、どの列にも、石を決まった数だけ置きます</b><span>置く数は、盤の端の○の数で示されます。</span></div>
+          <div><b>どの行にも、どの列にも、石を1個置きます</b><span>盤の端の○の数が、その行・列に置く石の数です。</span><span class="tennote" hidden>（十間の庭では、石を2個ずつ置きます。）</span></div>
         </li>
         <li>
           <div class="mini" style="--c:3" aria-hidden="true"><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="s"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i></div>
@@ -1672,7 +1695,7 @@ button{touch-action:manipulation}
     <ol class="intro-rules">
       <li>
         <div class="cntfig" aria-hidden="true"><div class="cf-c"><div>3<i class="pip on"></i></div><div>2<i class="pip on"></i></div><div>1<i class="pip"></i></div></div><div class="mini" style="--c:3"><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i></div><div class="cf-r"><div><i class="pip on"></i>一</div><div><i class="pip"></i>二</div><div><i class="pip on"></i>三</div></div></div>
-        <div><b>どの行にも、どの列にも、石を決まった数だけ置きます</b><span>置く数は、盤の端の○の数で示されます。</span></div>
+        <div><b>どの行にも、どの列にも、石を1個置きます</b><span>盤の端の○の数が、その行・列に置く石の数です。</span></div>
       </li>
       <li>
         <div class="mini" style="--c:3" aria-hidden="true"><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="s"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i></div>
@@ -2188,21 +2211,31 @@ function makePuzzle(N,K,seed,min,cb,toro){
 
 // ---- state ----
 let S=null;          // {N,K,seed,diff,clue,stone,cells,hist,time,hints,done}
-// 解放: 「灯籠あり」opens once any 普通 garden (六間 or 十間) is solved, 「難しい」once a 灯籠あり garden is.
+// 解放, step by step: a 六間 garden solved opens 「八間」; a 八間 one opens 「十間」 and 「灯籠あり」; once both a 十間 garden and a
+// 灯籠あり garden have been solved (c10, ct), 「難しい」 opens. A wider or harder garden solved (from a link, say) counts for the narrower steps too.
 // Those who played before these locks keep what they played: a garden solved once (done, or ever when played again),
 // or a clear counted in 記録, opens the same as solving it now (a 難しい one opens 「難しい」 too).
-const OPEN=(()=>{const q=store.get('sekitei:open'),o={toro:!!(q&&q.toro),hard:!!(q&&q.hard)};
-  const seen=(N,d,t)=>{if(t||d===1)o.hard=true;else if(d===0)o.toro=true;};
+function openBy(o,N,d,t){if(N){o.eight=true;if(N>=8){o.ten=true;o.toro=true;}if(N===10)o.c10=true;if(t){o.ct=true;o.toro=true;}if(d===1)o.hard=true;}
+  if(o.c10&&o.ct)o.hard=true;if(o.hard){o.toro=true;o.ten=true;}if(o.ten)o.eight=true;return o;}
+const OPEN=(()=>{const q=store.get('sekitei:open'),o={toro:!!(q&&q.toro),hard:!!(q&&q.hard),eight:!!(q&&q.eight),ten:!!(q&&q.ten),c10:!!(q&&q.c10),ct:!!(q&&q.ct)};
+  const seen=(N,d,t)=>openBy(o,N,d,t);
   try{for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i),m=/^sekitei2:(\d+):([01]):\d+(:toro)?$/.exec(key||'');if(!m||!solvedSave(store.get(key)))continue;seen(+m[1],+m[2],!!m[3]);}}catch(e){}
   try{const rec=store.get('sekitei:rec');if(rec&&typeof rec==='object')for(const id in rec){const m=/^(\d+):([01])(:t)?$/.exec(id);if(m&&rec[id]&&rec[id].n>0)seen(+m[1],+m[2],!!m[3]);}}catch(e){}
-  if(o.hard)o.toro=true;store.set('sekitei:open',o);return o;})();
-const LOCK_NOTE={toro:'「灯籠あり」は、普通の庭を1つ整えると選べるようになります。',diff:'「難しい」は、灯籠ありの庭を1つ整えると選べるようになります。'};
+  openBy(o);store.set('sekitei:open',o);return o;})();
+const LOCK_SIZE={8:'「八間」は、六間の庭を1つ整えると選べるようになります。',10:'「十間」は、八間の庭を1つ整えると選べるようになります。'};
+// the size note under 広さ・石の数: the next size still locked, if any
+const sizeLock=()=>!OPEN.eight?LOCK_SIZE[8]:!OPEN.ten?LOCK_SIZE[10]:'';
+const sizeOpen=n=>n===6||(n===8?OPEN.eight:OPEN.ten);
+const LOCK_NOTE={toro:'「灯籠あり」は、八間の庭を1つ整えると選べるようになります。',diff:'「難しい」は、十間の庭と灯籠ありの庭をそれぞれ1つ整えると選べるようになります。'};
 // a garden just solved may open the next kind: told once
-function unlockCheck(){const was={...OPEN};if(S.toro||S.diff===1)OPEN.hard=true;if(S.diff===0&&!S.toro)OPEN.toro=true;if(OPEN.hard)OPEN.toro=true;
-  store.set('sekitei:open',OPEN);const n=[];if(OPEN.toro&&!was.toro)n.push('「灯籠あり」');if(OPEN.hard&&!was.hard)n.push('「難しい」');
+function unlockCheck(){const was={...OPEN};openBy(OPEN,S.N,S.diff,!!S.toro);
+  store.set('sekitei:open',OPEN);tenNote();const n=[];if(OPEN.eight&&!was.eight)n.push('「八間」');if(OPEN.ten&&!was.ten)n.push('「十間」');if(OPEN.toro&&!was.toro)n.push('「灯籠あり」');if(OPEN.hard&&!was.hard)n.push('「難しい」');
   if(n.length)setTimeout(()=>toast(`${n.join('と')}の庭を選べるようになりました`,4000),1200);}
+// 遊び方 says that 十間 takes two stones a line only once 十間 can be chosen
+function tenNote(){document.querySelectorAll('.tennote').forEach(e=>e.hidden=!OPEN.ten);}
 // 追加の決まりごと「灯籠」: chosen in 庭の様式 and remembered (?rule=toro still turns it on)
 let toro=store.get('sekitei:toro')===1;try{if(new URLSearchParams(location.search).get('rule')==='toro')toro=true;}catch(e){}
+tenNote();
 if(!OPEN.toro)toro=false;   // ?rule=toro too; a 灯籠あり garden left last time still opens
 function setToro(v){toro=!!v;store.set('sekitei:toro',toro?1:0);}
 // 設定 › 盤面: time shown, mistakes shown as they happen
@@ -2298,6 +2331,7 @@ const GUIDE={toro:{name:'灯籠あり',text:'苔石に加えて灯籠が手が�
   adv:{name:'難しい',text:'2つの行や苔石を合わせて考える一手が必要になります。'}};
 function playedKind(k,cur){try{for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);
   if(key===cur||!/^sekitei2:/.test(key))continue;if(k==='toro'?/:toro$/.test(key):/^sekitei2:\d+:1:/.test(key))return true;}}catch(e){}return false;}
+function playedTen(cur){try{for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key!==cur&&/^sekitei2:10:/.test(key||''))return true;}}catch(e){}return false;}
 function guideKinds(){const cur=keyOf(S.N,S.seed,S.diff,S.toro),out=[];
   for(const k of ['toro','adv'])if((k==='toro'?S.toro:S.diff)&&!store.get('sekitei:met:'+k)){
     if(playedKind(k,cur))store.set('sekitei:met:'+k,1);else out.push(k);}
@@ -2311,8 +2345,32 @@ function showGuide(ks){ks.forEach(k=>store.set('sekitei:met:'+k,1));
   $('veilCard').classList.add('start');
   $('veilCard').querySelectorAll('[data-guide]').forEach(b=>b.onclick=()=>tutStart(b.dataset.guide));
   $('guideSkip').onclick=showStart;}
+// the first 十間 garden: before its start card, a card saying that each row and column takes two stones here (once).
+// Someone who has played a 十間 garden before is not shown it.
+const TENFIG='<div class="mini tenmini" style="--c:10"><i class="s"></i><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i><i class="s"></i><i></i><i></i><i></i><i class="s"></i><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i><i></i><i></i><i class="s"></i><i></i><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i><i></i><i class="s"></i><i></i><i></i><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i><i class="s"></i><i></i><i></i><i></i><i class="s"></i><i></i><i class="s"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="s"></i><i></i><i class="s"></i></div>';
+function showTen(){store.set('sekitei:met:ten',1);
+  showVeil(`<p class="vlabel">はじめての「十間」</p>
+    <div class="tenfig">${TENFIG}</div>
+    <p class="tenrule">十間の庭では、どの行にも、どの列にも、<br>石を<b>2個</b>置きます</p>
+    <p class="small tensub">盤の端の○も、行・列ごとに2つずつ並んでいます。<br>石どうしが隣り合わないことは、これまでと同じです。</p>
+    <button class="btn primary startgo" type="button" id="tenOk">わかりました</button>`,true);
+  $('veilCard').classList.add('start');$('tenOk').onclick=showStart;}
+// the first 灯籠あり garden: before anything else about it, a card with the lantern rule (once).
+// Someone who has played a 灯籠あり garden before is not shown it.
+function showToroRule(){store.set('sekitei:met:torocard',1);
+  const li=document.querySelector('#rulesList li.torule'),fig=li?li.firstElementChild.outerHTML:'';
+  showVeil(`<p class="vlabel">追加の決まりごと「灯籠」</p>
+    <div class="tenfig torofig">${fig}</div>
+    <p class="tenrule">灯籠に書いてある数は、<br>光の中にある<b>石の数</b>です</p>
+    <p class="small tensub">光は上下左右へまっすぐ伸び、苔石や灯籠で止まります。<br>灯籠は、石としては数えません。<br>灯籠をタップすると、光の届くマスが見えます。</p>
+    <button class="btn primary startgo" type="button" id="toroOk">わかりました</button>`,true);
+  $('veilCard').classList.add('start');$('toroOk').onclick=showStart;}
 function showStart(){
   const resumed=S.time>0||S.cells.some(v=>v);
+  if(!resumed&&!S.tut&&S.N===10&&!store.get('sekitei:met:ten')){
+    if(playedTen(keyOf(S.N,S.seed,S.diff,S.toro)))store.set('sekitei:met:ten',1);else{showTen();return;}}
+  if(!resumed&&!S.tut&&S.toro&&!store.get('sekitei:met:torocard')){
+    if(playedKind('toro',keyOf(S.N,S.seed,S.diff,S.toro)))store.set('sekitei:met:torocard',1);else{showToroRule();return;}}
   if(!resumed&&!S.tut){const ks=guideKinds();if(ks.length){showGuide(ks);return;}}
   showVeil(`${gardenHead()}
     ${S.replay?`<p class="replaynote">${REPLAY_NOTE}</p>`:''}
@@ -2592,7 +2650,9 @@ function afterChange(){if(S.tut){tutCheck();return;}const ok=render();save();if(
 // any other message (a hint, say) replaces it until the next move.
 let errShown=false;
 function showErrs(){const E=S.red===false?[]:S.errs||[];
-  if(E.length){setMsg(E.slice(0,2).join('。')+'。'+(E.length>2?`ほかに${E.length-2}か所あります。`:''));errShown=true;}
+  if(E.length){const t=E.slice(0,2).map(e=>'\u0001'+e+'。').join('\n')+(E.length>2?`\nほかに${E.length-2}か所あります。`:'');const box=$('hintMsg'),again=errShown&&msgText===tw(t);
+    setMsg(t);errShown=true;box.classList.add('err');
+    if(!again){box.classList.remove('errnew');void box.offsetWidth;box.classList.add('errnew');}}   // a new mistake: the line shakes once
   else if(errShown)setMsg('');}
 
 // ---- input: tap / drag ----
@@ -2606,7 +2666,12 @@ board.addEventListener('pointerdown',e=>{
   if(S.tut&&tut&&tut.tapNext){tut.tapNext=false;tutShow();return;}   // after the lantern step: a tap on the board goes on
   if(S.tut&&tut&&tut.tap!=null){if(i===tut.tap){Sound.play('lamp');tapDone();}else setMsg(`まず、${cellName(tut.tap)}の灯籠をタップしてみてください。`);return;}
   if(S.clue[i]>=TORO){lampCells(i);Sound.play('lamp');return;}   // 灯籠: show the cells it lights, with the sound of it being lit
-  if(S.clue[i]>=0)return;
+  if(S.clue[i]>=0){   // 苔石: show the 8 cells round it that it counts
+    if(S.tut&&tut&&!DR()){const st=LS().steps[tStep()];
+      if(st.tapc){if(cellName(i)===st.tapc){cellEls[i].classList.remove('tapme');Sound.play('hint');tut.seen.add(st);tutShow();}else{mossCells(i);clearTimeout(nudgeT);nudgeT=setTimeout(()=>{if(S&&S.tut&&!S.done)tutShow();},1600);}return;}}
+    mossCells(i);
+    if(S.tut){clearTimeout(nudgeT);nudgeT=setTimeout(()=>{if(S&&S.tut&&!S.done)tutShow();},2600);}   // then back to what the step shows
+    return;}
   e.preventDefault();
   const useMark=mode===1||e.button===2;const cur=S.cells[i];
   const target=useMark?(cur===2?0:2):(cur===1?0:1);
@@ -2682,10 +2747,11 @@ new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes)addWbr(n
 function phrase(el,t,flat){
   const wrap=document.createElement('span');wrap.className='ph';
   String(t).split('\n').forEach((line,li)=>{if(li)wrap.appendChild(document.createElement('br'));
+  let mark=null;if(line[0]==='\u0001'){line=line.slice(1);mark=document.createElement('i');mark.className='errmark';mark.setAttribute('aria-hidden','true');mark.textContent='！';}   // a mistake: led by ！ (kept with its first phrase)
   for(const sen of line.match(/[^。]+。?/g)||[]){
     // flat: phrases only, packed line after line (a long message would waste room keeping sentences whole)
     const sp=flat?wrap:document.createElement('span');
-    for(const c of sen.match(/[^、：]+[、：]?/g)){const cs=document.createElement('span');
+    for(const c of sen.match(/[^、：]+[、：]?/g)){const cs=document.createElement('span');if(mark){cs.appendChild(mark);mark=null;}
       c.split(/__(.+?)__/).forEach((x,i)=>{if(!x)return;if(i%2){const u=document.createElement('u');u.textContent=x;cs.appendChild(u);}else cs.appendChild(document.createTextNode(x));});   // __…__ → underline
       sp.appendChild(cs);}
     if(!flat)wrap.appendChild(sp);}});
@@ -2709,15 +2775,17 @@ function fitMsg(){const box=$('hintMsg'),over=()=>box.scrollHeight>box.clientHei
   let f=parseFloat(getComputedStyle(box).fontSize);
   while(over()&&f>10){f-=.5;box.style.fontSize=f+'px';}}
 function tw(t){t=String(t);return matchMedia('(min-width:821px) and (hover:hover)').matches?t.replace(/タップ/g,'クリック').replace(/なぞる/g,'ドラッグする'):t;}
-function setMsg(t,next,back){msgText=tw(t);msgNext=next||null;msgBack=back||null;errShown=false;fitMsg();}
+function setMsg(t,next,back){$('hintMsg').classList.remove('err');msgText=tw(t);msgNext=next||null;msgBack=back||null;errShown=false;fitMsg();}
 addEventListener('resize',()=>fitMsg());
 // ms: how long the highlight stays; 0 keeps it until the next move on the board (clearFocus)
 function focusCells(list,ms){
-  cellEls.forEach(e=>e.classList.remove('focus','lamp'));list.forEach(i=>cellEls[i]&&cellEls[i].classList.add('focus'));
-  clearTimeout(msgTimer);if(ms!==0)msgTimer=setTimeout(()=>cellEls.forEach(e=>e.classList.remove('focus','lamp')),ms||2600);
+  cellEls.forEach(e=>e.classList.remove('focus','lamp','moss'));list.forEach(i=>cellEls[i]&&cellEls[i].classList.add('focus'));
+  clearTimeout(msgTimer);if(ms!==0)msgTimer=setTimeout(()=>cellEls.forEach(e=>e.classList.remove('focus','lamp','moss')),ms||2600);
 }
 // a lantern's light: the cells it lights, in lamplight yellow
 function lampCells(t,ms){const L=rayOf(S.N,S.clue,t);focusCells([t,...L],ms);L.forEach(i=>cellEls[i].classList.add('lamp'));}
+// a moss stone: the (up to) 8 cells round it, in moss green
+function mossCells(t,ms){const L=nbOf(S.N,t);focusCells([t,...L],ms);[t,...L].forEach(i=>cellEls[i].classList.add('moss'));}
 function unitLabel(u){
   if(u.kind==='row')return `${rowName(u.id)}の行`;if(u.kind==='col')return `${colName(u.id)}の列`;
   if(u.kind==='toro')return `${cellName(u.id)}の灯籠「${S.clue[u.id]-TORO}」`;
@@ -2844,7 +2912,7 @@ function fitTitle(){const h=document.querySelector('.brand h1'),b=document.query
   h.style.fontSize='';h.style.letterSpacing='';if(!matchMedia('(max-width:820px)').matches)return;
   let fs=parseFloat(getComputedStyle(h).fontSize),n=0;
   while(h.getBoundingClientRect().right>b.getBoundingClientRect().right+.5&&fs>12&&n++<40){fs-=1;h.style.fontSize=fs+'px';if(fs<20)h.style.letterSpacing='.06em';}}
-const fitMain=()=>{fitTitle();const h=document.querySelector('header.top');if(h)document.documentElement.style.setProperty('--hh',(h.offsetHeight+24)+'px');requestAnimationFrame(()=>fitGarden());};
+const fitMain=()=>{fitTitle();fitCard();const h=document.querySelector('header.top');if(h)document.documentElement.style.setProperty('--hh',(h.offsetHeight+24)+'px');requestAnimationFrame(()=>fitGarden());};
 // the garden page fits on one screen, site map included.
 // Phone: the garden's area (main) is the screen less the header and what follows it (--fh); the garden scales inside it.
 // PC: the garden's width (--bw) is set so the page ends at the bottom of the window (between 240px and 602px).
@@ -2858,8 +2926,9 @@ function fitGarden(){const root=document.documentElement,foot=document.querySele
   let bw=Math.max(240,Math.min(602,Math.floor(300+(innerHeight-a)/k)));
   // one more step in case the page does not grow quite in a straight line (labels wrapping)
   const over=end(bw)-innerHeight;if(over>0)bw=Math.max(240,Math.floor(bw-over/k)-1);end(bw);}
-fitMain();addEventListener('resize',fitMain);{let ft=0;addEventListener('resize',()=>{clearTimeout(ft);ft=setTimeout(()=>fitGarden(),200);});}   // once more after the window settlesif(document.fonts)document.fonts.ready.then(fitMain);
-function choose(k,v){if(k==='walk')v=!!v;if((k==='toro'&&v&&!OPEN.toro)||(k==='diff'&&v===1&&!OPEN.hard)){Sound.play('tap');return;}   // not open yet: the note says how
+fitMain();addEventListener('resize',fitMain);{let ft=0;addEventListener('resize',()=>{clearTimeout(ft);ft=setTimeout(()=>fitGarden(),200);});}   // once more after the window settles
+if(document.fonts)document.fonts.ready.then(fitMain);
+function choose(k,v){if(k==='walk')v=!!v;if((k==='toro'&&v&&!OPEN.toro)||(k==='diff'&&v===1&&!OPEN.hard)||(k==='size'&&!sizeOpen(v))){Sound.play('tap');return;}   // not open yet: the note says how
   if(!pend)pend=curPick();if(pend[k]===v)return;pend[k]=v;store.set('sekitei:pick',pend);Sound.play('unmark');syncSeg();}
 // what was last chosen in 庭の種類, even if the popup was closed without going: it opens with that again
 function savedPick(){const q=store.get('sekitei:pick');
@@ -2898,13 +2967,14 @@ const NOTES={
   toro:['苔石が置いてある、いつもの庭です。',
     '苔石に加えて灯籠も置いてある、中級者向けの庭です。']};
 function syncSeg(){
-  if(pend){if(!OPEN.toro)pend.toro=false;if(!OPEN.hard)pend.diff=0;}
+  if(pend){if(!OPEN.toro)pend.toro=false;if(!OPEN.hard)pend.diff=0;if(!sizeOpen(pend.size))pend.size=OPEN.eight?8:6;}
   const P=pend||curPick();
   if(document.getElementById('pick').open)noField();   // the note under the code depends on the settings chosen
   const note=(k,t)=>document.querySelectorAll(`[data-note="${k}"]`).forEach(e=>phrase(e,t));
   document.querySelectorAll('.sizeSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.size===P.size?'true':'false'));
   document.querySelectorAll('.diffSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.diff===P.diff?'true':'false'));
-  note('size',NOTES.size[P.size]);
+  note('size',NOTES.size[P.size]+(sizeLock()?'\n'+sizeLock():''));
+  document.querySelectorAll('.sizeSeg button').forEach(b=>{const o=sizeOpen(+b.dataset.size);b.classList.toggle('locked',!o);b.setAttribute('aria-disabled',o?'false':'true');});
   document.querySelectorAll('.walkSeg button').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.walk==='1')===!!P.walk?'true':'false'));
   note('walk',NOTES.walk[P.walk?1:0]);
   document.querySelectorAll('.diffSeg [data-diff="1"]').forEach(b=>{b.classList.toggle('locked',!OPEN.hard);b.setAttribute('aria-disabled',OPEN.hard?'false':'true');});
@@ -3009,7 +3079,7 @@ const toggleMute=()=>{Sound.set('mute',!Sound.prefs().mute);syncSound();};
 $('allToggle').onclick=toggleMute;
 // ---- ads: ADS.on stays false until a network is signed up; ADS.test shows the empty frames.
 // When on, the network's script loads once (sekiteiAds()), after the first visit's screen has closed, and each slot gets its unit.
-const ADS={on:false,test:true,client:'ca-pub-5888401648545585',units:{mid:'',sheet:'',garden:'',tips:''}};
+const ADS={on:false,test:false,client:'ca-pub-5888401648545585',units:{mid:'',sheet:'',garden:'',tips:''}};
 // ---- アクセス解析 (Google Analytics 4): GA_ID stays '' until a property is made. Ads and analytics run only on the official site.
 const GA_ID='G-S6KQF5JLZP';
 const LIVE=location.hostname==='puzzle-sekitei.jp';
@@ -3060,8 +3130,9 @@ const TSTEPS=[
   {info:true,lit:()=>[tIdx('4一'),tIdx('6二'),tIdx('5四')],text:'緑の丸が「苔石」です。\n書いてある数は、まわりにある石の数です。'},
   {info:true,lit:()=>[],hl:['goal'],text:'庭の下に並んでいるのが、これから置く石です。\n6個すべて置ききれば、完成です。'},
   {info:true,lit:()=>[],hl:['modeBtn'],text:'下の［石｜砂紋］のボタンで、置くものを切り替えます。\n押すたびに「石」と「砂紋」が入れ替わります。'},
-  {info:true,lit:()=>[tIdx('4一'),...tRing('4一')],text:'では、始めましょう。\nまず、4一の苔石「0」を見てください。'},
-  {info:true,lit:()=>[tIdx('4一'),...tRing('4一')],text:'「0」は、まわりに石がひとつもないという意味です。\nまわりのマスには、石を置けません。'},
+  {info:true,tapc:'4一',lit:()=>[tIdx('4一')],text:'では、始めましょう。\nまず、4一の苔石「0」をタップしてみてください。\n苔石をタップすると、そのまわりのマスが光ります。'},
+  {info:true,mossc:'4一',lit:()=>[tIdx('4一'),...tRing('4一')],text:'光っているのが、4一の苔石「0」のまわりのマスです。\n迷ったときは、苔石をタップして確かめられます。'},
+  {info:true,mossc:'4一',lit:()=>[tIdx('4一'),...tRing('4一')],text:'「0」は、まわりに石がひとつもないという意味です。\nまわりのマスには、石を置けません。'},
   {info:true,lit:()=>tRing('4一'),text:'石を置けないと分かったマスには、「砂紋」を引いて印にしておきます。\n印があると、石を置ける残りのマスがひと目で分かります。'},
   {want:tWant(['5一','3一','5二','4二','3二'],2),nopraise:true,lit:()=>tRing('4一'),
    text:'［石｜砂紋］のボタンを押して「砂紋」に切り替え、\n光っている5マスに砂紋を引きましょう。'},
@@ -3071,7 +3142,7 @@ const TSTEPS=[
   {info:true,lit:()=>[tIdx('6一')],text:'「2」のまわりに置ける石のパターンは「6一と6三」「6一と5三」しかないので、6一に必ず石が置かれます。'},
   {want:tWant(['6一'],1),lit:()=>[tIdx('6一')],
    text:'［石｜砂紋］のボタンを押して「石」に切り替え、\n6一に石を置きましょう。'},
-  {info:true,lit:()=>[...tRow(0),...tCol(0)],hl:['colLabels','rowLabels'],text:'どの行にも、どの列にも、石は決まった数だけしか置けません。\n6一に石が置かれたので、一の行と6の列の庭の端の○が黒く塗りつぶされています。これは、「一の行と6の列にはこれ以上石が置けない」という意味です。'},
+  {info:true,lit:()=>[...tRow(0),...tCol(0)],hl:['colLabels','rowLabels'],text:'どの行にも、どの列にも、石は1個だけしか置けません。\n6一に石が置かれたので、一の行と6の列の庭の端の○が黒く塗りつぶされています。これは、「一の行と6の列にはこれ以上石が置けない」という意味です。'},
   {want:tWant(['2一','1一','6三','6四','6五','6六'],2),lit:()=>[...tRow(0),...tCol(0)],
    text:'石が入らないマスには、砂紋を引いて印にしておきます。\n「砂紋」に切り替えて、一の行と6の列の残りのマスに砂紋を引きましょう。'},
   {info:true,lit:()=>[tIdx('6二'),...tRing('6二')],text:'もう一度、6二の苔石「2」を見てください。\nあと1つ石が必要ですが、空いているのは5三だけです。'},
@@ -3429,7 +3500,8 @@ function tapDone(){const t=tut.tap,v=S.clue[t]-TORO;tut.tap=null;cellEls[t].clas
   setMsg(`いま光っているのが、${cellName(t)}の灯籠「${v}」の光が届くマスです。光は上・下・左・右へまっすぐ伸び、苔石に当たると止まります。\n盤面をタップすると、次へ進みます。`,null,tutCanBack()?tutBack:null);
   clearTimeout(nudgeT);tut.tapNext=true;}
 function tutShow(){tutIdle();const L=LS(),k=tStep(),st=L.steps[k];if(L.drill){$('label').textContent=`${L.short} ${tut.ch+1}/${DR().list.length}`;if(tutG()){guideShow();return;}if(tut.tap!=null){tapShow();return;}setMsg(drillMsg(st),null,tutCanBack()?tutBack:null);focusCells(st.lit(),0);drillBlocks(st);return;}$('label').textContent=L.short||L.title;if(tut.moved&&tut.lastK!=null&&k>tut.lastK&&!L.steps[k-1].info&&!L.steps[k-1].nopraise){tut.praise=PRAISE[(tut.pi=tut.pi==null?0:tut.pi+1)%PRAISE.length];tut.praiseK=k;}tut.moved=false;tut.lastK=k;
-  setMsg((tut.praiseK===k?tut.praise+'\n':'')+st.text,st.info?tutSeen:null,tutCanBack()?tutBack:null);focusCells(st.lit(),0);tutHl();}
+  setMsg((tut.praiseK===k?tut.praise+'\n':'')+st.text,st.info&&!st.tapc?tutSeen:null,tutCanBack()?tutBack:null);
+  if(st.mossc)mossCells(tIdx(st.mossc),0);else focusCells(st.lit(),0);if(st.tapc)cellEls[tIdx(st.tapc)].classList.add('tapme');tutHl();}
 // 戻る: the nearest earlier explanation is shown again (moves already made stay); before the first, the short guide
 // in a drill: back through the guided steps, the lantern screens, then the 洞察 words one level at a time
 function drillCanBack(){const c=DR().list[tut.ch];if(tut.lesson!=='toro'&&tut.lesson!=='normal')return false;   // 戻る only in 普通 and 灯籠あり (none in the 難しい drill)
@@ -3446,7 +3518,7 @@ function tutBack(){if(!tutCanBack())return;if(DR()){drillBack();return;}const T=
   for(let j=k-1;j>=0;j--)if(T[j].info){tut.seen.delete(T[j]);Sound.play('tap');tutShow();return;}
   focusCells([]);document.querySelectorAll('.tuthl').forEach(e=>e.classList.remove('tuthl'));setMsg('');S.started=false;tutPrimer(-1);}
 // an info step read: on to the next
-function tutSeen(){if(!tut||DR())return;const st=LS().steps[tStep()];if(!st.info)return;tut.seen.add(st);Sound.play('tap');tutShow();}
+function tutSeen(){if(!tut||DR())return;const st=LS().steps[tStep()];if(!st.info||st.tapc)return;tut.seen.add(st);Sound.play('tap');tutShow();}
 // make the buttons the step talks about stand out (石｜砂紋 only while it is not yet set as the step needs)
 function tutHl(){document.querySelectorAll('.tuthl').forEach(e=>e.classList.remove('tuthl'));if(!tut||!S||!S.tut||S.done||!S.started)return;   // nothing stands out while a card is still in front
   let st;if(DR()){const g=tutG();if(!g)return;st=g.kind==='do'?{hl:g.hl,want:LS().steps[0].want}:g;}else st=LS().steps[tStep()];if(!st)return;const ids=[...(st.hl||[])];
@@ -3485,7 +3557,7 @@ function tutIdle(){clearTimeout(idleT);idleHlOff();if(!tut||!S||!S.tut)return;
   idleT=setTimeout(()=>{if(!tut||!S||!S.tut||!S.started||S.done||!$('veil').hidden||document.hidden)return;
     $('hintBtn').classList.add('idlehl');idleOffT=setTimeout(idleHlOff,IDLE_HL_MS);},IDLE_MS);}
 addEventListener('pointerdown',()=>{if(tut)tutIdle();},true);addEventListener('keydown',()=>{if(tut)tutIdle();},true);
-function tutNudge(i,target){const st=LS().steps[tStep()],w=st.want&&st.want[i];if(st.info){tutSeen();return;}{const g=tutG();if(g&&g.kind==='info'){drillNext();return;}}
+function tutNudge(i,target){const st=LS().steps[tStep()],w=st.want&&st.want[i];if(st.tapc){setMsg(`${st.tapc}の苔石をタップしてみてください。`);clearTimeout(nudgeT);nudgeT=setTimeout(()=>{if(S&&S.tut&&!S.done)tutShow();},1600);return;}if(st.info){tutSeen();return;}{const g=tutG();if(g&&g.kind==='info'){drillNext();return;}}
   if(DR()&&w===undefined){setMsg('そのマスは、まだ決まりません。');clearTimeout(nudgeT);
     nudgeT=setTimeout(()=>{if(S&&S.tut&&!S.done){if(tut.hint<3)tut.hint++;tutShow();}},1600);return;}
   let t=st.lit().includes(i)?'そのマスはまだ決まりません。説明をもう一度読んでみましょう。':'光っているマスを見てください。';
@@ -3526,7 +3598,7 @@ function tutPrimer(p){
   const fig=k=>{const li=document.querySelectorAll('#rulesList>.intro-rules>li')[k];return li?li.firstElementChild.outerHTML:'';};
   const P=[
     {h:'「石庭ぱずる」とは',body:`<p class="pm-lead">庭に石を置いていくパズルゲームです。<br>3つの<b>決まりごと</b>を守りながら、<br>石<i class="ico-stone" aria-hidden="true"></i>をすべて置ききってください。</p>`},
-    {h:'決まりごと 1',body:`<div class="pm-fig">${fig(0)}</div><p class="pm-rule">どの行にも、どの列にも、<br>石を決まった数だけ置きます</p><p class="pm-plain">盤の端にある○の数が、<br>その行・列に置く石の数です。</p>`},
+    {h:'決まりごと 1',body:`<div class="pm-fig">${fig(0)}</div><p class="pm-rule">どの行にも、どの列にも、<br>石を1個置きます</p><p class="pm-plain">盤の端にある○の数が、<br>その行・列に置く石の数です。</p>`},
     {h:'決まりごと 2',body:`<div class="pm-fig">${fig(1)}</div><p class="pm-rule">石のまわりに<br>石は置かれません</p>`},
     {h:'決まりごと 3',body:`<div class="pm-fig">${fig(2)}</div><p class="pm-rule">苔石に書いてある数は、<br>まわりにある石の数です</p><p class="pm-sub">ただし苔石は、石<i class="ico-stone" aria-hidden="true"></i>としては数えません。</p>`},
     {h:'石の無いマスには砂紋',body:`<div class="pm-fig wide">${rk()}</div><p class="pm-rule">「砂紋」は、石を置けないと<br>分かったマスにつける印です</p><p class="pm-sub pm-how"><span class="pm-mode" role="img" aria-label="石｜砂紋の切り替えボタン"><span class="mopt"><i class="modeicon"></i>石</span><span class="msep"></span><span class="mopt on"><i class="modeicon ring"></i>砂紋</span></span>に切り替えて、<br>盤面をタップすると引けます</p>`},
@@ -3549,7 +3621,7 @@ function tutWin(){tutHl();
     <p class="tutgoal">お見事です！決まりごとを守って、石を${S.N}個すべて置ききりました。<br>これで<b>練習は完了</b>です。次はぜひご自身の手で庭を整えてみてください。</p>
     <div class="winbtns top"><button type="button" class="btn" id="viewBtn">庭を眺める</button></div>
     <div class="winbtns"><button type="button" class="btn" id="tutAgain">もう一度練習する</button><button type="button" class="btn primary" id="tutEnd">${tut&&tut.first?'庭へ向かう':'庭に戻る'}</button></div>`);
-  $('veilCard').classList.add('win');
+  $('veilCard').classList.add('win');fitCard();
   $('tutAgain').onclick=()=>tutStart(tut.lesson,true);$('tutEnd').onclick=tutLeave;tutView(tutWin);}
 // 庭を眺める on a cleared lesson: the card steps aside to show the finished board; a tap on the board brings it back
 function tutView(card){S.reshow=card;$('viewBtn').onclick=()=>{hideVeil();setMsg('盤面をタップすると、結果の画面に戻ります。');};}
@@ -3586,7 +3658,7 @@ function drillWin(again){S.done=true;if(again!==true)Sound.play('clear',.15);con
     <p class="tutgoal">お見事です！全${D.list.length}問、すべて解ききりました。<br>${D.end(D.list.length)}</p>
     <div class="winbtns top"><button type="button" class="btn" id="viewBtn">庭を眺める</button></div>
     <div class="winbtns"><button type="button" class="btn" id="tutAgain">もう一度練習する</button><button type="button" class="btn primary" id="tutEnd">庭に戻る</button></div>`);
-  $('veilCard').classList.add('win');
+  $('veilCard').classList.add('win');fitCard();
   $('tutAgain').onclick=()=>tutStart(tut.lesson);$('tutEnd').onclick=tutLeave;tutView(()=>drillWin(true));}
 // back to the garden that was open before (the first visit then goes on to 庭の様式)
 function tutLeave(){const t=tut;if(!t)return;const b=t.back;
@@ -3657,7 +3729,7 @@ const NO_NOTE='庭コードで盤面を指定できます。コードは盤面�
 // give every note in the popup the height of its longest text (measured at the current width)
 function holdPickHeights(){if(!pick.open)return;
   const hold=(el,texts)=>{el.style.minHeight='';let h=0;for(const t of texts){phrase(el,t);h=Math.max(h,el.getBoundingClientRect().height);}el.style.minHeight=Math.ceil(h)+'px';};
-  pick.querySelectorAll('[data-note]').forEach(el=>hold(el,[...Object.values(NOTES[el.dataset.note]),...(LOCK_NOTE[el.dataset.note]?[LOCK_NOTE[el.dataset.note]]:[])]));
+  pick.querySelectorAll('[data-note]').forEach(el=>hold(el,[...Object.values(NOTES[el.dataset.note]).map(t=>el.dataset.note==='size'&&sizeLock()?t+'\n'+sizeLock():t),...(LOCK_NOTE[el.dataset.note]?[LOCK_NOTE[el.dataset.note]]:[])]));
   hold($('pickNoNote'),[NO_NOTE,NO_BAD,NO_SOLVED,NO_TODAY]);
   syncSeg();noField();}
 addEventListener('resize',holdPickHeights);
@@ -3703,7 +3775,10 @@ function stopClock(){if(tick)clearInterval(tick);tick=null;}
 
 // ---- veil / win ----
 // solid = the garden is covered completely (loading / before start); otherwise the board shows through
-function showVeil(html,solid){$('veilCard').className='card';$('veilCard').innerHTML=tw(html);$('veil').classList.toggle('solid',!!solid);$('veil').hidden=false;}
+function showVeil(html,solid){$('veilCard').className='card';$('veilCard').innerHTML=tw(html);$('veil').classList.toggle('solid',!!solid);$('veil').hidden=false;fitCard();}
+function fitCard(){const c=$('veilCard');if(!c)return;c.style.transform='';if($('veil').hidden||c.classList.contains('start'))return;
+  const r=c.getBoundingClientRect(),vw=document.documentElement.clientWidth,m=8;let d=0;
+  if(r.right>vw-m)d=vw-m-r.right;if(r.left+d<m)d=m-r.left;if(Math.abs(d)>.5)c.style.transform=`translateX(${Math.round(d)}px)`;}
 function hideVeil(){$('veil').hidden=true;$('veil').classList.remove('solid');}
 // ---- sharing the clear time ----
 // The link carries the garden (size, difficulty, number) so friends can walk the same garden.
@@ -3724,12 +3799,12 @@ function showWin(again){
   setTime();
   showVeil(`<h3>整いました</h3>${gardenHead()}<div class="small winmeta">${fmt(S.time)}${S.hints?` ・ 洞察${S.hints}回`:''}</div>${S.replay?`<p class="replaynote">${REPLAY_NOTE}</p>`:''}
     <div class="winbtns top"><button type="button" class="btn" id="viewBtn">庭を眺める</button><button type="button" class="btn" id="shareBtn">共有</button></div>
-    <div class="winbtns"><button type="button" class="btn primary" id="sameBtn">同じ様式の庭へ</button><button type="button" class="btn primary" id="nextBtn">異なる様式の庭へ</button></div>`);
-  $('veilCard').classList.add('win');
+    <div class="winbtns"><button type="button" class="btn primary" id="sameBtn">${styleParts(S.N,S.toro,S.diff).map(s=>s.replace(/（.*?）/,'')).join('・')}で続ける</button><button type="button" class="btn primary" id="nextBtn">他の庭を選ぶ</button></div>`);
+  $('veilCard').classList.add('win');fitCard();
   const text=shareText(),url=shareUrl();
   $('shareBtn').onclick=()=>{const b=$('shareBtn');
     shareOrCopy(text+'\n'+url,()=>{b.textContent='コピーしました';setTimeout(()=>{if(b.isConnected)b.textContent='共有';},2000);});};
-  // 同じ様式の庭へ: no popup, a new garden of the same size and difficulty
+  // ○○で続ける: no popup, a new garden of the same size and difficulty
   $('sameBtn').onclick=()=>{if(isDaySeed(S.seed)){const q=savedPick()||curPick();store.set('sekitei:pick',{...q,size:S.N,diff:S.diff,toro:!!S.toro,walk:true});}
     start(S.N,S.diff,randomSeed(S.N,S.diff),true);};
   $('nextBtn').onclick=()=>openPick(false);   // the same 庭を変える popup as 庭を変える
