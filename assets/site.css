@@ -456,7 +456,7 @@ aside .intro-rules{margin:0 0 8px}
 .replaynote{margin:0;align-self:stretch;font-size:12px;line-height:1.55;color:var(--shu);text-align:center}
 .askbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
 .askbtns .btn{justify-content:center;padding:11px;font-size:14px;letter-spacing:.14em}
-.pats{display:flex;flex-direction:column;gap:22px;margin-top:14px}
+.pats{display:flex;flex-direction:column;gap:12px;margin-top:16px;counter-reset:tip}
 .basics{margin:14px 0 22px;padding:12px 14px;border:1px solid var(--line);border-radius:4px;background:color-mix(in srgb,var(--ink) 3%,transparent)}
 .basics .basicshead{margin:0;font-size:13px;font-weight:700;letter-spacing:.06em}
 .basics ol{margin:6px 0 0;padding-left:1.4em}
@@ -472,14 +472,21 @@ aside .intro-rules{margin:0 0 8px}
 .basics .bfig .goalarrow{margin-bottom:16px;font-size:13px}
 @media (max-width:360px){.basics .bfig .mini{grid-template-columns:repeat(var(--c),17px)}}
 .card .drillnote{margin-top:8px;padding-top:8px;border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent)}
-.patrow+.patrow{border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent);padding-top:20px}   /* one tip from the next, as in 遊び方 */
-.patgroup{width:fit-content;margin:0;padding:3px 10px 2px;border-radius:2px;background:var(--shu);color:#fff;font-family:var(--display);font-size:13px;letter-spacing:.08em}
-.patgroup+.small{margin:2px 0 0}
+/* a group of tips: a heading with a rule running out to the right */
+.patgroup{display:flex;align-items:center;gap:10px;margin:18px 0 0;font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:.08em;color:var(--shu)}
+.patgroup::before{content:"";flex:none;width:4px;height:1.1em;border-radius:1px;background:var(--shu)}
+.patgroup::after{content:"";flex:1;height:1px;background:color-mix(in srgb,var(--shu) 40%,transparent)}
+.pats>.patgroup:first-child{margin-top:0}
+.patgroup+.small{margin:-4px 0 2px}
 .tipsep{margin:22px 0 0;border-top:1.5px dashed color-mix(in srgb,var(--ink) 26%,transparent)}   /* the tips above, the lesson button below */
 .tipsep+.tutgo{margin-top:18px}
-.patrow:has(+.patgroup){border-bottom:1px dashed color-mix(in srgb,var(--ink) 14%,transparent);padding-bottom:22px}   /* the line goes above the next group's label */
-.patrow{display:flex;flex-direction:column;gap:6px}
-.patrow > b{font-family:var(--display);font-size:14px;letter-spacing:.04em}
+/* one tip: a card, its number and title first, then the garden sizes, then the figures */
+.patrow{counter-increment:tip;display:flex;flex-direction:column;gap:8px;padding:13px 14px 15px;border:1px solid var(--line);border-radius:6px;background:color-mix(in srgb,var(--ink) 3%,transparent)}
+.patrow > b{order:-2;display:flex;align-items:flex-start;gap:9px;font-family:var(--display);font-size:15px;line-height:1.55;letter-spacing:.04em}
+.patrow > b::before{content:counter(tip);flex:none;display:grid;place-items:center;width:22px;height:22px;margin-top:1px;border-radius:50%;background:var(--shu);color:#fff;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:0}
+.patrow > .tags{order:-1;padding-left:31px}
+.patrow .patpair{margin-top:2px}
+@media (max-width:420px){.patrow{padding:12px 10px 14px}.patrow > b{font-size:14px}}
 .patrow p b{color:var(--ink)}
 .patrow p{margin:0}
 .patrow p.patsub{font-size:12px;color:var(--muted);letter-spacing:.06em;margin-top:4px}
@@ -669,6 +676,9 @@ span.w-pc.w-pc{display:none}
 .startgoal{margin:2px 0 0;font-size:13px;line-height:1.7;color:var(--ink)}
 /* start card: on a phone the garden can be smaller than the card, which then spills over the edges a little */
 .veil .card.start{gap:9px;transform:none!important}
+/* on a PC window that is not tall, the garden (and the veil over it) can be narrower than the card: the card keeps its width and spills over the garden */
+.veil .card.start{min-width:min(280px,calc(100vw - 24px));box-sizing:border-box}
+.veil:has(.card.start){grid-template:minmax(0,1fr)/minmax(0,1fr)}   /* the cell stays the garden's size, so the wider card spills out evenly on both sides */
 /* the start card sits in front of everything on the page (header, footer, ads); an opened header menu, toasts and the gate stay above it */
 .veil:has(.card.start){z-index:50}
 header.top.menuopen{z-index:55}

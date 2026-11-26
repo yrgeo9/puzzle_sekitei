@@ -1,5 +1,5 @@
 // 石庭 service worker: lets the game open offline after the first visit.
-const CACHE='sekitei-v2.3.0';
+const CACHE='sekitei-v2.3.1';
 const CORE=['./','index.html','manifest.webmanifest','icon.svg','icon-192.png','icon-512.png','apple-touch-icon.png','audio/sounds.json'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()));});
 // only this game's older caches are removed (others on the same origin are left alone)
