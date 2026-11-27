@@ -1156,6 +1156,20 @@ html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,
 #brandHome .brandlink{color:inherit;text-decoration:none}
 #brandHome .brandlink:focus-visible{outline:2px solid var(--shu);outline-offset:4px;border-radius:2px}
 @media (hover:hover){#brandHome:hover .seal{filter:brightness(1.08)}}
+
+/* site only (added by build_seo.py): links from the game to the reading pages */
+.gate-reads{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 0;font-size:12.5px;letter-spacing:.02em;white-space:nowrap;animation:gateMenu .8s ease-out 1.8s both}
+.gate-reads a{color:var(--muted);text-underline-offset:3px;white-space:nowrap}
+.gate-reads a:hover{color:var(--ink)}
+.gate-reads a+a::before{content:"\FF5C";display:inline-block;margin:0 4px;color:var(--line);text-decoration:none}
+.readmore h2{margin-bottom:10px}
+.readlinks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.readlinks a{display:block;border:1px solid var(--line);border-radius:3px;padding:10px 14px;text-decoration:none;color:var(--ink);background:var(--panel)}
+.readlinks a:hover{border-color:var(--ink)}
+.readlinks b{font-family:var(--display);font-size:14.5px;letter-spacing:.08em}
+.readlinks span{display:block;font-size:12px;line-height:1.7;color:var(--muted);margin-top:2px}
+@media (min-width:600px){.readlinks.two{grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){.gate-reads{animation:none}}
 </style>
 <style>
 :root{color-scheme:light}
@@ -1346,9 +1360,10 @@ button{touch-action:manipulation}
       </div>
       <button class="btn tutgo" type="button" data-tut>基本を学ぶ</button>
     </section>
+    <section data-tab="rules" class="readmore"><h2>もっと知りたい方へ</h2><ul class="readlinks"><li><a href="intro/"><b>石庭ぱずるとは</b><span>どんなパズルか、ルールと特徴、楽しみ方をまとめています。</span></a></li><li><a href="tips/example/"><b>例題で学ぶ解き方</b><span>六間の庭を1つ、最初の一手から最後の石まで解いていきます。</span></a></li><li><a href="faq/"><b>よくある質問</b><span>料金、記録の保存、難しさ、スマホでの遊び方などの疑問に答えます。</span></a></li></ul></section>
     <section data-tab="tips" id="tipsTop" class="tipsnav">
       <h2>解き方のコツ</h2>
-      <ol class="tipnav" id="tipNav" aria-label="解き方のコツの目次"></ol>
+      <ol class="tipnav" id="tipNav" aria-label="解き方のコツの目次"></ol><ul class="readlinks" style="margin-top:14px"><li><a href="tips/example/"><b>例題で学ぶ解き方</b><span>六間の庭を1つ、最初の一手から最後の石まで解いていきます。</span></a></li><li><a href="faq/"><b>よくある質問</b><span>料金、記録の保存、難しさ、スマホでの遊び方などの疑問に答えます。</span></a></li></ul>
     </section>
     <section data-tab="tips" id="tipNormal" data-tip="六間・八間">
       <h2>解き方のコツ（六間・八間）</h2>
@@ -1700,6 +1715,7 @@ button{touch-action:manipulation}
       <hr class="gate-sep">
       <button type="button" class="btn gf-b" id="gatePlay"><span class="gc-h">すぐに遊ぶ</span><span class="gc-s">庭の様式の選択画面に移動します</span></button>
     </div>
+    <nav class="gate-reads" aria-label="読みもの"><a href="intro/">石庭ぱずるとは</a><a href="tips/example/">例題で学ぶ解き方</a><a href="faq/">よくある質問</a></nav>
   </div>
   </div>
 <dialog class="intro" id="intro" aria-labelledby="introTitle">

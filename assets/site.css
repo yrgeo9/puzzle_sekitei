@@ -1123,6 +1123,20 @@ html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,
 #brandHome .brandlink:focus-visible{outline:2px solid var(--shu);outline-offset:4px;border-radius:2px}
 @media (hover:hover){#brandHome:hover .seal{filter:brightness(1.08)}}
 
+/* site only (added by build_seo.py): links from the game to the reading pages */
+.gate-reads{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 0;font-size:12.5px;letter-spacing:.02em;white-space:nowrap;animation:gateMenu .8s ease-out 1.8s both}
+.gate-reads a{color:var(--muted);text-underline-offset:3px;white-space:nowrap}
+.gate-reads a:hover{color:var(--ink)}
+.gate-reads a+a::before{content:"\FF5C";display:inline-block;margin:0 4px;color:var(--line);text-decoration:none}
+.readmore h2{margin-bottom:10px}
+.readlinks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.readlinks a{display:block;border:1px solid var(--line);border-radius:3px;padding:10px 14px;text-decoration:none;color:var(--ink);background:var(--panel)}
+.readlinks a:hover{border-color:var(--ink)}
+.readlinks b{font-family:var(--display);font-size:14.5px;letter-spacing:.08em}
+.readlinks span{display:block;font-size:12px;line-height:1.7;color:var(--muted);margin-top:2px}
+@media (min-width:600px){.readlinks.two{grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){.gate-reads{animation:none}}
+
 /* ==== static pages (遊び方・コツ・規約等) ==== */
 :root{color-scheme:light}
 html.doc,html.doc body{height:auto!important;overflow:visible!important;overscroll-behavior:auto!important}
@@ -1152,6 +1166,8 @@ body.docpage{display:block!important;max-width:720px;margin:0 auto!important;box
 .doc a.btn{text-decoration:none;display:inline-flex}
 .doccta{text-align:center;margin:40px 0 0}
 .doccta .btn{padding:12px 30px;font-size:15px;letter-spacing:.14em}
+.doccta .ctanote{display:block;margin-top:10px;font-size:12px;color:var(--muted);letter-spacing:.04em}
+.doc .readmore{border-top:1px solid var(--line);padding-top:30px;margin-top:36px}
 .tipcards{list-style:none;margin:0;padding:0!important;display:grid!important;gap:12px}
 .tipcards a{display:block;border:1px solid var(--line);border-radius:3px;padding:12px 16px;text-decoration:none;color:var(--ink);background:var(--panel)}
 .tipcards a:hover{border-color:var(--ink)}
