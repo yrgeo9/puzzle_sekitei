@@ -1117,6 +1117,12 @@ html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,
 .gate-art.gate-garden{width:min(260px,72vw);overflow:visible}
 @media (max-height:640px){.gate-art.gate-garden{width:min(210px,60vw)}}
 
+/* the name at the top left: back to the garden (from 遊び方・コツ…) */
+#brandHome{cursor:pointer;-webkit-tap-highlight-color:transparent}
+#brandHome .brandlink{color:inherit;text-decoration:none}
+#brandHome .brandlink:focus-visible{outline:2px solid var(--shu);outline-offset:4px;border-radius:2px}
+@media (hover:hover){#brandHome:hover .seal{filter:brightness(1.08)}}
+
 /* ==== static pages (遊び方・コツ・規約等) ==== */
 :root{color-scheme:light}
 html.doc,html.doc body{height:auto!important;overflow:visible!important;overscroll-behavior:auto!important}

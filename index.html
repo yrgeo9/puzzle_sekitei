@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-DRaCWRm72jVA4iWVv39Pr/HXl2xWWyQRSkTWiZNuUCo=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-pAjlXgJZdXxKsUVYdbqQ5TEwU1dC4fQmR37pLW8uLak=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="google-adsense-account" content="ca-pub-5888401648545585">
-<meta name="description" content="石庭ぱずるは、ブラウザで無料で遊べる和風のパズルゲームです。苔石の数字を手がかりに枯山水の庭へ石を置く、ロジックパズル（論理パズル）。登録不要でスマホ・PC対応、脳トレや暇つぶしにも。">
+<meta name="description" content="石庭ぱずるは、ブラウザで無料で遊べる和風のパズルゲームです。苔石の数字を手がかりに枯山水の庭へ石を置く、ロジックパズル（論理パズル）。登録不要でスマホ・PC対応、頭の体操や暇つぶしにも。">
 <meta name="theme-color" content="#fbfaf7">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="石庭ぱずる">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta property="og:title" content="石庭ぱずる｜無料の和風パズルゲーム">
-<meta property="og:description" content="石庭ぱずるは、ブラウザで無料で遊べる和風のパズルゲームです。苔石の数字を手がかりに枯山水の庭へ石を置く、ロジックパズル（論理パズル）。登録不要でスマホ・PC対応、脳トレや暇つぶしにも。">
+<meta property="og:description" content="石庭ぱずるは、ブラウザで無料で遊べる和風のパズルゲームです。苔石の数字を手がかりに枯山水の庭へ石を置く、ロジックパズル（論理パズル）。登録不要でスマホ・PC対応、頭の体操や暇つぶしにも。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://puzzle-sekitei.jp/">
 <meta property="og:site_name" content="石庭ぱずる">
@@ -1150,6 +1150,12 @@ html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,
 #gateBoard.done .gb-frame{stroke:var(--hl);transition:stroke .6s}
 .gate-art.gate-garden{width:min(260px,72vw);overflow:visible}
 @media (max-height:640px){.gate-art.gate-garden{width:min(210px,60vw)}}
+
+/* the name at the top left: back to the garden (from 遊び方・コツ…) */
+#brandHome{cursor:pointer;-webkit-tap-highlight-color:transparent}
+#brandHome .brandlink{color:inherit;text-decoration:none}
+#brandHome .brandlink:focus-visible{outline:2px solid var(--shu);outline-offset:4px;border-radius:2px}
+@media (hover:hover){#brandHome:hover .seal{filter:brightness(1.08)}}
 </style>
 <style>
 :root{color-scheme:light}
@@ -1180,8 +1186,8 @@ button{touch-action:manipulation}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":["VideoGame","WebApplication"],"name":"石庭ぱずる","alternateName":["石庭パズル","せきていぱずる"],"url":"https://puzzle-sekitei.jp/",
  "description":"ブラウザで遊べる無料の和風パズルゲーム。苔石の数字を手がかりに、枯山水の庭へ石を置くロジックパズル（論理パズル）です。どの庭も推理だけで解けます。",
- "inLanguage":"ja","genre":["パズル","パズルゲーム","ロジックパズル","論理パズル","ペンシルパズル","脳トレ"],
- "keywords":"パズル, 無料パズル, パズルゲーム, ロジックパズル, 論理パズル, ペンシルパズル, 脳トレ, 和風, 枯山水","applicationCategory":"GameApplication","operatingSystem":"Any",
+ "inLanguage":"ja","genre":["パズル","パズルゲーム","ロジックパズル","論理パズル","ペンシルパズル","推理パズル"],
+ "keywords":"パズル, 無料パズル, パズルゲーム, ロジックパズル, 論理パズル, ペンシルパズル, 推理パズル, 頭の体操, 和風, 枯山水","applicationCategory":"GameApplication","operatingSystem":"Any",
  "gamePlatform":["Web browser"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}}
 </script>
 <script type="application/ld+json">
@@ -1189,9 +1195,9 @@ button{touch-action:manipulation}
 </script>
 <div class="wrap">
   <header class="top">
-    <div class="brand">
+    <div class="brand" id="brandHome" title="庭へ戻る">
       <span class="seal" aria-hidden="true">石</span>
-      <h1>石庭ぱずる</h1>
+      <h1><a href="./" class="brandlink">石庭ぱずる</a></h1>
     </div>
     <div class="topbtns"><div class="topmenu" id="topMenu"><button class="btn" type="button" data-jump="rulesTop">遊び方</button><button class="btn" type="button" id="tipsDesk">コツ</button><button class="btn" type="button" data-jump="recTop">記録</button><button class="btn" type="button" data-jump="soundTop">設定</button><button class="btn" type="button" data-jump="termsTop">規約等</button></div><button class="btn em" type="button" id="gardenBtn">庭を変える</button><button class="menubtn" type="button" id="menuBtn" aria-label="メニュー" aria-expanded="false" aria-controls="topMenu"><i></i><i></i><i></i></button></div>
   </header>
@@ -2750,6 +2756,12 @@ function pauseGame(){
   $('resumeBtn').onclick=()=>{S.started=true;hideVeil();startClock();};
 }
 $('pauseBtn').onclick=pauseGame;
+// the name at the top left: from 遊び方・コツ・記録… (or 庭を変える) back to the garden; on the garden itself it does nothing
+$('brandHome').addEventListener('click',e=>{e.preventDefault();
+  if(!$('gate').hidden)return;
+  if(pick.open){Sound.play('tap');closePick();return;}
+  if(view!=='game'){Sound.play('tap');toGame();}});
+
 let msgTimer=null;
 // a line may break after 、。！？： — a <wbr> goes after each (CSS keeps the rest of a phrase together)
 if(!document.documentElement.lang)document.documentElement.lang='ja';
