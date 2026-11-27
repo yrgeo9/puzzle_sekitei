@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-c+EEfVdOfnG+Jc9wgKnO50xFc6ltRN0hxe74kXHH2gs=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-Jng4NGVcVBEMHB48LfDSY1oE5qZCZUTfMMQTfQJ9vns=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="google-adsense-account" content="ca-pub-5888401648545585">
 <meta name="description" content="石庭ぱずるは、ブラウザで無料で遊べる和風のパズルゲームです。苔の数字を手がかりに枯山水の庭へ石を置く、ロジックパズル（論理パズル）。登録不要でスマホ・PC対応、頭の体操や暇つぶしにも。">
@@ -2444,7 +2444,7 @@ function showStart(){
     ${startRules(S.K,S.toro)}
     <button class="btn primary startgo" id="startBtn" type="button">${resumed?'再開する':'はじめる'}</button>`,true);
   $('veilCard').classList.add('start');
-  $('startBtn').onclick=()=>{S.started=true;backToPick=false;gLabel();hideVeil();$('time').style.visibility='';startClock();};
+  $('startBtn').onclick=()=>{if(S&&!S.tut)track('garden_start',gardenParams());S.started=true;backToPick=false;gLabel();hideVeil();$('time').style.visibility='';startClock();};
 }
 
 const KAN=['','一','二','三','四','五','六','七','八','九','十','十一','十二'];
@@ -2703,11 +2703,15 @@ function isPlayed(k,v){return solvedSave(v)&&playedList().includes(k);}
 const REPLAY_NOTE='最近遊んだ庭のため、記録には残りません。';
 
 function clearFocus(){clearTimeout(msgTimer);cellEls.forEach(e=>e.classList.remove('focus'));}
+document.addEventListener('click',e=>{if(e.defaultPrevented)return;const a=e.target.closest&&e.target.closest('a[href]');if(!a)return;
+  const m=/^(intro|faq|tips\/example|rules|tips)\/$/.exec(a.getAttribute('href')||'');if(m)track('read_page_click',{page:m[1]});});
+const MOVED=new WeakSet();   // gardens already touched this visit (for garden_first_move)
 function apply(changes){ // [[i,newVal],...]
   const real=changes.filter(([i,v])=>S.cells[i]!==v);if(!real.length)return;
   clearFocus();   // any move ends a hint's highlight
   S.hist.push(real.map(([i])=>[i,S.cells[i]]));
   real.forEach(([i,v])=>S.cells[i]=v);
+  if(!S.tut&&!MOVED.has(S)){MOVED.add(S);track('garden_first_move',gardenParams());}
   afterChange();
 }
 function afterChange(){if(S.tut){tutCheck();return;}const ok=render();save();if(ok&&!S.done){S.done=true;stopClock();save();markPlayed(keyOf(S.N,S.seed,S.diff,!!S.toro));focusCells([]);if(!S.replay)recordWin();showWin(false);unlockCheck();Sound.play('clear',.15);}
@@ -2907,7 +2911,7 @@ function flash(i){const el=cellEls[i];el.classList.remove('hint');void el.offset
 // 教えを乞う: a mistake on the board comes first; otherwise the next deduction, made on the board, with its reason
 const hintCells=w=>w.kind==='adj'?[w.i]:w.kind==='unit'?unitCells(w.u):[...unitCells(w.a),...unitCells(w.b)];
 function giveHint(){
-  if(!S||S.done||!S.started)return;const {N,K,cells,stone,clue}=S;
+  if(!S||S.done||!S.started)return;if(!S.tut)track('hint_use',gardenParams());const {N,K,cells,stone,clue}=S;
   for(let i=0;i<N*N;i++){if(clue[i]>=0)continue;
     if(cells[i]===1&&!stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);Sound.play('remove');setMsg(`${cellName(i)}の石は答えと合わないので取り除きました。`);return;}
     if(cells[i]===2&&stone[i]){S.hints++;apply([[i,0]]);flash(i);focusCells([]);Sound.play('unmark');setMsg(`${cellName(i)}には石が入るので、砂紋を消しました。`);return;}}
@@ -3077,7 +3081,7 @@ function reopenPick(){backToPick=false;if(view==='game'){openPick(false);return;
   if(pushed){addEventListener('popstate',go);t=setTimeout(go,400);}toGame();if(!pushed)go();}
 const TABBTN={rules:'[data-jump="rulesTop"]',tips:'#tipsDesk',records:'[data-jump="recTop"]',sound:'[data-jump="soundTop"]',terms:'[data-jump="termsTop"]'};
 function lockPage(){document.documentElement.classList.toggle('lock',view==='game'&&!document.getElementById('pick').open);}
-function showView(v){const from=view;view=v;
+function showView(v){const from=view;view=v;if(v!=='game'&&v!==from)track('view_section',{section:v});
   document.documentElement.classList.toggle('tabview',v!=='game');if(v!=='game')$('sheet').dataset.tab=v;
   Object.entries(TABBTN).forEach(([t,sel])=>{const b=document.querySelector(sel);if(b){if(t===v)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');}});
   gLabel();lockPage();if(v==='game')requestAnimationFrame(()=>fitGarden());
@@ -3092,7 +3096,7 @@ $('tipsDesk').onclick=()=>{tipUnpush();showTip('',false);goSection('tipsTop','ti
 var tipPushed=false,tipSkipPop=false;   // tipSkipPop: the history step back we made ourselves (back to the contents) is not a 戻る to the garden
 const tipUnpush=()=>{if(!tipPushed)return;tipPushed=false;tipSkipPop=true;try{history.back();}catch(e){tipSkipPop=false;}};
 const TIPS=[...document.querySelectorAll('section[data-tip]')];
-function showTip(id,push){const top=$('tipsTop');top.hidden=!!id;TIPS.forEach(s=>s.hidden=s.id!==id);$('sheet').classList.toggle('tippage',!!id);
+function showTip(id,push){if(id){const t=$(id);track('tip_view',{tip:t&&t.dataset.tip||id});}const top=$('tipsTop');top.hidden=!!id;TIPS.forEach(s=>s.hidden=s.id!==id);$('sheet').classList.toggle('tippage',!!id);
   if(push&&id&&view==='tips'&&!tipPushed){try{history.pushState({sekiteiTip:1},'');tipPushed=true;}catch(e){}}
   if(!id&&push!==false)tipUnpush();
   const el=id?$(id):top;if(view==='tips')scrollTo(0,0);else if(el.offsetParent)el.scrollIntoView({block:'start'});}
@@ -3155,8 +3159,13 @@ const ADS={on:false,test:false,client:'ca-pub-5888401648545585',units:{mid:'',sh
 // ---- アクセス解析 (Google Analytics 4): GA_ID stays '' until a property is made. Ads and analytics run only on the official site.
 const GA_ID='G-S6KQF5JLZP';
 const LIVE=location.hostname==='puzzle-sekitei.jp';
+// funnel events: each carries visitor_type (new = before the first screen has ever been left on this browser; returning = after)
+const VISITOR=store.get('sekitei:intro')===1?'returning':'new';
+const CLEARED=(()=>{const r=store.get('sekitei:rec');return !!(r&&typeof r==='object'&&Object.values(r).some(x=>x&&x.n>0));})();
+function track(name,params){try{if(window.gtag)window.gtag('event',name,Object.assign({visitor_type:VISITOR},params||{}));}catch(e){}}
+const gardenParams=()=>S?{garden_style:styleParts(S.N,S.toro,S.diff).join('・'),garden_size:S.N,difficulty:S.diff?'hard':'normal',lantern:S.toro?'yes':'no'}:{};
 if(GA_ID&&LIVE){window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments);};
-  window.gtag('js',new Date());window.gtag('config',GA_ID);
+  window.gtag('js',new Date());window.gtag('set','user_properties',{visitor_type:VISITOR,has_cleared:CLEARED?'yes':'no'});window.gtag('config',GA_ID);
   const g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(g);}
 {const root=document.documentElement;root.classList.toggle('adtest',ADS.test&&!ADS.on);root.classList.toggle('ads',ADS.on);
   let loaded=false;
@@ -3649,6 +3658,7 @@ function tutCheck(){
   tutShow();}
 function tutStart(lesson,again){backToPick=false;gLabel();
   if(typeof lesson!=='string')lesson=tut?tut.lesson:'basic';
+  track('tutorial_begin',{lesson,again:again?'yes':'no'});
   const back=S&&!S.tut?{N:S.N,d:S.diff,seed:S.seed}:tut&&tut.back;
   const first=!!(tut&&tut.first)||introThenPick;introThenPick=false;
   stopClock();Sound.hold(false);closeSheet();if(intro.open)intro.close();if(pick.open)closePick();document.body.classList.add('tutmode');
@@ -3691,7 +3701,7 @@ function tutPrimer(p){
   $('pmNext').onclick=last?go:()=>tutPrimer(p+1);
   $('pmSkip').onclick=go;
   $('pmNext').focus({preventScroll:true});}
-function tutWin(){tutHl();
+function tutWin(){tutHl();track('tutorial_complete',{lesson:tut?tut.lesson:''});
   showVeil(`<h3>整いました</h3>
     <p class="tutgoal">お見事です！決まりごとを守って、石を${S.N}個すべて置ききりました。<br>これで<b>練習は完了</b>です。次はぜひご自身の手で庭を整えてみてください。</p>
     <div class="winbtns top"><button type="button" class="btn" id="viewBtn">庭を眺める</button></div>
@@ -3743,7 +3753,7 @@ function tutOff(){if(!tut)return;tut=null;idleHlOff();document.body.classList.re
 $('tutQuit').onclick=()=>{if(!tut)return;if(S&&S.done){tutLeave();return;}
   $('askTitle').textContent='練習をやめる';phrase($('askText'),'練習をやめますか？');
   $('askNote').textContent='練習の進み具合は記録されません。次に練習するときは、はじめからになります。';
-  $('askYes').textContent='やめる';$('askNo').textContent='練習を続ける';askDo=tutLeave;
+  $('askYes').textContent='やめる';$('askNo').textContent='練習を続ける';askDo=()=>{track('tutorial_quit',{lesson:tut?tut.lesson:''});tutLeave();};
   try{hintAsk.showModal();}catch(e){hintAsk.setAttribute('open','');}Sound.play('tap');};
 document.querySelectorAll('[data-tut]').forEach(b=>b.onclick=()=>tutStart('basic'));
 // the 砂紋 in the コツ figures: every other column shows the second half of the wave, so a wave spans two cells
@@ -3890,7 +3900,7 @@ function showWin(again){
 function recordWin(){
   const k='sekitei:rec';const rec=readRecords();const id=S.N+':'+S.diff+(S.toro?':t':'');const r=rec[id]||{n:0,best:null};
   r.n++;if(!S.hints&&(r.best===null||S.time<r.best))r.best=Math.floor(S.time);rec[id]=r;store.set(k,rec);renderRecords();
-  if(window.gtag)window.gtag('event','garden_clear',{garden_style:styleParts(S.N,S.toro,S.diff).join('・'),hints:S.hints,seconds:Math.floor(S.time)});
+  track('garden_clear',{...gardenParams(),hints:S.hints,seconds:Math.floor(S.time),replay:S.replay?'yes':'no',first_clear:r.n===1&&Object.values(rec).reduce((a,x)=>a+(x&&x.n||0),0)===1?'yes':'no'});
 }
 function readRecords(){
   const raw=store.get('sekitei:rec');const out={};
@@ -3920,8 +3930,8 @@ function openGate(){
   $('gateMenu').hidden=false;$('gateFirst').hidden=true;
   const g=$('gate');g.hidden=false;Sound.hold(true);   // no music on the return screen (button sounds still play); it begins as the screen is left
   const leave=()=>{Sound.hold(false);g.classList.add('leave');setTimeout(()=>{g.hidden=true;g.classList.remove('leave');},420);};
-  $('gateCont').onclick=leave;   // the garden is already open behind, on its card (再開する)
-  $('gateNew').onclick=()=>{leave();openPick(true);};
+  $('gateCont').onclick=()=>{track('gate_choice',{choice:'continue'});leave();};   // the garden is already open behind, on its card (再開する)
+  $('gateNew').onclick=()=>{track('gate_choice',{choice:'new_garden'});leave();openPick(true);};
   setTimeout(()=>{if(!g.hidden)(info?$('gateCont'):$('gateNew')).focus({preventScroll:true});},1600);
 }
 // the first visit: the same garden fading in, then はじめての方へ (the guided lesson, then a 六間・普通 garden)
@@ -3930,8 +3940,8 @@ function openFirst(){
   $('gateMenu').hidden=true;$('gateFirst').hidden=false;
   const g=$('gate');g.hidden=false;Sound.hold(true);
   const leave=()=>{store.set('sekitei:intro',1);Sound.hold(false);g.classList.add('leave');setTimeout(()=>{g.hidden=true;g.classList.remove('leave');},420);};
-  $('gateLearn').onclick=()=>{leave();introThenPick=true;tutStart('basic');};   // first: its card says 庭へ向かう, and leads to the garden
-  $('gatePlay').onclick=()=>{leave();openPick(true);};   // straight to 庭の様式
+  $('gateLearn').onclick=()=>{track('gate_choice',{choice:'learn'});leave();introThenPick=true;tutStart('basic');};   // first: its card says 庭へ向かう, and leads to the garden
+  $('gatePlay').onclick=()=>{track('gate_choice',{choice:'play_now'});leave();openPick(true);};   // straight to 庭の様式
   setTimeout(()=>{if(!g.hidden)$('gateLearn').focus({preventScroll:true});},1600);
 }
 // a shared link (?n=&d=&g=, or the older ?s= with the number) opens exactly that garden; every value is range-checked
@@ -3947,6 +3957,7 @@ const firstVisit=store.get('sekitei:intro')!==1;
 // ?tut=basic|toro|adv|adv10 opens that lesson directly (linked from the 遊び方・コツ pages of the site)
 let adminTut=null;try{const q=new URLSearchParams(location.search);if(['basic','normal','normal10','adv','adv10','toro'].includes(q.get('tut'))){adminTut=q.get('tut');history.replaceState(null,'',location.pathname);}}catch(e){}
 // a shared link goes straight to its garden (after the welcome, on a first visit)
+track('visit_start',{entry:shared?'shared_link':adminTut?'lesson_link':firstVisit?'first_screen':'title_screen'});
 if(shared){setToro(shared.t);start(shared.N,shared.d,shared.sd);if(firstVisit)openIntro();}
 else{
   // the garden left last time opens again (a new visitor gets the day's 六間・普通 garden)
