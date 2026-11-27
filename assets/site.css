@@ -473,7 +473,7 @@ aside .intro-rules{margin:0 0 8px}
 @media (max-width:360px){.basics .bfig .mini{grid-template-columns:repeat(var(--c),17px)}}
 .card .drillnote{margin-top:8px;padding-top:8px;border-top:1px dashed color-mix(in srgb,var(--ink) 14%,transparent)}
 /* a group of tips: a heading with a rule running out to the right */
-.patgroup{display:flex;align-items:center;gap:10px;margin:18px 0 0;font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:.08em;color:var(--shu)}
+.patgroup{display:flex;align-items:center;gap:10px;margin:18px 0 0;line-height:1.5;font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:.08em;color:var(--shu)}
 .patgroup::before{content:"";flex:none;width:4px;height:1.1em;border-radius:1px;background:var(--shu)}
 .patgroup::after{content:"";flex:1;height:1px;background:color-mix(in srgb,var(--shu) 40%,transparent)}
 .pats>.patgroup:first-child{margin-top:0}
@@ -482,11 +482,11 @@ aside .intro-rules{margin:0 0 8px}
 .tipsep+.tutgo{margin-top:18px}
 /* one tip: a card, its number and title first, then the garden sizes, then the figures */
 .patrow{counter-increment:tip;display:flex;flex-direction:column;gap:8px;padding:13px 14px 15px;border:1px solid var(--line);border-radius:6px;background:color-mix(in srgb,var(--ink) 3%,transparent)}
-.patrow > b{order:-2;display:flex;align-items:flex-start;gap:9px;font-family:var(--display);font-size:15px;line-height:1.55;letter-spacing:.04em}
-.patrow > b::before{content:counter(tip);flex:none;display:grid;place-items:center;width:22px;height:22px;margin-top:1px;border-radius:50%;background:var(--shu);color:#fff;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:0}
+.patrow > .pattitle{order:-2;display:flex;align-items:flex-start;gap:9px;margin:0;font-family:var(--display);font-weight:700;font-size:15px;line-height:1.55;letter-spacing:.04em;color:var(--ink)}
+.patrow > .pattitle::before{content:counter(tip);flex:none;display:grid;place-items:center;width:22px;height:22px;margin-top:1px;border-radius:50%;background:var(--shu);color:#fff;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:0}
 .patrow > .tags{order:-1;padding-left:31px}
 .patrow .patpair{margin-top:2px}
-@media (max-width:420px){.patrow{padding:12px 10px 14px}.patrow > b{font-size:14px}}
+@media (max-width:420px){.patrow{padding:12px 10px 14px}.patrow > .pattitle{font-size:14px}}
 .patrow p b{color:var(--ink)}
 .patrow p{margin:0}
 .patrow p.patsub{font-size:12px;color:var(--muted);letter-spacing:.06em;margin-top:4px}
@@ -1099,6 +1099,24 @@ html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,
 @media (max-width:820px){.tenrule{font-size:14px}.mini.tenmini{grid-template-columns:repeat(10,12px)}}
 .torofig .mini.toro{grid-template-columns:repeat(4,30px)}
 
+/* the first screen: a 六間 garden solved one move at a time */
+#gateBoard .gb-cell{fill:var(--sand);stroke:color-mix(in srgb,var(--curb-dk) 55%,transparent);stroke-width:.6}
+#gateBoard .gb-frame{fill:none;stroke:var(--curb);stroke-width:3}
+#gateBoard .gb-lit{fill:var(--hl);opacity:0;transition:opacity .35s}
+#gateBoard .gb-lit.on{opacity:.32}
+#gateBoard .gb-mark{fill:none;stroke:var(--curb-dk);stroke-width:1;stroke-linecap:round;opacity:0;transition:opacity .4s}
+#gateBoard .gb-mark.on{opacity:.85}
+#gateBoard .gb-stone{opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.4) translateY(-6px);transition:opacity .25s,transform .35s cubic-bezier(.3,1.5,.6,1)}
+#gateBoard .gb-stone.on{opacity:1;transform:none}
+#gateBoard .gb-tap{fill:none;stroke:var(--shu);stroke-width:1.4;opacity:0}
+#gateBoard .gb-tap.go{animation:gbTap .6s ease-out}
+@keyframes gbTap{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:scale(1.25)}}
+#gateBoard .gb-tap{transform-box:fill-box;transform-origin:center}
+#gateBoard .gb-moss text{font-family:var(--display);font-weight:700;font-size:13px;fill:var(--moss-ink);text-anchor:middle;dominant-baseline:central}
+#gateBoard.done .gb-frame{stroke:var(--hl);transition:stroke .6s}
+.gate-art.gate-garden{width:min(260px,72vw);overflow:visible}
+@media (max-height:640px){.gate-art.gate-garden{width:min(210px,60vw)}}
+
 /* ==== static pages (遊び方・コツ・規約等) ==== */
 :root{color-scheme:light}
 html.doc,html.doc body{height:auto!important;overflow:visible!important;overscroll-behavior:auto!important}
@@ -1136,4 +1154,20 @@ body.docpage{display:block!important;max-width:720px;margin:0 auto!important;box
 .pager{display:flex;justify-content:space-between;gap:12px;margin:30px 0 0;font-size:13px}
 .pager a{color:var(--ink);text-underline-offset:3px}
 .pager .next{margin-left:auto;text-align:right}
+/* tips: the group heading keeps its own look (not the plain h2 square) */
+.doc h2.patgroup{font-size:16px;letter-spacing:.08em;margin:18px 0 0;color:var(--shu);gap:10px}
+.doc h2.patgroup::before{width:4px;height:1.1em;border-radius:1px}
+.doc .pats>h2.patgroup:first-child{margin-top:0}
+/* 石庭ぱずるとは・よくある質問・例題 */
+.doc section p + p,.doc section p + ul,.doc section ul + p{margin-top:8px}
+.doc p a:not(.btn),.doc li a:not(.btn){color:var(--ink);text-underline-offset:3px}
+.doc ul.plain{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:4px}
+.doc .faq h2{font-size:16px;letter-spacing:.06em;line-height:1.6;align-items:flex-start}
+.doc .faq h2::before{content:"問";width:auto;height:auto;background:none;color:var(--shu);font-size:15px;margin-top:1px}
+.doc .faq section + section{padding-top:22px;margin-top:22px}
+.doc .exstep .patpair{margin:10px 0 8px}
+.doc .exstep figure{margin:0}
+.doc .exnote{font-size:12.5px;color:var(--muted)}
+.doc .exstep .pat i.c{background:color-mix(in srgb,var(--shu) 14%,transparent);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--shu) 75%,transparent)}
+.tipcards .exlink a{border-color:color-mix(in srgb,var(--shu) 45%,var(--line))}
 @media (max-width:480px){.docpage .brandname{font-size:20px;letter-spacing:.12em}.doc h1{font-size:21px}}
