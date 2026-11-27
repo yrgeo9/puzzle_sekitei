@@ -123,7 +123,7 @@ main{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px}
 /* moss island: an organic mound rather than a square tile */
 .cell.clue{cursor:default}
 .cell.clue::before{content:none}
-/* 苔石: a mound of moss shaped and lit like the stones (light from the upper left, a ring of smoothed sand
+/* 苔: a mound of moss shaped and lit like the stones (light from the upper left, a ring of smoothed sand
    and a soft shadow) */
 .cell.clue .mo{position:absolute;inset:8%;
   background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--moss) 70%,#c8d39a),var(--moss) 55%,var(--moss-dk));
@@ -625,6 +625,19 @@ aside .intro-rules{margin:0 0 8px}
 /* はじめの説明: the 砂紋 note sits beside its drawing, so the page stays short */
 .tiprow{display:flex;align-items:center;gap:12px}
 /* wording: タップ on touch screens, クリック on a PC-width screen with a mouse */
+/* 決まりごと figures: 砂紋 only on the cells that can take no stone; lit cells keep their light under the waves */
+.mini.plain.lit{background-image:linear-gradient(color-mix(in srgb,var(--moss) 20%,transparent),color-mix(in srgb,var(--moss) 20%,transparent))}
+.mini.plain.lit i.m{background:var(--sand)}   /* the 8 cells round the moss are lit, not the moss itself */
+.cntfig .mini.plain i.k.r{background:color-mix(in srgb,var(--curb) 22%,var(--sand));background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='3.5' viewBox='0 0 40 3.5' preserveAspectRatio='none'%3E%3Cpath d='M0 -7.5Q10 -11.1 20 -7.5T40 -7.5M0 -4Q10 -7.6 20 -4T40 -4M0 -0.5Q10 -4.1 20 -0.5T40 -0.5M0 3Q10 -0.6 20 3T40 3M0 6.5Q10 2.9 20 6.5T40 6.5M0 10Q10 6.4 20 10T40 10M0 13.5Q10 9.9 20 13.5T40 13.5' fill='none' stroke='%23ada38f' stroke-width='1'/%3E%3C/svg%3E");background-size:200% 3.5px}
+.mini.plain.lit i.k,.cntfig .mini.plain i.k.r{background-color:color-mix(in srgb,var(--moss) 30%,color-mix(in srgb,var(--curb) 22%,var(--sand)))}
+.mini.plain.toro i.k.r{background-color:color-mix(in srgb,rgb(246,206,72) 40%,color-mix(in srgb,var(--curb) 22%,var(--sand)))}
+/* the waves run on from row to row (6 lines a cell, so each cell ends where the next begins) and from column to column
+   (a wave spans two cells: the middle column of a 3-cell figure shows its second half) */
+.intro-rules .mini.plain i.k.k{background-size:200% calc(100% / 6)}
+.intro-rules .mini.plain[style*="--c:3"] i.k.k:nth-child(n){background-position:0 0}
+.intro-rules .mini.plain[style*="--c:3"] i.k.k:nth-child(3n+2){background-position:100% 0}
+/* the word タップ inside a block line stays inline on touch screens */
+span.w-touch.w-touch{display:inline}
 span.w-pc.w-pc{display:none}
 @media (min-width:821px) and (hover:hover){span.w-pc.w-pc{display:inline}span.w-touch.w-touch{display:none}}
 .tiprow .goaltip{margin:0;flex:1;min-width:0}
@@ -825,6 +838,7 @@ html,body{overflow-x:clip}
 .cntfig .cf-r div{display:flex;align-items:center;gap:2px}
 .cntfig .mini{grid-row:2;grid-column:1;grid-template-columns:repeat(3,18px)}
 .cntfig .pip{width:6px;height:6px}
+.cntfig .mini i.r{background:color-mix(in srgb,var(--moss) 32%,transparent)}   /* the row and column the stone fills */
 .cntfig .pip.hl{border-color:var(--shu);box-shadow:0 0 0 2px color-mix(in srgb,var(--shu) 22%,transparent)}
 .ipage .intro-rules .cntfig .mini{grid-template-columns:repeat(3,13px)}
 .ipage .cntfig{font-size:8.5px}
@@ -1135,7 +1149,13 @@ html.tabview aside section:is(#rulesTop,#tipsTop,[data-tab="records"],#soundTop,
 .readlinks b{font-family:var(--display);font-size:14.5px;letter-spacing:.08em}
 .readlinks span{display:block;font-size:12px;line-height:1.7;color:var(--muted);margin-top:2px}
 @media (min-width:600px){.readlinks.two{grid-template-columns:1fr 1fr}}
+.readlinks.exfirst{margin:0 0 14px}
+.readlinks.faqfirst{margin:12px 0 4px}
 @media (prefers-reduced-motion:reduce){.gate-reads{animation:none}}
+
+/* the reading of 石庭, very small above it */
+.brand ruby{ruby-position:over;ruby-align:center}
+.brand rt{font-family:var(--body,inherit);font-weight:500;font-size:max(7px,.2em);letter-spacing:.06em;color:var(--muted);padding-right:1.1em}   /* the padding offsets the title's letter-spacing, so each reading sits over the middle of its letter */
 
 /* ==== static pages (遊び方・コツ・規約等) ==== */
 :root{color-scheme:light}
