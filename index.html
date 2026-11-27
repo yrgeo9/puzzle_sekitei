@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-Jng4NGVcVBEMHB48LfDSY1oE5qZCZUTfMMQTfQJ9vns=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-H4VolUVzAzl2puuQNn9fU8KSKX3/MeM8VnWhk8HGtBQ=' 'sha256-ZgSf10eDrilzN5NNgUy1027sfnDCsRBzr9VFnwRD57Y=' 'sha256-PcsUoFyr81ZOBfXWrObnCG67p63KZO5GQG0x8DxCTTg=' 'sha256-+R7pnIRLI8kfmf7xP1w2nuLk8AT3VVh1wG8szeXnAw8=' 'strict-dynamic' https://www.googletagmanager.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://*.google.com; frame-src 'none'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="google-adsense-account" content="ca-pub-5888401648545585">
 <meta name="description" content="石庭ぱずるは、ブラウザで無料で遊べる和風のパズルゲームです。苔の数字を手がかりに枯山水の庭へ石を置く、ロジックパズル（論理パズル）。登録不要でスマホ・PC対応、頭の体操や暇つぶしにも。">
@@ -2296,6 +2296,7 @@ const LOCK_NOTE={toro:'「灯籠あり」は、八間の庭を1つ整えると�
 // a garden just solved may open the next kind: told once
 function unlockCheck(){const was={...OPEN};openBy(OPEN,S.N,S.diff,!!S.toro);
   store.set('sekitei:open',OPEN);tenNote();const n=[];if(OPEN.eight&&!was.eight)n.push('「八間」');if(OPEN.ten&&!was.ten)n.push('「十間」');if(OPEN.toro&&!was.toro)n.push('「灯籠あり」');if(OPEN.hard&&!was.hard)n.push('「難しい」');
+  for(const k of ['eight','ten','toro','hard'])if(OPEN[k]&&!was[k])track('style_unlock',{style:k,...gardenParams()});
   if(n.length)setTimeout(()=>toast(`${n.join('と')}の庭を選べるようになりました`,4000),1200);}
 // 遊び方 says that 十間 takes two stones a line only once 十間 can be chosen
 function tenNote(){document.querySelectorAll('.tennote').forEach(e=>e.hidden=!OPEN.ten);}
@@ -2357,6 +2358,7 @@ const styleParts=(N,t,d)=>[`${SIZES[N].name}（石${N*SIZES[N].K}）`,...(t?['�
 const labelText=()=>{const t=S&&!S.tut?dayTag(S.seed):'';return [...(t?[t]:[]),...styleParts(size,S?S.toro:toro,diff)].join(' ・ ');};
 // fresh: a garden drawn anew (or chosen by code); one already solved starts over from an empty board
 function start(N,d,seed,fresh){
+  if(gardenHasProgress())track('garden_abandon',{...gardenParams(),...playParams(),reason:'switch'});   // left as it is (it can be reopened), but not finished
   N=SIZES[N]?N:8;d=d===1?1:0;seed=int(seed,1,99999,todaySeed());
   size=N;diff=d;pend={size,diff,toro};syncSeg();tutOff();backToPick=false;gLabel();
   const K=SIZES[N].K;
@@ -2369,7 +2371,8 @@ function start(N,d,seed,fresh){
     S={N,K,seed,diff:d,clue:p.clue,stone:p.stone,cells:new Array(N*N).fill(0),hist:[],time:0,hints:0,done:false,toro};
     if(saved&&Array.isArray(saved.cells)&&saved.cells.length===N*N){
       S.cells=saved.cells.map((v,i)=>S.clue[i]>=0?0:int(v,0,2,0));
-      S.time=num(saved.time,0,1e7,0);S.hints=int(saved.hints,0,1e6,0);S.done=saved.done===true;}
+      S.time=num(saved.time,0,1e7,0);S.hints=int(saved.hints,0,1e6,0);S.done=saved.done===true;
+      S.mistakes=int(saved.m,0,1e6,0);S.undos=int(saved.u,0,1e6,0);S.resets=int(saved.rs,0,1e6,0);}
     S.ever=ever;S.replay=ever&&!S.done;   // solved or given up before: this time it is played again, and it does not count in 記録
     store.set('sekitei2:last',{N,d,seed,t:toro?1:0});setMsg('');
     build();
@@ -2688,7 +2691,7 @@ function render(){
   return allOk;
 }
 
-function save(){if(S.tut)return;store.set(keyOf(S.N,S.seed,S.diff,!!S.toro),{cells:S.cells,time:S.time,hints:S.hints,done:S.done,ever:!!(S.ever||S.done)});}
+function save(){if(S.tut)return;store.set(keyOf(S.N,S.seed,S.diff,!!S.toro),{cells:S.cells,time:S.time,hints:S.hints,done:S.done,ever:!!(S.ever||S.done),m:S.mistakes|0,u:S.undos|0,rs:S.resets|0});}
 // a garden that has been solved at least once (ever stays set while it is played again)
 function solvedSave(v){return !!v&&typeof v==='object'&&(v.done===true||v.ever===true);}
 // the gardens played lately (solved, or seen and given up), newest last. Only these stay out of 記録 when played again:
@@ -2705,11 +2708,15 @@ const REPLAY_NOTE='最近遊んだ庭のため、記録には残りません。'
 function clearFocus(){clearTimeout(msgTimer);cellEls.forEach(e=>e.classList.remove('focus'));}
 document.addEventListener('click',e=>{if(e.defaultPrevented)return;const a=e.target.closest&&e.target.closest('a[href]');if(!a)return;
   const m=/^(intro|faq|tips\/example|rules|tips)\/$/.exec(a.getAttribute('href')||'');if(m)track('read_page_click',{page:m[1]});});
+let visitClears=0;
+// closing (or leaving) the page with a garden in play and unsolved: sent once, by beacon, so it gets out as the page goes
+addEventListener('pagehide',()=>{if(S&&S.started&&gardenHasProgress())track('garden_abandon',{...gardenParams(),...playParams(),reason:'page_close',transport_type:'beacon'});});   // fallback when sessionStorage is closed
 const MOVED=new WeakSet();   // gardens already touched this visit (for garden_first_move)
 function apply(changes){ // [[i,newVal],...]
   const real=changes.filter(([i,v])=>S.cells[i]!==v);if(!real.length)return;
   clearFocus();   // any move ends a hint's highlight
   S.hist.push(real.map(([i])=>[i,S.cells[i]]));
+  if(!S.tut)S.mistakes=(S.mistakes|0)+real.filter(([i,v])=>v===1&&!S.stone[i]).length;   // a stone where the answer has none
   real.forEach(([i,v])=>S.cells[i]=v);
   if(!S.tut&&!MOVED.has(S)){MOVED.add(S);track('garden_first_move',gardenParams());}
   afterChange();
@@ -2786,7 +2793,7 @@ function setMode(m){mode=m;$('modeBtn').setAttribute('aria-pressed',m?'true':'fa
   $('optStone').classList.toggle('on',!m);$('optMark').classList.toggle('on',!!m);
   $('modeBtn').setAttribute('aria-label',m?'置くもの：砂紋（押すと石に切り替え）':'置くもの：石（押すと砂紋に切り替え）');if(typeof tutHl==='function')tutHl();}
 $('modeBtn').onclick=()=>setMode(mode?0:1);
-function undo(){if(!S||S.done||!S.started||!S.hist.length)return;clearFocus();S.hist.pop().forEach(([i,v])=>S.cells[i]=v);render();save();if(S.tut)tutShow();else showErrs();}
+function undo(){if(!S||S.done||!S.started||!S.hist.length)return;if(!S.tut)S.undos=(S.undos|0)+1;clearFocus();S.hist.pop().forEach(([i,v])=>S.cells[i]=v);render();save();if(S.tut)tutShow();else showErrs();}
 $('undoBtn').onclick=undo;
 function pauseGame(){
   if(!S||S.done||!S.started||S.tut)return;
@@ -2967,7 +2974,7 @@ $('resetBtn').onclick=()=>{if(!S||S.tut||S.done||!S.started)return;
   if(!S.cells.some(v=>v)){toast('盤面はもう均されています');return;}
   $('askTitle').textContent='均す';$('askNo').textContent='やめる';phrase($('askText'),'置いた石と砂紋をすべて取り除き、盤面をはじめの状態に戻しますか？');
   $('askYes').textContent='均す';$('askNote').textContent='経過時間はそのままです。「一手戻す」で元に戻せます。';
-  askDo=()=>{apply(S.cells.map((v,i)=>[i,0]));Sound.play('unmark');};
+  askDo=()=>{S.resets=(S.resets|0)+1;apply(S.cells.map((v,i)=>[i,0]));Sound.play('unmark');};
   try{hintAsk.showModal();}catch(e){hintAsk.setAttribute('open','');}Sound.play('tap');};
 // a short note that floats over the page for a moment; it takes no room, so nothing around it moves
 let toastTimer=null;
@@ -2981,7 +2988,7 @@ function shareOrCopy(all,done){
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(all).then(done,fallback);else fallback();
 }
 // 共有 in the menu passes the game itself on (not a result)
-$('appShare').onclick=()=>shareOrCopy('石庭ぱずる ― 石庭に石を据える、安らぎの和風ロジックパズル\n'+SITE_URL,()=>toast('リンクをコピーしました'));
+$('appShare').onclick=()=>track('share',{content_type:'game',method:typeof navigator.share==='function'?'share_sheet':'copy'})||shareOrCopy('石庭ぱずる ― 石庭に石を据える、安らぎの和風ロジックパズル\n'+SITE_URL,()=>toast('リンクをコピーしました'));
 // on a phone the garden and its buttons fill the first screen; the sections follow below, as on a PC
 // the title, shrunk until it fits beside the buttons (phone widths only)
 function fitTitle(){const h=document.querySelector('.brand h1'),b=document.querySelector('.brand');if(!h||!b)return;
@@ -3016,7 +3023,7 @@ $('gardenBtn').onclick=()=>changeGarden();
 // 庭を変える on a garden being played: its progress (stones, 砂紋, time, 洞察) is cleared; asked first when there is any
 function gardenBusy(){return !!(S&&!S.tut&&!S.done);}
 function gardenHasProgress(){return gardenBusy()&&(S.time>=1||S.hints>0||S.cells.some(v=>v));}
-function clearGarden(){if(!gardenBusy())return;if(gardenHasProgress()){S.ever=true;S.replay=true;markPlayed(keyOf(S.N,S.seed,S.diff,!!S.toro));}   // seen and given up: from now on a replay, kept out of 記録
+function clearGarden(){if(!gardenBusy())return;if(gardenHasProgress()){track('garden_abandon',{...gardenParams(),...playParams(),reason:'change_garden'});S.ever=true;S.replay=true;markPlayed(keyOf(S.N,S.seed,S.diff,!!S.toro));}   // seen and given up: from now on a replay, kept out of 記録
   stopClock();S.cells=S.cells.map(()=>0);S.hist=[];S.time=0;S.hints=0;S.started=false;save();build();setTime();setMsg('');$('time').style.visibility='hidden';showStart();}
 function changeGarden(){
   if(!gardenHasProgress()){clearGarden();openPick(false);return;}
@@ -3163,6 +3170,7 @@ const LIVE=location.hostname==='puzzle-sekitei.jp';
 const VISITOR=store.get('sekitei:intro')===1?'returning':'new';
 const CLEARED=(()=>{const r=store.get('sekitei:rec');return !!(r&&typeof r==='object'&&Object.values(r).some(x=>x&&x.n>0));})();
 function track(name,params){try{if(window.gtag)window.gtag('event',name,Object.assign({visitor_type:VISITOR},params||{}));}catch(e){}}
+const playParams=()=>S?{seconds:Math.floor(S.time||0),stones:S.cells.filter(v=>v===1).length,marks:S.cells.filter(v=>v===2).length,hints:S.hints|0,mistakes:S.mistakes|0,undos:S.undos|0,resets:S.resets|0}:{};
 const gardenParams=()=>S?{garden_style:styleParts(S.N,S.toro,S.diff).join('・'),garden_size:S.N,difficulty:S.diff?'hard':'normal',lantern:S.toro?'yes':'no'}:{};
 if(GA_ID&&LIVE){window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments);};
   window.gtag('js',new Date());window.gtag('set','user_properties',{visitor_type:VISITOR,has_cleared:CLEARED?'yes':'no'});window.gtag('config',GA_ID);
@@ -3753,7 +3761,7 @@ function tutOff(){if(!tut)return;tut=null;idleHlOff();document.body.classList.re
 $('tutQuit').onclick=()=>{if(!tut)return;if(S&&S.done){tutLeave();return;}
   $('askTitle').textContent='練習をやめる';phrase($('askText'),'練習をやめますか？');
   $('askNote').textContent='練習の進み具合は記録されません。次に練習するときは、はじめからになります。';
-  $('askYes').textContent='やめる';$('askNo').textContent='練習を続ける';askDo=()=>{track('tutorial_quit',{lesson:tut?tut.lesson:''});tutLeave();};
+  $('askYes').textContent='やめる';$('askNo').textContent='練習を続ける';askDo=()=>{let step=0;try{step=(DR()?tut.g:tStep())+1;}catch(e){}track('tutorial_quit',{lesson:tut?tut.lesson:'',step,moves:S?S.cells.filter(v=>v===1).length:0});tutLeave();};
   try{hintAsk.showModal();}catch(e){hintAsk.setAttribute('open','');}Sound.play('tap');};
 document.querySelectorAll('[data-tut]').forEach(b=>b.onclick=()=>tutStart('basic'));
 // the 砂紋 in the コツ figures: every other column shows the second half of the wave, so a wave spans two cells
@@ -3839,6 +3847,7 @@ function noField(){const el=$('pickNo'),P0=pend||curPick();
 $('pickNo').addEventListener('input',noField);
 $('pickNo').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('pickGo').click();}});
 $('pickGo').onclick=()=>{const P={...(pend||curPick())},no=noField();if(!OPEN.toro)P.toro=false;if(!OPEN.hard)P.diff=0;
+  if(no>=0)track('garden_select',{garden_style:styleParts(P.size,P.toro,P.diff).join('・'),garden_size:P.size,difficulty:P.diff?'hard':'normal',lantern:P.toro?'yes':'no',mode:no?'code':P.walk?'random':'today'});
   if(no<0){const el=$('pickNo');el.classList.add('bad');$('pickNoNote').classList.add('bad');phrase($('pickNoNote'),NO_BAD);el.focus();return;}
   if(no){   // a garden by its code
     useCode($('pickNo').value);closePick();$('pickNo').value='';setToro(P.toro);start(P.size,P.diff,no,true);return;}
@@ -3888,7 +3897,7 @@ function showWin(again){
     <div class="winbtns"><button type="button" class="btn primary" id="sameBtn">${styleParts(S.N,S.toro,S.diff).map(s=>s.replace(/（.*?）/,'')).join('・')}で続ける</button><button type="button" class="btn primary" id="nextBtn">他の庭を選ぶ</button></div>`);
   $('veilCard').classList.add('win');fitCard();
   const text=shareText(),url=shareUrl();
-  $('shareBtn').onclick=()=>{const b=$('shareBtn');
+  $('shareBtn').onclick=()=>{const b=$('shareBtn');track('share',{content_type:'result',method:typeof navigator.share==='function'?'share_sheet':'copy',...gardenParams()});
     shareOrCopy(text+'\n'+url,()=>{b.textContent='コピーしました';setTimeout(()=>{if(b.isConnected)b.textContent='共有';},2000);});};
   // ○○で続ける: no popup, a new garden of the same size and difficulty
   $('sameBtn').onclick=()=>{if(isDaySeed(S.seed)){const q=savedPick()||curPick();store.set('sekitei:pick',{...q,size:S.N,diff:S.diff,toro:!!S.toro,walk:true});}
@@ -3900,7 +3909,9 @@ function showWin(again){
 function recordWin(){
   const k='sekitei:rec';const rec=readRecords();const id=S.N+':'+S.diff+(S.toro?':t':'');const r=rec[id]||{n:0,best:null};
   r.n++;if(!S.hints&&(r.best===null||S.time<r.best))r.best=Math.floor(S.time);rec[id]=r;store.set(k,rec);renderRecords();
-  track('garden_clear',{...gardenParams(),hints:S.hints,seconds:Math.floor(S.time),replay:S.replay?'yes':'no',first_clear:r.n===1&&Object.values(rec).reduce((a,x)=>a+(x&&x.n||0),0)===1?'yes':'no'});
+  // the how-many-th garden solved in this visit (the tab's session: a reload keeps counting, a new tab starts again)
+  let nth=1;try{nth=(parseInt(sessionStorage.getItem('sekitei:visitClears'))||0)+1;sessionStorage.setItem('sekitei:visitClears',String(nth));}catch(e){nth=++visitClears;}
+  track('garden_clear',{...gardenParams(),clear_in_visit:nth,...playParams(),replay:S.replay?'yes':'no',first_clear:r.n===1&&Object.values(rec).reduce((a,x)=>a+(x&&x.n||0),0)===1?'yes':'no'});
 }
 function readRecords(){
   const raw=store.get('sekitei:rec');const out={};
@@ -3957,7 +3968,12 @@ const firstVisit=store.get('sekitei:intro')!==1;
 // ?tut=basic|toro|adv|adv10 opens that lesson directly (linked from the 遊び方・コツ pages of the site)
 let adminTut=null;try{const q=new URLSearchParams(location.search);if(['basic','normal','normal10','adv','adv10','toro'].includes(q.get('tut'))){adminTut=q.get('tut');history.replaceState(null,'',location.pathname);}}catch(e){}
 // a shared link goes straight to its garden (after the welcome, on a first visit)
-track('visit_start',{entry:shared?'shared_link':adminTut?'lesson_link':firstVisit?'first_screen':'title_screen'});
+const VISIT=(()=>{const today=new Date();today.setHours(0,0,0,0);let v=store.get('sekitei:visits');if(!v||typeof v!=='object')v={n:0,last:0};
+  let counted=false;try{counted=sessionStorage.getItem('sekitei:visitCounted')==='1';}catch(e){}
+  const days=v.last?Math.max(0,Math.round((today-v.last)/864e5)):-1;   // -1: no visit before
+  if(!counted){v={n:(v.n|0)+1,last:today.getTime(),prevDays:days};store.set('sekitei:visits',v);try{sessionStorage.setItem('sekitei:visitCounted','1');}catch(e){}}
+  return {visit_number:v.n,days_since_last:counted?(v.prevDays??-1):days};})();
+track('visit_start',{...VISIT,entry:shared?'shared_link':adminTut?'lesson_link':firstVisit?'first_screen':'title_screen'});
 if(shared){setToro(shared.t);start(shared.N,shared.d,shared.sd);if(firstVisit)openIntro();}
 else{
   // the garden left last time opens again (a new visitor gets the day's 六間・普通 garden)
