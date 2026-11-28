@@ -766,6 +766,12 @@ header.top.menuopen{z-index:55}
   .goal.many{min-height:0}
   .goal.many .gicons{display:grid}
   .stage{--g:min(100cqw - 42px,(100cqh - 271px) / 1.085)}
+  /* outside practice the words under the garden are short (a mistake or a hint, three lines at most): their box keeps
+     only three lines, and the height saved goes to the garden. A longer one still fits: fitMsg shrinks it */
+  body:not(.tutmode) .stage{--g:min(100cqw - 42px,(100cqh - 191px) / 1.085)}
+  body:not(.tutmode) .stage>.hintmsg{min-height:55px;line-height:1.4}   /* in px: when fitMsg shrinks the type, the box (and the garden above it) stays put */
+  /* and the garden never jumps when a mistake is shown: the space above it stays (fitMsg shrinks the words instead) */
+  body:not(.tutmode) .stage.tight::before{flex:1 1 0}
 }
 /* very narrow phones: four equal buttons leave little room for the small second line */
 @media (max-width:360px){.tools{gap:4px}.tools .btn{padding:0}.tools .btn.two small{font-size:8px;letter-spacing:-.05em}.tools .msep{margin:0 4px}}
